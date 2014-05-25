@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModuleInject", "ModuleInject\ModuleInject.csproj", "{53221937-AEFF-477F-B132-91A5449C9738}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.ModuleInject", "Test.ModuleInject\Test.ModuleInject.csproj", "{62D1AB2E-4638-4D35-AC0D-454FD1CE9B13}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{451C59A2-D5B3-4F52-A775-1D7D73DBC491}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{53221937-AEFF-477F-B132-91A5449C9738}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53221937-AEFF-477F-B132-91A5449C9738}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53221937-AEFF-477F-B132-91A5449C9738}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53221937-AEFF-477F-B132-91A5449C9738}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62D1AB2E-4638-4D35-AC0D-454FD1CE9B13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62D1AB2E-4638-4D35-AC0D-454FD1CE9B13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62D1AB2E-4638-4D35-AC0D-454FD1CE9B13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62D1AB2E-4638-4D35-AC0D-454FD1CE9B13}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.Interception.2.1.505.2\lib\NET35
+	EndGlobalSection
+EndGlobal
