@@ -14,7 +14,7 @@ namespace Test.ModuleInject
     {
         private IMainModule _module;
 
-        [TestFixtureSetUp]
+        [SetUp]
         public void Init()
         {
             _module = new MainModule(); 
@@ -43,17 +43,6 @@ namespace Test.ModuleInject
             _module.Resolve();
 
             Assert.AreEqual(_module.SubModule.Component1, _module.Component1.SubComponent1);
-        }
-
-        [TestCase]
-        public void Resolve_SubmoduleResolved()
-        {
-            Mock<ISubModule> subMock = new Mock<ISubModule>();
-            _module.SubModule = subMock.Object;
-
-            _module.Resolve();
-
-            subMock.Verify(x => x.Resolve(), Times.Once);
         }
     }
 }

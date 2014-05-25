@@ -15,11 +15,9 @@ namespace ModuleInject
             Expression<Func<IModule, TDependency>> dependencySourceExpression)
             where TComponent : IComponent
         {
-            return new DependencyInjectionContext<IComponent, TComponent, IModule, TDependency>()
-            {
-                DependencyName = Property.Get(dependencySourceExpression),
-                ComponentContext = component
-            };
+            string propertyPath = LinqHelper.GetMemberPath(dependencySourceExpression);
+
+            return new DependencyInjectionContext<IComponent, TComponent, IModule, TDependency>(component, propertyPath);
         }
     }
 }

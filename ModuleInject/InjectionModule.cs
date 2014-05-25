@@ -29,11 +29,7 @@ namespace ModuleInject
 
             _container.RegisterType<IComponent, TComponent>(propInfo.Name, new ContainerControlledLifetimeManager());
 
-            return new ComponentRegistrationContext<IComponent, TComponent, IModule>()
-            {
-                Container = _container,
-                ComponentName = propInfo.Name
-            };
+            return new ComponentRegistrationContext<IComponent, TComponent, IModule>(propInfo.Name, _container);
         }
 
         public void Resolve()

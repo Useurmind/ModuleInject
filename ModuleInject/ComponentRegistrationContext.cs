@@ -9,7 +9,13 @@ namespace ModuleInject
     public class ComponentRegistrationContext<IComponent, TComponent, IModule>
         where TComponent : IComponent
     {
-        public string ComponentName { get; internal set; }
-        public IUnityContainer Container { get; internal set; }
+        public string ComponentName { get; private set; }
+        internal IUnityContainer Container { get; private set; }
+
+        public ComponentRegistrationContext(string name, IUnityContainer container)
+        {
+            ComponentName = name;
+            Container = container;
+        }
     }
 }

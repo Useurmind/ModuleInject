@@ -56,6 +56,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComponentRegistrationContextTest.cs" />
+    <Compile Include="DependencyInjectionContextTest.cs" />
     <Compile Include="InjectionModuleTest.cs" />
     <Compile Include="ModuleResolverTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -68,6 +70,7 @@
     <Compile Include="TestModules\MainModule.cs" />
     <Compile Include="TestModules\Submodule.cs" />
     <Compile Include="Utility\LinqHelperTest.cs" />
+    <Compile Include="Utility\PropertyChainExtractorTest.cs" />
     <Compile Include="Utility\PropertyTest.cs" />
   </ItemGroup>
   <ItemGroup>

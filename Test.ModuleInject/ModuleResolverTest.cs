@@ -17,7 +17,7 @@ namespace Test.ModuleInject
         private MainModule _module;
         private UnityContainer _container;
 
-        [TestFixtureSetUp]
+        [SetUp]
         public void Init()
         {
             _moduleResolver = new ModuleResolver();

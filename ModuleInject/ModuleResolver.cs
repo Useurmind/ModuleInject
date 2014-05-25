@@ -22,6 +22,13 @@ namespace ModuleInject
             }
 
             Type iinjectionModuleType = typeof(IInjectionModule);
+
+            var submodulePropertyInfos = moduleType.GetProperties().Where(p => p.PropertyType.GetInterface(iinjectionModuleType.Name, false) != null);
+            foreach (var submodulePropInfo in submodulePropertyInfos)
+            {
+                ResolveSubmodule<IModule>(module, container, submodulePropInfo);
+            }
+
             foreach (var propInfo in moduleType.GetProperties())
             {
                 if (!propInfo.PropertyType.IsInterface)
@@ -29,12 +36,9 @@ namespace ModuleInject
                     throw new ModuleInjectException("Dependencies in modules must always have an Interface");
                 }
 
-                if (propInfo.PropertyType.GetInterface(iinjectionModuleType.Name, false) != null)
+                if (propInfo.PropertyType.GetInterface(iinjectionModuleType.Name, false) == null)
                 {
-                    ResolveSubmodule<IModule>(module, container, propInfo);
-                }
-                else
-                {
+                    // now only resolve components
                     ResolveComponent<IModule>(module, container, moduleType, propInfo);
                 }
             }
