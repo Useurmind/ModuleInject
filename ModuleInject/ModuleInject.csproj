@@ -20,6 +20,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -54,12 +56,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ComponentRegistrationContext.cs" />
-    <Compile Include="ComponentRegistrationContextExtensions.cs" />
-    <Compile Include="DependencyInjectionContextExtensions.cs" />
-    <Compile Include="DependencyInjectionContext.cs" />
+    <Compile Include="Fluent\ComponentRegistrationContext.cs" />
+    <Compile Include="Fluent\ComponentRegistrationContextExtensions.cs" />
+    <Compile Include="Fluent\DependencyInjectionContextExtensions.cs" />
+    <Compile Include="Fluent\DependencyInjectionContext.cs" />
+    <Compile Include="Fluent\ValueInjectionContextExtensions.cs" />
+    <Compile Include="Fluent\ValueInjectionContext.cs" />
     <Compile Include="InjectionModule.cs" />
+    <Compile Include="Interfaces\IInitializable1.cs" />
+    <Compile Include="Interfaces\IInitializable5.cs" />
+    <Compile Include="Interfaces\IInitializable4.cs" />
+    <Compile Include="Interfaces\IInitializable3.cs" />
     <Compile Include="Interfaces\IInjectionModule.cs" />
+    <Compile Include="Interfaces\IInitializable2.cs" />
     <Compile Include="ModuleResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\ExpressionVisitor.cs" />

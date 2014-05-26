@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ModuleInject
+namespace ModuleInject.Fluent
 {
     public class DependencyInjectionContext<IComponent, TComponent, IModule, IDependencyComponent>
         where TComponent : IComponent

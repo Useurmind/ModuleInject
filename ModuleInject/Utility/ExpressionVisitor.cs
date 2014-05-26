@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
 namespace ModuleInject.Utility
-{
+{    
     public abstract class ExpressionVisitor
     {
         protected ExpressionVisitor()
         {
         }
 
-        protected virtual Expression Visit(Expression exp)
+        protected virtual Expression Visit(Expression expression)
         {
-            if (exp == null)
-                return exp;
-            switch (exp.NodeType)
+            if (expression == null)
+                return expression;
+            switch (expression.NodeType)
             {
                 case ExpressionType.Negate:
                 case ExpressionType.NegateChecked:
@@ -27,7 +28,7 @@ namespace ModuleInject.Utility
                 case ExpressionType.ArrayLength:
                 case ExpressionType.Quote:
                 case ExpressionType.TypeAs:
-                    return this.VisitUnary((UnaryExpression)exp);
+                    return this.VisitUnary((UnaryExpression)expression);
                 case ExpressionType.Add:
                 case ExpressionType.AddChecked:
                 case ExpressionType.Subtract:
@@ -51,34 +52,34 @@ namespace ModuleInject.Utility
                 case ExpressionType.RightShift:
                 case ExpressionType.LeftShift:
                 case ExpressionType.ExclusiveOr:
-                    return this.VisitBinary((BinaryExpression)exp);
+                    return this.VisitBinary((BinaryExpression)expression);
                 case ExpressionType.TypeIs:
-                    return this.VisitTypeIs((TypeBinaryExpression)exp);
+                    return this.VisitTypeIs((TypeBinaryExpression)expression);
                 case ExpressionType.Conditional:
-                    return this.VisitConditional((ConditionalExpression)exp);
+                    return this.VisitConditional((ConditionalExpression)expression);
                 case ExpressionType.Constant:
-                    return this.VisitConstant((ConstantExpression)exp);
+                    return this.VisitConstant((ConstantExpression)expression);
                 case ExpressionType.Parameter:
-                    return this.VisitParameter((ParameterExpression)exp);
+                    return this.VisitParameter((ParameterExpression)expression);
                 case ExpressionType.MemberAccess:
-                    return this.VisitMemberAccess((MemberExpression)exp);
+                    return this.VisitMemberAccess((MemberExpression)expression);
                 case ExpressionType.Call:
-                    return this.VisitMethodCall((MethodCallExpression)exp);
+                    return this.VisitMethodCall((MethodCallExpression)expression);
                 case ExpressionType.Lambda:
-                    return this.VisitLambda((LambdaExpression)exp);
+                    return this.VisitLambda((LambdaExpression)expression);
                 case ExpressionType.New:
-                    return this.VisitNew((NewExpression)exp);
+                    return this.VisitNew((NewExpression)expression);
                 case ExpressionType.NewArrayInit:
                 case ExpressionType.NewArrayBounds:
-                    return this.VisitNewArray((NewArrayExpression)exp);
+                    return this.VisitNewArray((NewArrayExpression)expression);
                 case ExpressionType.Invoke:
-                    return this.VisitInvocation((InvocationExpression)exp);
+                    return this.VisitInvocation((InvocationExpression)expression);
                 case ExpressionType.MemberInit:
-                    return this.VisitMemberInit((MemberInitExpression)exp);
+                    return this.VisitMemberInit((MemberInitExpression)expression);
                 case ExpressionType.ListInit:
-                    return this.VisitListInit((ListInitExpression)exp);
+                    return this.VisitListInit((ListInitExpression)expression);
                 default:
-                    throw new Exception(string.Format("Unhandled expression type: '{0}'", exp.NodeType));
+                    throw new Exception(string.Format("Unhandled expression type: '{0}'", expression.NodeType));
             }
         }
 

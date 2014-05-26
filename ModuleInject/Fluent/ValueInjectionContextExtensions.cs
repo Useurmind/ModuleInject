@@ -6,24 +6,23 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace ModuleInject
+namespace ModuleInject.Fluent
 {
-    public static class DependencyInjectionContextExtensions
+    public static class ValueInjectionContextExtensions
     {
         public static ComponentRegistrationContext<IComponent, TComponent, IModule> IntoProperty<IComponent, TComponent, IModule, TDependency, TProperty>(
-            this DependencyInjectionContext<IComponent, TComponent, IModule, TDependency> dependency,
+            this ValueInjectionContext<IComponent, TComponent, IModule, TDependency> value,
             Expression<Func<IComponent, TProperty>> dependencyTargetExpression
         )
             where TComponent : IComponent
             where TProperty : TDependency
         {
-            ComponentRegistrationContext<IComponent, TComponent, IModule> component = dependency.ComponentContext;
+            ComponentRegistrationContext<IComponent, TComponent, IModule> component = value.ComponentContext;
 
-            string sourceName = dependency.DependencyName;
             string targetName = Property.Get(dependencyTargetExpression);
 
             component.Container.RegisterType<IComponent, TComponent>(component.ComponentName,
-                new InjectionProperty(targetName, new ResolvedParameter<TDependency>(sourceName))
+                new InjectionProperty(targetName, value.Value)
             );
 
             return component;

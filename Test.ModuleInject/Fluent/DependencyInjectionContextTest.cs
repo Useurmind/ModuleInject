@@ -1,5 +1,6 @@
 ﻿using Microsoft.Practices.Unity;
 using ModuleInject;
+using ModuleInject.Fluent;
 using ModuleInject.Utility;
 using Moq;
 using NUnit.Framework;
@@ -9,7 +10,7 @@ using System.Linq;
 using System.Text;
 using Test.ModuleInject.TestModules;
 
-namespace Test.ModuleInject
+namespace Test.ModuleInject.Fluent
 {
     [TestFixture]
     public class DependencyInjectionContextTest
@@ -23,7 +24,7 @@ namespace Test.ModuleInject
         [SetUp]
         public void Init()
         {
-            _propertyName = Property.Get((IMainModule x) => x.Component1);
+            _propertyName = Property.Get((IMainModule x) => x.InitWithPropertiesComponent);
             _depPropertyName = Property.Get((IMainModule x) => x.Component2);
             _containerMock = new Mock<IUnityContainer>();
             _componentContext = new ComponentRegistrationContext<IMainComponent1, MainComponent1, IMainModule>(

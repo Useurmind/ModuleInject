@@ -23,9 +23,14 @@ namespace Test.ModuleInject
             _moduleResolver = new ModuleResolver();
             _module = new MainModule();
             _container = new UnityContainer();
-            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.Component1));
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.InstanceRegistrationComponent));
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.InitWithPropertiesComponent));
             _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((MainModule x) => x.Component2));
-            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.SecondComponent1));
+            _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((MainModule x) => x.Component22));
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.InitWithInitialize1Component));
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.InitWithInitialize1FromSubComponent));
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.InitWithInitialize2Component));
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.InitWithInitialize3Component));
         }
 
         [TestCase]
@@ -33,21 +38,20 @@ namespace Test.ModuleInject
         public void Resolve_NotAllComponentsRegisteredInContainer_ExceptionThrown()
         {
             IUnityContainer container = new UnityContainer();
-            container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.Component1));
+            container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.InitWithPropertiesComponent));
 
-            _moduleResolver.Resolve<IMainModule>((IMainModule)_module, container);
-
-            Assert.IsNotNull(_module.Component1);
-            Assert.IsNotNull(_module.SecondComponent1);            
+            _moduleResolver.Resolve<IMainModule>((IMainModule)_module, container); 
         }
 
         [TestCase]
         public void Resolve_AllComponentRegisteredInContainer_ComponentPropertiesNotNull()
         {
             _moduleResolver.Resolve<IMainModule>((IMainModule)_module, _container);
-
-            Assert.IsNotNull(_module.Component1);
-            Assert.IsNotNull(_module.SecondComponent1);
+            
+            Assert.IsNotNull(_module.InitWithPropertiesComponent);
+            Assert.IsNotNull(_module.InitWithInitialize1Component);
+            Assert.IsNotNull(_module.InitWithInitialize1FromSubComponent);
+            Assert.IsNotNull(_module.InitWithInitialize2Component);   
         }
 
         [TestCase]

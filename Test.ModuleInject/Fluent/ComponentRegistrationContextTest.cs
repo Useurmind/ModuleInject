@@ -1,5 +1,6 @@
 ﻿using Microsoft.Practices.Unity;
 using ModuleInject;
+using ModuleInject.Fluent;
 using ModuleInject.Utility;
 using NUnit.Framework;
 using System;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Text;
 using Test.ModuleInject.TestModules;
 
-namespace Test.ModuleInject
+namespace Test.ModuleInject.Fluent
 {
     [TestFixture]
     public class ComponentRegistrationContextTest
@@ -20,7 +21,7 @@ namespace Test.ModuleInject
         [SetUp]
         public void Init()
         {
-            _componentName = Property.Get((IMainModule x) => x.Component1);
+            _componentName = Property.Get((IMainModule x) => x.InitWithPropertiesComponent);
             _container = new UnityContainer();
             _context = new ComponentRegistrationContext<IMainComponent1, MainComponent1, IMainModule>(
                 _componentName,

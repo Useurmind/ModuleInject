@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ModuleInject
+namespace ModuleInject.Fluent
 {
     public class ComponentRegistrationContext<IComponent, TComponent, IModule>
         where TComponent : IComponent

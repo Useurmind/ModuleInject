@@ -18,6 +18,11 @@ namespace ModuleInject.Utility
 
         public static Property Get<TObject, TProperty>(Expression<Func<TObject, TProperty>> propertyExpression)
         {
+            if (propertyExpression == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             CheckExpression(propertyExpression);
 
             MemberExpression memberExpression = (MemberExpression)propertyExpression.Body;
@@ -27,28 +32,34 @@ namespace ModuleInject.Utility
 
         private static void CheckExpression<TObject, TProperty>(Expression<Func<TObject, TProperty>> propertyExpression)
         {
-            Exception ex = new ModuleInjectException("Properties can only be constructed from expressions desribing direct properties of an object.");
+            Exception exception = new ModuleInjectException("Properties can only be constructed from expressions describing direct properties of an object.");
 
             MemberExpression memberExpression = propertyExpression.Body as MemberExpression;
             if (memberExpression == null)
             {
-                throw ex;
+                throw exception;
             }
 
             PropertyInfo propInfo = memberExpression.Member as PropertyInfo;
-            if(propInfo == null)
+            if (propInfo == null)
             {
-                throw ex;
+                throw exception;
             }
 
             ParameterExpression paramExp = memberExpression.Expression as ParameterExpression;
-            if(paramExp == null)
+            if (paramExp == null)
             {
-                throw ex;
+                throw exception;
             }
         }
 
-        public static implicit operator string(Property property) {
+        public static implicit operator string(Property property)
+        {
+            if (property == null)
+            {
+                return null;
+            }
+
             return property._propertyInfo.Name;
         }
     }

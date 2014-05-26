@@ -16,9 +16,9 @@ namespace ModuleInject.Utility
             _memberExpressions = new List<MemberExpression>();
         }
 
-        public IList<MemberExpression> Extract(Expression exp)
+        public IList<MemberExpression> Extract(Expression expression)
         {
-            Visit(exp);
+            Visit(expression);
 
             return _memberExpressions;
         }

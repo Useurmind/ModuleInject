@@ -25,24 +25,117 @@ namespace Test.ModuleInject
         {            
             _module.Resolve();
 
-            Assert.IsNotNull(_module.Component1);
-            Assert.IsNotNull(_module.SecondComponent1);
+            Assert.IsNotNull(_module.InstanceRegistrationComponent);
+            Assert.IsNotNull(_module.InitWithPropertiesComponent);
+            Assert.IsNotNull(_module.InitWithInitialize1Component);
+            Assert.IsNotNull(_module.InitWithInitialize1FromSubComponent);
+            Assert.IsNotNull(_module.InitWithInitialize2Component);
+            Assert.IsNotNull(_module.InitWithInitialize3Component);
+            Assert.IsNotNull(_module.Component2);
+            Assert.IsNotNull(_module.Component22);
+            Assert.IsNotNull(_module.SubModule.Component1);
+            Assert.IsNotNull(_module.SubModule.Component2);
         }
 
         [TestCase]
-        public void Resolve_InnerModuleDependenciesResolved()
+        public void Resolve_PropertiesOnInstance_InnerModuleDependenciesResolved()
         {
             _module.Resolve();
 
-            Assert.AreEqual(_module.Component2, _module.Component1.MainComponent2);
+            Assert.AreEqual(_module.Component22, _module.InstanceRegistrationComponent.MainComponent22);
         }
 
         [TestCase]
-        public void Resolve_SubModuleDependenciesResolved()
+        public void Resolve_PropertiesOnInstance_SubModuleDependenciesResolved()
         {
             _module.Resolve();
 
-            Assert.AreEqual(_module.SubModule.Component1, _module.Component1.SubComponent1);
+            Assert.AreEqual(_module.SubModule.Component1, _module.InstanceRegistrationComponent.SubComponent1);
+        }
+
+        [TestCase]
+        public void Resolve_Initialize1OnInstance_InnerModuleDependenciesResolved()
+        {
+            _module.Resolve();
+
+            Assert.AreEqual(_module.Component2, _module.InstanceRegistrationComponent.MainComponent2);
+        }
+
+        [TestCase]
+        public void Resolve_Properties_ValueInjected()
+        {
+            _module.Resolve();
+
+            Assert.AreEqual(5, _module.InitWithPropertiesComponent.InjectedValue);
+        }
+
+        [TestCase]
+        public void Resolve_Properties_InnerModuleDependenciesResolved()
+        {
+            _module.Resolve();
+
+            Assert.AreEqual(_module.Component2, _module.InitWithPropertiesComponent.MainComponent2);
+        }
+
+        [TestCase]
+        public void Resolve_Properties_SubModuleDependenciesResolved()
+        {
+            _module.Resolve();
+
+            Assert.IsNotNull(_module.SubModule.Component1);
+            Assert.AreEqual(_module.SubModule.Component1, _module.InitWithPropertiesComponent.SubComponent1);
+        }
+
+        [TestCase]
+        public void Resolve_Initialize1_InnerModuleDependenciesResolved()
+        {
+            _module.Resolve();
+
+            Assert.AreEqual(_module.Component2, _module.InitWithInitialize1Component.MainComponent2);
+        }
+
+        [TestCase]
+        public void Resolve_Initialize1_SubModuleDependenciesResolved()
+        {
+            _module.Resolve();
+
+            Assert.IsNotNull(_module.SubModule.Component1);
+            Assert.AreEqual(_module.SubModule.Component1, _module.InitWithInitialize1FromSubComponent.SubComponent1);
+        }
+
+        [TestCase]
+        public void Resolve_Initialize2_InnerModuleDependenciesResolved()
+        {
+            _module.Resolve();
+
+            Assert.AreEqual(_module.Component2, _module.InitWithInitialize2Component.MainComponent2);
+        }
+
+        [TestCase]
+        public void Resolve_Initialize2_SubModuleDependenciesResolved()
+        {
+            _module.Resolve();
+
+            Assert.IsNotNull(_module.SubModule.Component1);
+            Assert.AreEqual(_module.SubModule.Component1, _module.InitWithInitialize2Component.SubComponent1);
+        }
+
+        [TestCase]
+        public void Resolve_Initialize3_InnerModuleDependenciesResolved()
+        {
+            _module.Resolve();
+
+            Assert.AreEqual(_module.Component2, _module.InitWithInitialize3Component.MainComponent2);
+            Assert.AreEqual(_module.Component22, _module.InitWithInitialize3Component.MainComponent22);
+        }
+
+        [TestCase]
+        public void Resolve_Initialize3_SubModuleDependenciesResolved()
+        {
+            _module.Resolve();
+
+            Assert.IsNotNull(_module.SubModule.Component1);
+            Assert.AreEqual(_module.SubModule.Component1, _module.InitWithInitialize3Component.SubComponent1);
         }
     }
 }
