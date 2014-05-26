@@ -1,4 +1,5 @@
 ﻿using Microsoft.Practices.Unity;
+using ModuleInject.Interfaces;
 using ModuleInject.Utility;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace ModuleInject.Fluent
         )
             where TComponent : IComponent
             where TProperty : TDependency
+            where IModule : IInjectionModule
         {
             ComponentRegistrationContext<IComponent, TComponent, IModule> component = value.ComponentContext;
 

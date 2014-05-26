@@ -25,12 +25,13 @@ namespace Test.ModuleInject
             _container = new UnityContainer();
             _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.InstanceRegistrationComponent));
             _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.InitWithPropertiesComponent));
-            _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((MainModule x) => x.Component2));
-            _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((MainModule x) => x.Component22));
             _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.InitWithInitialize1Component));
             _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.InitWithInitialize1FromSubComponent));
             _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.InitWithInitialize2Component));
             _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.InitWithInitialize3Component));
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.InitWithInjectorComponent));
+            _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((MainModule x) => x.Component2));
+            _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((MainModule x) => x.Component22));
         }
 
         [TestCase]
@@ -51,7 +52,10 @@ namespace Test.ModuleInject
             Assert.IsNotNull(_module.InitWithPropertiesComponent);
             Assert.IsNotNull(_module.InitWithInitialize1Component);
             Assert.IsNotNull(_module.InitWithInitialize1FromSubComponent);
-            Assert.IsNotNull(_module.InitWithInitialize2Component);   
+            Assert.IsNotNull(_module.InitWithInitialize2Component);
+            Assert.IsNotNull(_module.InitWithInitialize3Component);
+            Assert.IsNotNull(_module.InitWithInjectorComponent);
+            Assert.IsNotNull(_module.InstanceRegistrationComponent);
         }
 
         [TestCase]

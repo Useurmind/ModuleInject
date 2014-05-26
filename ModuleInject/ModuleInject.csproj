@@ -60,6 +60,7 @@
     <Compile Include="Fluent\ComponentRegistrationContextExtensions.cs" />
     <Compile Include="Fluent\DependencyInjectionContextExtensions.cs" />
     <Compile Include="Fluent\DependencyInjectionContext.cs" />
+    <Compile Include="Fluent\Injector.cs" />
     <Compile Include="Fluent\ValueInjectionContextExtensions.cs" />
     <Compile Include="Fluent\ValueInjectionContext.cs" />
     <Compile Include="InjectionModule.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Interfaces\IInitializable3.cs" />
     <Compile Include="Interfaces\IInjectionModule.cs" />
     <Compile Include="Interfaces\IInitializable2.cs" />
+    <Compile Include="Interfaces\IInjector.cs" />
     <Compile Include="ModuleResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\ExpressionVisitor.cs" />

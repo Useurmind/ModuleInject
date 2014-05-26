@@ -15,6 +15,7 @@ namespace Test.ModuleInject.TestModules
         public IMainComponent1 InitWithInitialize1FromSubComponent { get; set; }
         public IMainComponent1 InitWithInitialize2Component { get; set; }
         public IMainComponent1 InitWithInitialize3Component { get; set; }
+        public IMainComponent1 InitWithInjectorComponent { get; set; }
         public IMainComponent2 Component2 { get; set; }
         public IMainComponent2 Component22 { get; set; }
 
@@ -43,6 +44,21 @@ namespace Test.ModuleInject.TestModules
 
             RegisterComponent<IMainComponent1, MainComponent1>(x => x.InitWithInitialize3Component)
                 .InitializeWith(x => x.Component2, x => x.Component22, x => x.SubModule.Component1);
+
+            RegisterComponent<IMainComponent1, MainComponent1>(x => x.InitWithInjectorComponent)
+                .AddInjector(new Injector<IMainComponent1, MainComponent1, IMainModule>(context =>
+                {
+                    context.Inject(5).IntoProperty(x => x.InjectedValue);
+                }))
+                .AddInjector(new Injector<IMainComponent1, MainComponent1, IMainModule>(context =>
+                {
+                    context.Inject(x => x.Component2).IntoProperty(x => x.MainComponent2);
+                    context.Inject(x => x.Component22).IntoProperty(x => x.MainComponent22);
+                }))
+                .AddInjector(new Injector<IMainComponent1, MainComponent1, IMainModule>(context =>
+                {
+                    context.Inject(x => x.SubModule.Component1).IntoProperty(x => x.SubComponent1);
+                }));
 
             RegisterComponent<IMainComponent2, MainComponent2>(x => x.Component2);
             RegisterComponent<IMainComponent2, MainComponent2>(x => x.Component22);

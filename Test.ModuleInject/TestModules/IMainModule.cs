@@ -14,6 +14,7 @@ namespace Test.ModuleInject.TestModules
         IMainComponent1 InitWithInitialize1FromSubComponent { get; set; }
         IMainComponent1 InitWithInitialize2Component { get; set; }
         IMainComponent1 InitWithInitialize3Component { get; set; }
+        IMainComponent1 InitWithInjectorComponent { get; set; }
         IMainComponent2 Component2 { get; set; }
         IMainComponent2 Component22 { get; set; }
 

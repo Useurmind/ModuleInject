@@ -31,6 +31,7 @@ namespace Test.ModuleInject
             Assert.IsNotNull(_module.InitWithInitialize1FromSubComponent);
             Assert.IsNotNull(_module.InitWithInitialize2Component);
             Assert.IsNotNull(_module.InitWithInitialize3Component);
+            Assert.IsNotNull(_module.InitWithInjectorComponent);
             Assert.IsNotNull(_module.Component2);
             Assert.IsNotNull(_module.Component22);
             Assert.IsNotNull(_module.SubModule.Component1);
@@ -136,6 +137,32 @@ namespace Test.ModuleInject
 
             Assert.IsNotNull(_module.SubModule.Component1);
             Assert.AreEqual(_module.SubModule.Component1, _module.InitWithInitialize3Component.SubComponent1);
+        }
+
+        [TestCase]
+        public void Resolve_Injector_ValuesInjected()
+        {
+            _module.Resolve();
+
+            Assert.AreEqual(5, _module.InitWithInjectorComponent.InjectedValue);
+        }
+
+        [TestCase]
+        public void Resolve_Injector_InnerModuleDependenciesResolved()
+        {
+            _module.Resolve();
+
+            Assert.AreEqual(_module.Component2, _module.InitWithInjectorComponent.MainComponent2);
+            Assert.AreEqual(_module.Component22, _module.InitWithInjectorComponent.MainComponent22);
+        }
+
+        [TestCase]
+        public void Resolve_Injector_SubModuleDependenciesResolved()
+        {
+            _module.Resolve();
+
+            Assert.IsNotNull(_module.SubModule.Component1);
+            Assert.AreEqual(_module.SubModule.Component1, _module.InitWithInjectorComponent.SubComponent1);
         }
     }
 }
