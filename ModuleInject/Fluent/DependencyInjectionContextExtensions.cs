@@ -13,7 +13,7 @@ namespace ModuleInject.Fluent
     {
         public static ComponentRegistrationContext<IComponent, TComponent, IModule> IntoProperty<IComponent, TComponent, IModule, TDependency, TProperty>(
             this DependencyInjectionContext<IComponent, TComponent, IModule, TDependency> dependency,
-            Expression<Func<IComponent, TProperty>> dependencyTargetExpression
+            Expression<Func<TComponent, TProperty>> dependencyTargetExpression
         )
             where TComponent : IComponent
             where TProperty : TDependency

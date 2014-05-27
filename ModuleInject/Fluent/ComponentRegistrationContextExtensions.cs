@@ -46,8 +46,7 @@ namespace ModuleInject.Fluent
         public static ComponentRegistrationContext<IComponent, TComponent, IModule> InitializeWith<IComponent, TComponent, IModule, TDep1>(
             this ComponentRegistrationContext<IComponent, TComponent, IModule> component,
             Expression<Func<IModule, TDep1>> dependency1SourceExpression)
-            where TComponent : IComponent
-            where IComponent : IInitializable<TDep1>
+            where TComponent : IComponent, IInitializable<TDep1>
             where IModule : IInjectionModule
         {
             string propertyPath = LinqHelper.GetMemberPath(dependency1SourceExpression);
@@ -62,8 +61,7 @@ namespace ModuleInject.Fluent
             this ComponentRegistrationContext<IComponent, TComponent, IModule> component,
             Expression<Func<IModule, TDep1>> dependency1SourceExpression,
             Expression<Func<IModule, TDep2>> dependency2SourceExpression)
-            where TComponent : IComponent
-            where IComponent : IInitializable<TDep1, TDep2>
+            where TComponent : IComponent, IInitializable<TDep1, TDep2>
             where IModule : IInjectionModule
         {
             string property1Path = LinqHelper.GetMemberPath(dependency1SourceExpression);
@@ -83,8 +81,7 @@ namespace ModuleInject.Fluent
             Expression<Func<IModule, TDep1>> dependency1SourceExpression,
             Expression<Func<IModule, TDep2>> dependency2SourceExpression,
             Expression<Func<IModule, TDep3>> dependency3SourceExpression)
-            where TComponent : IComponent
-            where IComponent : IInitializable<TDep1, TDep2, TDep3>
+            where TComponent : IComponent, IInitializable<TDep1, TDep2, TDep3>
             where IModule : IInjectionModule
         {
             string property1Path = LinqHelper.GetMemberPath(dependency1SourceExpression);

@@ -9,6 +9,9 @@ namespace Test.ModuleInject.TestModules
 {
     internal class MainModule : InjectionModule<IMainModule, MainModule>, IMainModule
     {
+        public MainComponent1 FixedInstance { get; private set; }
+        public int InjectedValue { get; private set; }
+
         public IMainComponent1 InstanceRegistrationComponent { get; set; }
         public IMainComponent1 InitWithPropertiesComponent { get; set; }
         public IMainComponent1 InitWithInitialize1Component { get; set; }
@@ -23,15 +26,18 @@ namespace Test.ModuleInject.TestModules
 
         public MainModule()
         {
-            RegisterComponent<IMainComponent1, MainComponent1>(x => x.InstanceRegistrationComponent, new MainComponent1())
-                .Inject(x => x.Component22).IntoProperty(x => x.MainComponent22)
-                .Inject(x => x.SubModule.Component1).IntoProperty(x => x.SubComponent1)
-                .InitializeWith(x => x.Component2);
+            FixedInstance = new MainComponent1();
+            InjectedValue = 8;
+
+            RegisterComponent<IMainComponent1, MainComponent1>(x => x.InstanceRegistrationComponent, FixedInstance)
+                .PostInject(x => x.Component22).IntoProperty(x => x.MainComponent22)
+                .PostInject(x => x.SubModule.Component1).IntoProperty(x => x.SubComponent1)
+                .PostInitializeWith(x => x.Component2);
 
             RegisterComponent<IMainComponent1, MainComponent1>(x => x.InitWithPropertiesComponent)
                 .Inject(x => x.Component2).IntoProperty(x => x.MainComponent2)
                 .Inject(x => x.SubModule.Component1).IntoProperty(x => x.SubComponent1)
-                .Inject(5).IntoProperty(x => x.InjectedValue);
+                .Inject(InjectedValue).IntoProperty(x => x.InjectedValue);
 
             RegisterComponent<IMainComponent1, MainComponent1>(x => x.InitWithInitialize1Component)
                 .InitializeWith(x => x.Component2);
@@ -48,7 +54,7 @@ namespace Test.ModuleInject.TestModules
             RegisterComponent<IMainComponent1, MainComponent1>(x => x.InitWithInjectorComponent)
                 .AddInjector(new Injector<IMainComponent1, MainComponent1, IMainModule>(context =>
                 {
-                    context.Inject(5).IntoProperty(x => x.InjectedValue);
+                    context.Inject(InjectedValue).IntoProperty(x => x.InjectedValue);
                 }))
                 .AddInjector(new Injector<IMainComponent1, MainComponent1, IMainModule>(context =>
                 {

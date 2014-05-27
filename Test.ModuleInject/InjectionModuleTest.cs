@@ -12,7 +12,7 @@ namespace Test.ModuleInject
     [TestFixture]
     public class InjectionModuleTest
     {
-        private IMainModule _module;
+        private MainModule _module;
 
         [SetUp]
         public void Init()
@@ -36,6 +36,8 @@ namespace Test.ModuleInject
             Assert.IsNotNull(_module.Component22);
             Assert.IsNotNull(_module.SubModule.Component1);
             Assert.IsNotNull(_module.SubModule.Component2);
+
+            Assert.AreSame(_module.FixedInstance, _module.InstanceRegistrationComponent);
         }
 
         [TestCase]
@@ -67,7 +69,7 @@ namespace Test.ModuleInject
         {
             _module.Resolve();
 
-            Assert.AreEqual(5, _module.InitWithPropertiesComponent.InjectedValue);
+            Assert.AreEqual(_module.InjectedValue, _module.InitWithPropertiesComponent.InjectedValue);
         }
 
         [TestCase]
@@ -144,7 +146,7 @@ namespace Test.ModuleInject
         {
             _module.Resolve();
 
-            Assert.AreEqual(5, _module.InitWithInjectorComponent.InjectedValue);
+            Assert.AreEqual(_module.InjectedValue, _module.InitWithInjectorComponent.InjectedValue);
         }
 
         [TestCase]
