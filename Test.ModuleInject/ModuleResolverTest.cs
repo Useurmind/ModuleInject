@@ -33,6 +33,9 @@ namespace Test.ModuleInject
             _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.InitWithInjectorComponent));
             _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((MainModule x) => x.Component2));
             _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((MainModule x) => x.Component22));
+            _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((MainModule x) => x.PrivateComponent));
+            _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((MainModule x) => x.PrivateInstanceComponent));
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.PrivateComponentInjectedProperties));
         }
 
         [TestCase]
@@ -57,6 +60,10 @@ namespace Test.ModuleInject
             Assert.IsNotNull(_module.InitWithInitialize3Component);
             Assert.IsNotNull(_module.InitWithInjectorComponent);
             Assert.IsNotNull(_module.InstanceRegistrationComponent);
+            Assert.IsNotNull(_module.Component2);
+            Assert.IsNotNull(_module.Component22);
+            Assert.IsNotNull(_module.PrivateComponent);
+            Assert.IsNotNull(_module.PrivateInstanceComponent);
         }
 
         [TestCase]

@@ -11,7 +11,7 @@ namespace Test.ModuleInject.Fluent
     [TestFixture]
     public class PostResolveAssemblerTest
     {
-        private PostResolveAssembler<TComponent, IModule> _assembler;
+        private PostResolveAssembler<TComponent, IModule, Module> _assembler;
         private TComponent _component;
         private Module _module;
 
@@ -50,7 +50,7 @@ namespace Test.ModuleInject.Fluent
         {
             _component = new TComponent() { Assembled = false };
             _module = new Module();
-            _assembler = new PostResolveAssembler<TComponent, IModule>((c, m) => {
+            _assembler = new PostResolveAssembler<TComponent, IModule, Module>((c, m) => {
                 c.Assembled = true;
                 c.Module = m;
             });

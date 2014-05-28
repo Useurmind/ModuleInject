@@ -50,12 +50,26 @@ namespace ModuleInject
             Type moduleInterface = typeof(IModule);
             Type injectionModuleType = typeof(IInjectionModule);
 
-            return moduleInterface.GetProperties()
-                                  .Where(p => {
-                                      var searchedInterface = p.PropertyType.GetInterface(injectionModuleType.Name, false);
-                                      return thatAreModules ? searchedInterface != null : searchedInterface == null;
-                                  })
-                                  .Select(p => moduleType.GetProperty(p.Name));
+            var interfaceProperties = moduleInterface.GetProperties()
+                                                     .Where(p =>
+                                                      {
+                                                          var searchedInterface = p.PropertyType.GetInterface(injectionModuleType.Name, false);
+                                                          bool isModule = searchedInterface != null;
+                                                          return thatAreModules ? isModule : !isModule;
+                                                      })
+                                                     .Select(p => moduleType.GetProperty(p.Name));
+
+            var privateProperties = moduleType.GetProperties()
+                                              .Where(p =>
+                                              {
+                                                  bool isPrivate = p.GetCustomAttributes(typeof(PrivateComponentAttribute), false).Length > 0;
+                                                  var searchedInterface = p.PropertyType.GetInterface(injectionModuleType.Name, false);
+                                                  bool isModule = searchedInterface != null;
+
+                                                  return isPrivate && (thatAreModules ? isModule : !isModule);
+                                              });
+
+            return privateProperties.Union(interfaceProperties);
         }
 
         private bool TryResolveComponent<IModule, TModule>(TModule module, IUnityContainer container, PropertyInfo propInfo)
@@ -85,7 +99,7 @@ namespace ModuleInject
             string propName = propInfo.Name;
             if (!container.IsRegistered(propType, propName))
             {
-                throw new ModuleInjectException(string.Format("The property '{0}' of the module interface '{1}' is not registered in the module.",
+                throw new ModuleInjectException(string.Format(Errors.ModuleResolver_MissingPropertyRegistration,
                                                     propName,
                                                     typeof(TModule).Name));
             }

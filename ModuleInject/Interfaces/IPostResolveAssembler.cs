@@ -10,9 +10,10 @@ namespace ModuleInject.Interfaces
         void Assemble(object instance, IInjectionModule module);
     }
 
-    public interface IPostResolveAssembler<TComponent, IModule> : IPostResolveAssembler
+    public interface IPostResolveAssembler<TComponent, IModule, TModule> : IPostResolveAssembler
+        where TModule : IModule
         where IModule : IInjectionModule
     {
-        void Assemble(TComponent instance, IModule module);
+        void Assemble(TComponent instance, TModule module);
     }
 }

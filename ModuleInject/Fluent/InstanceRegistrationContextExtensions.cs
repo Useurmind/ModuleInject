@@ -11,27 +11,31 @@ namespace ModuleInject.Fluent
 {
     public static class InstanceRegistrationContextExtensions
     {
-        public static PostInjectionContext<IComponent, TComponent, IModule, TDependency> PostInject<IComponent, TComponent, IModule, TDependency>(
-            this InstanceRegistrationContext<IComponent, TComponent, IModule> instance,
-            Expression<Func<IModule, TDependency>> dependencySourceExpression
+        public static PostInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>
+            PostInject<IComponent, TComponent, IModule, TModule, TDependency>(
+            this InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
+            Expression<Func<TModule, TDependency>> dependencySourceExpression
             )
             where TComponent : IComponent
+            where TModule : IModule
             where IModule : IInjectionModule
         {
             string dependencyName = LinqHelper.GetMemberPath(dependencySourceExpression);
 
-            return new PostInjectionContext<IComponent, TComponent, IModule, TDependency>(instance, dependencyName);
+            return new PostInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>(instance, dependencyName);
         }
 
-        public static InstanceRegistrationContext<IComponent, TComponent, IModule> PostInitializeWith<IComponent, TComponent, IModule, TDep1>(
-           this InstanceRegistrationContext<IComponent, TComponent, IModule> instance,
-           Expression<Func<IModule, TDep1>> dependency1SourceExpression)
+        public static InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
+            PostInitializeWith<IComponent, TComponent, IModule, TModule, TDep1>(
+           this InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
+           Expression<Func<TModule, TDep1>> dependency1SourceExpression)
             where TComponent : IComponent, IInitializable<TDep1>
+            where TModule : IModule
             where IModule : IInjectionModule
         {
             string propertyPath = LinqHelper.GetMemberPath(dependency1SourceExpression);
 
-            instance.AddAssembler(new PostResolveAssembler<TComponent, IModule>((comp, module) =>
+            instance.AddAssembler(new PostResolveAssembler<TComponent, IModule, TModule>((comp, module) =>
             {
                 TDep1 dependency = module.GetComponent<TDep1>(propertyPath);
                 comp.Initialize(dependency);
@@ -40,17 +44,19 @@ namespace ModuleInject.Fluent
             return instance;
         }
 
-        public static InstanceRegistrationContext<IComponent, TComponent, IModule> PostInitializeWith<IComponent, TComponent, IModule, TDep1, TDep2>(
-           this InstanceRegistrationContext<IComponent, TComponent, IModule> instance,
-           Expression<Func<IModule, TDep1>> dependency1SourceExpression,
-           Expression<Func<IModule, TDep2>> dependency2SourceExpression)
+        public static InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
+            PostInitializeWith<IComponent, TComponent, IModule, TModule, TDep1, TDep2>(
+           this InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
+           Expression<Func<TModule, TDep1>> dependency1SourceExpression,
+           Expression<Func<TModule, TDep2>> dependency2SourceExpression)
             where TComponent : IComponent, IInitializable<TDep1, TDep2>
+            where TModule : IModule
             where IModule : IInjectionModule
         {
             string property1Path = LinqHelper.GetMemberPath(dependency1SourceExpression);
             string property2Path = LinqHelper.GetMemberPath(dependency2SourceExpression);
 
-            instance.AddAssembler(new PostResolveAssembler<TComponent, IModule>((comp, module) =>
+            instance.AddAssembler(new PostResolveAssembler<TComponent, IModule, TModule>((comp, module) =>
             {
                 TDep1 dependency1 = module.GetComponent<TDep1>(property1Path);
                 TDep2 dependency2 = module.GetComponent<TDep2>(property2Path);
@@ -60,19 +66,21 @@ namespace ModuleInject.Fluent
             return instance;
         }
 
-        public static InstanceRegistrationContext<IComponent, TComponent, IModule> PostInitializeWith<IComponent, TComponent, IModule, TDep1, TDep2, TDep3>(
-           this InstanceRegistrationContext<IComponent, TComponent, IModule> instance,
-           Expression<Func<IModule, TDep1>> dependency1SourceExpression,
-           Expression<Func<IModule, TDep2>> dependency2SourceExpression,
-            Expression<Func<IModule, TDep3>> dependency3SourceExpression)
+        public static InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
+            PostInitializeWith<IComponent, TComponent, IModule, TModule, TDep1, TDep2, TDep3>(
+           this InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
+           Expression<Func<TModule, TDep1>> dependency1SourceExpression,
+           Expression<Func<TModule, TDep2>> dependency2SourceExpression,
+            Expression<Func<TModule, TDep3>> dependency3SourceExpression)
             where TComponent : IComponent, IInitializable<TDep1, TDep2, TDep3>
+            where TModule : IModule
             where IModule : IInjectionModule
         {
             string property1Path = LinqHelper.GetMemberPath(dependency1SourceExpression);
             string property2Path = LinqHelper.GetMemberPath(dependency2SourceExpression);
             string property3Path = LinqHelper.GetMemberPath(dependency3SourceExpression);
 
-            instance.AddAssembler(new PostResolveAssembler<TComponent, IModule>((comp, module) =>
+            instance.AddAssembler(new PostResolveAssembler<TComponent, IModule, TModule>((comp, module) =>
             {
                 TDep1 dependency1 = module.GetComponent<TDep1>(property1Path);
                 TDep2 dependency2 = module.GetComponent<TDep2>(property2Path);
@@ -83,11 +91,13 @@ namespace ModuleInject.Fluent
             return instance;
         }
 
-        public static InstanceRegistrationContext<IComponent, TComponent, IModule> AddAssembler<IComponent, TComponent, IModule>(
-            this InstanceRegistrationContext<IComponent, TComponent, IModule> instance,
-            IPostResolveAssembler<TComponent, IModule> assembler
+        public static InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
+            AddAssembler<IComponent, TComponent, IModule, TModule>(
+            this InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
+            IPostResolveAssembler<TComponent, IModule, TModule> assembler
             )
             where TComponent : IComponent
+            where TModule: IModule
             where IModule : IInjectionModule
         {
             instance.AddAssembler(assembler);

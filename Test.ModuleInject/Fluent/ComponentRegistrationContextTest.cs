@@ -16,14 +16,14 @@ namespace Test.ModuleInject.Fluent
     {
         private string _componentName;
         private IUnityContainer _container;
-        private ComponentRegistrationContext<IMainComponent1, MainComponent1, IMainModule> _context;
+        private ComponentRegistrationContext<IMainComponent1, MainComponent1, IMainModule, MainModule> _context;
 
         [SetUp]
         public void Init()
         {
             _componentName = Property.Get((IMainModule x) => x.InitWithPropertiesComponent);
             _container = new UnityContainer();
-            _context = new ComponentRegistrationContext<IMainComponent1, MainComponent1, IMainModule>(
+            _context = new ComponentRegistrationContext<IMainComponent1, MainComponent1, IMainModule, MainModule>(
                 _componentName,
                 _container
                 );

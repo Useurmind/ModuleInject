@@ -6,24 +6,25 @@ using System.Text;
 
 namespace ModuleInject.Fluent
 {
-    public class PostResolveAssembler<TComponent, IModule> : IPostResolveAssembler<TComponent, IModule>
+    public class PostResolveAssembler<TComponent, IModule, TModule> : IPostResolveAssembler<TComponent, IModule, TModule>
+        where TModule : IModule
         where IModule : IInjectionModule
     {
-        private Action<TComponent, IModule> _assemble;
+        private Action<TComponent, TModule> _assemble;
 
-        public PostResolveAssembler(Action<TComponent, IModule> assemble)
+        public PostResolveAssembler(Action<TComponent, TModule> assemble)
         {
             _assemble = assemble;
         }
 
-        public void Assemble(TComponent instance, IModule module)
+        public void Assemble(TComponent instance, TModule module)
         {
             _assemble(instance, module);
         }
 
         public void Assemble(object instance, IInjectionModule module)
         {
-            Assemble((TComponent)instance, (IModule)module);
+            Assemble((TComponent)instance, (TModule)module);
         }
     }
 }

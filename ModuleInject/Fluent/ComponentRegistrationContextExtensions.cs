@@ -23,30 +23,36 @@ namespace ModuleInject.Fluent
             _initialize3MethodName = ExtractMethodName<IInitializable<object, object, object>>(x => x.Initialize(null, null, null));
         }
 
-        public static ValueInjectionContext<IComponent, TComponent, IModule, TDependency> Inject<IComponent, TComponent, IModule, TDependency>(
-            this ComponentRegistrationContext<IComponent, TComponent, IModule> component,
+        public static ValueInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>
+            Inject<IComponent, TComponent, IModule, TModule, TDependency>(
+            this ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
             TDependency value)
             where TComponent : IComponent
+            where TModule : IModule
             where IModule : IInjectionModule
         {
-            return new ValueInjectionContext<IComponent, TComponent, IModule, TDependency>(component, value);
+            return new ValueInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>(component, value);
         }
 
-        public static DependencyInjectionContext<IComponent, TComponent, IModule, TDependency> Inject<IComponent, TComponent, IModule, TDependency>(
-            this ComponentRegistrationContext<IComponent, TComponent, IModule> component,
-            Expression<Func<IModule, TDependency>> dependencySourceExpression)
+        public static DependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency> 
+            Inject<IComponent, TComponent, IModule, TModule, TDependency>(
+            this ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+            Expression<Func<TModule, TDependency>> dependencySourceExpression)
             where TComponent : IComponent
+            where TModule : IModule
             where IModule : IInjectionModule
         {
             string propertyPath = LinqHelper.GetMemberPath(dependencySourceExpression);
 
-            return new DependencyInjectionContext<IComponent, TComponent, IModule, TDependency>(component, propertyPath);
+            return new DependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>(component, propertyPath);
         }
 
-        public static ComponentRegistrationContext<IComponent, TComponent, IModule> InitializeWith<IComponent, TComponent, IModule, TDep1>(
-            this ComponentRegistrationContext<IComponent, TComponent, IModule> component,
+        public static ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
+            InitializeWith<IComponent, TComponent, IModule, TModule, TDep1>(
+            this ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
             Expression<Func<IModule, TDep1>> dependency1SourceExpression)
             where TComponent : IComponent, IInitializable<TDep1>
+            where TModule : IModule
             where IModule : IInjectionModule
         {
             string propertyPath = LinqHelper.GetMemberPath(dependency1SourceExpression);
@@ -57,11 +63,13 @@ namespace ModuleInject.Fluent
             return component;
         }
 
-        public static ComponentRegistrationContext<IComponent, TComponent, IModule> InitializeWith<IComponent, TComponent, IModule, TDep1, TDep2>(
-            this ComponentRegistrationContext<IComponent, TComponent, IModule> component,
+        public static ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
+            InitializeWith<IComponent, TComponent, IModule, TModule, TDep1, TDep2>(
+            this ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
             Expression<Func<IModule, TDep1>> dependency1SourceExpression,
             Expression<Func<IModule, TDep2>> dependency2SourceExpression)
             where TComponent : IComponent, IInitializable<TDep1, TDep2>
+            where TModule : IModule
             where IModule : IInjectionModule
         {
             string property1Path = LinqHelper.GetMemberPath(dependency1SourceExpression);
@@ -76,12 +84,14 @@ namespace ModuleInject.Fluent
             return component;
         }
 
-        public static ComponentRegistrationContext<IComponent, TComponent, IModule> InitializeWith<IComponent, TComponent, IModule, TDep1, TDep2, TDep3>(
-            this ComponentRegistrationContext<IComponent, TComponent, IModule> component,
+        public static ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> 
+            InitializeWith<IComponent, TComponent, IModule, TModule, TDep1, TDep2, TDep3>(
+            this ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
             Expression<Func<IModule, TDep1>> dependency1SourceExpression,
             Expression<Func<IModule, TDep2>> dependency2SourceExpression,
             Expression<Func<IModule, TDep3>> dependency3SourceExpression)
             where TComponent : IComponent, IInitializable<TDep1, TDep2, TDep3>
+            where TModule : IModule
             where IModule : IInjectionModule
         {
             string property1Path = LinqHelper.GetMemberPath(dependency1SourceExpression);
@@ -98,10 +108,12 @@ namespace ModuleInject.Fluent
             return component;
         }
 
-        public static ComponentRegistrationContext<IComponent, TComponent, IModule> AddInjector<IComponent, TComponent, IModule>(
-            this ComponentRegistrationContext<IComponent, TComponent, IModule> component,
-            IInjector<IComponent, TComponent, IModule> injector)
+        public static ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
+            AddInjector<IComponent, TComponent, IModule, TModule>(
+            this ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+            IInjector<IComponent, TComponent, IModule, TModule> injector)
             where TComponent : IComponent
+            where TModule : IModule
             where IModule : IInjectionModule
         {
             injector.InjectInto(component);

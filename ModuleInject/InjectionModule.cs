@@ -30,27 +30,81 @@ namespace ModuleInject
             _container.AddNewExtension<Microsoft.Practices.Unity.InterceptionExtension.Interception>();
         }
 
-        protected ComponentRegistrationContext<IComponent, TComponent, IModule> RegisterComponent<IComponent, TComponent>(Expression<Func<TModule, IComponent>> moduleProperty)
+        protected ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
+            RegisterPrivateComponent<IComponent, TComponent>(Expression<Func<TModule, IComponent>> moduleProperty)
+            where TComponent : IComponent
+        {
+            MemberExpression member = (MemberExpression)moduleProperty.Body;
+            MemberInfo propInfo = member.Member;
+            string propName = propInfo.Name;
+
+            CheckPropertyQualifiesForPrivateRegistration(propInfo);
+
+            return RegisterContainerComponent<IComponent, TComponent>(propName);
+        }
+
+        protected ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> 
+            RegisterPublicComponent<IComponent, TComponent>(Expression<Func<IModule, IComponent>> moduleProperty)
             where TComponent : IComponent
         {
             MemberExpression member =  (MemberExpression)moduleProperty.Body;
             MemberInfo propInfo = member.Member;
+            string propName = propInfo.Name;
 
-            _container.RegisterType<IComponent, TComponent>(propInfo.Name, new ContainerControlledLifetimeManager());
-
-            return new ComponentRegistrationContext<IComponent, TComponent, IModule>(propInfo.Name, _container);
+            return RegisterContainerComponent<IComponent, TComponent>(propName);
         }
 
-        protected InstanceRegistrationContext<IComponent, TComponent, IModule> RegisterComponent<IComponent, TComponent>(Expression<Func<TModule, IComponent>> moduleProperty, TComponent instance)
+        private ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> 
+            RegisterContainerComponent<IComponent, TComponent>(string propName) where TComponent : IComponent
+        {
+            _container.RegisterType<IComponent, TComponent>(propName, new ContainerControlledLifetimeManager());
+
+            return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(propName, _container);
+        }
+
+        private void CheckPropertyQualifiesForPrivateRegistration(MemberInfo propInfo)
+        {
+            string propName = propInfo.Name;
+            var isInterfaceProperty = typeof(IModule).GetProperty(propName) != null;
+
+            if (isInterfaceProperty || propInfo.GetCustomAttributes(typeof(PrivateComponentAttribute), false).Length == 0)
+            {
+                throw new ModuleInjectException(string.Format(Errors.ModuleResolver_PropertyNotQualifiedForPrivateRegistration,
+                                                                propName, typeof(TModule).FullName));
+            }
+        }
+
+        protected InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
+            RegisterPrivateComponent<IComponent, TComponent>(Expression<Func<TModule, IComponent>> moduleProperty,
+            TComponent instance)
             where TComponent : IComponent
         {
             MemberExpression member = (MemberExpression)moduleProperty.Body;
             MemberInfo propInfo = member.Member;
             string componentName = propInfo.Name;
 
+            CheckPropertyQualifiesForPrivateRegistration(propInfo);
+
+            return RegisterContainerInstance<IComponent, TComponent>(instance, componentName);
+        }
+
+        protected InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> 
+            RegisterPublicComponent<IComponent, TComponent>(Expression<Func<IModule, IComponent>> moduleProperty,
+            TComponent instance)
+            where TComponent : IComponent
+        {
+            MemberExpression member = (MemberExpression)moduleProperty.Body;
+            MemberInfo propInfo = member.Member;
+            string componentName = propInfo.Name;
+
+            return RegisterContainerInstance<IComponent, TComponent>(instance, componentName);
+        }
+
+        private InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> RegisterContainerInstance<IComponent, TComponent>(TComponent instance, string componentName) where TComponent : IComponent
+        {
             _container.RegisterInstance<IComponent>(componentName, instance);
 
-            InstanceRegistrationContext<IComponent, TComponent, IModule> instanceContext = new InstanceRegistrationContext<IComponent, TComponent, IModule>(componentName, _container);
+            var instanceContext = new InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>(componentName, _container);
 
             _instanceRegistrations.Add(typeof(IComponent), componentName, instanceContext);
 

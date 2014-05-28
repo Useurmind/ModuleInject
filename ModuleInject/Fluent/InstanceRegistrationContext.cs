@@ -7,8 +7,9 @@ using System.Text;
 
 namespace ModuleInject.Fluent
 {
-    public class InstanceRegistrationContext<IComponent, TComponent, IModule> : IInstanceRegistrationContext
+    public class InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> : IInstanceRegistrationContext
         where TComponent : IComponent
+        where TModule : IModule
         where IModule : IInjectionModule
     {
         private IList<IPostResolveAssembler> _postResolveAssemblers;

@@ -13,8 +13,8 @@ namespace Test.ModuleInject.TestModules
 
         public Submodule()
         {
-            RegisterComponent<ISubComponent1, SubComponent1>(x => x.Component1);
-            RegisterComponent<ISubComponent2, SubComponent2>(x => x.Component2);
+            RegisterPublicComponent<ISubComponent1, SubComponent1>(x => x.Component1);
+            RegisterPublicComponent<ISubComponent2, SubComponent2>(x => x.Component2);
         }
     }
 }

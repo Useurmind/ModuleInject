@@ -1,4 +1,5 @@
 ﻿using ModuleInject;
+using ModuleInject.Utility;
 using Moq;
 using NUnit.Framework;
 using System;
@@ -91,6 +92,17 @@ namespace Test.ModuleInject
         }
 
         [TestCase]
+        public void Resolve_Properties_PrivateDependenciesResolved()
+        {
+            _module.Resolve();
+
+            Assert.IsNotNull(_module.PrivateComponent);
+            Assert.IsNotNull(_module.PrivateInstanceComponent);
+            Assert.AreEqual(_module.PrivateComponent, _module.InitWithPropertiesComponent.MainComponent22);
+            Assert.AreEqual(_module.PrivateInstanceComponent, _module.InitWithPropertiesComponent.MainComponent23);
+        }
+
+        [TestCase]
         public void Resolve_Initialize1_InnerModuleDependenciesResolved()
         {
             _module.Resolve();
@@ -166,6 +178,44 @@ namespace Test.ModuleInject
 
             Assert.IsNotNull(_module.SubModule.Component1);
             Assert.AreEqual(_module.SubModule.Component1, _module.InitWithInjectorComponent.SubComponent1);
+        }
+
+        [TestCase]
+        public void Resolve_PropertiesOnPrivateComponet_AllDependenciesResolved()
+        {
+            _module.Resolve();
+
+            Assert.AreEqual(_module.PrivateComponent, _module.PrivateComponentInjectedProperties.MainComponent2);
+            Assert.AreEqual(_module.PrivateInstanceComponent, _module.PrivateComponentInjectedProperties.MainComponent22);
+            Assert.AreEqual(_module.Component2, _module.PrivateComponentInjectedProperties.MainComponent23);
+        }
+
+        [TestCase]
+        [ExpectedException(typeof(ModuleInjectException))]
+        public void RegisterPrivateComponent_NotMarkedWithAttribute_ExceptionThrown()
+        {
+            _module.RegisterUnattributedPrivateProperty();
+        }
+
+        [TestCase]
+        [ExpectedException(typeof(ModuleInjectException))]
+        public void RegisterPrivateComponent_PartOfPublicInterface_ExceptionThrown()
+        {
+            _module.RegisterInterfacePropertyAsPrivate();
+        }
+
+        [TestCase]
+        [ExpectedException(typeof(ModuleInjectException))]
+        public void RegisterPrivateComponent_WithInstanceNotMarkedWithAttribute_ExceptionThrown()
+        {
+            _module.RegisterUnattributedPrivatePropertyWithInstance();
+        }
+
+        [TestCase]
+        [ExpectedException(typeof(ModuleInjectException))]
+        public void RegisterPrivateComponent_WithInstancePartOfPublicInterface_ExceptionThrown()
+        {
+            _module.RegisterInterfacePropertyAsPrivateWithInstance();
         }
     }
 }

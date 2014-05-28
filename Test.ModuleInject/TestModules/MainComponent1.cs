@@ -8,10 +8,11 @@ namespace Test.ModuleInject.TestModules
 {
     public interface IMainComponent1
     {
-        int InjectedValue { get; set; }
-        IMainComponent2 MainComponent2 { get; set; }
-        IMainComponent2 MainComponent22 { get; set; }
-        ISubComponent1 SubComponent1 { get; set; }
+        int InjectedValue { get;  }
+        IMainComponent2 MainComponent2 { get;  }
+        IMainComponent2 MainComponent22 { get; }
+        IMainComponent2 MainComponent23 { get; }
+        ISubComponent1 SubComponent1 { get;  }
     }
 
     public class MainComponent1 : IMainComponent1, 
@@ -23,6 +24,7 @@ namespace Test.ModuleInject.TestModules
         public int InjectedValue { get; set; }
         public IMainComponent2 MainComponent2 { get; set; }
         public IMainComponent2 MainComponent22 { get; set; }
+        public IMainComponent2 MainComponent23 { get; set; }
         public ISubComponent1 SubComponent1 { get; set; }
 
         public void Initialize(IMainComponent2 dependency1)

@@ -11,15 +11,17 @@ namespace ModuleInject.Fluent
 {
     public static class DependencyInjectionContextExtensions
     {
-        public static ComponentRegistrationContext<IComponent, TComponent, IModule> IntoProperty<IComponent, TComponent, IModule, TDependency, TProperty>(
-            this DependencyInjectionContext<IComponent, TComponent, IModule, TDependency> dependency,
+        public static ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> 
+            IntoProperty<IComponent, TComponent, IModule, TModule, TDependency, TProperty>(
+            this DependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency> dependency,
             Expression<Func<TComponent, TProperty>> dependencyTargetExpression
-        )
+            )
             where TComponent : IComponent
             where TProperty : TDependency
+            where TModule : IModule
             where IModule : IInjectionModule
         {
-            ComponentRegistrationContext<IComponent, TComponent, IModule> component = dependency.ComponentContext;
+            ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component = dependency.ComponentContext;
 
             string sourceName = dependency.DependencyName;
             string targetName = Property.Get(dependencyTargetExpression);
