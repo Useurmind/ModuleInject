@@ -68,8 +68,6 @@ namespace Test.ModuleInject.TestModules
 
             RegisterComponent<IMainComponent2, MainComponent2>(x => x.Component2);
             RegisterComponent<IMainComponent2, MainComponent2>(x => x.Component22);
-
-            SubModule = new Submodule();
         }
     }
 }

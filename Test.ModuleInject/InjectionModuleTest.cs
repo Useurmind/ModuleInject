@@ -17,7 +17,8 @@ namespace Test.ModuleInject
         [SetUp]
         public void Init()
         {
-            _module = new MainModule(); 
+            _module = new MainModule();
+            _module.SubModule = new Submodule();
         }
 
         [TestCase]

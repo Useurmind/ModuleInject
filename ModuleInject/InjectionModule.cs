@@ -27,7 +27,7 @@ namespace ModuleInject
 
         protected void ActivateInterception()
         {
-            _container.AddNewExtension<Interception>();
+            _container.AddNewExtension<Microsoft.Practices.Unity.InterceptionExtension.Interception>();
         }
 
         protected ComponentRegistrationContext<IComponent, TComponent, IModule> RegisterComponent<IComponent, TComponent>(Expression<Func<TModule, IComponent>> moduleProperty)
@@ -60,7 +60,7 @@ namespace ModuleInject
         public void Resolve()
         {
             ModuleResolver resolver = new ModuleResolver();
-            resolver.Resolve<IModule>((IModule)(object)this, _container);
+            resolver.Resolve<IModule, TModule>((TModule)(object)this, _container);
 
             ModulePostResolveBuilder instanceBuilder = new ModulePostResolveBuilder();
             instanceBuilder.PerformPostResolveAssembly(this, _instanceRegistrations);

@@ -76,6 +76,12 @@
     <Compile Include="Fluent\ValueInjectionContextExtensions.cs" />
     <Compile Include="Fluent\ValueInjectionContext.cs" />
     <Compile Include="InjectionModule.cs" />
+    <Compile Include="Interception\IBehaviour.cs" />
+    <Compile Include="Interception\Delegates.cs" />
+    <Compile Include="Interception\IMethodInvocation.cs" />
+    <Compile Include="Interception\IMethodReturn.cs" />
+    <Compile Include="Interception\MethodInvocation.cs" />
+    <Compile Include="Interception\UnityBehaviour.cs" />
     <Compile Include="Interfaces\IInitializable1.cs" />
     <Compile Include="Interfaces\IInitializable5.cs" />
     <Compile Include="Interfaces\IInitializable4.cs" />
@@ -84,9 +90,11 @@
     <Compile Include="Interfaces\IInitializable2.cs" />
     <Compile Include="Interfaces\IInjector.cs" />
     <Compile Include="Interfaces\IPostResolveAssembler.cs" />
+    <Compile Include="Interfaces\ISuperModule.cs" />
     <Compile Include="ModulePostResolveBuilder.cs" />
     <Compile Include="ModuleResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SuperModule.cs" />
     <Compile Include="Utility\DoubleKeyDictionary.cs" />
     <Compile Include="Utility\ExpressionVisitor.cs" />
     <Compile Include="Utility\LinqHelper.cs" />

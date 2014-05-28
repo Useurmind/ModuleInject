@@ -69,6 +69,7 @@
     <Compile Include="ModulePostResolveBuilderTest.cs" />
     <Compile Include="ModuleResolverTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SuperModuleTest.cs" />
     <Compile Include="TestModules\ISubModule.cs" />
     <Compile Include="TestModules\IMainModule.cs" />
     <Compile Include="TestModules\SubComponent1.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="TestModules\MainComponent2.cs" />
     <Compile Include="TestModules\MainModule.cs" />
     <Compile Include="TestModules\Submodule.cs" />
+    <Compile Include="TestModules\TestSuperModule.cs" />
     <Compile Include="Utility\DoubleDictionaryTest.cs" />
     <Compile Include="Utility\LinqHelperTest.cs" />
     <Compile Include="Utility\PropertyChainExtractorTest.cs" />

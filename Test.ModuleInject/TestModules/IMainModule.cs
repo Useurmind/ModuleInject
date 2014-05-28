@@ -6,17 +6,17 @@ using System.Text;
 
 namespace Test.ModuleInject.TestModules
 {
-    internal interface IMainModule : IInjectionModule
+    public interface IMainModule : IInjectionModule
     {
-        IMainComponent1 InstanceRegistrationComponent { get; set; }
-        IMainComponent1 InitWithPropertiesComponent { get; set; }
-        IMainComponent1 InitWithInitialize1Component { get; set; }
-        IMainComponent1 InitWithInitialize1FromSubComponent { get; set; }
-        IMainComponent1 InitWithInitialize2Component { get; set; }
-        IMainComponent1 InitWithInitialize3Component { get; set; }
-        IMainComponent1 InitWithInjectorComponent { get; set; }
-        IMainComponent2 Component2 { get; set; }
-        IMainComponent2 Component22 { get; set; }
+        IMainComponent1 InstanceRegistrationComponent { get; }
+        IMainComponent1 InitWithPropertiesComponent { get; }
+        IMainComponent1 InitWithInitialize1Component { get; }
+        IMainComponent1 InitWithInitialize1FromSubComponent { get; }
+        IMainComponent1 InitWithInitialize2Component { get; }
+        IMainComponent1 InitWithInitialize3Component { get;}
+        IMainComponent1 InitWithInjectorComponent { get; }
+        IMainComponent2 Component2 { get; }
+        IMainComponent2 Component22 { get;  }
 
         ISubModule SubModule { get; set; }
     }

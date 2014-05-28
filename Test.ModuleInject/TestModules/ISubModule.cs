@@ -8,7 +8,7 @@ namespace Test.ModuleInject.TestModules
 {
     public interface ISubModule : IInjectionModule
     {
-        ISubComponent1 Component1 { get; set; }
-        ISubComponent2 Component2 { get; set; }
+        ISubComponent1 Component1 { get; }
+        ISubComponent2 Component2 { get; }
     }
 }
