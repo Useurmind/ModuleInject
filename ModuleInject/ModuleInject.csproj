@@ -67,7 +67,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Errors.resx</DependentUpon>
     </Compile>
-    <Compile Include="Fluent\FactoryRegistrationContext.cs" />
     <Compile Include="Fluent\IInstanceRegistrationContext.cs" />
     <Compile Include="Fluent\PostInjectionContextExtensions.cs" />
     <Compile Include="Fluent\InstanceRegistrationContextExtensions.cs" />

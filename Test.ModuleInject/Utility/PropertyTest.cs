@@ -12,7 +12,7 @@ namespace Test.ModuleInject.Utility
     {
         private class TestClass
         {
-            public int _a;
+            public int _a = 0;
             public TestClass2 TestClass2 { get;set;}
         }
 
