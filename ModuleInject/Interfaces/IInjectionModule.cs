@@ -7,6 +7,8 @@ namespace ModuleInject.Interfaces
 {
     public interface IInjectionModule
     {
+        bool IsResolved { get; }
+
         void Resolve();
 
         object GetComponent(Type componentType, string componentName);

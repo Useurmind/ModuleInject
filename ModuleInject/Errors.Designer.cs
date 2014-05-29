@@ -61,6 +61,24 @@ namespace ModuleInject {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The module with type &apos;{0}&apos; was already resolved. Please avoid multiple resolutions of the same module..
+        /// </summary>
+        internal static string InjectionModule_AlreadyResolved {
+            get {
+                return ResourceManager.GetString("InjectionModule_AlreadyResolved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The factory method &apos;{0}&apos; of module with type &apos;{1}&apos; was called before the module was resolved. Please resolve the module before creating any instances via factories..
+        /// </summary>
+        internal static string InjectionModule_CreateInstanceBeforeResolve {
+            get {
+                return ResourceManager.GetString("InjectionModule_CreateInstanceBeforeResolve", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The method &apos;{0}&apos; of module with type &apos;{1}&apos; is not registered as a factory method. Could not create instance of requested type..
         /// </summary>
         internal static string InjectionModule_FactoryMethodNotRegistered {

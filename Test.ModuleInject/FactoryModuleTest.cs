@@ -22,6 +22,14 @@ namespace Test.ModuleInject
         }
 
         [TestCase]
+        [ExpectedException(typeof(ModuleInjectException))]
+        public void Resolve_Double_ExceptionThrown()
+        {
+            _module.Resolve();
+            _module.Resolve();
+        }
+
+        [TestCase]
         public void Resolve_AllPropertiesInitialized()
         {
             _module.Resolve();
@@ -32,6 +40,8 @@ namespace Test.ModuleInject
         [TestCase]
         public void CreateComponent1__CreatesNewInstanceEachTime()
         {
+            _module.Resolve();
+
             IMainComponent1 componentFirstCall = _module.CreateComponent1();
             IMainComponent1 componentSecondCall = _module.CreateComponent1();
 
@@ -44,6 +54,8 @@ namespace Test.ModuleInject
         [TestCase]
         public void CreateComponent2__CreatesNewInstanceEachTime()
         {
+            _module.Resolve();
+
             IMainComponent2 componentFirstCall = _module.CreateComponent2();
             IMainComponent2 componentSecondCall = _module.CreateComponent2();
 
@@ -54,15 +66,70 @@ namespace Test.ModuleInject
         }
 
         [TestCase]
-        public void Resolve_PropertyInjection_FactoryDependenciesResolvedAndDifferent()
+        public void Resolve_NormalInjection_FactoryDependenciesResolvedAndDifferent()
         {
             _module.Resolve();
 
             var factoryComponent1 = _module.RetrievePrivateComponent1().MainComponent2;
             var factoryComponent2 = _module.RetrievePrivateComponent1().MainComponent22;
+            var factoryComponent3 = _module.RetrievePrivateComponent1().MainComponent23;
             Assert.IsNotNull(factoryComponent1);
             Assert.IsNotNull(factoryComponent2);
+            Assert.IsNotNull(factoryComponent3);
             Assert.AreNotSame(factoryComponent1, factoryComponent2);
+            Assert.AreNotSame(factoryComponent1, factoryComponent3);
+            Assert.AreNotSame(factoryComponent3, factoryComponent2);
+        }
+
+        [TestCase]
+        public void Resolve_InstancePostInjection_FactoryDependenciesResolvedAndDifferent()
+        {
+            _module.Resolve();
+
+            var factoryComponent1 = _module.InstanceComponent.MainComponent2;
+            var factoryComponent2 = _module.InstanceComponent.MainComponent22;
+            var factoryComponent3 = _module.InstanceComponent.MainComponent23;
+            Assert.IsNotNull(factoryComponent1);
+            Assert.IsNotNull(factoryComponent2);
+            Assert.IsNotNull(factoryComponent3);
+            Assert.AreNotSame(factoryComponent1, factoryComponent2);
+            Assert.AreNotSame(factoryComponent1, factoryComponent3);
+            Assert.AreNotSame(factoryComponent3, factoryComponent2);
+        }
+
+        [TestCase]
+        public void Resolve_FactoryComponentWithDependencies_AllDependenciesResolved()
+        {
+            _module.Resolve();
+
+            var factoryComponent = _module.CreateComponent1();
+
+            var factoryComponent1 = factoryComponent.MainComponent2;
+            var factoryComponent2 = factoryComponent.MainComponent22;
+            var privateComponent = factoryComponent.MainComponent23;
+
+            Assert.IsNotNull(factoryComponent);
+            Assert.IsNotNull(factoryComponent1);
+            Assert.IsNotNull(factoryComponent2);
+            Assert.IsNotNull(privateComponent);
+            Assert.AreNotSame(factoryComponent1, factoryComponent2);
+            Assert.AreNotSame(factoryComponent1, privateComponent);
+            Assert.AreNotSame(privateComponent, factoryComponent2);
+            Assert.AreSame(_module.RetrievePrivateComponent2(), privateComponent);
+        }
+
+        [TestCase]
+        [ExpectedException(typeof(ModuleInjectException))]
+        public void CreateComponent1_BeforeModuleResolve_ThrowsException()
+        {
+            _module.CreateComponent1();
+        }
+
+        [TestCase]
+        [ExpectedException(typeof(ModuleInjectException))]
+        public void CreateComponent2_BeforeModuleResolve_ThrowsException()
+        {
+            _module.CreateComponent2();
         }
     }
 }

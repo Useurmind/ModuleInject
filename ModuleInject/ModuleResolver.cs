@@ -29,7 +29,7 @@ namespace ModuleInject
             {
                 TryResolveComponent<IModule, TModule>(module, container, submodulePropInfo);
 
-                ResolveSubmodule<IModule, TModule>(module, container, submodulePropInfo);
+                TryResolveSubmodule<IModule, TModule>(module, container, submodulePropInfo);
             }
 
             foreach (var propInfo in GetModuleProperties<IModule, TModule>(false))
@@ -105,14 +105,17 @@ namespace ModuleInject
             propInfo.SetValue(module, component, BindingFlags.NonPublic, null, null, null);
         }
 
-        private void ResolveSubmodule<IModule, TModule>(TModule module, IUnityContainer container, PropertyInfo subModulePropInfo)
+        private void TryResolveSubmodule<IModule, TModule>(TModule module, IUnityContainer container, PropertyInfo subModulePropInfo)
             where TModule : IModule
             where IModule : IInjectionModule
         {
             string submoduleName = subModulePropInfo.Name;
             IInjectionModule submodule = (IInjectionModule)subModulePropInfo.GetValue(module, null);
 
-            submodule.Resolve();
+            if (!submodule.IsResolved)
+            {
+                submodule.Resolve();
+            }
 
             foreach (var propInfo in subModulePropInfo.PropertyType.GetProperties())
             {

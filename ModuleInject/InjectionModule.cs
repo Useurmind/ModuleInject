@@ -19,8 +19,11 @@ namespace ModuleInject
         private DoubleKeyDictionary<Type, string, IInstanceRegistrationContext> _instanceRegistrations;
         private IUnityContainer _container;
 
+        public bool IsResolved { get; private set; }
+
         public InjectionModule()
         {
+            IsResolved = false;
             _container = new UnityContainer();
             _instanceRegistrations = new DoubleKeyDictionary<Type, string, IInstanceRegistrationContext>();
 
@@ -85,7 +88,7 @@ namespace ModuleInject
             return RegisterContainerInstance<IComponent, TComponent>(instance, componentName);
         }
 
-        protected FactoryRegistrationContext<IComponent, TComponent, IModule, TModule> 
+        protected ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> 
             RegisterPublicComponentFactory<IComponent, TComponent>(Expression<Func<IModule, IComponent>> moduleMethod)
             where TComponent :IComponent
         {
@@ -100,7 +103,7 @@ namespace ModuleInject
 
             _container.RegisterType<IComponent, TComponent>(functionName);
 
-            return new FactoryRegistrationContext<IComponent, TComponent, IModule, TModule>(functionName, _container);
+            return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(functionName, _container);
         }
 
         protected IComponent CreateInstance<IComponent>(Expression<Func<IModule, IComponent>> moduleMethod)
@@ -108,6 +111,11 @@ namespace ModuleInject
             MethodCallExpression method = (MethodCallExpression)moduleMethod.Body;
             MethodInfo methodInfo = method.Method;
             string functionName = methodInfo.Name;
+
+            if (!IsResolved)
+            {
+                CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_CreateInstanceBeforeResolve, functionName);
+            }
 
             if (!_container.IsRegistered<IComponent>(functionName))
             {
@@ -149,11 +157,18 @@ namespace ModuleInject
 
         public void Resolve()
         {
+            if (IsResolved)
+            {
+                CommonFunctions.ThrowTypeException<TModule>(Errors.InjectionModule_AlreadyResolved);
+            }
+
             ModuleResolver resolver = new ModuleResolver();
             resolver.Resolve<IModule, TModule>((TModule)(object)this, _container);
 
             ModulePostResolveBuilder instanceBuilder = new ModulePostResolveBuilder();
             instanceBuilder.PerformPostResolveAssembly(this, _instanceRegistrations);
+
+            IsResolved = true;
         }
 
         public object GetComponent(Type componentType, string componentName)

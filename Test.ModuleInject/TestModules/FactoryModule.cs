@@ -10,22 +10,40 @@ namespace Test.ModuleInject.TestModules
 {
     public interface IFactoryModule : IInjectionModule
     {
+        IMainComponent1 InstanceComponent { get;set;}
+
         IMainComponent1 CreateComponent1();
         IMainComponent2 CreateComponent2();
     }
 
     public class FactoryModule : InjectionModule<IFactoryModule, FactoryModule>, IFactoryModule
     {
+        public IMainComponent1 InstanceComponent { get; set; }
+
         [PrivateComponent]
         private IMainComponent1 Component1 { get; set; }
+        [PrivateComponent]
+        private IMainComponent2 Component2 { get; set; }
+
 
         public FactoryModule()
         {
-            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.Component1)
-                .Inject(x => x.CreateComponent2()).IntoProperty(x => x.MainComponent2)
-                .Inject(x => x.CreateComponent2()).IntoProperty(x => x.MainComponent22);
+            RegisterPrivateComponent<IMainComponent2, MainComponent2>(x => x.Component2);
 
-            RegisterPublicComponentFactory<IMainComponent1, MainComponent1>(x => x.CreateComponent1());
+            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.InstanceComponent, new MainComponent1())
+                .PostInject(x => x.CreateComponent2()).IntoProperty(x => x.MainComponent22)
+                .PostInject(x => x.CreateComponent2()).IntoProperty(x => x.MainComponent23)
+                .PostInitializeWith(x => CreateComponent2());
+
+            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.Component1)
+                .Inject(x => x.CreateComponent2()).IntoProperty(x => x.MainComponent22)
+                .Inject(x => x.CreateComponent2()).IntoProperty(x => x.MainComponent23)
+                .InitializeWith(x => x.CreateComponent2());
+
+            RegisterPublicComponentFactory<IMainComponent1, MainComponent1>(x => x.CreateComponent1())
+                .Inject(x => x.CreateComponent2()).IntoProperty(x => x.MainComponent22)
+                .Inject(x => x.Component2).IntoProperty(x => x.MainComponent23)
+                .InitializeWith(x => x.CreateComponent2());
             RegisterPublicComponentFactory<IMainComponent2, MainComponent2>(x => x.CreateComponent2());
         }
 
@@ -42,6 +60,11 @@ namespace Test.ModuleInject.TestModules
         public IMainComponent1 RetrievePrivateComponent1()
         {
             return Component1;
+        }
+
+        public IMainComponent2 RetrievePrivateComponent2()
+        {
+            return Component2;
         }
     }
 }

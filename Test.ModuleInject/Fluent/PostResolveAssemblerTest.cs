@@ -29,6 +29,11 @@ namespace Test.ModuleInject.Fluent
         {
             public IComponent Component { get; set; }
 
+            public bool IsResolved
+            {
+                get { throw new NotImplementedException(); }
+            }
+
             public void Resolve()
             {
                 throw new NotImplementedException();
