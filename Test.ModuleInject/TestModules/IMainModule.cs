@@ -19,5 +19,7 @@ namespace Test.ModuleInject.TestModules
         IMainComponent2 Component22 { get;  }
 
         ISubModule SubModule { get; set; }
+
+        IMainComponent2 CreateComponent2();
     }
 }

@@ -23,6 +23,11 @@ namespace ModuleInject
         {
             _container = new UnityContainer();
             _instanceRegistrations = new DoubleKeyDictionary<Type, string, IInstanceRegistrationContext>();
+
+            if (!typeof(IModule).IsInterface)
+            {
+                CommonFunctions.ThrowTypeException<IModule>(Errors.InjectionModule_ModulesMustHaveAnInterface);
+            }
         }
 
         protected void ActivateInterception()
@@ -54,26 +59,6 @@ namespace ModuleInject
             return RegisterContainerComponent<IComponent, TComponent>(propName);
         }
 
-        private ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> 
-            RegisterContainerComponent<IComponent, TComponent>(string propName) where TComponent : IComponent
-        {
-            _container.RegisterType<IComponent, TComponent>(propName, new ContainerControlledLifetimeManager());
-
-            return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(propName, _container);
-        }
-
-        private void CheckPropertyQualifiesForPrivateRegistration(MemberInfo propInfo)
-        {
-            string propName = propInfo.Name;
-            var isInterfaceProperty = typeof(IModule).GetProperty(propName) != null;
-
-            if (isInterfaceProperty || propInfo.GetCustomAttributes(typeof(PrivateComponentAttribute), false).Length == 0)
-            {
-                throw new ModuleInjectException(string.Format(Errors.ModuleResolver_PropertyNotQualifiedForPrivateRegistration,
-                                                                propName, typeof(TModule).FullName));
-            }
-        }
-
         protected InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterPrivateComponent<IComponent, TComponent>(Expression<Func<TModule, IComponent>> moduleProperty,
             TComponent instance)
@@ -100,6 +85,46 @@ namespace ModuleInject
             return RegisterContainerInstance<IComponent, TComponent>(instance, componentName);
         }
 
+        protected FactoryRegistrationContext<IComponent, TComponent, IModule, TModule> 
+            RegisterPublicComponentFactory<IComponent, TComponent>(Expression<Func<IModule, IComponent>> moduleMethod)
+            where TComponent :IComponent
+        {
+            MethodCallExpression method = (MethodCallExpression)moduleMethod.Body;
+            MethodInfo methodInfo = method.Method;
+            string functionName = methodInfo.Name;
+
+            if (methodInfo.GetParameters().Length > 0)
+            {
+                CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_FactoryMethodsWithParametersNotSupportedYet, functionName);
+            }
+
+            _container.RegisterType<IComponent, TComponent>(functionName);
+
+            return new FactoryRegistrationContext<IComponent, TComponent, IModule, TModule>(functionName, _container);
+        }
+
+        protected IComponent CreateInstance<IComponent>(Expression<Func<IModule, IComponent>> moduleMethod)
+        {
+            MethodCallExpression method = (MethodCallExpression)moduleMethod.Body;
+            MethodInfo methodInfo = method.Method;
+            string functionName = methodInfo.Name;
+
+            if (!_container.IsRegistered<IComponent>(functionName))
+            {
+                CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_FactoryMethodNotRegistered, functionName);
+            }
+
+            return _container.Resolve<IComponent>(functionName);
+        }
+
+        private ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
+            RegisterContainerComponent<IComponent, TComponent>(string propName) where TComponent : IComponent
+        {
+            _container.RegisterType<IComponent, TComponent>(propName, new ContainerControlledLifetimeManager());
+
+            return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(propName, _container);
+        }
+
         private InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> RegisterContainerInstance<IComponent, TComponent>(TComponent instance, string componentName) where TComponent : IComponent
         {
             _container.RegisterInstance<IComponent>(componentName, instance);
@@ -109,6 +134,17 @@ namespace ModuleInject
             _instanceRegistrations.Add(typeof(IComponent), componentName, instanceContext);
 
             return instanceContext;
+        }
+
+        private void CheckPropertyQualifiesForPrivateRegistration(MemberInfo propInfo)
+        {
+            string propName = propInfo.Name;
+            var isInterfaceProperty = typeof(IModule).GetProperty(propName) != null;
+
+            if (isInterfaceProperty || propInfo.GetCustomAttributes(typeof(PrivateComponentAttribute), false).Length == 0)
+            {
+                CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.ModuleResolver_PropertyNotQualifiedForPrivateRegistration, propName);
+            }
         }
 
         public void Resolve()

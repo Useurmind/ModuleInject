@@ -117,8 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="InjectionModule_FactoryMethodNotRegistered" xml:space="preserve">
+    <value>The method '{0}' of module with type '{1}' is not registered as a factory method. Could not create instance of requested type.</value>
+  </data>
+  <data name="InjectionModule_FactoryMethodsWithParametersNotSupportedYet" xml:space="preserve">
+    <value>The method '{0}' of module with type '{1}' can not be registered as a factory method. Only parameterless methods can currently be registered.</value>
+  </data>
+  <data name="InjectionModule_ModulesMustHaveAnInterface" xml:space="preserve">
+    <value>The modul with type '{0}' does not possess an interface. Please provide one in the generic parameters of InjectionModule and implement it in your module.</value>
+  </data>
   <data name="ModuleResolver_MissingPropertyRegistration" xml:space="preserve">
     <value>The property '{0}' of module with type '{1}' could not be resolved. Did you inject a property that was neither a member of the modules interface nor marked with the PrivateComponentAttribute?</value>
+  </data>
+  <data name="ModuleResolver_PropertyIsNoInterface" xml:space="preserve">
+    <value>The property '{0}' of module with type '{1}' has no interface. Please make sure that all properties of your modules are implemented with interface types.</value>
   </data>
   <data name="ModuleResolver_PropertyNotQualifiedForPrivateRegistration" xml:space="preserve">
     <value>The property '{0}' of module with type '{1}' is not qualified to be a private component. Either it is a public component or it was not marked with the PrivateComponentAttribute.</value>

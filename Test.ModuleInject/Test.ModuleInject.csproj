@@ -62,16 +62,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NoInterfaceModuleTests.cs" />
     <Compile Include="Fluent\ComponentRegistrationContextTest.cs" />
     <Compile Include="Fluent\DependencyInjectionContextTest.cs" />
     <Compile Include="Fluent\PostResolveAssemblerTest.cs" />
-    <Compile Include="InjectionModuleTest.cs" />
+    <Compile Include="MainModuleTest.cs" />
     <Compile Include="ModulePostResolveBuilderTest.cs" />
     <Compile Include="ModuleResolverTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SuperModuleTest.cs" />
     <Compile Include="TestModules\ISubModule.cs" />
     <Compile Include="TestModules\IMainModule.cs" />
+    <Compile Include="TestModules\ModuleWithRegistrationErrors.cs" />
+    <Compile Include="TestModules\NoInterfaceModule.cs" />
     <Compile Include="TestModules\SubComponent1.cs" />
     <Compile Include="TestModules\MainComponent1.cs" />
     <Compile Include="TestModules\SubComponent2.cs" />

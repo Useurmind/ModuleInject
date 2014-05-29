@@ -36,7 +36,7 @@ namespace ModuleInject
             {
                 if (!propInfo.PropertyType.IsInterface)
                 {
-                    throw new ModuleInjectException("Dependencies in modules must always have an Interface");
+                    CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.ModuleResolver_PropertyIsNoInterface, propInfo.Name);
                 }
 
                 TryResolveComponent<IModule, TModule>(module, container, propInfo);
@@ -99,9 +99,7 @@ namespace ModuleInject
             string propName = propInfo.Name;
             if (!container.IsRegistered(propType, propName))
             {
-                throw new ModuleInjectException(string.Format(Errors.ModuleResolver_MissingPropertyRegistration,
-                                                    propName,
-                                                    typeof(TModule).Name));
+                CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.ModuleResolver_MissingPropertyRegistration, propName);
             }
             var component = container.Resolve(propInfo.PropertyType, propInfo.Name);
             propInfo.SetValue(module, component, BindingFlags.NonPublic, null, null, null);

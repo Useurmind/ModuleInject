@@ -61,11 +61,47 @@ namespace ModuleInject {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The method &apos;{0}&apos; of module with type &apos;{1}&apos; is not registered as a factory method. Could not create instance of requested type..
+        /// </summary>
+        internal static string InjectionModule_FactoryMethodNotRegistered {
+            get {
+                return ResourceManager.GetString("InjectionModule_FactoryMethodNotRegistered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The method &apos;{0}&apos; of module with type &apos;{1}&apos; can not be registered as a factory method. Only parameterless methods can currently be registered..
+        /// </summary>
+        internal static string InjectionModule_FactoryMethodsWithParametersNotSupportedYet {
+            get {
+                return ResourceManager.GetString("InjectionModule_FactoryMethodsWithParametersNotSupportedYet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The modul with type &apos;{0}&apos; does not possess an interface. Please provide one in the generic parameters of InjectionModule and implement it in your module..
+        /// </summary>
+        internal static string InjectionModule_ModulesMustHaveAnInterface {
+            get {
+                return ResourceManager.GetString("InjectionModule_ModulesMustHaveAnInterface", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The property &apos;{0}&apos; of module with type &apos;{1}&apos; could not be resolved. Did you inject a property that was neither a member of the modules interface nor marked with the PrivateComponentAttribute?.
         /// </summary>
         internal static string ModuleResolver_MissingPropertyRegistration {
             get {
                 return ResourceManager.GetString("ModuleResolver_MissingPropertyRegistration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The property &apos;{0}&apos; of module with type &apos;{1}&apos; has no interface. Please make sure that all properties of your modules are implemented with interface types..
+        /// </summary>
+        internal static string ModuleResolver_PropertyIsNoInterface {
+            get {
+                return ResourceManager.GetString("ModuleResolver_PropertyIsNoInterface", resourceCulture);
             }
         }
         

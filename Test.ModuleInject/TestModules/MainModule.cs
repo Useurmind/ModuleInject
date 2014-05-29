@@ -85,6 +85,13 @@ namespace Test.ModuleInject.TestModules
                 .Inject(x => x.PrivateComponent).IntoProperty(x => x.MainComponent2)
                 .Inject(x => x.PrivateInstanceComponent).IntoProperty(x => x.MainComponent22)
                 .Inject(x => x.Component2).IntoProperty(x => x.MainComponent23);
+
+            RegisterPublicComponentFactory<IMainComponent2, MainComponent2>(x => x.CreateComponent2());
+        }
+
+        public IMainComponent2 CreateComponent2()
+        {
+            return CreateInstance(x => x.CreateComponent2());
         }
 
         #region Methods that should throw exceptions
