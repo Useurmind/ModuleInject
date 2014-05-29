@@ -81,12 +81,14 @@
     <Compile Include="Fluent\ValueInjectionContextExtensions.cs" />
     <Compile Include="Fluent\ValueInjectionContext.cs" />
     <Compile Include="InjectionModule.cs" />
-    <Compile Include="Interception\IBehaviour.cs" />
-    <Compile Include="Interception\Delegates.cs" />
+    <Compile Include="Interception\IParameterCollection.cs" />
+    <Compile Include="Interception\ISimpleBehaviour.cs" />
     <Compile Include="Interception\IMethodInvocation.cs" />
     <Compile Include="Interception\IMethodReturn.cs" />
     <Compile Include="Interception\MethodInvocation.cs" />
-    <Compile Include="Interception\UnityBehaviour.cs" />
+    <Compile Include="Interception\MethodReturn.cs" />
+    <Compile Include="Interception\ParameterCollection.cs" />
+    <Compile Include="Interception\SimpleUnityBehaviour.cs" />
     <Compile Include="Interfaces\IInitializable1.cs" />
     <Compile Include="Interfaces\IInitializable5.cs" />
     <Compile Include="Interfaces\IInitializable4.cs" />
