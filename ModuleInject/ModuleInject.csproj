@@ -106,8 +106,9 @@
     <Compile Include="Utility\DoubleKeyDictionary.cs" />
     <Compile Include="Utility\ExpressionVisitor.cs" />
     <Compile Include="Utility\LinqHelper.cs" />
-    <Compile Include="Utility\PropertyChainExtractor.cs" />
+    <Compile Include="Utility\MemberChainExtractor.cs" />
     <Compile Include="Utility\ModuleInjectException.cs" />
+    <Compile Include="Utility\Method.cs" />
     <Compile Include="Utility\Property.cs" />
   </ItemGroup>
   <ItemGroup>

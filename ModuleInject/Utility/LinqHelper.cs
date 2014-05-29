@@ -10,11 +10,23 @@ namespace ModuleInject.Utility
     {
         public static string GetMemberPath<TObject, TProperty>(Expression<Func<TObject, TProperty>> exp)
         {
-            PropertyChainExtractor propertyExtractor = new PropertyChainExtractor();
+            MemberChainExtractor propertyExtractor = new MemberChainExtractor();
 
-            IList<MemberExpression> memberExpressions = propertyExtractor.Extract(exp);
+            IList<Expression> memberExpressions = propertyExtractor.Extract(exp);
 
-            var propertyNames = memberExpressions.Select(me => me.Member.Name);
+            var propertyNames = memberExpressions.Select(me =>{
+                MemberExpression memberExp = me as MemberExpression;
+                if(memberExp != null) {
+                    return memberExp.Member.Name;
+                }
+
+                MethodCallExpression methodCallExp = me as MethodCallExpression;
+                if(methodCallExp != null) {
+                    return methodCallExp.Method.Name;
+                }
+
+                throw new ModuleInjectException("Invalid expression in member chain.");
+            });
 
             return string.Join(".", propertyNames);
         }

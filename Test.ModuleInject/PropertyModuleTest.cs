@@ -11,14 +11,14 @@ using Test.ModuleInject.TestModules;
 namespace Test.ModuleInject
 {
     [TestFixture]
-    public class MainModuleTest
+    public class PropertyModuleTest
     {
-        private MainModule _module;
+        private PropertyModule _module;
 
         [SetUp]
         public void Init()
         {
-            _module = new MainModule();
+            _module = new PropertyModule();
             _module.SubModule = new Submodule();
         }
 
@@ -216,20 +216,6 @@ namespace Test.ModuleInject
         public void RegisterPrivateComponent_WithInstancePartOfPublicInterface_ExceptionThrown()
         {
             _module.RegisterInterfacePropertyAsPrivateWithInstance();
-        }
-
-        [TestCase]
-        public void FactoryMethod__CreatesNewInstanceEachTime()
-        {
-            _module.Resolve();
-
-            IMainComponent2 componentFirstCall = _module.CreateComponent2();
-            IMainComponent2 componentSecondCall = _module.CreateComponent2();
-
-            Assert.IsNotNull(componentFirstCall);
-            Assert.IsNotNull(componentSecondCall);
-
-            Assert.AreNotSame(componentFirstCall, componentSecondCall);
         }
     }
 }

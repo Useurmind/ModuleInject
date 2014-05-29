@@ -10,19 +10,19 @@ namespace Test.ModuleInject.TestModules
 {
     public interface ITestSuperModule : IInjectionModule
     {
-        IMainModule MainModule { get; }
+        IPropertyModule MainModule { get; }
         ISubModule SubModule { get; }
     }
 
     public class TestSuperModule : InjectionModule<ITestSuperModule, TestSuperModule>, ITestSuperModule
     {
-        public IMainModule MainModule { get; set; }
+        public IPropertyModule MainModule { get; set; }
         public ISubModule SubModule { get; set; }
 
         public TestSuperModule()
         {
             RegisterPublicComponent<ISubModule, Submodule>(x => x.SubModule);
-            RegisterPublicComponent<IMainModule, MainModule>(x => x.MainModule)
+            RegisterPublicComponent<IPropertyModule, PropertyModule>(x => x.MainModule)
                 .Inject(x => x.SubModule).IntoProperty(x => x.SubModule);
         }
     }

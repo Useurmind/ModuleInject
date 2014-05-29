@@ -16,14 +16,14 @@ namespace Test.ModuleInject.Fluent
     {
         private string _componentName;
         private IUnityContainer _container;
-        private ComponentRegistrationContext<IMainComponent1, MainComponent1, IMainModule, MainModule> _context;
+        private ComponentRegistrationContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule> _context;
 
         [SetUp]
         public void Init()
         {
-            _componentName = Property.Get((IMainModule x) => x.InitWithPropertiesComponent);
+            _componentName = Property.Get((IPropertyModule x) => x.InitWithPropertiesComponent);
             _container = new UnityContainer();
-            _context = new ComponentRegistrationContext<IMainComponent1, MainComponent1, IMainModule, MainModule>(
+            _context = new ComponentRegistrationContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule>(
                 _componentName,
                 _container
                 );
@@ -38,7 +38,7 @@ namespace Test.ModuleInject.Fluent
         [TestCase]
         public void Inject_DependencyContextValuesSetCorrectly()
         {
-            string depPropName = Property.Get((IMainModule x)=> x.Component2);
+            string depPropName = Property.Get((IPropertyModule x)=> x.Component2);
             var depContext = _context.Inject(x => x.Component2);
 
             Assert.AreSame(_context, depContext.ComponentContext);

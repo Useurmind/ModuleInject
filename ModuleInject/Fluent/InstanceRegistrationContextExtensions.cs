@@ -33,11 +33,11 @@ namespace ModuleInject.Fluent
             where TModule : IModule
             where IModule : IInjectionModule
         {
-            string propertyPath = LinqHelper.GetMemberPath(dependency1SourceExpression);
+            string memberPath = LinqHelper.GetMemberPath(dependency1SourceExpression);
 
             instance.AddAssembler(new PostResolveAssembler<TComponent, IModule, TModule>((comp, module) =>
             {
-                TDep1 dependency = module.GetComponent<TDep1>(propertyPath);
+                TDep1 dependency = module.GetComponent<TDep1>(memberPath);
                 comp.Initialize(dependency);
             }));
 
@@ -53,13 +53,13 @@ namespace ModuleInject.Fluent
             where TModule : IModule
             where IModule : IInjectionModule
         {
-            string property1Path = LinqHelper.GetMemberPath(dependency1SourceExpression);
-            string property2Path = LinqHelper.GetMemberPath(dependency2SourceExpression);
+            string memberPath1 = LinqHelper.GetMemberPath(dependency1SourceExpression);
+            string memberPath2 = LinqHelper.GetMemberPath(dependency2SourceExpression);
 
             instance.AddAssembler(new PostResolveAssembler<TComponent, IModule, TModule>((comp, module) =>
             {
-                TDep1 dependency1 = module.GetComponent<TDep1>(property1Path);
-                TDep2 dependency2 = module.GetComponent<TDep2>(property2Path);
+                TDep1 dependency1 = module.GetComponent<TDep1>(memberPath1);
+                TDep2 dependency2 = module.GetComponent<TDep2>(memberPath2);
                 comp.Initialize(dependency1, dependency2);
             }));
 
@@ -76,15 +76,15 @@ namespace ModuleInject.Fluent
             where TModule : IModule
             where IModule : IInjectionModule
         {
-            string property1Path = LinqHelper.GetMemberPath(dependency1SourceExpression);
-            string property2Path = LinqHelper.GetMemberPath(dependency2SourceExpression);
-            string property3Path = LinqHelper.GetMemberPath(dependency3SourceExpression);
+            string memberPath1 = LinqHelper.GetMemberPath(dependency1SourceExpression);
+            string memberPath2 = LinqHelper.GetMemberPath(dependency2SourceExpression);
+            string memberPath3 = LinqHelper.GetMemberPath(dependency3SourceExpression);
 
             instance.AddAssembler(new PostResolveAssembler<TComponent, IModule, TModule>((comp, module) =>
             {
-                TDep1 dependency1 = module.GetComponent<TDep1>(property1Path);
-                TDep2 dependency2 = module.GetComponent<TDep2>(property2Path);
-                TDep3 dependency3 = module.GetComponent<TDep3>(property3Path);
+                TDep1 dependency1 = module.GetComponent<TDep1>(memberPath1);
+                TDep2 dependency2 = module.GetComponent<TDep2>(memberPath2);
+                TDep3 dependency3 = module.GetComponent<TDep3>(memberPath3);
                 comp.Initialize(dependency1, dependency2, dependency3);
             }));
 

@@ -14,28 +14,28 @@ namespace Test.ModuleInject
     public class ModuleResolverTest
     {
         private ModuleResolver _moduleResolver;
-        private MainModule _module;
+        private PropertyModule _module;
         private UnityContainer _container;
 
         [SetUp]
         public void Init()
         {
             _moduleResolver = new ModuleResolver();
-            _module = new MainModule();
+            _module = new PropertyModule();
             _module.SubModule = new Submodule();
             _container = new UnityContainer();
-            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.InstanceRegistrationComponent));
-            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.InitWithPropertiesComponent));
-            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.InitWithInitialize1Component));
-            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.InitWithInitialize1FromSubComponent));
-            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.InitWithInitialize2Component));
-            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.InitWithInitialize3Component));
-            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.InitWithInjectorComponent));
-            _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((MainModule x) => x.Component2));
-            _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((MainModule x) => x.Component22));
-            _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((MainModule x) => x.PrivateComponent));
-            _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((MainModule x) => x.PrivateInstanceComponent));
-            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.PrivateComponentInjectedProperties));
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InstanceRegistrationComponent));
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InitWithPropertiesComponent));
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InitWithInitialize1Component));
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InitWithInitialize1FromSubComponent));
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InitWithInitialize2Component));
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InitWithInitialize3Component));
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InitWithInjectorComponent));
+            _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((PropertyModule x) => x.Component2));
+            _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((PropertyModule x) => x.Component22));
+            _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((PropertyModule x) => x.PrivateComponent));
+            _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((PropertyModule x) => x.PrivateInstanceComponent));
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.PrivateComponentInjectedProperties));
         }
 
         [TestCase]
@@ -43,15 +43,15 @@ namespace Test.ModuleInject
         public void Resolve_NotAllComponentsRegisteredInContainer_ExceptionThrown()
         {
             IUnityContainer container = new UnityContainer();
-            container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((MainModule x) => x.InitWithPropertiesComponent));
+            container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InitWithPropertiesComponent));
 
-            _moduleResolver.Resolve<IMainModule, MainModule>((MainModule)_module, container); 
+            _moduleResolver.Resolve<IPropertyModule, PropertyModule>((PropertyModule)_module, container); 
         }
 
         [TestCase]
         public void Resolve_AllComponentRegisteredInContainer_ComponentPropertiesNotNull()
         {
-            _moduleResolver.Resolve<IMainModule, MainModule>((MainModule)_module, _container);
+            _moduleResolver.Resolve<IPropertyModule, PropertyModule>((PropertyModule)_module, _container);
             
             Assert.IsNotNull(_module.InitWithPropertiesComponent);
             Assert.IsNotNull(_module.InitWithInitialize1Component);
@@ -70,7 +70,7 @@ namespace Test.ModuleInject
         [ExpectedException(typeof(ModuleInjectException))]
         public void Resolve_NonInterface_ExpectException()
         {
-            _moduleResolver.Resolve<MainModule, MainModule>(_module, _container);
+            _moduleResolver.Resolve<PropertyModule, PropertyModule>(_module, _container);
         }
     }
 }

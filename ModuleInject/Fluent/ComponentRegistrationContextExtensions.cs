@@ -42,9 +42,9 @@ namespace ModuleInject.Fluent
             where TModule : IModule
             where IModule : IInjectionModule
         {
-            string propertyPath = LinqHelper.GetMemberPath(dependencySourceExpression);
+            string memberPath = LinqHelper.GetMemberPath(dependencySourceExpression);
 
-            return new DependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>(component, propertyPath);
+            return new DependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>(component, memberPath);
         }
 
         public static ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
@@ -55,10 +55,10 @@ namespace ModuleInject.Fluent
             where TModule : IModule
             where IModule : IInjectionModule
         {
-            string propertyPath = LinqHelper.GetMemberPath(dependency1SourceExpression);
+            string memberPath = LinqHelper.GetMemberPath(dependency1SourceExpression);
 
             component.Container.RegisterType<IComponent, TComponent>(component.ComponentName,
-                new InjectionMethod(_initialize1MethodName, new ResolvedParameter<TDep1>(propertyPath)));
+                new InjectionMethod(_initialize1MethodName, new ResolvedParameter<TDep1>(memberPath)));
 
             return component;
         }
@@ -72,13 +72,13 @@ namespace ModuleInject.Fluent
             where TModule : IModule
             where IModule : IInjectionModule
         {
-            string property1Path = LinqHelper.GetMemberPath(dependency1SourceExpression);
-            string property2Path = LinqHelper.GetMemberPath(dependency2SourceExpression);
+            string memberPath1 = LinqHelper.GetMemberPath(dependency1SourceExpression);
+            string memberPath2 = LinqHelper.GetMemberPath(dependency2SourceExpression);
 
             component.Container.RegisterType<IComponent, TComponent>(component.ComponentName,
                 new InjectionMethod(_initialize2MethodName, 
-                    new ResolvedParameter<TDep1>(property1Path),
-                    new ResolvedParameter<TDep2>(property2Path)
+                    new ResolvedParameter<TDep1>(memberPath1),
+                    new ResolvedParameter<TDep2>(memberPath2)
                     ));
 
             return component;
@@ -94,15 +94,15 @@ namespace ModuleInject.Fluent
             where TModule : IModule
             where IModule : IInjectionModule
         {
-            string property1Path = LinqHelper.GetMemberPath(dependency1SourceExpression);
-            string property2Path = LinqHelper.GetMemberPath(dependency2SourceExpression);
-            string property3Path = LinqHelper.GetMemberPath(dependency3SourceExpression);
+            string memberPath1 = LinqHelper.GetMemberPath(dependency1SourceExpression);
+            string memberPath2 = LinqHelper.GetMemberPath(dependency2SourceExpression);
+            string memberPath3 = LinqHelper.GetMemberPath(dependency3SourceExpression);
 
             component.Container.RegisterType<IComponent, TComponent>(component.ComponentName,
                 new InjectionMethod(_initialize3MethodName,
-                    new ResolvedParameter<TDep1>(property1Path),
-                    new ResolvedParameter<TDep2>(property2Path),
-                    new ResolvedParameter<TDep3>(property3Path)
+                    new ResolvedParameter<TDep1>(memberPath1),
+                    new ResolvedParameter<TDep2>(memberPath2),
+                    new ResolvedParameter<TDep3>(memberPath3)
                     ));
 
             return component;

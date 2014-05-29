@@ -7,16 +7,16 @@ using System.Text;
 
 namespace ModuleInject.Utility
 {
-    public class PropertyChainExtractor : ExpressionVisitor
+    public class MemberChainExtractor : ExpressionVisitor
     {
-        private IList<MemberExpression> _memberExpressions;
+        private IList<Expression> _memberExpressions;
 
-        public PropertyChainExtractor()
+        public MemberChainExtractor()
         {
-            _memberExpressions = new List<MemberExpression>();
+            _memberExpressions = new List<Expression>();
         }
 
-        public IList<MemberExpression> Extract(Expression expression)
+        public IList<Expression> Extract(Expression expression)
         {
             Visit(expression);
 
@@ -32,7 +32,9 @@ namespace ModuleInject.Utility
 
         protected override Expression VisitMethodCall(MethodCallExpression m)
         {
-            throw new ModuleInjectException("Only Property Accesses are allowed.");
+            _memberExpressions.Insert(0, m);
+
+            return base.VisitMethodCall(m);
         }
     }
 }

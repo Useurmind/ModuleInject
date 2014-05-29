@@ -59,7 +59,7 @@ namespace ModuleInject
                                                       })
                                                      .Select(p => moduleType.GetProperty(p.Name));
 
-            var privateProperties = moduleType.GetProperties()
+            var privateProperties = moduleType.GetProperties(BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic)
                                               .Where(p =>
                                               {
                                                   bool isPrivate = p.GetCustomAttributes(typeof(PrivateComponentAttribute), false).Length > 0;
