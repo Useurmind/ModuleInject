@@ -61,6 +61,15 @@ namespace ModuleInject {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Interception was not activated on the module with type &apos;{0}&apos;. Activate interception in the module before adding behaviours to components..
+        /// </summary>
+        internal static string ComponentRegistrationContext_InterceptionNotActivated {
+            get {
+                return ResourceManager.GetString("ComponentRegistrationContext_InterceptionNotActivated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The module with type &apos;{0}&apos; was already resolved. Please avoid multiple resolutions of the same module..
         /// </summary>
         internal static string InjectionModule_AlreadyResolved {

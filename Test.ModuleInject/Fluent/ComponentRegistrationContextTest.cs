@@ -25,7 +25,8 @@ namespace Test.ModuleInject.Fluent
             _container = new UnityContainer();
             _context = new ComponentRegistrationContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule>(
                 _componentName,
-                _container
+                _container,
+                false
                 );
         }
 

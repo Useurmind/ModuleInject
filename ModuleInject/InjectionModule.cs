@@ -18,11 +18,13 @@ namespace ModuleInject
     {
         private DoubleKeyDictionary<Type, string, IInstanceRegistrationContext> _instanceRegistrations;
         private IUnityContainer _container;
+        private bool _isInterceptionActive;
 
         public bool IsResolved { get; private set; }
 
         public InjectionModule()
         {
+            _isInterceptionActive = false;
             IsResolved = false;
             _container = new UnityContainer();
             _instanceRegistrations = new DoubleKeyDictionary<Type, string, IInstanceRegistrationContext>();
@@ -36,6 +38,7 @@ namespace ModuleInject
         protected void ActivateInterception()
         {
             _container.AddNewExtension<Microsoft.Practices.Unity.InterceptionExtension.Interception>();
+            _isInterceptionActive = true;
         }
 
         protected ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
@@ -103,7 +106,7 @@ namespace ModuleInject
 
             _container.RegisterType<IComponent, TComponent>(functionName);
 
-            return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(functionName, _container);
+            return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(functionName, _container, _isInterceptionActive);
         }
 
         protected IComponent CreateInstance<IComponent>(Expression<Func<IModule, IComponent>> moduleMethod)
@@ -130,7 +133,7 @@ namespace ModuleInject
         {
             _container.RegisterType<IComponent, TComponent>(propName, new ContainerControlledLifetimeManager());
 
-            return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(propName, _container);
+            return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(propName, _container, _isInterceptionActive);
         }
 
         private InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> RegisterContainerInstance<IComponent, TComponent>(TComponent instance, string componentName) where TComponent : IComponent

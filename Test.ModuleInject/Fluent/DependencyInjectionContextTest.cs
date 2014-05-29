@@ -28,7 +28,7 @@ namespace Test.ModuleInject.Fluent
             _depPropertyName = Property.Get((IPropertyModule x) => x.Component2);
             _containerMock = new Mock<IUnityContainer>();
             _componentContext = new ComponentRegistrationContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule>(
-                _propertyName, _containerMock.Object);
+                _propertyName, _containerMock.Object, false);
             _depContext = new DependencyInjectionContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule, IMainComponent2>(
                 _componentContext, _depPropertyName);
         }

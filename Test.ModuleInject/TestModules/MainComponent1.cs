@@ -13,6 +13,8 @@ namespace Test.ModuleInject.TestModules
         IMainComponent2 MainComponent22 { get; }
         IMainComponent2 MainComponent23 { get; }
         ISubComponent1 SubComponent1 { get;  }
+
+        int FunctionReturns5();
     }
 
     public class MainComponent1 : IMainComponent1, 
@@ -48,6 +50,11 @@ namespace Test.ModuleInject.TestModules
             MainComponent2 = dependency1;
             MainComponent22 = dependency2;
             SubComponent1 = dependency3;
+        }
+
+        public int FunctionReturns5()
+        {
+            return 5;
         }
     }
 }

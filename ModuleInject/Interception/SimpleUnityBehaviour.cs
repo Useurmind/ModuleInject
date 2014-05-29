@@ -6,9 +6,10 @@ using System.Text;
 
 namespace ModuleInject.Interception
 {
-    internal class SimpleUnityBehaviour : Unity.IInterceptionBehavior
+    internal class SimpleUnityBehaviour<TBehaviour> : Unity.IInterceptionBehavior
+        where TBehaviour : ISimpleBehaviour, new()
     {
-        public ISimpleBehaviour Behaviour { get; set; }
+        public ISimpleBehaviour Behaviour { get; private set; }
 
         public IEnumerable<Type> GetRequiredInterfaces()
         {
@@ -18,6 +19,11 @@ namespace ModuleInject.Interception
         public bool WillExecute
         {
             get { return Behaviour.WillExecute; }
+        }
+
+        public SimpleUnityBehaviour()
+        {
+            Behaviour = new TBehaviour();
         }
 
         public Unity.IMethodReturn Invoke(Unity.IMethodInvocation input, Unity.GetNextInterceptionBehaviorDelegate getNext)
