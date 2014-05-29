@@ -27,9 +27,12 @@ namespace Test.ModuleInject.TestModules
             }
         }
 
-        public IEnumerable<Type> GetRequiredInterfaces()
+        public IEnumerable<Type> RequiredInterfaces
         {
-            return Type.EmptyTypes;
+            get
+            {
+                return Type.EmptyTypes;
+            }
         }
 
         public IMethodReturn BeforeMethodCall(IMethodInvocation methodInvocation)

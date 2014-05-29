@@ -5,8 +5,8 @@ using System.Text;
 
 namespace ModuleInject.Interfaces
 {
-    public interface IInitializable<T1>
+    public interface IInitializable<TArgument>
     {
-        void Initialize(T1 dependency1);
+        void Initialize(TArgument dependency1);
     }
 }

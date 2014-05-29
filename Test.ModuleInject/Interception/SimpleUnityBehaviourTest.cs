@@ -115,9 +115,12 @@ namespace Test.ModuleInject.Interception
                 }
             }
 
-            public IEnumerable<Type> GetRequiredInterfaces()
+            public IEnumerable<Type> RequiredInterfaces
             {
-                throw new NotImplementedException();
+                get
+                {
+                    throw new NotImplementedException();
+                }
             }
 
             public IMethodReturn BeforeMethodCall(IMethodInvocation methodInvocation)

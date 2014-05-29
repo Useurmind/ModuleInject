@@ -3,15 +3,16 @@ using ModuleInject.Interfaces;
 using ModuleInject.Utility;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 
 namespace ModuleInject
 {
-    public class ModuleResolver
+    internal static class ModuleResolver
     {
-        public void Resolve<IModule, TModule>(TModule module, IUnityContainer container)
+        public static void Resolve<IModule, TModule>(TModule module, IUnityContainer container)
             where TModule : IModule
             where IModule : IInjectionModule
         {
@@ -21,8 +22,6 @@ namespace ModuleInject
             {
                 throw new ModuleInjectException("Modules must always have an Interface");
             }
-
-            Type iinjectionModuleType = typeof(IInjectionModule);
 
             var submodulePropertyInfos = GetModuleProperties<IModule, TModule>(true);
             foreach (var submodulePropInfo in submodulePropertyInfos)
@@ -43,7 +42,7 @@ namespace ModuleInject
             }
         }
 
-        private IEnumerable<PropertyInfo> GetModuleProperties<IModule, TModule>(bool thatAreModules)
+        private static IEnumerable<PropertyInfo> GetModuleProperties<IModule, TModule>(bool thatAreModules)
             where TModule : IModule
         {
             Type moduleType = typeof(TModule);
@@ -72,7 +71,7 @@ namespace ModuleInject
             return privateProperties.Union(interfaceProperties);
         }
 
-        private bool TryResolveComponent<IModule, TModule>(TModule module, IUnityContainer container, PropertyInfo propInfo)
+        private static bool TryResolveComponent<IModule, TModule>(TModule module, IUnityContainer container, PropertyInfo propInfo)
             where IModule : IInjectionModule
             where TModule : IModule
         {
@@ -91,7 +90,7 @@ namespace ModuleInject
             return resolved;
         }
 
-        private void ResolveComponent<IModule, TModule>(TModule module, IUnityContainer container, PropertyInfo propInfo)
+        private static void ResolveComponent<IModule, TModule>(TModule module, IUnityContainer container, PropertyInfo propInfo)
             where IModule : IInjectionModule
             where TModule : IModule
         {
@@ -105,7 +104,7 @@ namespace ModuleInject
             propInfo.SetValue(module, component, BindingFlags.NonPublic, null, null, null);
         }
 
-        private void TryResolveSubmodule<IModule, TModule>(TModule module, IUnityContainer container, PropertyInfo subModulePropInfo)
+        private static void TryResolveSubmodule<IModule, TModule>(TModule module, IUnityContainer container, PropertyInfo subModulePropInfo)
             where TModule : IModule
             where IModule : IInjectionModule
         {
@@ -120,7 +119,7 @@ namespace ModuleInject
             foreach (var propInfo in subModulePropInfo.PropertyType.GetProperties())
             {
                 object subComponent = propInfo.GetValue(submodule, null);
-                string subComponentName = string.Format("{0}.{1}", submoduleName, propInfo.Name);
+                string subComponentName = string.Format(CultureInfo.InvariantCulture, "{0}.{1}", submoduleName, propInfo.Name);
                 container.RegisterInstance(propInfo.PropertyType, subComponentName, subComponent);
             }
         }

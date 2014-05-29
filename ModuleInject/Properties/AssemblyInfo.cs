@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
+using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -34,6 +36,9 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+
+[assembly: NeutralResourcesLanguage("en-US")]
+[assembly: CLSCompliant(true)]
 
 [assembly: InternalsVisibleTo("Test.ModuleInject, PublicKey=0024000004800000940000000602000000240000525341310004000001000100dfbe68612d9a27" +
                                                            "2bf0c8715613263c2037e98650674b05df56a5a6daa0dd2d86a8501374d2b4209c92cb7bcb13a0" +

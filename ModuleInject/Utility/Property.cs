@@ -18,10 +18,7 @@ namespace ModuleInject.Utility
 
         public static Property Get<TObject, TProperty>(Expression<Func<TObject, TProperty>> propertyExpression)
         {
-            if (propertyExpression == null)
-            {
-                throw new ArgumentNullException();
-            }
+            CommonFunctions.CheckNullArgument("propertyExpression", propertyExpression);
 
             CheckExpression(propertyExpression);
 
@@ -55,12 +52,14 @@ namespace ModuleInject.Utility
 
         public static implicit operator string(Property property)
         {
-            if (property == null)
-            {
-                return null;
-            }
+            CommonFunctions.CheckNullArgument("property", property);
 
-            return property._propertyInfo.Name;
+            return property.ToString();
+        }
+
+        public override string ToString()
+        {
+            return _propertyInfo.Name;
         }
     }
 }

@@ -61,7 +61,7 @@ namespace ModuleInject {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Interception was not activated on the module with type &apos;{0}&apos;. Activate interception in the module before adding behaviours to components..
+        ///   Looks up a localized string similar to Interception was not activated on the module with type &apos;{0}&apos;. Activate interception in the module before adding a behaviour to components..
         /// </summary>
         internal static string ComponentRegistrationContext_InterceptionNotActivated {
             get {
@@ -106,7 +106,7 @@ namespace ModuleInject {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The modul with type &apos;{0}&apos; does not possess an interface. Please provide one in the generic parameters of InjectionModule and implement it in your module..
+        ///   Looks up a localized string similar to The module with type &apos;{0}&apos; does not possess an interface. Please provide one in the generic parameters of InjectionModule and implement it in your module..
         /// </summary>
         internal static string InjectionModule_ModulesMustHaveAnInterface {
             get {

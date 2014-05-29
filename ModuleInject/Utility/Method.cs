@@ -18,10 +18,7 @@ namespace ModuleInject.Utility
 
         public static Method Get<TObject, TMethodReturn>(Expression<Func<TObject, TMethodReturn>> methodExpression)
         {
-            if (methodExpression == null)
-            {
-                throw new ArgumentNullException();
-            }
+            CommonFunctions.CheckNullArgument("methodExpression", methodExpression);
 
             CheckExpression(methodExpression);
 
@@ -55,12 +52,15 @@ namespace ModuleInject.Utility
 
         public static implicit operator string(Method method)
         {
-            if (method == null)
-            {
-                return null;
-            }
+            CommonFunctions.CheckNullArgument("method", method);
 
-            return method._methodInfo.Name;
+            return method.ToString();
+        }
+
+        public override string ToString()
+        {
+
+            return _methodInfo.Name;
         }
     }
 }

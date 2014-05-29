@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
 namespace ModuleInject.Utility
-{    
-    public abstract class ExpressionVisitor
+{
+    [SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0", Justification="Externally created code.", Scope="method")]
+    internal abstract class ExpressionVisitor
     {
         protected ExpressionVisitor()
         {
@@ -79,7 +81,7 @@ namespace ModuleInject.Utility
                 case ExpressionType.ListInit:
                     return this.VisitListInit((ListInitExpression)expression);
                 default:
-                    throw new Exception(string.Format("Unhandled expression type: '{0}'", expression.NodeType));
+                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, "Unhandled expression type: '{0}'", expression.NodeType));
             }
         }
 
@@ -94,7 +96,7 @@ namespace ModuleInject.Utility
                 case MemberBindingType.ListBinding:
                     return this.VisitMemberListBinding((MemberListBinding)binding);
                 default:
-                    throw new Exception(string.Format("Unhandled binding type '{0}'", binding.BindingType));
+                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, "Unhandled binding type '{0}'", binding.BindingType));
             }
         }
 
@@ -108,82 +110,82 @@ namespace ModuleInject.Utility
             return initializer;
         }
 
-        protected virtual Expression VisitUnary(UnaryExpression u)
+        protected virtual Expression VisitUnary(UnaryExpression unaryExpression)
         {
-            Expression operand = this.Visit(u.Operand);
-            if (operand != u.Operand)
+            Expression operand = this.Visit(unaryExpression.Operand);
+            if (operand != unaryExpression.Operand)
             {
-                return Expression.MakeUnary(u.NodeType, operand, u.Type, u.Method);
+                return Expression.MakeUnary(unaryExpression.NodeType, operand, unaryExpression.Type, unaryExpression.Method);
             }
-            return u;
+            return unaryExpression;
         }
 
-        protected virtual Expression VisitBinary(BinaryExpression b)
+        protected virtual Expression VisitBinary(BinaryExpression binaryExpression)
         {
-            Expression left = this.Visit(b.Left);
-            Expression right = this.Visit(b.Right);
-            Expression conversion = this.Visit(b.Conversion);
-            if (left != b.Left || right != b.Right || conversion != b.Conversion)
+            Expression left = this.Visit(binaryExpression.Left);
+            Expression right = this.Visit(binaryExpression.Right);
+            Expression conversion = this.Visit(binaryExpression.Conversion);
+            if (left != binaryExpression.Left || right != binaryExpression.Right || conversion != binaryExpression.Conversion)
             {
-                if (b.NodeType == ExpressionType.Coalesce && b.Conversion != null)
+                if (binaryExpression.NodeType == ExpressionType.Coalesce && binaryExpression.Conversion != null)
                     return Expression.Coalesce(left, right, conversion as LambdaExpression);
                 else
-                    return Expression.MakeBinary(b.NodeType, left, right, b.IsLiftedToNull, b.Method);
+                    return Expression.MakeBinary(binaryExpression.NodeType, left, right, binaryExpression.IsLiftedToNull, binaryExpression.Method);
             }
-            return b;
+            return binaryExpression;
         }
 
-        protected virtual Expression VisitTypeIs(TypeBinaryExpression b)
+        protected virtual Expression VisitTypeIs(TypeBinaryExpression typeBinaryExpression)
         {
-            Expression expr = this.Visit(b.Expression);
-            if (expr != b.Expression)
+            Expression expr = this.Visit(typeBinaryExpression.Expression);
+            if (expr != typeBinaryExpression.Expression)
             {
-                return Expression.TypeIs(expr, b.TypeOperand);
+                return Expression.TypeIs(expr, typeBinaryExpression.TypeOperand);
             }
-            return b;
+            return typeBinaryExpression;
         }
 
-        protected virtual Expression VisitConstant(ConstantExpression c)
+        protected virtual Expression VisitConstant(ConstantExpression constantExpression)
         {
-            return c;
+            return constantExpression;
         }
 
-        protected virtual Expression VisitConditional(ConditionalExpression c)
+        protected virtual Expression VisitConditional(ConditionalExpression conditionalExpression)
         {
-            Expression test = this.Visit(c.Test);
-            Expression ifTrue = this.Visit(c.IfTrue);
-            Expression ifFalse = this.Visit(c.IfFalse);
-            if (test != c.Test || ifTrue != c.IfTrue || ifFalse != c.IfFalse)
+            Expression test = this.Visit(conditionalExpression.Test);
+            Expression ifTrue = this.Visit(conditionalExpression.IfTrue);
+            Expression ifFalse = this.Visit(conditionalExpression.IfFalse);
+            if (test != conditionalExpression.Test || ifTrue != conditionalExpression.IfTrue || ifFalse != conditionalExpression.IfFalse)
             {
                 return Expression.Condition(test, ifTrue, ifFalse);
             }
-            return c;
+            return conditionalExpression;
         }
 
-        protected virtual Expression VisitParameter(ParameterExpression p)
+        protected virtual Expression VisitParameter(ParameterExpression parameterExpression)
         {
-            return p;
+            return parameterExpression;
         }
 
-        protected virtual Expression VisitMemberAccess(MemberExpression m)
+        protected virtual Expression VisitMemberAccess(MemberExpression memberExpression)
         {
-            Expression exp = this.Visit(m.Expression);
-            if (exp != m.Expression)
+            Expression exp = this.Visit(memberExpression.Expression);
+            if (exp != memberExpression.Expression)
             {
-                return Expression.MakeMemberAccess(exp, m.Member);
+                return Expression.MakeMemberAccess(exp, memberExpression.Member);
             }
-            return m;
+            return memberExpression;
         }
 
-        protected virtual Expression VisitMethodCall(MethodCallExpression m)
+        protected virtual Expression VisitMethodCall(MethodCallExpression methodCallExpression)
         {
-            Expression obj = this.Visit(m.Object);
-            IEnumerable<Expression> args = this.VisitExpressionList(m.Arguments);
-            if (obj != m.Object || args != m.Arguments)
+            Expression obj = this.Visit(methodCallExpression.Object);
+            IEnumerable<Expression> args = this.VisitExpressionList(methodCallExpression.Arguments);
+            if (obj != methodCallExpression.Object || args != methodCallExpression.Arguments)
             {
-                return Expression.Call(obj, m.Method, args);
+                return Expression.Call(obj, methodCallExpression.Method, args);
             }
-            return m;
+            return methodCallExpression;
         }
 
         protected virtual ReadOnlyCollection<Expression> VisitExpressionList(ReadOnlyCollection<Expression> original)
@@ -338,32 +340,32 @@ namespace ModuleInject.Utility
             return init;
         }
 
-        protected virtual Expression VisitNewArray(NewArrayExpression na)
+        protected virtual Expression VisitNewArray(NewArrayExpression newArrayExpression)
         {
-            IEnumerable<Expression> exprs = this.VisitExpressionList(na.Expressions);
-            if (exprs != na.Expressions)
+            IEnumerable<Expression> exprs = this.VisitExpressionList(newArrayExpression.Expressions);
+            if (exprs != newArrayExpression.Expressions)
             {
-                if (na.NodeType == ExpressionType.NewArrayInit)
+                if (newArrayExpression.NodeType == ExpressionType.NewArrayInit)
                 {
-                    return Expression.NewArrayInit(na.Type.GetElementType(), exprs);
+                    return Expression.NewArrayInit(newArrayExpression.Type.GetElementType(), exprs);
                 }
                 else
                 {
-                    return Expression.NewArrayBounds(na.Type.GetElementType(), exprs);
+                    return Expression.NewArrayBounds(newArrayExpression.Type.GetElementType(), exprs);
                 }
             }
-            return na;
+            return newArrayExpression;
         }
 
-        protected virtual Expression VisitInvocation(InvocationExpression iv)
+        protected virtual Expression VisitInvocation(InvocationExpression invocationExpression)
         {
-            IEnumerable<Expression> args = this.VisitExpressionList(iv.Arguments);
-            Expression expr = this.Visit(iv.Expression);
-            if (args != iv.Arguments || expr != iv.Expression)
+            IEnumerable<Expression> args = this.VisitExpressionList(invocationExpression.Arguments);
+            Expression expr = this.Visit(invocationExpression.Expression);
+            if (args != invocationExpression.Arguments || expr != invocationExpression.Expression)
             {
                 return Expression.Invoke(expr, args);
             }
-            return iv;
+            return invocationExpression;
         }
     }
 }

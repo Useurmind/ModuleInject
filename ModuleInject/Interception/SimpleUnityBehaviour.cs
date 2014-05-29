@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ModuleInject.Utility;
 
 namespace ModuleInject.Interception
 {
@@ -13,7 +14,7 @@ namespace ModuleInject.Interception
 
         public IEnumerable<Type> GetRequiredInterfaces()
         {
-            return Behaviour.GetRequiredInterfaces();
+            return Behaviour.RequiredInterfaces;
         }
 
         public bool WillExecute
@@ -28,6 +29,8 @@ namespace ModuleInject.Interception
 
         public Unity.IMethodReturn Invoke(Unity.IMethodInvocation input, Unity.GetNextInterceptionBehaviorDelegate getNext)
         {
+            CommonFunctions.CheckNullArgument("getNext", getNext);
+
             IMethodInvocation invocation = new MethodInvocation(input);
 
             IMethodReturn beforeMethodReturn = Behaviour.BeforeMethodCall(invocation);

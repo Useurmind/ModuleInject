@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ModuleInject.Utility
 {
-    public class MemberChainExtractor : ExpressionVisitor
+    internal class MemberChainExtractor : ExpressionVisitor
     {
         private IList<Expression> _memberExpressions;
 

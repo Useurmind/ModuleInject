@@ -5,6 +5,7 @@ using ModuleInject.Interfaces;
 using ModuleInject.Utility;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -22,7 +23,7 @@ namespace ModuleInject
 
         public bool IsResolved { get; private set; }
 
-        public InjectionModule()
+        protected InjectionModule()
         {
             _isInterceptionActive = false;
             IsResolved = false;
@@ -45,6 +46,8 @@ namespace ModuleInject
             RegisterPrivateComponent<IComponent, TComponent>(Expression<Func<TModule, IComponent>> moduleProperty)
             where TComponent : IComponent
         {
+            CommonFunctions.CheckNullArgument("moduleProperty", moduleProperty);
+
             MemberExpression member = (MemberExpression)moduleProperty.Body;
             MemberInfo propInfo = member.Member;
             string propName = propInfo.Name;
@@ -58,6 +61,8 @@ namespace ModuleInject
             RegisterPublicComponent<IComponent, TComponent>(Expression<Func<IModule, IComponent>> moduleProperty)
             where TComponent : IComponent
         {
+            CommonFunctions.CheckNullArgument("moduleProperty", moduleProperty);
+
             MemberExpression member =  (MemberExpression)moduleProperty.Body;
             MemberInfo propInfo = member.Member;
             string propName = propInfo.Name;
@@ -70,6 +75,8 @@ namespace ModuleInject
             TComponent instance)
             where TComponent : IComponent
         {
+            CommonFunctions.CheckNullArgument("moduleProperty", moduleProperty);
+
             MemberExpression member = (MemberExpression)moduleProperty.Body;
             MemberInfo propInfo = member.Member;
             string componentName = propInfo.Name;
@@ -84,6 +91,8 @@ namespace ModuleInject
             TComponent instance)
             where TComponent : IComponent
         {
+            CommonFunctions.CheckNullArgument("moduleProperty", moduleProperty);
+
             MemberExpression member = (MemberExpression)moduleProperty.Body;
             MemberInfo propInfo = member.Member;
             string componentName = propInfo.Name;
@@ -95,6 +104,8 @@ namespace ModuleInject
             RegisterPublicComponentFactory<IComponent, TComponent>(Expression<Func<IModule, IComponent>> moduleMethod)
             where TComponent :IComponent
         {
+            CommonFunctions.CheckNullArgument("moduleMethod", moduleMethod);
+
             MethodCallExpression method = (MethodCallExpression)moduleMethod.Body;
             MethodInfo methodInfo = method.Method;
             string functionName = methodInfo.Name;
@@ -111,6 +122,8 @@ namespace ModuleInject
 
         protected IComponent CreateInstance<IComponent>(Expression<Func<IModule, IComponent>> moduleMethod)
         {
+            CommonFunctions.CheckNullArgument("moduleMethod", moduleMethod);
+
             MethodCallExpression method = (MethodCallExpression)moduleMethod.Body;
             MethodInfo methodInfo = method.Method;
             string functionName = methodInfo.Name;
@@ -128,6 +141,7 @@ namespace ModuleInject
             return _container.Resolve<IComponent>(functionName);
         }
 
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification="Should be ok that way.")]
         private ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterContainerComponent<IComponent, TComponent>(string propName) where TComponent : IComponent
         {
@@ -147,7 +161,7 @@ namespace ModuleInject
             return instanceContext;
         }
 
-        private void CheckPropertyQualifiesForPrivateRegistration(MemberInfo propInfo)
+        private static void CheckPropertyQualifiesForPrivateRegistration(MemberInfo propInfo)
         {
             string propName = propInfo.Name;
             var isInterfaceProperty = typeof(IModule).GetProperty(propName) != null;
@@ -165,11 +179,9 @@ namespace ModuleInject
                 CommonFunctions.ThrowTypeException<TModule>(Errors.InjectionModule_AlreadyResolved);
             }
 
-            ModuleResolver resolver = new ModuleResolver();
-            resolver.Resolve<IModule, TModule>((TModule)(object)this, _container);
+            ModuleResolver.Resolve<IModule, TModule>((TModule)(object)this, _container);
 
-            ModulePostResolveBuilder instanceBuilder = new ModulePostResolveBuilder();
-            instanceBuilder.PerformPostResolveAssembly(this, _instanceRegistrations);
+            ModulePostResolveBuilder.PerformPostResolveAssembly(this, _instanceRegistrations);
 
             IsResolved = true;
         }

@@ -13,14 +13,12 @@ namespace Test.ModuleInject
     [TestFixture]
     public class ModuleResolverTest
     {
-        private ModuleResolver _moduleResolver;
         private PropertyModule _module;
         private UnityContainer _container;
 
         [SetUp]
         public void Init()
         {
-            _moduleResolver = new ModuleResolver();
             _module = new PropertyModule();
             _module.SubModule = new Submodule();
             _container = new UnityContainer();
@@ -45,13 +43,13 @@ namespace Test.ModuleInject
             IUnityContainer container = new UnityContainer();
             container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InitWithPropertiesComponent));
 
-            _moduleResolver.Resolve<IPropertyModule, PropertyModule>((PropertyModule)_module, container); 
+            ModuleResolver.Resolve<IPropertyModule, PropertyModule>((PropertyModule)_module, container); 
         }
 
         [TestCase]
         public void Resolve_AllComponentRegisteredInContainer_ComponentPropertiesNotNull()
         {
-            _moduleResolver.Resolve<IPropertyModule, PropertyModule>((PropertyModule)_module, _container);
+            ModuleResolver.Resolve<IPropertyModule, PropertyModule>((PropertyModule)_module, _container);
             
             Assert.IsNotNull(_module.InitWithPropertiesComponent);
             Assert.IsNotNull(_module.InitWithInitialize1Component);
@@ -70,7 +68,7 @@ namespace Test.ModuleInject
         [ExpectedException(typeof(ModuleInjectException))]
         public void Resolve_NonInterface_ExpectException()
         {
-            _moduleResolver.Resolve<PropertyModule, PropertyModule>(_module, _container);
+            ModuleResolver.Resolve<PropertyModule, PropertyModule>(_module, _container);
         }
     }
 }

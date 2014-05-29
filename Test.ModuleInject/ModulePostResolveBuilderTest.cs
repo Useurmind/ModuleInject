@@ -14,7 +14,6 @@ namespace Test.ModuleInject
     [TestFixture]
     public class ModulePostResolveBuilderTest
     {
-        private ModulePostResolveBuilder _postResolveBuilder;
         private Mock<IInjectionModule> _moduleMock;
         private DoubleKeyDictionary<Type, string, IInstanceRegistrationContext> _instanceRegistrations;
         private Mock<IInstanceRegistrationContext> _instanceRegistrationMock;
@@ -25,7 +24,6 @@ namespace Test.ModuleInject
         [SetUp]
         public void Init()
         {
-            _postResolveBuilder = new ModulePostResolveBuilder();
             _moduleMock = new Mock<IInjectionModule>();
             _instanceRegistrations = new DoubleKeyDictionary<Type, string, IInstanceRegistrationContext>();
             _instanceRegistrationMock = new Mock<IInstanceRegistrationContext>();
@@ -44,7 +42,7 @@ namespace Test.ModuleInject
         [TestCase]
         public void PerformPostResolveAssembly_WithOneAssemblerAndRegisteredInstance_AssemblePerformedOnInstance()
         {
-            _postResolveBuilder.PerformPostResolveAssembly(_moduleMock.Object, _instanceRegistrations);
+            ModulePostResolveBuilder.PerformPostResolveAssembly(_moduleMock.Object, _instanceRegistrations);
 
             _assembler.Verify(x => x.Assemble(_instance, _moduleMock.Object), Times.Once);
         }

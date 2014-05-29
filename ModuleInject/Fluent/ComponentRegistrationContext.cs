@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ModuleInject.Utility;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ModuleInject.Fluent
 {
@@ -29,6 +30,7 @@ namespace ModuleInject.Fluent
             Container = container;
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification="This API is by design statically typed")]
         public ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> AddBehaviour<TBehaviour>()
             where TBehaviour : ISimpleBehaviour, new()
         {

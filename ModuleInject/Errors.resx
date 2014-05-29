@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ComponentRegistrationContext_InterceptionNotActivated" xml:space="preserve">
-    <value>Interception was not activated on the module with type '{0}'. Activate interception in the module before adding behaviours to components.</value>
+    <value>Interception was not activated on the module with type '{0}'. Activate interception in the module before adding a behaviour to components.</value>
   </data>
   <data name="InjectionModule_AlreadyResolved" xml:space="preserve">
     <value>The module with type '{0}' was already resolved. Please avoid multiple resolutions of the same module.</value>
@@ -133,7 +133,7 @@
     <value>The method '{0}' of module with type '{1}' can not be registered as a factory method. Only parameterless methods can currently be registered.</value>
   </data>
   <data name="InjectionModule_ModulesMustHaveAnInterface" xml:space="preserve">
-    <value>The modul with type '{0}' does not possess an interface. Please provide one in the generic parameters of InjectionModule and implement it in your module.</value>
+    <value>The module with type '{0}' does not possess an interface. Please provide one in the generic parameters of InjectionModule and implement it in your module.</value>
   </data>
   <data name="ModuleResolver_MissingPropertyRegistration" xml:space="preserve">
     <value>The property '{0}' of module with type '{1}' could not be resolved. Did you inject a property that was neither a member of the modules interface nor marked with the PrivateComponentAttribute?</value>

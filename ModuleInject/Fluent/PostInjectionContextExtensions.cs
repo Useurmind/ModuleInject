@@ -22,7 +22,6 @@ namespace ModuleInject.Fluent
             where IModule : IInjectionModule
         {
             string targetPropertyName = LinqHelper.GetMemberPath(dependencyTargetExpression);
-            string componentName = postInject.InstanceContext.ComponentName;
 
             postInject.InstanceContext.AddAssembler(new PostResolveAssembler<TComponent, IModule, TModule>((comp, module) =>
             {

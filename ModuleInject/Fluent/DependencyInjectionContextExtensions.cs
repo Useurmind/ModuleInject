@@ -21,6 +21,8 @@ namespace ModuleInject.Fluent
             where TModule : IModule
             where IModule : IInjectionModule
         {
+            CommonFunctions.CheckNullArgument("dependency", dependency);
+
             ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component = dependency.ComponentContext;
 
             string sourceName = dependency.DependencyName;

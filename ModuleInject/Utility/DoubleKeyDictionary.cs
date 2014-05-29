@@ -20,6 +20,8 @@ namespace ModuleInject.Utility
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldHaveCorrectSuffix"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "This is really a dictionary.")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "This is really a dictionary.")]
     public class DoubleKeyDictionary<TKey1, TKey2, TValue> : IEnumerable<DoubleKeyDictionaryItem<TKey1, TKey2, TValue>>
     {
         private Dictionary<TKey1, Dictionary<TKey2, TValue>> _dictionary;

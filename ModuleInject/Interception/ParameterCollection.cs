@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -7,6 +8,8 @@ using Unity = Microsoft.Practices.Unity.InterceptionExtension;
 
 namespace ModuleInject.Interception
 {
+    [SuppressMessage("Microsoft.Design", "CA1039:ListsAreStronglyTyped", Justification = "Only wrapping Unity IParameterCollection")]
+    [SuppressMessage("Microsoft.Design", "CA1035:ICollectionImplementationsHaveStronglyTypedMembers", Justification="Only wrapping Unity IParameterCollection")]
     public class ParameterCollection : IParameterCollection
     {
         internal Unity.IParameterCollection UnityParameters { get; private set; }

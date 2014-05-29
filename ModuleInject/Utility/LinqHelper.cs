@@ -8,11 +8,11 @@ namespace ModuleInject.Utility
 {
     public static class LinqHelper
     {
-        public static string GetMemberPath<TObject, TProperty>(Expression<Func<TObject, TProperty>> exp)
+        public static string GetMemberPath<TObject, TProperty>(Expression<Func<TObject, TProperty>> expression)
         {
             MemberChainExtractor propertyExtractor = new MemberChainExtractor();
 
-            IList<Expression> memberExpressions = propertyExtractor.Extract(exp);
+            IList<Expression> memberExpressions = propertyExtractor.Extract(expression);
 
             var propertyNames = memberExpressions.Select(me =>{
                 MemberExpression memberExp = me as MemberExpression;
