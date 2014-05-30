@@ -8,11 +8,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ModuleInject")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("IoC Framework that provides modules and compiler support")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Jochen Grün")]
 [assembly: AssemblyProduct("ModuleInject")]
-[assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyCopyright("Copyright ©  2014 Jochen Grün")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

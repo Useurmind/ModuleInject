@@ -18,3 +18,7 @@ This is where this framework can come in to save the day. Here are some facts ab
 * Supports property and method injection, NO constructor injection yet (because I didn't find a way to statically type that yet)
 * Supports Unity interface interceptors (everything else is not clean from my point of view)
 * Supports injection into existing instances (called post injection).
+* Supports factory methods in modules.
+* Supports injectors which encapsulate code for recurring initializations.
+
+See the full documentation on http://useurmind.github.io/moduleinject for more details.

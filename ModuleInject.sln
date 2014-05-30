@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModuleInject", "ModuleInject\ModuleInject.csproj", "{53221937-AEFF-477F-B132-91A5449C9738}"
 EndProject
@@ -15,15 +15,19 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		NuGet Package|Any CPU = NuGet Package|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{53221937-AEFF-477F-B132-91A5449C9738}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{53221937-AEFF-477F-B132-91A5449C9738}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53221937-AEFF-477F-B132-91A5449C9738}.NuGet Package|Any CPU.ActiveCfg = NuGet Package|Any CPU
+		{53221937-AEFF-477F-B132-91A5449C9738}.NuGet Package|Any CPU.Build.0 = NuGet Package|Any CPU
 		{53221937-AEFF-477F-B132-91A5449C9738}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53221937-AEFF-477F-B132-91A5449C9738}.Release|Any CPU.Build.0 = Release|Any CPU
 		{62D1AB2E-4638-4D35-AC0D-454FD1CE9B13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{62D1AB2E-4638-4D35-AC0D-454FD1CE9B13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62D1AB2E-4638-4D35-AC0D-454FD1CE9B13}.NuGet Package|Any CPU.ActiveCfg = NuGet Package|Any CPU
 		{62D1AB2E-4638-4D35-AC0D-454FD1CE9B13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62D1AB2E-4638-4D35-AC0D-454FD1CE9B13}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
