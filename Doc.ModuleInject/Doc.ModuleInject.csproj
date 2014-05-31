@@ -41,6 +41,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="MainDoc.html">
+      <DependentUpon>MainDoc.md</DependentUpon>
+    </Content>
     <Content Include="MainDoc.md" />
   </ItemGroup>
   <PropertyGroup>

@@ -156,3 +156,7 @@ $RECYCLE.BIN/
 .DS_Store
 /packages
 /Test.ModuleInject/Test.ModuleInject.snk.txt
+/Doxygen.ModuleInject
+/ModuleInject/NuGetPackages
+/Sandcastle.ModuleInject/Help
+/Sandcastle.ModuleInject/ModuleInject.shfbproj

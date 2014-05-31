@@ -106,11 +106,29 @@ namespace ModuleInject {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The method &apos;{0}&apos; of module with type &apos;{1}&apos; is not qualified to be a private factory. Either it is a public factory or it was not marked with the PrivateFactoryAttribute..
+        /// </summary>
+        internal static string InjectionModule_MethodNotQualifiedForPrivateRegistration {
+            get {
+                return ResourceManager.GetString("InjectionModule_MethodNotQualifiedForPrivateRegistration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The module with type &apos;{0}&apos; does not possess an interface. Please provide one in the generic parameters of InjectionModule and implement it in your module..
         /// </summary>
         internal static string InjectionModule_ModulesMustHaveAnInterface {
             get {
                 return ResourceManager.GetString("InjectionModule_ModulesMustHaveAnInterface", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The property &apos;{0}&apos; of module with type &apos;{1}&apos; is not qualified to be a private component. Either it is a public component or it was not marked with the PrivateComponentAttribute..
+        /// </summary>
+        internal static string InjectionModule_PropertyNotQualifiedForPrivateRegistration {
+            get {
+                return ResourceManager.GetString("InjectionModule_PropertyNotQualifiedForPrivateRegistration", resourceCulture);
             }
         }
         
@@ -129,15 +147,6 @@ namespace ModuleInject {
         internal static string ModuleResolver_PropertyIsNoInterface {
             get {
                 return ResourceManager.GetString("ModuleResolver_PropertyIsNoInterface", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The property &apos;{0}&apos; of module with type &apos;{1}&apos; is not qualified to be a private component. Either it is a public component or it was not marked with the PrivateComponentAttribute..
-        /// </summary>
-        internal static string ModuleResolver_PropertyNotQualifiedForPrivateRegistration {
-            get {
-                return ResourceManager.GetString("ModuleResolver_PropertyNotQualifiedForPrivateRegistration", resourceCulture);
             }
         }
     }

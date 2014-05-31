@@ -48,9 +48,9 @@ namespace ModuleInject.Fluent
 
         public static InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
             PostInitializeWith<IComponent, TComponent, IModule, TModule, TDependency1, TDependency2>(
-           this InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
-           Expression<Func<TModule, TDependency1>> dependency1SourceExpression,
-           Expression<Func<TModule, TDependency2>> dependency2SourceExpression)
+            this InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
+            Expression<Func<TModule, TDependency1>> dependency1SourceExpression,
+            Expression<Func<TModule, TDependency2>> dependency2SourceExpression)
             where TComponent : IComponent, IInitializable<TDependency1, TDependency2>
             where TModule : IModule
             where IModule : IInjectionModule
@@ -103,7 +103,7 @@ namespace ModuleInject.Fluent
             IPostResolveAssembler<TComponent, IModule, TModule> assembler
             )
             where TComponent : IComponent
-            where TModule: IModule
+            where TModule : IModule
             where IModule : IInjectionModule
         {
             CommonFunctions.CheckNullArgument("instance", instance);

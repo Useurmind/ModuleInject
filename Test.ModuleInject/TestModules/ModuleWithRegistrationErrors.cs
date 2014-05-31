@@ -8,5 +8,8 @@ namespace Test.ModuleInject.TestModules
 
     class ModuleWithRegistrationErrors
     {
+        // private component without attribute
+
+        // private factor without attribute
     }
 }

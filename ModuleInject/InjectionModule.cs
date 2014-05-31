@@ -13,6 +13,11 @@ using System.Text;
 
 namespace ModuleInject
 {
+    /// <summary>
+    /// Base class for all modules that you want to build.
+    /// </summary>
+    /// <typeparam name="IModule">The interface of the module.</typeparam>
+    /// <typeparam name="TModule">The type of the module.</typeparam>
     public abstract class InjectionModule<IModule, TModule> : IInjectionModule, IDisposable
         where TModule : InjectionModule<IModule, TModule>, IModule
         where IModule : IInjectionModule
@@ -108,8 +113,29 @@ namespace ModuleInject
 
             MethodCallExpression method = (MethodCallExpression)moduleMethod.Body;
             MethodInfo methodInfo = method.Method;
-            string functionName = methodInfo.Name;
 
+            return RegisterContainerFactory<IComponent, TComponent>(methodInfo);
+        }
+
+        protected ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
+            RegisterPrivateComponentFactory<IComponent, TComponent>(Expression<Func<TModule, IComponent>> moduleMethod)
+            where TComponent : IComponent
+        {
+            CommonFunctions.CheckNullArgument("moduleMethod", moduleMethod);
+
+            MethodCallExpression method = (MethodCallExpression)moduleMethod.Body;
+            MethodInfo methodInfo = method.Method;
+
+            CheckMethodQualifiesForPrivateRegistration(methodInfo);
+
+            return RegisterContainerFactory<IComponent, TComponent>(methodInfo);
+        }
+
+        private ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> 
+            RegisterContainerFactory<IComponent, TComponent>(MethodInfo methodInfo)
+            where TComponent : IComponent
+        {
+            string functionName = methodInfo.Name;
             if (methodInfo.GetParameters().Length > 0)
             {
                 CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_FactoryMethodsWithParametersNotSupportedYet, functionName);
@@ -120,7 +146,7 @@ namespace ModuleInject
             return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(functionName, _container, _isInterceptionActive);
         }
 
-        protected IComponent CreateInstance<IComponent>(Expression<Func<IModule, IComponent>> moduleMethod)
+        protected IComponent CreateInstance<IComponent>(Expression<Func<TModule, IComponent>> moduleMethod)
         {
             CommonFunctions.CheckNullArgument("moduleMethod", moduleMethod);
 
@@ -168,7 +194,18 @@ namespace ModuleInject
 
             if (isInterfaceProperty || propInfo.GetCustomAttributes(typeof(PrivateComponentAttribute), false).Length == 0)
             {
-                CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.ModuleResolver_PropertyNotQualifiedForPrivateRegistration, propName);
+                CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_PropertyNotQualifiedForPrivateRegistration, propName);
+            }
+        }
+
+        private static void CheckMethodQualifiesForPrivateRegistration(MethodInfo methodInfo)
+        {
+            string methodName = methodInfo.Name;
+            var isInterfaceProperty = typeof(IModule).GetProperty(methodName) != null;
+
+            if (isInterfaceProperty || methodInfo.GetCustomAttributes(typeof(PrivateFactoryAttribute), false).Length == 0)
+            {
+                CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_MethodNotQualifiedForPrivateRegistration, methodName);
             }
         }
 

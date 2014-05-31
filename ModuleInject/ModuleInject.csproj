@@ -110,6 +110,7 @@
     <Compile Include="ModulePostResolveBuilder.cs" />
     <Compile Include="ModuleResolver.cs" />
     <Compile Include="PrivateComponentAttribute.cs" />
+    <Compile Include="PrivateFactoryAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\CommonFunctions.cs" />
     <Compile Include="Utility\DoubleKeyDictionary.cs" />

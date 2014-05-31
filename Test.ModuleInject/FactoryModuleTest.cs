@@ -66,6 +66,34 @@ namespace Test.ModuleInject
         }
 
         [TestCase]
+        public void CreatePrivateComponent1__CreatesNewInstanceEachTime()
+        {
+            _module.Resolve();
+
+            IMainComponent1 componentFirstCall = _module.CreatePrivateComponent1();
+            IMainComponent1 componentSecondCall = _module.CreatePrivateComponent1();
+
+            Assert.IsNotNull(componentFirstCall);
+            Assert.IsNotNull(componentSecondCall);
+
+            Assert.AreNotSame(componentFirstCall, componentSecondCall);
+        }
+
+        [TestCase]
+        public void CreatePrivateComponent2__CreatesNewInstanceEachTime()
+        {
+            _module.Resolve();
+
+            IMainComponent2 componentFirstCall = _module.CreatePrivateComponent2();
+            IMainComponent2 componentSecondCall = _module.CreatePrivateComponent2();
+
+            Assert.IsNotNull(componentFirstCall);
+            Assert.IsNotNull(componentSecondCall);
+
+            Assert.AreNotSame(componentFirstCall, componentSecondCall);
+        }
+
+        [TestCase]
         public void Resolve_NormalInjection_FactoryDependenciesResolvedAndDifferent()
         {
             _module.Resolve();
@@ -116,6 +144,41 @@ namespace Test.ModuleInject
             Assert.AreNotSame(factoryComponent1, privateComponent);
             Assert.AreNotSame(privateComponent, factoryComponent2);
             Assert.AreSame(_module.RetrievePrivateComponent2(), privateComponent);
+        }
+        [TestCase]
+        public void Resolve_PublicComponentWithDependenciesFromPrivateFactories_AllDependenciesResolved()
+        {
+            _module.Resolve();
+
+            var factoryComponent = _module.ComponentWithPrivateComponents;
+            var factoryComponent1 = factoryComponent.MainComponent2;
+            var factoryComponent2 = factoryComponent.MainComponent22;
+
+            Assert.IsNotNull(factoryComponent);
+            Assert.IsNotNull(factoryComponent1);
+            Assert.IsNotNull(factoryComponent2);
+            Assert.AreNotSame(factoryComponent1, factoryComponent2);
+        }
+
+        [TestCase]
+        public void Resolve_PrivateFactoryComponentWithDependencies_AllDependenciesResolved()
+        {
+            _module.Resolve();
+
+            var factoryComponent = _module.CreatePrivateComponent1();
+
+            var factoryComponent2 = factoryComponent.MainComponent2;
+            var privateComponent2 = factoryComponent.MainComponent22;
+            var privateFactoryComponent2 = factoryComponent.MainComponent23;
+
+            Assert.IsNotNull(factoryComponent);
+            Assert.IsNotNull(factoryComponent2);
+            Assert.IsNotNull(privateComponent2);
+            Assert.IsNotNull(privateFactoryComponent2);
+            Assert.AreNotSame(factoryComponent2, privateComponent2);
+            Assert.AreNotSame(privateComponent2, privateFactoryComponent2);
+            Assert.AreNotSame(factoryComponent2, privateFactoryComponent2);
+            Assert.AreSame(_module.RetrievePrivateComponent2(), privateComponent2);
         }
 
         [TestCase]

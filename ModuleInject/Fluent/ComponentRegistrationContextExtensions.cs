@@ -43,7 +43,7 @@ namespace ModuleInject.Fluent
         public static ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             InitializeWith<IComponent, TComponent, IModule, TModule, TDependency1>(
             this ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
-            Expression<Func<IModule, TDependency1>> dependency1SourceExpression)
+            Expression<Func<TModule, TDependency1>> dependency1SourceExpression)
             where TComponent : IComponent, IInitializable<TDependency1>
             where TModule : IModule
             where IModule : IInjectionModule
@@ -61,8 +61,8 @@ namespace ModuleInject.Fluent
         public static ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             InitializeWith<IComponent, TComponent, IModule, TModule, TDependency1, TDependency2>(
             this ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
-            Expression<Func<IModule, TDependency1>> dependency1SourceExpression,
-            Expression<Func<IModule, TDependency2>> dependency2SourceExpression)
+            Expression<Func<TModule, TDependency1>> dependency1SourceExpression,
+            Expression<Func<TModule, TDependency2>> dependency2SourceExpression)
             where TComponent : IComponent, IInitializable<TDependency1, TDependency2>
             where TModule : IModule
             where IModule : IInjectionModule
@@ -84,9 +84,9 @@ namespace ModuleInject.Fluent
         public static ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> 
             InitializeWith<IComponent, TComponent, IModule, TModule, TDependency1, TDependency2, TDependency3>(
             this ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
-            Expression<Func<IModule, TDependency1>> dependency1SourceExpression,
-            Expression<Func<IModule, TDependency2>> dependency2SourceExpression,
-            Expression<Func<IModule, TDependency3>> dependency3SourceExpression)
+            Expression<Func<TModule, TDependency1>> dependency1SourceExpression,
+            Expression<Func<TModule, TDependency2>> dependency2SourceExpression,
+            Expression<Func<TModule, TDependency3>> dependency3SourceExpression)
             where TComponent : IComponent, IInitializable<TDependency1, TDependency2, TDependency3>
             where TModule : IModule
             where IModule : IInjectionModule
