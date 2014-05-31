@@ -123,6 +123,9 @@
   <data name="InjectionModule_AlreadyResolved" xml:space="preserve">
     <value>The module with type '{0}' was already resolved. Please avoid multiple resolutions of the same module.</value>
   </data>
+  <data name="InjectionModule_CannotRegisterPropertyOrMethodsWhichAreNotMembersOfTheModule" xml:space="preserve">
+    <value>The property or method '{0}' of module with type '{1}' could not be registered. Only direct properties and methods of a module can be registered.</value>
+  </data>
   <data name="InjectionModule_CreateInstanceBeforeResolve" xml:space="preserve">
     <value>The factory method '{0}' of module with type '{1}' was called before the module was resolved. Please resolve the module before creating any instances via factories.</value>
   </data>
@@ -137,6 +140,9 @@
   </data>
   <data name="InjectionModule_ModulesMustHaveAnInterface" xml:space="preserve">
     <value>The module with type '{0}' does not possess an interface. Please provide one in the generic parameters of InjectionModule and implement it in your module.</value>
+  </data>
+  <data name="InjectionModule_NeitherPropertyNorMethodExpression" xml:space="preserve">
+    <value>The expression '{1}' describes neither a property or method of the module with type '{0}'.</value>
   </data>
   <data name="InjectionModule_PropertyNotQualifiedForPrivateRegistration" xml:space="preserve">
     <value>The property '{0}' of module with type '{1}' is not qualified to be a private component. Either it is a public component or it was not marked with the PrivateComponentAttribute.</value>

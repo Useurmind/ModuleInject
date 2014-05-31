@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="BehaviourModuleTest.cs" />
     <Compile Include="Interception\SimpleUnityBehaviourTest.cs" />
+    <Compile Include="ModuleWithRegistrationErrorsTest.cs" />
     <Compile Include="NoInterfaceModuleTests.cs" />
     <Compile Include="Fluent\ComponentRegistrationContextTest.cs" />
     <Compile Include="Fluent\DependencyInjectionContextTest.cs" />

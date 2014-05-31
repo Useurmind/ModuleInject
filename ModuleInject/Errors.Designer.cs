@@ -79,6 +79,15 @@ namespace ModuleInject {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The property or method &apos;{0}&apos; of module with type &apos;{1}&apos; could not be registered. Only direct properties and methods of a module can be registered..
+        /// </summary>
+        internal static string InjectionModule_CannotRegisterPropertyOrMethodsWhichAreNotMembersOfTheModule {
+            get {
+                return ResourceManager.GetString("InjectionModule_CannotRegisterPropertyOrMethodsWhichAreNotMembersOfTheModule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The factory method &apos;{0}&apos; of module with type &apos;{1}&apos; was called before the module was resolved. Please resolve the module before creating any instances via factories..
         /// </summary>
         internal static string InjectionModule_CreateInstanceBeforeResolve {
@@ -120,6 +129,15 @@ namespace ModuleInject {
         internal static string InjectionModule_ModulesMustHaveAnInterface {
             get {
                 return ResourceManager.GetString("InjectionModule_ModulesMustHaveAnInterface", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The expression &apos;{1}&apos; describes neither a property or method of the module with type &apos;{0}&apos;..
+        /// </summary>
+        internal static string InjectionModule_NeitherPropertyNorMethodExpression {
+            get {
+                return ResourceManager.GetString("InjectionModule_NeitherPropertyNorMethodExpression", resourceCulture);
             }
         }
         

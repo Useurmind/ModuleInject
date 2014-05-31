@@ -43,5 +43,19 @@ namespace Test.ModuleInject.Utility
 
             Assert.AreEqual(expectedPath, result);
         }
+
+        [TestCase]
+        public void GetMemberPathWithDepth_MemberExpressionDepth1_ReturnsCorrectPathAndDepth1()
+        {
+            Expression<Func<TestClass2, int>> exp = x => x.IntProperty;
+            string expectedPath = string.Format("{0}", (string)Property.Get((TestClass2 x) => x.IntProperty));
+            int expectedDepth = 1;
+
+            int actualDepth;
+            string result = LinqHelper.GetMemberPath(exp, out actualDepth);
+
+            Assert.AreEqual(expectedPath, result);
+            Assert.AreEqual(expectedDepth, actualDepth);
+        }
     }
 }

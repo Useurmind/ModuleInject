@@ -53,6 +53,8 @@ namespace ModuleInject
         {
             CommonFunctions.CheckNullArgument("moduleProperty", moduleProperty);
 
+            CheckExpressionDescribesDirectMember(moduleProperty);
+
             MemberExpression member = (MemberExpression)moduleProperty.Body;
             MemberInfo propInfo = member.Member;
             string propName = propInfo.Name;
@@ -62,13 +64,15 @@ namespace ModuleInject
             return RegisterContainerComponent<IComponent, TComponent>(propName);
         }
 
-        protected ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> 
+        protected ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterPublicComponent<IComponent, TComponent>(Expression<Func<IModule, IComponent>> moduleProperty)
             where TComponent : IComponent
         {
             CommonFunctions.CheckNullArgument("moduleProperty", moduleProperty);
 
-            MemberExpression member =  (MemberExpression)moduleProperty.Body;
+            CheckExpressionDescribesDirectMember(moduleProperty);
+
+            MemberExpression member = (MemberExpression)moduleProperty.Body;
             MemberInfo propInfo = member.Member;
             string propName = propInfo.Name;
 
@@ -82,6 +86,8 @@ namespace ModuleInject
         {
             CommonFunctions.CheckNullArgument("moduleProperty", moduleProperty);
 
+            CheckExpressionDescribesDirectMember(moduleProperty);
+
             MemberExpression member = (MemberExpression)moduleProperty.Body;
             MemberInfo propInfo = member.Member;
             string componentName = propInfo.Name;
@@ -91,12 +97,14 @@ namespace ModuleInject
             return RegisterContainerInstance<IComponent, TComponent>(instance, componentName);
         }
 
-        protected InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> 
+        protected InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterPublicComponent<IComponent, TComponent>(Expression<Func<IModule, IComponent>> moduleProperty,
             TComponent instance)
             where TComponent : IComponent
         {
             CommonFunctions.CheckNullArgument("moduleProperty", moduleProperty);
+
+            CheckExpressionDescribesDirectMember(moduleProperty);
 
             MemberExpression member = (MemberExpression)moduleProperty.Body;
             MemberInfo propInfo = member.Member;
@@ -105,11 +113,13 @@ namespace ModuleInject
             return RegisterContainerInstance<IComponent, TComponent>(instance, componentName);
         }
 
-        protected ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> 
+        protected ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterPublicComponentFactory<IComponent, TComponent>(Expression<Func<IModule, IComponent>> moduleMethod)
-            where TComponent :IComponent
+            where TComponent : IComponent
         {
             CommonFunctions.CheckNullArgument("moduleMethod", moduleMethod);
+
+            CheckExpressionDescribesDirectMember(moduleMethod);
 
             MethodCallExpression method = (MethodCallExpression)moduleMethod.Body;
             MethodInfo methodInfo = method.Method;
@@ -123,6 +133,8 @@ namespace ModuleInject
         {
             CommonFunctions.CheckNullArgument("moduleMethod", moduleMethod);
 
+            CheckExpressionDescribesDirectMember(moduleMethod);
+
             MethodCallExpression method = (MethodCallExpression)moduleMethod.Body;
             MethodInfo methodInfo = method.Method;
 
@@ -131,7 +143,7 @@ namespace ModuleInject
             return RegisterContainerFactory<IComponent, TComponent>(methodInfo);
         }
 
-        private ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> 
+        private ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterContainerFactory<IComponent, TComponent>(MethodInfo methodInfo)
             where TComponent : IComponent
         {
@@ -167,7 +179,7 @@ namespace ModuleInject
             return _container.Resolve<IComponent>(functionName);
         }
 
-        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification="Should be ok that way.")]
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Should be ok that way.")]
         private ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterContainerComponent<IComponent, TComponent>(string propName) where TComponent : IComponent
         {
@@ -176,7 +188,9 @@ namespace ModuleInject
             return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(propName, _container, _isInterceptionActive);
         }
 
-        private InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> RegisterContainerInstance<IComponent, TComponent>(TComponent instance, string componentName) where TComponent : IComponent
+        private InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
+            RegisterContainerInstance<IComponent, TComponent>(TComponent instance, string componentName)
+            where TComponent : IComponent
         {
             _container.RegisterInstance<IComponent>(componentName, instance);
 
@@ -185,6 +199,57 @@ namespace ModuleInject
             _instanceRegistrations.Add(typeof(IComponent), componentName, instanceContext);
 
             return instanceContext;
+        }
+
+        private static void CheckExpressionDescribesDirectMember<TObject, IComponent>(Expression<Func<TObject, IComponent>> moduleProperty)
+        {
+            int depth;
+            string path = LinqHelper.GetMemberPath(moduleProperty, out depth);
+            if (depth > 1)
+            {
+                CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_CannotRegisterPropertyOrMethodsWhichAreNotMembersOfTheModule, path);
+            }
+
+            ParameterExpression paramExp = null;
+            MemberExpression propExpression = moduleProperty.Body as MemberExpression;
+            MethodCallExpression methodExpression = moduleProperty.Body as MethodCallExpression;
+            if (propExpression != null)
+            {
+                PropertyInfo propInfo = propExpression.Member as PropertyInfo;
+                if (propInfo == null || !IsTypeOfModule(propInfo.DeclaringType))
+                {
+                    ThrowNoPropertyOrMethodOfModuleException(moduleProperty);
+                }
+                paramExp = propExpression.Expression as ParameterExpression;
+            }
+            else if (methodExpression != null)
+            {
+                MethodInfo methodInfo = methodExpression.Method;
+                if (!IsTypeOfModule(methodInfo.DeclaringType))
+                {
+                    ThrowNoPropertyOrMethodOfModuleException(moduleProperty);
+                }
+                paramExp = methodExpression.Object as ParameterExpression;
+            }
+            else
+            {
+                ThrowNoPropertyOrMethodOfModuleException(moduleProperty);
+            }
+
+            if (paramExp == null || !IsTypeOfModule(paramExp.Type))
+            {
+                ThrowNoPropertyOrMethodOfModuleException(moduleProperty);
+            }
+        }
+
+        private static void ThrowNoPropertyOrMethodOfModuleException<TObject, IComponent>(Expression<Func<TObject, IComponent>> expression)
+        {
+            CommonFunctions.ThrowTypeException<TModule>(Errors.InjectionModule_NeitherPropertyNorMethodExpression, expression);
+        }
+
+        private static bool IsTypeOfModule(Type type)
+        {
+            return type == typeof(IModule) || type == typeof(TModule);
         }
 
         private static void CheckPropertyQualifiesForPrivateRegistration(MemberInfo propInfo)

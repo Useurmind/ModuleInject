@@ -12,7 +12,10 @@ namespace Test.ModuleInject.TestModules
         IMainComponent2 MainComponent2 { get;  }
         IMainComponent2 MainComponent22 { get; }
         IMainComponent2 MainComponent23 { get; }
-        ISubComponent1 SubComponent1 { get;  }
+        ISubComponent1 SubComponent1 { get; }
+
+        IMainComponent1 RecursiveComponent1 { get; }
+        IMainComponent1 RecursiveFactory1();
 
         int FunctionReturns5();
     }
@@ -28,6 +31,8 @@ namespace Test.ModuleInject.TestModules
         public IMainComponent2 MainComponent22 { get; set; }
         public IMainComponent2 MainComponent23 { get; set; }
         public ISubComponent1 SubComponent1 { get; set; }
+
+        public IMainComponent1 RecursiveComponent1 { get; set; }
 
         public void Initialize(IMainComponent2 dependency1)
         {
@@ -51,6 +56,8 @@ namespace Test.ModuleInject.TestModules
             MainComponent22 = dependency2;
             SubComponent1 = dependency3;
         }
+
+        public IMainComponent1 RecursiveFactory1() { return null; }
 
         public int FunctionReturns5()
         {
