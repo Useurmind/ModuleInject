@@ -3,6 +3,7 @@ using ModuleInject.Fluent;
 using ModuleInject.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 

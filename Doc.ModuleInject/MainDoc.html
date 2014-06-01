@@ -14,9 +14,11 @@
 }
 </code></pre>
 
-<p>This is how a very basic interface for module named IMainModule could look like. Other modules will consume this module purely by working with this interface.
-This gives you nice boundaries that won't be crossed so easily. Also notice that components are offered in the form of interfaces. This is also important because else you would reveal the inner workings of your module to other modules. 
-You can see that ModuleInject is all about contracting between different parts of your application and separating them clearly through these contracts. This also allows to exchange modules relatively easy when you see the need to do so.</p>
+<p>This is how a very basic interface for module named IMainModule could look like. Other modules will consume this module purely by working with this interface.</p>
+
+<p>This gives you nice boundaries that won't be crossed so easily. Also notice that components are offered in the form of interfaces. This is also important because else you would reveal the inner workings of your module to other modules. </p>
+
+<p>You can see that ModuleInject is all about contracting between different parts of your application and separating them clearly through these contracts. This also allows to exchange modules relatively easy when you see the need to do so.</p>
 
 <h2>Your first module</h2>
 
@@ -74,8 +76,10 @@ You can see that ModuleInject is all about contracting between different parts o
 }
 </code></pre>
 
-<p>This will result in the following output:
-    "Hello World"</p>
+<p>This will result in the following output:</p>
+
+<pre><code>"Hello World"
+</code></pre>
 
 <p>What happened is that in the Resolve call the Property PrintComponent of the MainModule was filled with an instance of the PrintComponent class. We used this instance to print the greeting.</p>
 
@@ -119,10 +123,95 @@ public class PrintComponent : IPrintComponent {
 }
 </code></pre>
 
-<p>A lot of stuff just happened. The components are relatively straight forward. But in the registration process we now can see that there a two kinds of components in a module.
-First the public components which are available through the interface of the module and second the private components which are only available inside the module. The private components must be decorated with the PrivateComponentAttribute.
-But for now let's concentrate on the registration process. As before we register both components and specify the their actual implementations. But in addition we now inject values into properties of the components. This is done with the fluent API via the Inject and IntoProperty methods. The Inject method describes the property in our module from where to take the injected value. And the IntoProperty call identifies the property of the component in which we want to inject the dependency. 
+<p>A lot of stuff just happened. The components are relatively straight forward. But in the registration process we now can see that there a two kinds of components in a module.</p>
+
+<p>First the public components which are available through the interface of the module and second the private components which are only available inside the module. The private components must be decorated with the PrivateComponentAttribute.</p>
+
+<p>But for now let's concentrate on the registration process. As before we register both components and specify the their actual implementations. But in addition we now inject values into properties of the components. This is done with the fluent API via the Inject and IntoProperty methods. The Inject method describes the property in our module from where to take the injected value. And the IntoProperty call identifies the property of the component in which we want to inject the dependency. 
 You can inject properties of the module, of submodules and constant values also.</p>
 
-<p>If we now execute our application (which we didn't need to change), we get the following output:
-    "Hello ModuleInject"</p>
+<p>If we now execute our application (which we didn't need to change), we get the following output:</p>
+
+<pre><code>"Hello ModuleInject"
+</code></pre>
+
+<h3>Using submodules</h3>
+
+<p>Until now we only used one module. But with ModuleInject it is possible to create a hierarchy of modules that encapsulate the components of certain parts of your application.</p>
+
+<p>Let's try and create a submodule for our current MainModule:</p>
+
+<pre><code>public interface ILogModule : IInjectionModule
+{
+    ILog Log { get; }
+}
+
+public class LogModule : InjectionModule&lt;ILogModule, LogModule&gt;, ILogModule
+{
+    public ILog Log { get; private set; }
+
+    public LogModule() {
+        RegisterPublicComponent&lt;ILog, DebugLog&gt;(x =&gt; x.Log);
+    }
+}
+</code></pre>
+
+<p>This module is very simple and only defines a standard log component that can be used.
+The logging component looks as follows:</p>
+
+<pre><code>public interface ILog {
+    void Write(string message);
+}
+
+public class DebugLog {
+    public void Write(string message) {
+        Debug.WriteLine(message);
+    }
+}
+</code></pre>
+
+<p>So we now have a logging component that writes arbitrary messages to the default debug output.
+We also need to extend our print component somewhat:</p>
+
+<pre><code>public class PrintComponent : IPrintComponent {
+    ...
+
+    public ILog Log { get; set; }
+
+    public void PrintOutput() {
+        Log.Write("Before greeting");
+
+        Console.WriteLine("Hello {0}", NameProvider.NameToGreet);
+
+        Log.Write("After greeting");
+    }
+}
+</code></pre>
+
+<p>The PrintComponent does now implement writing to a given ILog component before and after it outputs the greeting.
+This module can now be used in our MainModule like this:</p>
+
+<pre><code>[PrivateComponent]
+private ILogModule LogModule { get; set; }
+
+public MainModule() {
+        ...
+
+    RegisterPrivateComponent&lt;ILogModule, LogModule&gt;(x =&gt; x.LogModule);
+
+    RegisterPublicComponent&lt;IPrintComponent, PrintComponent&gt;(x =&gt; x.PrintComponent)
+        .Inject(x =&gt; x.NameComponent).IntoProperty(x =&gt; x.NameProvider)
+        .Inject(x =&gt; x.LogModule.Log).IntoProperty(x =&gt; x.Log);
+}
+</code></pre>
+
+<p>In the MainModule we first register the LogModule as a private component. This will assure it is filled with an instance of the proper ILogModule implementation. </p>
+
+<p>Afterwards we inject the Log component of the LogModule into the Log property of the PrintComponent. In that way the PrintComponent uses the kind of logging we define in our ILogModule implementation.</p>
+
+<p>Now our PrintComponent will produce log output on the debug stream and the complete output will look as follows:</p>
+
+<pre><code>"Before greeting"
+"Hello ModuleInject"
+"After greeting"
+</code></pre>
