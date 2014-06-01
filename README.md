@@ -21,7 +21,7 @@ This is where this framework can come in to save the day. Here are some facts ab
 * Supports factory methods in modules.
 * Supports injectors which encapsulate code for recurring initializations.
 
-See the full documentation on http://useurmind.github.io/moduleinject for more details.
+See the full documentation on http://useurmind.github.io/ModuleInject for more details.
 
 Also available via NuGet on:
 	https://www.nuget.org/packages/ModuleInject/
