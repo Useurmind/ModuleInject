@@ -49,7 +49,7 @@ namespace ModuleInject
 
         protected ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterPrivateComponent<IComponent, TComponent>(Expression<Func<TModule, IComponent>> moduleProperty)
-            where TComponent : IComponent
+            where TComponent : IComponent, new()
         {
             CommonFunctions.CheckNullArgument("moduleProperty", moduleProperty);
 
@@ -66,7 +66,7 @@ namespace ModuleInject
 
         protected ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterPublicComponent<IComponent, TComponent>(Expression<Func<IModule, IComponent>> moduleProperty)
-            where TComponent : IComponent
+            where TComponent : IComponent, new()
         {
             CommonFunctions.CheckNullArgument("moduleProperty", moduleProperty);
 
@@ -115,7 +115,7 @@ namespace ModuleInject
 
         protected ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterPublicComponentFactory<IComponent, TComponent>(Expression<Func<IModule, IComponent>> moduleMethod)
-            where TComponent : IComponent
+            where TComponent : IComponent, new()
         {
             CommonFunctions.CheckNullArgument("moduleMethod", moduleMethod);
 
@@ -129,7 +129,7 @@ namespace ModuleInject
 
         protected ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterPrivateComponentFactory<IComponent, TComponent>(Expression<Func<TModule, IComponent>> moduleMethod)
-            where TComponent : IComponent
+            where TComponent : IComponent, new()
         {
             CommonFunctions.CheckNullArgument("moduleMethod", moduleMethod);
 
@@ -145,7 +145,7 @@ namespace ModuleInject
 
         private ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterContainerFactory<IComponent, TComponent>(MethodInfo methodInfo)
-            where TComponent : IComponent
+            where TComponent : IComponent, new()
         {
             string functionName = methodInfo.Name;
             if (methodInfo.GetParameters().Length > 0)
@@ -153,7 +153,7 @@ namespace ModuleInject
                 CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_FactoryMethodsWithParametersNotSupportedYet, functionName);
             }
 
-            _container.RegisterType<IComponent, TComponent>(functionName);
+            _container.RegisterType<IComponent, TComponent>(functionName, new InjectionConstructor());
 
             return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(functionName, _container, _isInterceptionActive);
         }
@@ -181,9 +181,10 @@ namespace ModuleInject
 
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Should be ok that way.")]
         private ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
-            RegisterContainerComponent<IComponent, TComponent>(string propName) where TComponent : IComponent
+            RegisterContainerComponent<IComponent, TComponent>(string propName)
+            where TComponent : IComponent, new()
         {
-            _container.RegisterType<IComponent, TComponent>(propName, new ContainerControlledLifetimeManager());
+            _container.RegisterType<IComponent, TComponent>(propName, new ContainerControlledLifetimeManager(), new InjectionConstructor());
 
             return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(propName, _container, _isInterceptionActive);
         }
