@@ -38,13 +38,149 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="css\humanity\images\animated-overlay.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="css\humanity\images\ui-bg_flat_75_aaaaaa_40x100.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="css\humanity\images\ui-bg_glass_100_f5f0e5_1x400.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="css\humanity\images\ui-bg_glass_25_cb842e_1x400.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="css\humanity\images\ui-bg_glass_70_ede4d4_1x400.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="css\humanity\images\ui-bg_highlight-hard_100_f4f0ec_1x100.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="css\humanity\images\ui-bg_highlight-hard_65_fee4bd_1x100.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="css\humanity\images\ui-bg_highlight-hard_75_f5f5b5_1x100.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="css\humanity\images\ui-bg_inset-soft_100_f4f0ec_1x100.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="css\humanity\images\ui-icons_c47a23_256x240.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="css\humanity\images\ui-icons_cb672b_256x240.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="css\humanity\images\ui-icons_f08000_256x240.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="css\humanity\images\ui-icons_f35f07_256x240.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="css\humanity\images\ui-icons_ff7519_256x240.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="css\humanity\images\ui-icons_ffffff_256x240.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="css\humanity\jquery-ui-1.10.4.custom.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="css\humanity\jquery-ui-1.10.4.custom.min.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="css\highlightjs\arta.css" />
+    <Content Include="css\highlightjs\ascetic.css" />
+    <Content Include="css\highlightjs\atelier-dune.dark.css" />
+    <Content Include="css\highlightjs\atelier-dune.light.css" />
+    <Content Include="css\highlightjs\atelier-forest.dark.css" />
+    <Content Include="css\highlightjs\atelier-forest.light.css" />
+    <Content Include="css\highlightjs\atelier-heath.dark.css" />
+    <Content Include="css\highlightjs\atelier-heath.light.css" />
+    <Content Include="css\highlightjs\atelier-lakeside.dark.css" />
+    <Content Include="css\highlightjs\atelier-lakeside.light.css" />
+    <Content Include="css\highlightjs\atelier-seaside.dark.css" />
+    <Content Include="css\highlightjs\atelier-seaside.light.css" />
+    <Content Include="css\highlightjs\brown_paper.css" />
+    <Content Include="css\highlightjs\brown_papersq.png" />
+    <Content Include="css\highlightjs\dark.css" />
+    <Content Include="css\highlightjs\default.css" />
+    <Content Include="css\highlightjs\docco.css" />
+    <Content Include="css\highlightjs\far.css" />
+    <Content Include="css\highlightjs\foundation.css" />
+    <Content Include="css\highlightjs\github.css" />
+    <Content Include="css\highlightjs\googlecode.css" />
+    <Content Include="css\highlightjs\idea.css" />
+    <Content Include="css\highlightjs\ir_black.css" />
+    <Content Include="css\highlightjs\magula.css" />
+    <Content Include="css\highlightjs\mono-blue.css" />
+    <Content Include="css\highlightjs\monokai.css" />
+    <Content Include="css\highlightjs\monokai_sublime.css" />
+    <Content Include="css\highlightjs\obsidian.css" />
+    <Content Include="css\highlightjs\paraiso.dark.css" />
+    <Content Include="css\highlightjs\paraiso.light.css" />
+    <Content Include="css\highlightjs\pojoaque.css" />
+    <Content Include="css\highlightjs\pojoaque.jpg" />
+    <Content Include="css\highlightjs\railscasts.css" />
+    <Content Include="css\highlightjs\rainbow.css" />
+    <Content Include="css\highlightjs\school_book.css" />
+    <Content Include="css\highlightjs\school_book.png" />
+    <Content Include="css\highlightjs\solarized_dark.css" />
+    <Content Include="css\highlightjs\solarized_light.css" />
+    <Content Include="css\highlightjs\sunburst.css" />
+    <Content Include="css\highlightjs\tomorrow-night-blue.css" />
+    <Content Include="css\highlightjs\tomorrow-night-bright.css" />
+    <Content Include="css\highlightjs\tomorrow-night-eighties.css" />
+    <Content Include="css\highlightjs\tomorrow-night.css" />
+    <Content Include="css\highlightjs\tomorrow.css" />
+    <Content Include="css\highlightjs\vs.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="css\highlightjs\xcode.css" />
+    <Content Include="css\highlightjs\zenburn.css" />
+    <Content Include="css\styles.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="home.html">
+      <DependentUpon>home.md</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="js\highlight.pack.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="js\jquery-1.10.2.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="js\jquery-ui-1.10.4.custom.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="js\jquery-ui-1.10.4.custom.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="js\main.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tutorial.html">
+      <DependentUpon>tutorial.md</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tutorial.md" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MainDoc.html">
-      <DependentUpon>MainDoc.md</DependentUpon>
-    </Content>
-    <Content Include="MainDoc.md" />
+    <Content Include="web.config" />
+    <Content Include="home.md" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

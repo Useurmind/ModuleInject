@@ -1,8 +1,7 @@
-﻿ModuleInject
-=============
+﻿Tutorial
+--------
 
-Modules & Components
---------------------
+###Modules & Components
 In ModuleInject everything is centered around modules and components. 
 
 Components are the working units in your application, the classes that provide your functionality.
@@ -20,10 +19,8 @@ This gives you nice boundaries that won't be crossed so easily. Also notice that
 
 You can see that ModuleInject is all about contracting between different parts of your application and separating them clearly through these contracts. This also allows to exchange modules relatively easy when you see the need to do so.
 
-Your first module
------------------
-
-###The modules interface is its contract
+###Your first module
+####The modules interface is its contract
 
 Let's take a leap at implementing the module interface given above. First we define concrete class of our module:
 
@@ -33,7 +30,7 @@ Let's take a leap at implementing the module interface given above. First we def
 
 Looks easy enough. You define the class MainModule which implements the interface IMainModule that we defined above. Additionally, it derives from the InjectionModule class which is generic and takes the interface of the module and the type of the module itself. Also we need to implement the single public component that the module should offer.
 
-###The modules first component
+####The modules first component
 
 Obviously, there is no information yet how the component should look like and how it will be resolved. We will fix that just now by defining the interface of the component:
 
@@ -49,7 +46,7 @@ Can you imagine what it will do? So lets see how the first draft of our componen
         }
     }
     
-###Registering the component in the module
+####Registering the component in the module
 
 Finally, we have a component to print a Hello World greeting for us. But how do we employ it in the module? First we need to register the component, for example in the constructor of our module:
 
@@ -59,7 +56,7 @@ Finally, we have a component to print a Hello World greeting for us. But how do 
 
 This registers the PrintComponent property of the MainModule to be a PrintComponent instance. 
 
-###Resolving the module
+####Resolving the module
 
 On calling the Resolve method of the module the property will be filled with the specified instance. After this we can use the module as follows to print our greeting:
 
@@ -78,7 +75,7 @@ This will result in the following output:
     
 What happened is that in the Resolve call the Property PrintComponent of the MainModule was filled with an instance of the PrintComponent class. We used this instance to print the greeting.
 
-###Property injection and private components
+####Property injection and private components
 So we have our first module up and running. But now lets make it a bit more complicated to show off some of the features of ModuleInject.
 
     public interface INameComponent {
@@ -126,7 +123,7 @@ If we now execute our application (which we didn't need to change), we get the f
 
     "Hello ModuleInject"
 
-###Using submodules
+####Using submodules
 Until now we only used one module. But with ModuleInject it is possible to create a hierarchy of modules that encapsulate the components of certain parts of your application.
 
 Let's try and create a submodule for our current MainModule:

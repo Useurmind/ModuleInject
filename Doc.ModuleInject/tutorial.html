@@ -1,6 +1,6 @@
-﻿<h1>ModuleInject</h1>
+﻿<h2>Tutorial</h2>
 
-<h2>Modules &amp; Components</h2>
+<h3>Modules &amp; Components</h3>
 
 <p>In ModuleInject everything is centered around modules and components. </p>
 
@@ -20,9 +20,9 @@
 
 <p>You can see that ModuleInject is all about contracting between different parts of your application and separating them clearly through these contracts. This also allows to exchange modules relatively easy when you see the need to do so.</p>
 
-<h2>Your first module</h2>
+<h3>Your first module</h3>
 
-<h3>The modules interface is its contract</h3>
+<h4>The modules interface is its contract</h4>
 
 <p>Let's take a leap at implementing the module interface given above. First we define concrete class of our module:</p>
 
@@ -33,7 +33,7 @@
 
 <p>Looks easy enough. You define the class MainModule which implements the interface IMainModule that we defined above. Additionally, it derives from the InjectionModule class which is generic and takes the interface of the module and the type of the module itself. Also we need to implement the single public component that the module should offer.</p>
 
-<h3>The modules first component</h3>
+<h4>The modules first component</h4>
 
 <p>Obviously, there is no information yet how the component should look like and how it will be resolved. We will fix that just now by defining the interface of the component:</p>
 
@@ -51,7 +51,7 @@
 }
 </code></pre>
 
-<h3>Registering the component in the module</h3>
+<h4>Registering the component in the module</h4>
 
 <p>Finally, we have a component to print a Hello World greeting for us. But how do we employ it in the module? First we need to register the component, for example in the constructor of our module:</p>
 
@@ -62,7 +62,7 @@
 
 <p>This registers the PrintComponent property of the MainModule to be a PrintComponent instance. </p>
 
-<h3>Resolving the module</h3>
+<h4>Resolving the module</h4>
 
 <p>On calling the Resolve method of the module the property will be filled with the specified instance. After this we can use the module as follows to print our greeting:</p>
 
@@ -83,7 +83,7 @@
 
 <p>What happened is that in the Resolve call the Property PrintComponent of the MainModule was filled with an instance of the PrintComponent class. We used this instance to print the greeting.</p>
 
-<h3>Property injection and private components</h3>
+<h4>Property injection and private components</h4>
 
 <p>So we have our first module up and running. But now lets make it a bit more complicated to show off some of the features of ModuleInject.</p>
 
@@ -135,7 +135,7 @@ You can inject properties of the module, of submodules and constant values also.
 <pre><code>"Hello ModuleInject"
 </code></pre>
 
-<h3>Using submodules</h3>
+<h4>Using submodules</h4>
 
 <p>Until now we only used one module. But with ModuleInject it is possible to create a hierarchy of modules that encapsulate the components of certain parts of your application.</p>
 
