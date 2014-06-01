@@ -1,0 +1,52 @@
+﻿body {
+}
+
+#page-div {
+    width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#column-container-div {
+    width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#column1-div {
+}
+
+#column2-div {
+}
+
+.column-div {
+    float: left;
+    margin: 10px;
+}
+
+#header-div {
+    margin-left: 180px;
+    width: 900px;
+    height: 70px;
+    top: 10px;
+    left: 180px;
+}
+
+#navigation-div {
+    width: 150px;
+    top: 50px;
+    left: 35px;
+}
+
+#content-div {
+    margin-left: auto;
+    margin-right: auto;
+    min-height: 900px;
+}
+
+.center-block {
+    width: 900px;
+    padding-left: 10px;
+    padding-right: 10px;
+
+}
