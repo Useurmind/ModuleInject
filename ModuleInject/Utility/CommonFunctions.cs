@@ -24,7 +24,12 @@ namespace ModuleInject.Utility
 
         internal static void ThrowTypeException<TModule>(string errorMessage, params object[] param)
         {
-            object[] formatParams = new object[] { typeof(TModule).FullName };
+            ThrowTypeException(typeof(TModule), errorMessage, param);
+        }
+
+        internal static void ThrowTypeException(Type moduleType, string errorMessage, params object[] param)
+        {
+            object[] formatParams = new object[] { moduleType.FullName };
             formatParams = formatParams.Concat(param).ToArray();
 
             throw new ModuleInjectException(string.Format(CultureInfo.CurrentCulture, errorMessage, formatParams));

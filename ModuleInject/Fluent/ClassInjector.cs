@@ -6,14 +6,15 @@ using System.Text;
 
 namespace ModuleInject.Fluent
 {
-    public class Injector<IComponent, TComponent, IModule, TModule> : IInjector<IComponent, TComponent, IModule, TModule>
+    public class ClassInjector<IComponent, TComponent, IModule, TModule> :
+        IClassInjector<IComponent, TComponent, IModule, TModule>
         where TComponent : IComponent
         where TModule : IModule
         where IModule : IInjectionModule
     {
         private Action<ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>> _injectInto;
 
-        public Injector(Action<ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>> injectInto)
+        public ClassInjector(Action<ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>> injectInto)
         {
             _injectInto = injectInto;
         }

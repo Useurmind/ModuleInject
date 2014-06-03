@@ -22,6 +22,36 @@ namespace Test.ModuleInject.Utility
         }
 
         [TestCase]
+        public void GetMemberPathAndType_MemberExpressionDepth1_ReturnsPropertyNameAndType()
+        {
+            Expression<Func<TestClass2, int>> exp = x => x.IntProperty;
+            string expectedPath = (string)Property.Get(exp);
+
+            string actualPath;
+            Type actualType;
+
+            LinqHelper.GetMemberPathAndType(exp, out actualPath, out actualType);
+
+            Assert.AreEqual(expectedPath, actualPath);
+            Assert.AreEqual(typeof(int), actualType);
+        }
+
+        [TestCase]
+        public void GetMemberPathAndType_MethodExpressionDepth1_ReturnsMethodNameAndReturnType()
+        {
+            Expression<Func<TestClass1, int>> exp = x => x.GetHashCode();
+            string expectedPath = (string)Method.Get(exp);
+
+            string actualPath;
+            Type actualType;
+
+            LinqHelper.GetMemberPathAndType(exp, out actualPath, out actualType);
+
+            Assert.AreEqual(expectedPath, actualPath);
+            Assert.AreEqual(typeof(int), actualType);
+        }
+
+        [TestCase]
         public void GetMemberPath_MemberExpressionDepth1_ReturnsPropertyName()
         {
             Expression<Func<TestClass2, int>> exp = x => x.IntProperty;

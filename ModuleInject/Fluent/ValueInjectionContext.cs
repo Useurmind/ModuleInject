@@ -6,15 +6,13 @@ using System.Text;
 
 namespace ModuleInject.Fluent
 {
-    public class ValueInjectionContext<IComponent, TComponent, IModule, TModule, TValue>
-        where TComponent : IComponent
-        where TModule : IModule
-        where IModule : IInjectionModule
+    internal class ValueInjectionContext
     {
-        public ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> ComponentContext { get; set; }
-        public TValue Value { get; private set; }
+        public ComponentRegistrationContext ComponentContext { get; set; }
+        public object Value { get; private set; }
+        public Type ValueType { get; private set; }
 
-        public ValueInjectionContext(ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> componentContext, TValue value)
+        public ValueInjectionContext(ComponentRegistrationContext componentContext, object value, Type valueType)
         {
             ComponentContext = componentContext;
             Value = value;

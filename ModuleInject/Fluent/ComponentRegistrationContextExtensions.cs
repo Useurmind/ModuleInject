@@ -110,7 +110,7 @@ namespace ModuleInject.Fluent
         public static ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             AddInjector<IComponent, TComponent, IModule, TModule>(
             this ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
-            IInjector<IComponent, TComponent, IModule, TModule> injector)
+            IClassInjector<IComponent, TComponent, IModule, TModule> injector)
             where TComponent : IComponent
             where TModule : IModule
             where IModule : IInjectionModule

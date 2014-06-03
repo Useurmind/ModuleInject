@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ModuleInject.Interfaces
 {
-    public interface IInjector<IComponent, TComponent, IModule, TModule>
+    public interface IClassInjector<IComponent, TComponent, IModule, TModule>
         where TComponent : IComponent
         where TModule : IModule
         where IModule : IInjectionModule

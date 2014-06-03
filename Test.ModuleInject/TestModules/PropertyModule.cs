@@ -80,16 +80,16 @@ namespace Test.ModuleInject.TestModules
                 .InitializeWith(x => x.Component2, x => x.Component22, x => x.SubModule.Component1);
 
             RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.InitWithInjectorComponent)
-                .AddInjector(new Injector<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule>(context =>
+                .AddInjector(new ClassInjector<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule>(context =>
                 {
                     context.Inject(InjectedValue).IntoProperty(x => x.InjectedValue);
                 }))
-                .AddInjector(new Injector<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule>(context =>
+                .AddInjector(new ClassInjector<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule>(context =>
                 {
                     context.Inject(x => x.Component2).IntoProperty(x => x.MainComponent2);
                     context.Inject(x => x.Component22).IntoProperty(x => x.MainComponent22);
                 }))
-                .AddInjector(new Injector<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule>(context =>
+                .AddInjector(new ClassInjector<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule>(context =>
                 {
                     context.Inject(x => x.SubModule.Component1).IntoProperty(x => x.SubComponent1);
                 }));

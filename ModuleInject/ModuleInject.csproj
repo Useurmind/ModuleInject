@@ -76,19 +76,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Errors.resx</DependentUpon>
     </Compile>
+    <Compile Include="Fluent\ComponentRegistrationContext.cs" />
+    <Compile Include="Fluent\DependencyInjectionContext.cs" />
     <Compile Include="Fluent\IInstanceRegistrationContext.cs" />
     <Compile Include="Fluent\PostInjectionContextExtensions.cs" />
     <Compile Include="Fluent\InstanceRegistrationContextExtensions.cs" />
     <Compile Include="Fluent\InstanceRegistrationContext.cs" />
     <Compile Include="Fluent\PostInjectionContext.cs" />
     <Compile Include="Fluent\PostResolveAssembler.cs" />
-    <Compile Include="Fluent\ComponentRegistrationContext.cs" />
+    <Compile Include="Fluent\ComponentRegistrationContextGeneric.cs" />
     <Compile Include="Fluent\ComponentRegistrationContextExtensions.cs" />
     <Compile Include="Fluent\DependencyInjectionContextExtensions.cs" />
-    <Compile Include="Fluent\DependencyInjectionContext.cs" />
-    <Compile Include="Fluent\Injector.cs" />
+    <Compile Include="Fluent\DependencyInjectionContextGeneric.cs" />
+    <Compile Include="Fluent\ClassInjector.cs" />
     <Compile Include="Fluent\ValueInjectionContextExtensions.cs" />
     <Compile Include="Fluent\ValueInjectionContext.cs" />
+    <Compile Include="Fluent\ValueInjectionContextGeneric.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="InjectionModule.cs" />
     <Compile Include="Interception\IParameterCollection.cs" />
@@ -105,7 +108,8 @@
     <Compile Include="Interfaces\IInitializable3.cs" />
     <Compile Include="Interfaces\IInjectionModule.cs" />
     <Compile Include="Interfaces\IInitializable2.cs" />
-    <Compile Include="Interfaces\IInjector.cs" />
+    <Compile Include="Interfaces\IClassInjector.cs" />
+    <Compile Include="Interfaces\IInterfaceInjector.cs" />
     <Compile Include="Interfaces\IPostResolveAssembler.cs" />
     <Compile Include="ModulePostResolveBuilder.cs" />
     <Compile Include="ModuleResolver.cs" />
