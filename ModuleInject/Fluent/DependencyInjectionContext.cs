@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Microsoft.Practices.Unity;
+using ModuleInject.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace ModuleInject.Fluent
@@ -16,6 +19,21 @@ namespace ModuleInject.Fluent
             ComponentContext = componentContext;
             DependencyName = dependencyName;
             DependencyType = dependencyType;
+        }
+
+        public ComponentRegistrationContext IntoProperty(Expression dependencyTargetExpression)
+        {
+            ComponentRegistrationContext component = this.ComponentContext;
+            ComponentRegistrationTypes types = component.Types;
+
+            string sourceName = DependencyName;
+            string targetName = Property.Get(dependencyTargetExpression);
+
+            component.Container.RegisterType(types.IComponent, types.TComponent, component.ComponentName,
+                new InjectionProperty(targetName, new ResolvedParameter(DependencyType, sourceName))
+            );
+
+            return component;
         }
     }
 }

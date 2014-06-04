@@ -20,17 +20,29 @@ namespace Test.ModuleInject.Fluent
         Mock<IUnityContainer> _containerMock;
         ComponentRegistrationContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule> _componentContext;
         DependencyInjectionContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule, IMainComponent2> _depContext;
+        private ComponentRegistrationTypes _types;
+        private ComponentRegistrationContext _componentContextUntyped;
+        private DependencyInjectionContext _depContextUntyped;
 
         [SetUp]
         public void Init()
         {
+            _types = new ComponentRegistrationTypes()
+            {
+                IComponent = typeof(IMainComponent1),
+                TComponent = typeof(MainComponent1),
+                IModule = typeof(IPropertyModule),
+                TModule = typeof(PropertyModule)
+            };
             _propertyName = Property.Get((IPropertyModule x) => x.InitWithPropertiesComponent);
             _depPropertyName = Property.Get((IPropertyModule x) => x.Component2);
             _containerMock = new Mock<IUnityContainer>();
+            _componentContextUntyped = new ComponentRegistrationContext(_propertyName, _containerMock.Object, _types, false);
             _componentContext = new ComponentRegistrationContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule>(
-                _propertyName, _containerMock.Object, false);
+                _componentContextUntyped);
+            _depContextUntyped = new DependencyInjectionContext(_componentContextUntyped, _depPropertyName, typeof(IMainComponent2));
             _depContext = new DependencyInjectionContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule, IMainComponent2>(
-                _componentContext, _depPropertyName);
+                _componentContext, _depContextUntyped);
         }
 
         [TestCase]

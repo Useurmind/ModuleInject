@@ -16,22 +16,29 @@ namespace ModuleInject.Utility
             _propertyInfo = propInfo;
         }
 
-        public static Property Get<TObject, TProperty>(Expression<Func<TObject, TProperty>> propertyExpression)
+        internal static Property Get(Expression propertyExpression)
         {
             CommonFunctions.CheckNullArgument("propertyExpression", propertyExpression);
 
             CheckExpression(propertyExpression);
 
-            MemberExpression memberExpression = (MemberExpression)propertyExpression.Body;
+            LambdaExpression lambdaExpression = (LambdaExpression)propertyExpression;
+            MemberExpression memberExpression = (MemberExpression)lambdaExpression.Body;
             PropertyInfo propInfo = (PropertyInfo)memberExpression.Member;
             return new Property(propInfo);
         }
 
-        private static void CheckExpression<TObject, TProperty>(Expression<Func<TObject, TProperty>> propertyExpression)
+        public static Property Get<TObject, TProperty>(Expression<Func<TObject, TProperty>> propertyExpression)
+        {
+            return Get((Expression)propertyExpression);
+        }
+
+        private static void CheckExpression(Expression propertyExpression)
         {
             Exception exception = new ModuleInjectException("Properties can only be constructed from expressions describing direct properties of an object.");
 
-            MemberExpression memberExpression = propertyExpression.Body as MemberExpression;
+            LambdaExpression lambdaExpression = (LambdaExpression)propertyExpression;
+            MemberExpression memberExpression = lambdaExpression.Body as MemberExpression;
             if (memberExpression == null)
             {
                 throw exception;

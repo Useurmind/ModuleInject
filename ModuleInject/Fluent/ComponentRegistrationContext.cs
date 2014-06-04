@@ -35,6 +35,7 @@ namespace ModuleInject.Fluent
             IsInterceptorAlreadyAdded = false;
             ComponentName = name;
             Container = container;
+            Types = types;
         }
 
         private static readonly string _initialize1MethodName = ExtractMethodName<IInitializable<object>>(x => x.Initialize(null));

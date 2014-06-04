@@ -155,7 +155,9 @@ namespace ModuleInject
 
             _container.RegisterType<IComponent, TComponent>(functionName, new InjectionConstructor());
 
-            return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(functionName, _container, _isInterceptionActive);
+            ComponentRegistrationTypes types = CreateTypes<IComponent, TComponent>();
+            ComponentRegistrationContext context = new ComponentRegistrationContext(functionName, _container, types, _isInterceptionActive);
+            return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(context);
         }
 
         protected IComponent CreateInstance<IComponent>(Expression<Func<TModule, IComponent>> moduleMethod)
@@ -186,7 +188,9 @@ namespace ModuleInject
         {
             _container.RegisterType<IComponent, TComponent>(propName, new ContainerControlledLifetimeManager(), new InjectionConstructor());
 
-            return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(propName, _container, _isInterceptionActive);
+            ComponentRegistrationTypes types = CreateTypes<IComponent, TComponent>();
+            ComponentRegistrationContext context = new ComponentRegistrationContext(propName, _container, types, _isInterceptionActive);
+            return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(context);
         }
 
         private InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
@@ -273,6 +277,17 @@ namespace ModuleInject
             {
                 CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_MethodNotQualifiedForPrivateRegistration, methodName);
             }
+        }
+
+        private static ComponentRegistrationTypes CreateTypes<IComponent, TComponent>()
+        {
+            return new ComponentRegistrationTypes()
+            {
+                IComponent = typeof(IComponent),
+                TComponent = typeof(TComponent),
+                IModule = typeof(IModule),
+                TModule = typeof(TModule)
+            };
         }
 
         public void Resolve()

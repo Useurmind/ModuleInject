@@ -17,16 +17,24 @@ namespace Test.ModuleInject.Fluent
         private string _componentName;
         private IUnityContainer _container;
         private ComponentRegistrationContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule> _context;
+        private ComponentRegistrationTypes _types;
+        private ComponentRegistrationContext _contextUntyped;
 
         [SetUp]
         public void Init()
         {
+            _types = new ComponentRegistrationTypes()
+            {
+                IComponent = typeof(IMainComponent1),
+                TComponent = typeof(MainComponent1),
+                IModule = typeof(IPropertyModule),
+                TModule = typeof(PropertyModule)
+            };
             _componentName = Property.Get((IPropertyModule x) => x.InitWithPropertiesComponent);
             _container = new UnityContainer();
+            _contextUntyped = new ComponentRegistrationContext(_componentName, _container, _types, false);
             _context = new ComponentRegistrationContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule>(
-                _componentName,
-                _container,
-                false
+                _contextUntyped
                 );
         }
 
@@ -39,7 +47,7 @@ namespace Test.ModuleInject.Fluent
         [TestCase]
         public void Inject_DependencyContextValuesSetCorrectly()
         {
-            string depPropName = Property.Get((IPropertyModule x)=> x.Component2);
+            string depPropName = Property.Get((IPropertyModule x) => x.Component2);
             var depContext = _context.Inject(x => x.Component2);
 
             Assert.AreSame(_context, depContext.ComponentContext);

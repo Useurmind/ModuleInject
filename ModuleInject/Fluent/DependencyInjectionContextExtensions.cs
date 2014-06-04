@@ -23,16 +23,9 @@ namespace ModuleInject.Fluent
         {
             CommonFunctions.CheckNullArgument("dependency", dependency);
 
-            ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component = dependency.ComponentContext;
+            dependency.Context.IntoProperty(dependencyTargetExpression);
 
-            string sourceName = dependency.DependencyName;
-            string targetName = Property.Get(dependencyTargetExpression);
-
-            component.Container.RegisterType<IComponent, TComponent>(component.ComponentName,
-                new InjectionProperty(targetName, new ResolvedParameter<TDependency>(sourceName))
-            );
-
-            return component;
+            return dependency.ComponentContext;
         }
     }
 }

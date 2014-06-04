@@ -11,12 +11,14 @@ namespace ModuleInject.Fluent
         where TComponent : IComponent
         where IModule : IInjectionModule
     {
-        public ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> ComponentContext { get; internal set; }
-        public string DependencyName { get; internal set; }
+        internal DependencyInjectionContext Context { get; private set; }
+        public ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> ComponentContext { get; private set; }
+        public string DependencyName { get { return Context.DependencyName; } }
 
-        public DependencyInjectionContext(ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> componentContext, string name)
+        internal DependencyInjectionContext(ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> componentContext, 
+            DependencyInjectionContext context)
         {
-            DependencyName = name;
+            Context = context;
             ComponentContext = componentContext;
         }
     }

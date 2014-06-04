@@ -12,10 +12,6 @@ namespace ModuleInject.Fluent
 {
     public static class ComponentRegistrationContextExtensions
     {
-        private static readonly string _initialize1MethodName = ExtractMethodName<IInitializable<object>>(x => x.Initialize(null));
-        private static readonly string _initialize2MethodName = ExtractMethodName<IInitializable<object, object>>(x => x.Initialize(null, null));
-        private static readonly string _initialize3MethodName = ExtractMethodName<IInitializable<object, object, object>>(x => x.Initialize(null, null, null));
-
         public static ValueInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>
             Inject<IComponent, TComponent, IModule, TModule, TDependency>(
             this ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
@@ -24,7 +20,10 @@ namespace ModuleInject.Fluent
             where TModule : IModule
             where IModule : IInjectionModule
         {
-            return new ValueInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>(component, value);
+            CommonFunctions.CheckNullArgument("component", component);
+
+            var valueContext = component.Context.Inject(value, typeof(TDependency));
+            return new ValueInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>(component, valueContext);
         }
 
         public static DependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency> 
@@ -35,9 +34,12 @@ namespace ModuleInject.Fluent
             where TModule : IModule
             where IModule : IInjectionModule
         {
-            string memberPath = LinqHelper.GetMemberPath(dependencySourceExpression);
+            CommonFunctions.CheckNullArgument("component", component);
 
-            return new DependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>(component, memberPath);
+            var dependencyContext = component.Context.Inject(dependencySourceExpression);
+
+            return new DependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>(
+                component, dependencyContext);
         }
 
         public static ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
@@ -50,10 +52,7 @@ namespace ModuleInject.Fluent
         {
             CommonFunctions.CheckNullArgument("component", component);
 
-            string memberPath = LinqHelper.GetMemberPath(dependency1SourceExpression);
-
-            component.Container.RegisterType<IComponent, TComponent>(component.ComponentName,
-                new InjectionMethod(_initialize1MethodName, new ResolvedParameter<TDependency1>(memberPath)));
+            component.Context.InitializeWith(dependency1SourceExpression);
 
             return component;
         }
@@ -69,14 +68,7 @@ namespace ModuleInject.Fluent
         {
             CommonFunctions.CheckNullArgument("component", component);
 
-            string memberPath1 = LinqHelper.GetMemberPath(dependency1SourceExpression);
-            string memberPath2 = LinqHelper.GetMemberPath(dependency2SourceExpression);
-
-            component.Container.RegisterType<IComponent, TComponent>(component.ComponentName,
-                new InjectionMethod(_initialize2MethodName, 
-                    new ResolvedParameter<TDependency1>(memberPath1),
-                    new ResolvedParameter<TDependency2>(memberPath2)
-                    ));
+            component.Context.InitializeWith(dependency1SourceExpression, dependency2SourceExpression);
 
             return component;
         }
@@ -93,16 +85,7 @@ namespace ModuleInject.Fluent
         {
             CommonFunctions.CheckNullArgument("component", component);
 
-            string memberPath1 = LinqHelper.GetMemberPath(dependency1SourceExpression);
-            string memberPath2 = LinqHelper.GetMemberPath(dependency2SourceExpression);
-            string memberPath3 = LinqHelper.GetMemberPath(dependency3SourceExpression);
-
-            component.Container.RegisterType<IComponent, TComponent>(component.ComponentName,
-                new InjectionMethod(_initialize3MethodName,
-                    new ResolvedParameter<TDependency1>(memberPath1),
-                    new ResolvedParameter<TDependency2>(memberPath2),
-                    new ResolvedParameter<TDependency3>(memberPath3)
-                    ));
+            component.Context.InitializeWith(dependency1SourceExpression, dependency2SourceExpression, dependency3SourceExpression);
 
             return component;
         }
@@ -119,13 +102,6 @@ namespace ModuleInject.Fluent
 
             injector.InjectInto(component);
             return component;
-        }
-
-
-        private static string ExtractMethodName<TObject>(Expression<Action<TObject>> methodExpression)
-        {
-            MethodCallExpression methodCallExpression = (MethodCallExpression)methodExpression.Body;
-            return methodCallExpression.Method.Name;
         }
     }
 }
