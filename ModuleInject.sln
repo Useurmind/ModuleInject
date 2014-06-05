@@ -35,7 +35,6 @@ Global
 		{00784EF4-CCD9-44B6-9077-057E85D92A9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{00784EF4-CCD9-44B6-9077-057E85D92A9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00784EF4-CCD9-44B6-9077-057E85D92A9E}.NuGet Package|Any CPU.ActiveCfg = Release|Any CPU
-		{00784EF4-CCD9-44B6-9077-057E85D92A9E}.NuGet Package|Any CPU.Build.0 = Release|Any CPU
 		{00784EF4-CCD9-44B6-9077-057E85D92A9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00784EF4-CCD9-44B6-9077-057E85D92A9E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
