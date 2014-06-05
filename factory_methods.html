@@ -1,0 +1,41 @@
+﻿<h2>Factory methods</h2>
+
+<p>Until now you probably only saw injection of components via properties of the same or a different module (in unity this is equivalent to creating object with a ContainerControlledLifetimeManager). This would mean you would be required to create properties for all instances you want to create. In some cases this is cumbersome or even impossible. For such cases you can use factory methods. They create a new instance every time they are called (in unity equivalent to creating objects without the ContainerControlledLifetimeManager).</p>
+
+<p>Let's see how you can do that. For this example we have the following components:</p>
+
+<pre><code>public class Component1 : IComponent1 {
+}
+
+public class Component2 : IComponent2 {
+    public IComponent1 Comp1 { get; private set; }
+}
+</code></pre>
+
+<p>Given we want to create a new instance of Component1 each time we need an instance of it, we could write the following module:</p>
+
+<pre><code>public class FactoryModule : ... {
+    public IComponent2 Component2No1 { get; private set; }
+    public IComponent2 Component2No2 { get; private set; }
+
+    [PrivateFactory]
+    private IComponent1 CreateComponent1() {
+        return CreateInstance(x =&gt; x.CreateComponent1());
+    }
+
+    public FactoryModule() {
+        RegisterPrivateComponentFactory&lt;IComponent1, Component1&gt;(x =&gt; x.CreateComponent1());
+
+        RegisterPublicComponent&lt;IComponent2, Component2&gt;(x =&gt; x.Component2No1)
+            .Inject(x =&gt; x.CreateComponent1()).IntoProperty(x =&gt; x.Comp1);
+        RegisterPublicComponent&lt;IComponent2, Component2&gt;(x =&gt; x.Component2No2)
+            .Inject(x =&gt; x.CreateComponent1()).IntoProperty(x =&gt; x.Comp1);
+    }
+}
+</code></pre>
+
+<p>This results in Comp1 of the two Component2 instances to be different instances of the Component1 type.</p>
+
+<h3>Current limitations</h3>
+
+<p>No build in support for arguments.</p>
