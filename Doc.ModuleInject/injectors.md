@@ -52,11 +52,11 @@ That is how to do it. Pretty straight forward. But now let's assume we have seve
         public InjectorModule() {
             RegisterPublicComponent<ILog, DebugLog>(x => x.LogComponent);
             RegisterPublicComponent<IInjectorComponent, InjectorComponent>(x => x.InjectorComponent1)
-                .Injcet(x => x.LogComponent).IntoProperty(x.Log);
+                .Inject(x => x.LogComponent).IntoProperty(x.Log);
             RegisterPublicComponent<IInjectorComponent, InjectorComponent>(x => x.InjectorComponent2)
-                .Injcet(x => x.LogComponent).IntoProperty(x.Log);
+                .Inject(x => x.LogComponent).IntoProperty(x.Log);
             RegisterPublicComponent<IInjectorComponent, InjectorComponent>(x => x.InjectorComponent3)
-                .Injcet(x => x.LogComponent).IntoProperty(x.Log);
+                .Inject(x => x.LogComponent).IntoProperty(x.Log);
         }
     }
 
@@ -77,9 +77,18 @@ You can then apply it by writing the following.
     public InjectorModule() {
         ...
         RegisterPublicComponent<IInjectorComponent, InjectorComponent>(x => x.InjectorComponent1)
-            .Injcet(x => x.LogComponent).IntoProperty(x.Log);
+            .AddInjector(new DebugLogInjector());
         RegisterPublicComponent<IInjectorComponent, InjectorComponent>(x => x.InjectorComponent2)
-            .Injcet(x => x.LogComponent).IntoProperty(x.Log);
+            .AddInjector(new DebugLogInjector());
         RegisterPublicComponent<IInjectorComponent, InjectorComponent>(x => x.InjectorComponent3)
-            .Injcet(x => x.LogComponent).IntoProperty(x.Log);
+            .AddInjector(new DebugLogInjector());
     }
+
+What we just did is that we defined an injector. An injector encapsulates an injection pattern for a certain range of types. When defining such injection patterns inside an injector it works exactly the same as registering injections the usual way.
+
+### Class injectors vs. interface injectors
+One additional hint. We need different types of injectors for different scenarios. 
+
+Just now we used a ClassInjector. This injector can only be used inside a special module on a special concrete type. You can easily see this as it requires the interface and type of both module and component for which the injection pattern is defined.
+
+In comparison the InterfaceInjector requires the interface and type of the module as well as only the interface of the component. This allows you to define injectors for a wider range of types by targeting an interface with it.

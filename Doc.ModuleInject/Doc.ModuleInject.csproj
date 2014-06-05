@@ -152,6 +152,9 @@
     <Content Include="index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="injectors.html">
+      <DependentUpon>injectors.md</DependentUpon>
+    </Content>
     <Content Include="js\highlight.pack.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
