@@ -82,6 +82,7 @@
     <Compile Include="Interception\SimpleUnityBehaviourTest.cs" />
     <Compile Include="ModuleWithRegistrationErrorsTest.cs" />
     <Compile Include="NoAutoWiringModuleTest.cs" />
+    <Compile Include="InjectorModuleTest.cs" />
     <Compile Include="NoInterfaceModuleTests.cs" />
     <Compile Include="Fluent\ComponentRegistrationContextTest.cs" />
     <Compile Include="Fluent\DependencyInjectionContextTest.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="TestModules\BehaviourModule.cs" />
     <Compile Include="TestModules\ChangeReturnValueBehaviour.cs" />
     <Compile Include="TestModules\FactoryModule.cs" />
+    <Compile Include="TestModules\InjectorModule.cs" />
     <Compile Include="TestModules\ISubModule.cs" />
     <Compile Include="TestModules\ModuleWithRegistrationErrors.cs" />
     <Compile Include="TestModules\NoAutoWiringModule.cs" />

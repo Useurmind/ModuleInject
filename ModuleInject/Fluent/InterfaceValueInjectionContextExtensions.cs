@@ -9,14 +9,13 @@ using System.Text;
 
 namespace ModuleInject.Fluent
 {
-    public static class ValueInjectionContextExtensions
+    public static class InterfaceValueInjectionContextExtensions
     {
-        public static ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> 
-            IntoProperty<IComponent, TComponent, IModule, TModule, TDependency, TProperty>(
-            this ValueInjectionContext<IComponent, TComponent, IModule, TModule, TDependency> value,
-            Expression<Func<TComponent, TProperty>> dependencyTargetExpression
+        public static InterfaceRegistrationContext<IComponent, IModule, TModule> 
+            IntoProperty<IComponent, IModule, TModule, TDependency, TProperty>(
+            this InterfaceValueInjectionContext<IComponent, IModule, TModule, TDependency> value,
+            Expression<Func<IComponent, TProperty>> dependencyTargetExpression
         )
-            where TComponent : IComponent
             where TProperty : TDependency
             where TModule : IModule
             where IModule : IInjectionModule
