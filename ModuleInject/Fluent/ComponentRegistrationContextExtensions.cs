@@ -112,6 +112,7 @@ namespace ModuleInject.Fluent
             where TModule : IModule
             where IModule : IInjectionModule
         {
+            CommonFunctions.CheckNullArgument("component", component);
             CommonFunctions.CheckNullArgument("injector", injector);
 
             var interfaceContext = new InterfaceRegistrationContext<IComponent, IModule, TModule>(component.Context);

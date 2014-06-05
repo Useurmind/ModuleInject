@@ -64,7 +64,8 @@ Looks pretty much the same for all three of them. So how do we solve this duplic
 
 Well, let's try using an injector:
 
-    public class DebugLogInjector() : ClassInjector<IInjectorComponent, InjectorComponent, IInjectorModule, InjectorModule> 
+    public class DebugLogInjector :  
+        ClassInjector<IInjectorComponent, InjectorComponent, IInjectorModule, InjectorModule> 
     {
         public DebugLogInjector() : base(context => {
             context.Inject(x => x.LogComponent).IntoProperty(x.Log);

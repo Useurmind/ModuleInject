@@ -144,6 +144,7 @@
     <None Include="factory_methods.md" />
     <Content Include="factory_methods.html">
       <DependentUpon>factory_methods.md</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="home.html">
       <DependentUpon>home.md</DependentUpon>
@@ -154,6 +155,7 @@
     </Content>
     <Content Include="injectors.html">
       <DependentUpon>injectors.md</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="js\highlight.pack.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
