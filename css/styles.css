@@ -1,4 +1,5 @@
 ﻿body {
+    background-color: gainsboro;
 }
 
 #page-div {
@@ -25,7 +26,7 @@
 }
 
 #header-div {
-    margin-left: 180px;
+    margin-left: 185px;
     width: 900px;
     height: 70px;
     top: 10px;
@@ -33,7 +34,7 @@
 }
 
 #navigation-div {
-    width: 150px;
+    width: 155px;
     top: 50px;
     left: 35px;
 }
