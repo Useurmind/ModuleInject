@@ -6,7 +6,7 @@ using System.Text;
 namespace ModuleInject
 {
     [AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
-    sealed class PrivateComponentAttribute : Attribute
+    public sealed class PrivateComponentAttribute : Attribute
     {
         public PrivateComponentAttribute()
         {

@@ -6,7 +6,7 @@ using System.Text;
 namespace ModuleInject
 {
     [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
-    sealed class PrivateFactoryAttribute : Attribute
+    public sealed class PrivateFactoryAttribute : Attribute
     {
         
     }
