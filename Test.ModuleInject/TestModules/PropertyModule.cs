@@ -20,6 +20,8 @@ namespace Test.ModuleInject.TestModules
         IMainComponent2 Component2 { get; }
         IMainComponent2 Component22 { get; }
 
+        IMainComponent1 AlsoRegisterForComponent { get; }
+
         ISubModule SubModule { get; set; }
 
         IMainComponent2 CreateComponent2();
@@ -39,6 +41,8 @@ namespace Test.ModuleInject.TestModules
         public IMainComponent1 InitWithInjectorComponent { get; set; }
         public IMainComponent2 Component2 { get; set; }
         public IMainComponent2 Component22 { get; set; }
+
+        public IMainComponent1 AlsoRegisterForComponent { get; set; }
 
         [PrivateComponent]
         public IMainComponent1 PrivateComponentInjectedProperties { get; set; }
@@ -68,7 +72,8 @@ namespace Test.ModuleInject.TestModules
                 .Inject(InjectedValue).IntoProperty(x => x.InjectedValue);
 
             RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.InitWithInitialize1Component)
-                .InitializeWith(x => x.Component2);
+                .InitializeWith(x => x.Component2)
+                .AlsoRegisterFor(x => x.AlsoRegisterForComponent);
 
             RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.InitWithInitialize1FromSubComponent)
                 .InitializeWith(x => x.SubModule.Component1);

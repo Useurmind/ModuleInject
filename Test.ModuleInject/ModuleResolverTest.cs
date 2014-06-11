@@ -34,6 +34,7 @@ namespace Test.ModuleInject
             _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((PropertyModule x) => x.PrivateComponent));
             _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((PropertyModule x) => x.PrivateInstanceComponent));
             _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.PrivateComponentInjectedProperties));
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.AlsoRegisterForComponent));
         }
 
         [TestCase]

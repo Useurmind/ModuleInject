@@ -153,6 +153,22 @@ namespace ModuleInject.Fluent
             component.AddInjector(injector);
             return component;
         }
+
+        public static ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
+            AlsoRegisterFor<IComponent, TComponent, IModule, TModule, IComponent2>(
+            this ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+            Expression<Func<TModule, IComponent2>> secondModuleProperty)
+            where TComponent : IComponent
+            where IComponent : IComponent2
+            where TModule : IModule
+            where IModule : IInjectionModule
+        {
+            CommonFunctions.CheckNullArgument("component", component);
+
+            component.Context.AlsoRegisterFor(secondModuleProperty);
+
+            return component;
+        }
     }
 }
 

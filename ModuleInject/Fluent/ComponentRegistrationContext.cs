@@ -121,6 +121,19 @@ namespace ModuleInject.Fluent
             return this;
         }
 
+        public ComponentRegistrationContext AlsoRegisterFor(Expression moduleProperty)
+        {
+            string memberPath;
+            Type memberType;
+            LinqHelper.GetMemberPathAndType(moduleProperty, out memberPath, out memberType);
+            this.Container.RegisterType(memberType, memberPath, new InjectionFactory(cont =>
+            {
+                return cont.Resolve(Types.IComponent, this.ComponentName);
+            }));
+
+            return this;
+        }
+
 
         private static ResolvedParameter NewResolvedParameter(Expression dependencyExpression)
         {

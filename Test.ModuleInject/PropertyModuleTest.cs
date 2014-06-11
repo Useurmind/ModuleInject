@@ -191,6 +191,14 @@ namespace Test.ModuleInject
         }
 
         [TestCase]
+        public void Resolve_PropertiesAlsoRegisteredFor_AreSameAsOriginalComponent()
+        {
+            _module.Resolve();
+
+            Assert.AreSame(_module.InitWithInitialize1Component, _module.AlsoRegisterForComponent);
+        }
+
+        [TestCase]
         [ExpectedException(typeof(ModuleInjectException))]
         public void RegisterPrivateComponent_NotMarkedWithAttribute_ExceptionThrown()
         {
