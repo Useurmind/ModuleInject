@@ -94,5 +94,12 @@ namespace Test.ModuleInject
         public void RegisterWithFancyExpression1_ThrowsException() {
             _module.RegisterWithFancyExpression1();
         }
+
+        [TestCase]
+        [ExpectedException(typeof(ModuleInjectException))]
+        public void RegisterWithCastToNonImplementedInterface_ThrowsException()
+        {
+            _module.RegisterWithCastToNonImplementedInterface();
+        }
     }
 }

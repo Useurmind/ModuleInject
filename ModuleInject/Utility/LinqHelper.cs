@@ -26,6 +26,11 @@ namespace ModuleInject.Utility
             if (unaryExpression != null && unaryExpression.NodeType == ExpressionType.Convert)
             {
                 memberType = TryGetMemberTypeFromMemberOrMethod(unaryExpression.Operand);
+
+                if (!unaryExpression.Type.IsAssignableFrom(memberType))
+                {
+                    throw new ModuleInjectException("The given cast is not valid, the property can not be assigned to the type in the cast.");
+                }
                 return;
             }
 

@@ -1,4 +1,5 @@
 ﻿using ModuleInject;
+using ModuleInject.Fluent;
 using ModuleInject.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,8 @@ namespace Test.ModuleInject.TestModules
     {
         IMainComponent1 PublicComponent { get; }
 
+        IMainComponent2 PublicComponent2 { get; }
+
         IMainComponent1 PublicFactory();
     }
 
@@ -18,6 +21,8 @@ namespace Test.ModuleInject.TestModules
     {
         // private factor without attribute
         public IMainComponent1 PublicComponent { get; private set; }
+        public IMainComponent2 PublicComponent2 { get; private set; }
+        public IMainComponent2 Component22 { get; private set; }
         [PrivateComponent]
         private IMainComponent1 PrivateComponent { get; set; }
         private IMainComponent1 PrivateComponentWithoutAttribute { get; set; }
@@ -81,6 +86,12 @@ namespace Test.ModuleInject.TestModules
         public void RegisterWithFancyExpression1()
         {
             RegisterPublicComponent<IMainComponent1, MainComponent1>(x => new ModuleWithRegistrationErrors().PublicComponent);
+        }
+
+        public void RegisterWithCastToNonImplementedInterface()
+        {
+            RegisterPublicComponent<IMainComponent2, MainComponent2>(x => x.PublicComponent2)
+                .InitializeWith(x => (IMainComponent2SubInterface)x.PublicComponent);
         }
     }
 }
