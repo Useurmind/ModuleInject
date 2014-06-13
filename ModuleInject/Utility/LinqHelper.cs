@@ -11,20 +11,21 @@ namespace ModuleInject.Utility
     {
         internal static void GetMemberPathAndType(Expression expression, out string memberPath, out Type memberType)
         {
+            memberType = null;
             int depth;
             memberPath = GetMemberPath(expression, out depth);
             LambdaExpression lambdaExpression = (LambdaExpression)expression;
-            MemberExpression memberExpression = lambdaExpression.Body as MemberExpression;
-            if (memberExpression != null)
+
+            memberType = TryGetMemberTypeFromMemberOrMethod(lambdaExpression.Body);
+            if (memberType != null)
             {
-                memberType = ((PropertyInfo)memberExpression.Member).PropertyType;
                 return;
             }
 
-            MethodCallExpression methodExpression = lambdaExpression.Body as MethodCallExpression;
-            if (methodExpression != null)
+            UnaryExpression unaryExpression = lambdaExpression.Body as UnaryExpression;
+            if (unaryExpression != null && unaryExpression.NodeType == ExpressionType.Convert)
             {
-                memberType = methodExpression.Method.ReturnType;
+                memberType = TryGetMemberTypeFromMemberOrMethod(unaryExpression.Operand);
                 return;
             }
 
@@ -67,6 +68,25 @@ namespace ModuleInject.Utility
 
             depth = propertyNames.Count();
             return string.Join(".", propertyNames);
+        }
+
+        private static Type TryGetMemberTypeFromMemberOrMethod(Expression expression)
+        {
+            Type memberType = null;
+
+            MemberExpression memberExpression = expression as MemberExpression;
+            if (memberExpression != null)
+            {
+                memberType = ((PropertyInfo)memberExpression.Member).PropertyType;
+            }
+
+            MethodCallExpression methodExpression = expression as MethodCallExpression;
+            if (methodExpression != null)
+            {
+                memberType = methodExpression.Method.ReturnType;
+            }
+
+            return memberType;
         }
     }
 }

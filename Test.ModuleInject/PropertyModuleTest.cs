@@ -80,6 +80,8 @@ namespace Test.ModuleInject
             _module.Resolve();
 
             Assert.AreEqual(_module.Component2, _module.InitWithPropertiesComponent.MainComponent2);
+            Assert.AreEqual(_module.Component2, _module.InitWithPropertiesComponent.ComponentViaSubinterface);
+            Assert.AreEqual(_module.Component2, _module.Component22.Component2Sub);
         }
 
         [TestCase]

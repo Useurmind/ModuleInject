@@ -69,6 +69,7 @@ namespace Test.ModuleInject.TestModules
                 .Inject(x => x.SubModule.Component1).IntoProperty(x => x.SubComponent1)
                 .Inject(x => x.PrivateComponent).IntoProperty(x => x.MainComponent22)
                 .Inject(x => x.PrivateInstanceComponent).IntoProperty(x => x.MainComponent23)
+                .Inject(x => x.Component2).IntoProperty(x => x.ComponentViaSubinterface)
                 .Inject(InjectedValue).IntoProperty(x => x.InjectedValue);
 
             RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.InitWithInitialize1Component)
@@ -100,7 +101,8 @@ namespace Test.ModuleInject.TestModules
                 }));
 
             RegisterPublicComponent<IMainComponent2, MainComponent2>(x => x.Component2);
-            RegisterPublicComponent<IMainComponent2, MainComponent2>(x => x.Component22);
+            RegisterPublicComponent<IMainComponent2, MainComponent2>(x => x.Component22)
+                .InitializeWith(x => (IMainComponent2SubInterface)x.Component2);
             RegisterPrivateComponent<IMainComponent2, MainComponent2>(x => x.PrivateComponent);
             RegisterPrivateComponent<IMainComponent2, MainComponent2>(x => x.PrivateInstanceComponent, new MainComponent2());
 

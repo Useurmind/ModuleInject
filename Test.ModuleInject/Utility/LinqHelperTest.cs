@@ -16,7 +16,9 @@ namespace Test.ModuleInject.Utility
             public TestClass2 TestClass2 { get; set; }
         }
 
-        public class TestClass2
+        public interface ITestClass2 { }
+
+        public class TestClass2 : ITestClass2
         {
             public int IntProperty { get; set; }
         }
@@ -34,6 +36,21 @@ namespace Test.ModuleInject.Utility
 
             Assert.AreEqual(expectedPath, actualPath);
             Assert.AreEqual(typeof(int), actualType);
+        }
+
+        [TestCase]
+        public void GetMemberPathAndType_MemberExpressionDepth1WithConvert_ReturnsPropertyNameAndType()
+        {
+            Expression<Func<TestClass1, ITestClass2>> exp = x => (ITestClass2)x.TestClass2;
+            string expectedPath = "TestClass2";
+
+            string actualPath;
+            Type actualType;
+
+            LinqHelper.GetMemberPathAndType(exp, out actualPath, out actualType);
+
+            Assert.AreEqual(expectedPath, actualPath);
+            Assert.AreEqual(typeof(TestClass2), actualType);
         }
 
         [TestCase]

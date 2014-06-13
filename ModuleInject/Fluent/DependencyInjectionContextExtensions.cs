@@ -17,7 +17,7 @@ namespace ModuleInject.Fluent
             Expression<Func<TComponent, TProperty>> dependencyTargetExpression
             )
             where TComponent : IComponent
-            where TProperty : TDependency
+            where TDependency : TProperty
             where TModule : IModule
             where IModule : IInjectionModule
         {

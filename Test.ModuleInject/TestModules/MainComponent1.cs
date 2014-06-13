@@ -17,6 +17,8 @@ namespace Test.ModuleInject.TestModules
         IMainComponent1 RecursiveComponent1 { get; }
         IMainComponent1 RecursiveFactory1();
 
+        IMainComponent2SubInterface ComponentViaSubinterface { get; }
+
         int FunctionReturns5();
     }
 
@@ -33,6 +35,8 @@ namespace Test.ModuleInject.TestModules
         public ISubComponent1 SubComponent1 { get; set; }
 
         public IMainComponent1 RecursiveComponent1 { get; set; }
+
+        public IMainComponent2SubInterface ComponentViaSubinterface { get; set; }
 
         public void Initialize(IMainComponent2 dependency1)
         {
