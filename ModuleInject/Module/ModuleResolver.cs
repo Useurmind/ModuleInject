@@ -8,7 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace ModuleInject
+namespace ModuleInject.Module
 {
     internal static class ModuleResolver
     {

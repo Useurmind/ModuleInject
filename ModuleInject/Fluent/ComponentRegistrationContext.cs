@@ -15,12 +15,12 @@ namespace ModuleInject.Fluent
     internal class ComponentRegistrationTypes
     {
         public Type IComponent { get; set; }
-        public Type TComponent { get; set; }          
+        public Type TComponent { get; set; }
         public Type IModule { get; set; }
         public Type TModule { get; set; }
     }
 
-    internal class ComponentRegistrationContext
+    internal class ComponentRegistrationContext : IGatherPostResolveAssemblers
     {
         public ComponentRegistrationTypes Types { get; private set; }
         public bool IsInterceptorAlreadyAdded { get; private set; }
@@ -36,6 +36,7 @@ namespace ModuleInject.Fluent
             ComponentName = name;
             Container = container;
             Types = types;
+            PostResolveAssemblers = new List<IPostResolveAssembler>();
         }
 
         private static readonly string _initialize1MethodName = ExtractMethodName<IInitializable<object>>(x => x.Initialize(null));
@@ -51,7 +52,7 @@ namespace ModuleInject.Fluent
         {
             string memberPath;
             Type memberType;
-            
+
             LinqHelper.GetMemberPathAndType(dependencySourceExpression, out memberPath, out memberType);
 
             return new DependencyInjectionContext(this, memberPath, memberType);
@@ -134,6 +135,11 @@ namespace ModuleInject.Fluent
             return this;
         }
 
+        public ComponentRegistrationContext AddAssembler(IPostResolveAssembler assembler)
+        {
+            this.PostResolveAssemblers.Add(assembler);
+            return this;
+        }
 
         private static ResolvedParameter NewResolvedParameter(Expression dependencyExpression)
         {
@@ -149,5 +155,7 @@ namespace ModuleInject.Fluent
             MethodCallExpression methodCallExpression = (MethodCallExpression)methodExpression.Body;
             return methodCallExpression.Method.Name;
         }
+
+        public IList<IPostResolveAssembler> PostResolveAssemblers { get; private set; }
     }
 }

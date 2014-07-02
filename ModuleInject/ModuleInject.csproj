@@ -83,7 +83,7 @@
     <Compile Include="Fluent\InterfaceDependencyInjectionContextGeneric.cs" />
     <Compile Include="Fluent\InterfaceRegistrationContextGeneric.cs" />
     <Compile Include="Fluent\DependencyInjectionContext.cs" />
-    <Compile Include="Fluent\IInstanceRegistrationContext.cs" />
+    <Compile Include="Fluent\IGatherPostResolveAssemblers.cs" />
     <Compile Include="Fluent\PostInjectionContextExtensions.cs" />
     <Compile Include="Fluent\InstanceRegistrationContextExtensions.cs" />
     <Compile Include="Fluent\InstanceRegistrationContext.cs" />
@@ -118,8 +118,8 @@
     <Compile Include="Interfaces\IClassInjector.cs" />
     <Compile Include="Interfaces\IInterfaceInjector.cs" />
     <Compile Include="Interfaces\IPostResolveAssembler.cs" />
-    <Compile Include="ModulePostResolveBuilder.cs" />
-    <Compile Include="ModuleResolver.cs" />
+    <Compile Include="Module\ModulePostResolveBuilder.cs" />
+    <Compile Include="Module\ModuleResolver.cs" />
     <Compile Include="PrivateComponentAttribute.cs" />
     <Compile Include="PrivateFactoryAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

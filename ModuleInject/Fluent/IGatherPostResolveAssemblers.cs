@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ModuleInject.Fluent
 {
-    public interface IInstanceRegistrationContext
+    public interface IGatherPostResolveAssemblers
     {
         IList<IPostResolveAssembler> PostResolveAssemblers { get; }
     }

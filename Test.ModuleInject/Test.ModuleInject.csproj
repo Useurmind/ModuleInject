@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BehaviourModuleTest.cs" />
+    <Compile Include="AfterResolveModuleTest.cs" />
     <Compile Include="Interception\SimpleUnityBehaviourTest.cs" />
     <Compile Include="ModuleWithRegistrationErrorsTest.cs" />
     <Compile Include="NoAutoWiringModuleTest.cs" />
@@ -89,13 +90,14 @@
     <Compile Include="Fluent\PostResolveAssemblerTest.cs" />
     <Compile Include="FactoryModuleTest.cs" />
     <Compile Include="PropertyModuleTest.cs" />
-    <Compile Include="ModulePostResolveBuilderTest.cs" />
-    <Compile Include="ModuleResolverTest.cs" />
+    <Compile Include="Module\ModulePostResolveBuilderTest.cs" />
+    <Compile Include="Module\ModuleResolverTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SuperModuleTest.cs" />
     <Compile Include="TestModules\BehaviourModule.cs" />
     <Compile Include="TestModules\ChangeReturnValueBehaviour.cs" />
     <Compile Include="TestModules\FactoryModule.cs" />
+    <Compile Include="TestModules\AfterResolveModule.cs" />
     <Compile Include="TestModules\InjectorModule.cs" />
     <Compile Include="TestModules\ISubModule.cs" />
     <Compile Include="TestModules\ModuleWithRegistrationErrors.cs" />

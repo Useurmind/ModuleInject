@@ -1,6 +1,7 @@
 ﻿using ModuleInject;
 using ModuleInject.Fluent;
 using ModuleInject.Interfaces;
+using ModuleInject.Module;
 using ModuleInject.Utility;
 using Moq;
 using NUnit.Framework;
@@ -9,14 +10,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Test.ModuleInject
+namespace Test.ModuleInject.Module
 {
     [TestFixture]
     public class ModulePostResolveBuilderTest
     {
         private Mock<IInjectionModule> _moduleMock;
-        private DoubleKeyDictionary<Type, string, IInstanceRegistrationContext> _instanceRegistrations;
-        private Mock<IInstanceRegistrationContext> _instanceRegistrationMock;
+        private DoubleKeyDictionary<Type, string, IGatherPostResolveAssemblers> _instanceRegistrations;
+        private Mock<IGatherPostResolveAssemblers> _instanceRegistrationMock;
         private Mock<IPostResolveAssembler> _assembler;
         private string _componentName;
         public object _instance;
@@ -25,8 +26,8 @@ namespace Test.ModuleInject
         public void Init()
         {
             _moduleMock = new Mock<IInjectionModule>();
-            _instanceRegistrations = new DoubleKeyDictionary<Type, string, IInstanceRegistrationContext>();
-            _instanceRegistrationMock = new Mock<IInstanceRegistrationContext>();
+            _instanceRegistrations = new DoubleKeyDictionary<Type, string, IGatherPostResolveAssemblers>();
+            _instanceRegistrationMock = new Mock<IGatherPostResolveAssemblers>();
             _assembler = new Mock<IPostResolveAssembler>();
             _componentName = "coasdfkdng";
             _instance = new object();

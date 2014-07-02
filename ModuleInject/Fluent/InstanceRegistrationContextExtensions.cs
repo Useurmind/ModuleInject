@@ -112,5 +112,24 @@ namespace ModuleInject.Fluent
 
             return instance;
         }
+
+        public static InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
+            AfterResolve<IComponent, TComponent, IModule, TModule>(
+            this InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
+            Action<TComponent, TModule> afterResolveCode
+            )
+            where TComponent : IComponent
+            where TModule : IModule
+            where IModule : IInjectionModule
+        {
+            CommonFunctions.CheckNullArgument("instance", instance);
+            CommonFunctions.CheckNullArgument("afterResolveCode", afterResolveCode);
+
+            IPostResolveAssembler<TComponent, IModule, TModule> assembler = new PostResolveAssembler<TComponent, IModule, TModule>(afterResolveCode);
+
+            instance.AddAssembler(assembler);
+
+            return instance;
+        }
     }
 }

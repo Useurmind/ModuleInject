@@ -1,5 +1,6 @@
 ﻿using Microsoft.Practices.Unity;
 using ModuleInject;
+using ModuleInject.Module;
 using ModuleInject.Utility;
 using NUnit.Framework;
 using System;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Text;
 using Test.ModuleInject.TestModules;
 
-namespace Test.ModuleInject
+namespace Test.ModuleInject.Module
 {
     [TestFixture]
     public class ModuleResolverTest

@@ -2,6 +2,7 @@
 using Microsoft.Practices.Unity.InterceptionExtension;
 using ModuleInject.Fluent;
 using ModuleInject.Interfaces;
+using ModuleInject.Module;
 using ModuleInject.Utility;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,8 @@ namespace ModuleInject
         where TModule : InjectionModule<IModule, TModule>, IModule
         where IModule : IInjectionModule
     {
-        private DoubleKeyDictionary<Type, string, IInstanceRegistrationContext> _instanceRegistrations;
+        private DoubleKeyDictionary<Type, string, IGatherPostResolveAssemblers> _instanceRegistrations;
+        private DoubleKeyDictionary<Type, string, ComponentRegistrationContext> _componentRegistrations;
         private IUnityContainer _container;
         private bool _isInterceptionActive;
 
@@ -33,7 +35,8 @@ namespace ModuleInject
             _isInterceptionActive = false;
             IsResolved = false;
             _container = new UnityContainer();
-            _instanceRegistrations = new DoubleKeyDictionary<Type, string, IInstanceRegistrationContext>();
+            _instanceRegistrations = new DoubleKeyDictionary<Type, string, IGatherPostResolveAssemblers>();
+            _componentRegistrations = new DoubleKeyDictionary<Type, string, ComponentRegistrationContext>();
 
             if (!typeof(IModule).IsInterface)
             {
@@ -155,8 +158,7 @@ namespace ModuleInject
 
             _container.RegisterType<IComponent, TComponent>(functionName, new InjectionConstructor());
 
-            ComponentRegistrationTypes types = CreateTypes<IComponent, TComponent>();
-            ComponentRegistrationContext context = new ComponentRegistrationContext(functionName, _container, types, _isInterceptionActive);
+            ComponentRegistrationContext context = GetOrCreateComponentRegistrationContext<IComponent, TComponent>(functionName);
             return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(context);
         }
 
@@ -188,22 +190,37 @@ namespace ModuleInject
         {
             _container.RegisterType<IComponent, TComponent>(propName, new ContainerControlledLifetimeManager(), new InjectionConstructor());
 
-            ComponentRegistrationTypes types = CreateTypes<IComponent, TComponent>();
-            ComponentRegistrationContext context = new ComponentRegistrationContext(propName, _container, types, _isInterceptionActive);
+            ComponentRegistrationContext context = GetOrCreateComponentRegistrationContext<IComponent, TComponent>(propName);
             return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(context);
+        }
+
+        private ComponentRegistrationContext GetOrCreateComponentRegistrationContext<IComponent, TComponent>(string componentName) where TComponent : IComponent, new()
+        {
+            ComponentRegistrationContext context;
+            if (!_componentRegistrations.TryGetValue(typeof(IComponent), componentName, out context))
+            {
+                ComponentRegistrationTypes types = CreateTypes<IComponent, TComponent>();
+                context = new ComponentRegistrationContext(componentName, _container, types, _isInterceptionActive);
+                _componentRegistrations.Add(typeof(IComponent), componentName, context);
+            }
+            return context;
         }
 
         private InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterContainerInstance<IComponent, TComponent>(TComponent instance, string componentName)
             where TComponent : IComponent
         {
-            _container.RegisterInstance<IComponent>(componentName, instance);
+            IGatherPostResolveAssemblers instanceContext;
+            if (!_instanceRegistrations.TryGetValue(typeof(IComponent), componentName, out instanceContext))
+            {
+                _container.RegisterInstance<IComponent>(componentName, instance);
 
-            var instanceContext = new InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>(componentName, _container);
+                instanceContext = new InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>(componentName, _container);
 
-            _instanceRegistrations.Add(typeof(IComponent), componentName, instanceContext);
+                _instanceRegistrations.Add(typeof(IComponent), componentName, instanceContext);
+            }
 
-            return instanceContext;
+            return (InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>)instanceContext;
         }
 
         private static void CheckExpressionDescribesDirectMember<TObject, IComponent>(Expression<Func<TObject, IComponent>> moduleProperty)
@@ -299,9 +316,17 @@ namespace ModuleInject
 
             ModuleResolver.Resolve<IModule, TModule>((TModule)(object)this, _container);
 
-            ModulePostResolveBuilder.PerformPostResolveAssembly(this, _instanceRegistrations);
+            DoubleKeyDictionary<Type, string, IGatherPostResolveAssemblers> componentRegistrations = new DoubleKeyDictionary<Type, string, IGatherPostResolveAssemblers>();
+
+            foreach (var item in _componentRegistrations)
+            {
+                componentRegistrations.Add(item.Key1, item.Key2, item.Value);
+            }
 
             IsResolved = true;
+
+            ModulePostResolveBuilder.PerformPostResolveAssembly(this, _instanceRegistrations);
+            ModulePostResolveBuilder.PerformPostResolveAssembly(this, componentRegistrations);
         }
 
         public object GetComponent(Type componentType, string componentName)
