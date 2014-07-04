@@ -91,6 +91,21 @@ namespace ModuleInject.Fluent
         }
 
         public static ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
+            CallMethod<IComponent, TComponent, IModule, TModule>(
+            this ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+            Expression<Action<TComponent, TModule>> methodCallExpression)
+            where TComponent : IComponent
+            where TModule : IModule
+            where IModule : IInjectionModule
+        {
+            CommonFunctions.CheckNullArgument("component", component);
+
+            component.Context.CallMethod(methodCallExpression);
+
+            return component;
+        }
+
+        public static ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             AddInjector<IComponent, TComponent, IModule, TModule>(
             this ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
             IClassInjector<IComponent, TComponent, IModule, TModule> injector)

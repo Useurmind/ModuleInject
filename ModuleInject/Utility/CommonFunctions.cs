@@ -19,7 +19,7 @@ namespace ModuleInject.Utility
 
         internal static void ThrowPropertyAndTypeException<TModule>(string errorMessage, string propName)
         {
-            throw new ModuleInjectException(string.Format(CultureInfo.CurrentCulture, errorMessage, propName, typeof(TModule).FullName));
+            ThrowFormatException(errorMessage, propName, typeof(TModule).FullName);
         }
 
         internal static void ThrowTypeException<TModule>(string errorMessage, params object[] param)
@@ -32,7 +32,12 @@ namespace ModuleInject.Utility
             object[] formatParams = new object[] { moduleType.FullName };
             formatParams = formatParams.Concat(param).ToArray();
 
-            throw new ModuleInjectException(string.Format(CultureInfo.CurrentCulture, errorMessage, formatParams));
+            ThrowFormatException(errorMessage, formatParams);
+        }
+
+        internal static void ThrowFormatException(string errorMessage, params object[] param)
+        {
+            throw new ModuleInjectException(string.Format(CultureInfo.CurrentCulture, errorMessage, param));
         }
     }
 }

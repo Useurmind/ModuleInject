@@ -38,6 +38,12 @@ namespace Test.ModuleInject.TestModules
 
         public IMainComponent2SubInterface ComponentViaSubinterface { get; set; }
 
+        public void CallWithConstant(IMainComponent2 dependency1, int asd)
+        {
+            MainComponent2 = dependency1;
+            InjectedValue = asd;
+        }
+
         public void Initialize(IMainComponent2 dependency1)
         {
             MainComponent2 = dependency1;

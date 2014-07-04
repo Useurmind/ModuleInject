@@ -94,6 +94,33 @@ namespace ModuleInject.Fluent
             return this;
         }
 
+        public ComponentRegistrationContext CallMethod(LambdaExpression methodCallExpression)
+        {
+            IList<MethodCallArgument> arguments;  // type and path in the module or value for constants etc.
+            string methodName;
+            LinqHelper.GetMethodNameAndArguments(methodCallExpression, out methodName, out arguments);
+
+            object[] argumentParams = new object[arguments.Count];
+            int i = 0;
+            foreach (var argumentItem in arguments)
+            {
+                if (argumentItem.Value == null)
+                {
+                    argumentParams[i] = new ResolvedParameter(argumentItem.ArgumentType, argumentItem.ResolvePath);
+                }
+                else
+                {
+                    argumentParams[i] = argumentItem.Value;
+                }
+                i++;
+            }
+
+            Container.RegisterType(Types.IComponent, Types.TComponent, ComponentName,
+                new InjectionMethod(methodName, argumentParams));
+
+            return this;
+        }
+
         public ComponentRegistrationContext AddBehaviour<TBehaviour>()
             where TBehaviour : ISimpleBehaviour, new()
         {

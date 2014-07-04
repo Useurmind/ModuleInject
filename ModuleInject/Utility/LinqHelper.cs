@@ -9,6 +9,13 @@ namespace ModuleInject.Utility
 {
     internal static class LinqHelper
     {
+        /// <summary>
+        /// Calculates the path of the member and its type for an lambda expression that gives an component/subcomponent
+        /// or method/submethod of a module.
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <param name="memberPath"></param>
+        /// <param name="memberType"></param>
         internal static void GetMemberPathAndType(Expression expression, out string memberPath, out Type memberType)
         {
             memberType = null;
@@ -50,29 +57,83 @@ namespace ModuleInject.Utility
 
         internal static string GetMemberPath(Expression expression, out int depth)
         {
-            MemberChainExtractor propertyExtractor = new MemberChainExtractor();
+            MemberChainEvaluator propertyExtractor = new MemberChainEvaluator();
 
             IList<Expression> memberExpressions = propertyExtractor.Extract(expression);
 
-            var propertyNames = memberExpressions.Select(me =>
+            depth = memberExpressions.Count();
+            return propertyExtractor.MemberPath;
+        }
+
+        /// <summary>
+        /// Checks the expression and calculates the method name as well as the parameters of the method.
+        /// </summary>
+        /// It is assumed that the parameters of the method are either fixed values or expression describing components
+        /// of a module.
+        /// <param name="methodCallExpression"></param>
+        /// <param name="methodName"></param>
+        /// <param name="arguments"></param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", 
+            Justification="General catch is ok because an exception is thrown instead." )]
+        internal static void GetMethodNameAndArguments(LambdaExpression methodCallExpression, out string methodName,
+            out IList<MethodCallArgument> arguments)
+        {
+            arguments = new List<MethodCallArgument>();
+
+            MethodCallExpression methodExpession = methodCallExpression.Body as MethodCallExpression;
+            if (methodExpession == null)
             {
-                MemberExpression memberExp = me as MemberExpression;
-                if (memberExp != null)
+                throw new ModuleInjectException("No method call expression given.");
+            }
+
+            methodName = methodExpession.Method.Name;
+
+            foreach (var parameter in methodExpession.Arguments)
+            {
+                Expression parameter2 = parameter;
+                UnaryExpression unaryExpression = parameter as UnaryExpression;
+                if (unaryExpression != null)
                 {
-                    return memberExp.Member.Name;
+                    parameter2 = unaryExpression.Operand;
                 }
 
-                MethodCallExpression methodCallExp = me as MethodCallExpression;
-                if (methodCallExp != null)
+                MemberExpression memberExpression = parameter2 as MemberExpression;
+                if (memberExpression != null)
                 {
-                    return methodCallExp.Method.Name;
+                    MemberChainEvaluator expEvaluator = new MemberChainEvaluator();
+                    try
+                    {
+                        expEvaluator.Extract(parameter);
+                    }
+                    catch
+                    {
+                        CommonFunctions.ThrowFormatException(Errors.MethodCallArgumentNotSupported, parameter);
+                    }
+
+                    arguments.Add(new MethodCallArgument()
+                    {
+                        ArgumentType = expEvaluator.ReturnType,
+                        ResolvePath = expEvaluator.MemberPath,
+                        Value = null
+                    });
+                }
+                else
+                {
+
+                    ConstantExpression constantExpression = parameter2 as ConstantExpression;
+                    if (constantExpression == null)
+                    {
+                        CommonFunctions.ThrowFormatException(Errors.MethodCallArgumentNotSupported, parameter);
+                    }
+                    arguments.Add(new MethodCallArgument()
+                    {
+                        ArgumentType = constantExpression.Type,
+                        ResolvePath = null,
+                        Value = constantExpression.Value
+                    });
                 }
 
-                throw new ModuleInjectException("Invalid expression in member chain.");
-            });
-
-            depth = propertyNames.Count();
-            return string.Join(".", propertyNames);
+            }
         }
 
         private static Type TryGetMemberTypeFromMemberOrMethod(Expression expression)

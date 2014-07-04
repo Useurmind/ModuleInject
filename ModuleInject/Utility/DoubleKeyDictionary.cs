@@ -27,6 +27,8 @@ namespace ModuleInject.Utility
         private Dictionary<TKey1, Dictionary<TKey2, TValue>> _dictionary;
         private IList<DoubleKeyDictionaryItem<TKey1, TKey2, TValue>> _items;
 
+        public int Count { get { return _items.Count; } }
+
         public DoubleKeyDictionary()
         {
             _dictionary = new Dictionary<TKey1, Dictionary<TKey2, TValue>>();

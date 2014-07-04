@@ -147,6 +147,15 @@
   <data name="InjectionModule_PropertyNotQualifiedForPrivateRegistration" xml:space="preserve">
     <value>The property '{0}' of module with type '{1}' is not qualified to be a private component. Either it is a public component or it was not marked with the PrivateComponentAttribute.</value>
   </data>
+  <data name="MemberChainEvaluator_MemberChainNotContinuous" xml:space="preserve">
+    <value>The expression '{0}' is not a continuous chain of member accesses.</value>
+  </data>
+  <data name="MemberChainEvaluator_RootTypeMismatch" xml:space="preserve">
+    <value>The expression '{0}' has not the correct root type.</value>
+  </data>
+  <data name="MethodCallArgumentNotSupported" xml:space="preserve">
+    <value>The expression '{0}' is currently not supported as a method call argument.</value>
+  </data>
   <data name="ModuleResolver_MissingPropertyRegistration" xml:space="preserve">
     <value>The property '{0}' of module with type '{1}' could not be resolved. Did you inject a property that was neither a member of the modules interface nor marked with the PrivateComponentAttribute?</value>
   </data>

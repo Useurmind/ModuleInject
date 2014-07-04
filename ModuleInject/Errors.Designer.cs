@@ -151,6 +151,33 @@ namespace ModuleInject {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The expression &apos;{0}&apos; is not a continuous chain of member accesses..
+        /// </summary>
+        internal static string MemberChainEvaluator_MemberChainNotContinuous {
+            get {
+                return ResourceManager.GetString("MemberChainEvaluator_MemberChainNotContinuous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The expression &apos;{0}&apos; has not the correct root type..
+        /// </summary>
+        internal static string MemberChainEvaluator_RootTypeMismatch {
+            get {
+                return ResourceManager.GetString("MemberChainEvaluator_RootTypeMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The expression &apos;{0}&apos; is currently not supported as a method call argument..
+        /// </summary>
+        internal static string MethodCallArgumentNotSupported {
+            get {
+                return ResourceManager.GetString("MethodCallArgumentNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The property &apos;{0}&apos; of module with type &apos;{1}&apos; could not be resolved. Did you inject a property that was neither a member of the modules interface nor marked with the PrivateComponentAttribute?.
         /// </summary>
         internal static string ModuleResolver_MissingPropertyRegistration {
