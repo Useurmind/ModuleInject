@@ -28,8 +28,14 @@ namespace ModuleInject
         private IUnityContainer _container;
         private bool _isInterceptionActive;
 
+        /// <summary>
+        /// Is the module already resolved.
+        /// </summary>
         public bool IsResolved { get; private set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InjectionModule{IModule, TModule}"/> class.
+        /// </summary>
         protected InjectionModule()
         {
             _isInterceptionActive = false;
@@ -44,12 +50,77 @@ namespace ModuleInject
             }
         }
 
-        protected void ActivateInterception()
+
+        /// <summary>
+        /// Resolve the module and all its submodules.
+        /// </summary>
+        public void Resolve()
         {
-            _container.AddNewExtension<Microsoft.Practices.Unity.InterceptionExtension.Interception>();
-            _isInterceptionActive = true;
+            if (IsResolved)
+            {
+                CommonFunctions.ThrowTypeException<TModule>(Errors.InjectionModule_AlreadyResolved);
+            }
+
+            ModuleResolver.Resolve<IModule, TModule>((TModule)(object)this, _container);
+
+            DoubleKeyDictionary<Type, string, IGatherPostResolveAssemblers> componentRegistrations = new DoubleKeyDictionary<Type, string, IGatherPostResolveAssemblers>();
+
+            foreach (var item in _componentRegistrations)
+            {
+                componentRegistrations.Add(item.Key1, item.Key2, item.Value);
+            }
+
+            IsResolved = true;
+
+            ModulePostResolveBuilder.PerformPostResolveAssembly(this, _instanceRegistrations);
+            ModulePostResolveBuilder.PerformPostResolveAssembly(this, componentRegistrations);
         }
 
+        /// <summary>
+        /// Get a component of the specified type with the specified name.
+        /// </summary>
+        /// <param name="componentType">The type/interface with which the component is registered in the module.</param>
+        /// <param name="componentName">The name of the component.</param>
+        /// <returns>
+        /// If the component is found it is returned, else an exception is thrown.
+        /// </returns>
+        public object GetComponent(Type componentType, string componentName)
+        {
+            return _container.Resolve(componentType, componentName);
+        }
+
+        /// <summary>
+        /// Generic version of <see cref="GetComponent" />.
+        /// </summary>
+        /// <typeparam name="IComponent">The type/interface with which the component is registered in the module.</typeparam>
+        /// <param name="componentName">The name of the component.</param>
+        /// <returns>
+        /// If the component is found it is returned, else an exception is thrown.
+        /// </returns>
+        public IComponent GetComponent<IComponent>(string componentName)
+        {
+            return _container.Resolve<IComponent>(componentName);
+        }
+
+        /// <summary>
+        /// After calling this you can apply behaviors to the components that are registered via interfaces.
+        /// </summary>
+        protected void ActivateInterception()
+        {
+            if (!_isInterceptionActive)
+            {
+                _container.AddNewExtension<Microsoft.Practices.Unity.InterceptionExtension.Interception>();
+                _isInterceptionActive = true;
+            }
+        }
+
+        /// <summary>
+        /// Register a private component of the module.
+        /// </summary>
+        /// <typeparam name="IComponent">The interface of the component that is registered.</typeparam>
+        /// <typeparam name="TComponent">The class that should be instantiated for the component that is registered.</typeparam>
+        /// <param name="moduleProperty">Expression that describes the module property where the component should be stored.</param>
+        /// <returns>A context for fluent injection into the component.</returns>
         protected ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterPrivateComponent<IComponent, TComponent>(Expression<Func<TModule, IComponent>> moduleProperty)
             where TComponent : IComponent, new()
@@ -67,6 +138,13 @@ namespace ModuleInject
             return RegisterContainerComponent<IComponent, TComponent>(propName);
         }
 
+        /// <summary>
+        /// Register a public component of the module.
+        /// </summary>
+        /// <typeparam name="IComponent">The interface of the component that is registered.</typeparam>
+        /// <typeparam name="TComponent">The class that should be instantiated for the component that is registered.</typeparam>
+        /// <param name="moduleProperty">Expression that describes the module property where the component should be stored.</param>
+        /// <returns>A context for fluent injection into the component.</returns>
         protected ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterPublicComponent<IComponent, TComponent>(Expression<Func<IModule, IComponent>> moduleProperty)
             where TComponent : IComponent, new()
@@ -82,6 +160,14 @@ namespace ModuleInject
             return RegisterContainerComponent<IComponent, TComponent>(propName);
         }
 
+        /// <summary>
+        /// Register an instance as a private component of the module.
+        /// </summary>
+        /// <typeparam name="IComponent">The interface of the component that is registered.</typeparam>
+        /// <typeparam name="TComponent">The class that should be instantiated for the component that is registered.</typeparam>
+        /// <param name="moduleProperty">Expression that describes the module property where the component should be stored.</param>
+        /// <param name="instance">The instance that should be registered.</param>
+        /// <returns>A context for fluent injection into the component.</returns>
         protected InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterPrivateComponent<IComponent, TComponent>(Expression<Func<TModule, IComponent>> moduleProperty,
             TComponent instance)
@@ -100,6 +186,14 @@ namespace ModuleInject
             return RegisterContainerInstance<IComponent, TComponent>(instance, componentName);
         }
 
+        /// <summary>
+        /// Register an instance as a public component of the module.
+        /// </summary>
+        /// <typeparam name="IComponent">The interface of the component that is registered.</typeparam>
+        /// <typeparam name="TComponent">The class that should be instantiated for the component that is registered.</typeparam>
+        /// <param name="moduleProperty">Expression that describes the module property where the component should be stored.</param>
+        /// <param name="instance">The instance that should be registered.</param>
+        /// <returns>A context for fluent injection into the component.</returns>
         protected InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterPublicComponent<IComponent, TComponent>(Expression<Func<IModule, IComponent>> moduleProperty,
             TComponent instance)
@@ -116,6 +210,13 @@ namespace ModuleInject
             return RegisterContainerInstance<IComponent, TComponent>(instance, componentName);
         }
 
+        /// <summary>
+        /// Register a factory method that produces public components of the module.
+        /// </summary>
+        /// <typeparam name="IComponent">The interface of the component that is registered.</typeparam>
+        /// <typeparam name="TComponent">The class that should be instantiated for the component that is registered.</typeparam>
+        /// <param name="moduleProperty">Expression that describes the module method that should produce the components.</param>
+        /// <returns>A context for fluent injection into the component factory method.</returns>
         protected ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterPublicComponentFactory<IComponent, TComponent>(Expression<Func<IModule, IComponent>> moduleMethod)
             where TComponent : IComponent, new()
@@ -130,6 +231,13 @@ namespace ModuleInject
             return RegisterContainerFactory<IComponent, TComponent>(methodInfo);
         }
 
+        /// <summary>
+        /// Register a factory method that produces private components of the module.
+        /// </summary>
+        /// <typeparam name="IComponent">The interface of the component that is registered.</typeparam>
+        /// <typeparam name="TComponent">The class that should be instantiated for the component that is registered.</typeparam>
+        /// <param name="moduleProperty">Expression that describes the module method that should produce the components.</param>
+        /// <returns>A context for fluent injection into the component factory method.</returns>
         protected ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterPrivateComponentFactory<IComponent, TComponent>(Expression<Func<TModule, IComponent>> moduleMethod)
             where TComponent : IComponent, new()
@@ -146,22 +254,12 @@ namespace ModuleInject
             return RegisterContainerFactory<IComponent, TComponent>(methodInfo);
         }
 
-        private ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
-            RegisterContainerFactory<IComponent, TComponent>(MethodInfo methodInfo)
-            where TComponent : IComponent, new()
-        {
-            string functionName = methodInfo.Name;
-            if (methodInfo.GetParameters().Length > 0)
-            {
-                CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_FactoryMethodsWithParametersNotSupportedYet, functionName);
-            }
-
-            _container.RegisterType<IComponent, TComponent>(functionName, new InjectionConstructor());
-
-            ComponentRegistrationContext context = GetOrCreateComponentRegistrationContext<IComponent, TComponent>(functionName);
-            return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(context);
-        }
-
+        /// <summary>
+        /// Creates a component that should be returned by a factory method.
+        /// </summary>
+        /// <typeparam name="IComponent">The interface of the component.</typeparam>
+        /// <param name="moduleMethod">The module factory method that should return the component.</param>
+        /// <returns>The component that was created.</returns>
         protected IComponent CreateInstance<IComponent>(Expression<Func<TModule, IComponent>> moduleMethod)
         {
             CommonFunctions.CheckNullArgument("moduleMethod", moduleMethod);
@@ -181,6 +279,22 @@ namespace ModuleInject
             }
 
             return _container.Resolve<IComponent>(functionName);
+        }
+
+        private ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
+            RegisterContainerFactory<IComponent, TComponent>(MethodInfo methodInfo)
+            where TComponent : IComponent, new()
+        {
+            string functionName = methodInfo.Name;
+            if (methodInfo.GetParameters().Length > 0)
+            {
+                CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_FactoryMethodsWithParametersNotSupportedYet, functionName);
+            }
+
+            _container.RegisterType<IComponent, TComponent>(functionName, new InjectionConstructor());
+
+            ComponentRegistrationContext context = GetOrCreateComponentRegistrationContext<IComponent, TComponent>(functionName);
+            return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(context);
         }
 
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Should be ok that way.")]
@@ -307,46 +421,21 @@ namespace ModuleInject
             };
         }
 
-        public void Resolve()
-        {
-            if (IsResolved)
-            {
-                CommonFunctions.ThrowTypeException<TModule>(Errors.InjectionModule_AlreadyResolved);
-            }
-
-            ModuleResolver.Resolve<IModule, TModule>((TModule)(object)this, _container);
-
-            DoubleKeyDictionary<Type, string, IGatherPostResolveAssemblers> componentRegistrations = new DoubleKeyDictionary<Type, string, IGatherPostResolveAssemblers>();
-
-            foreach (var item in _componentRegistrations)
-            {
-                componentRegistrations.Add(item.Key1, item.Key2, item.Value);
-            }
-
-            IsResolved = true;
-
-            ModulePostResolveBuilder.PerformPostResolveAssembly(this, _instanceRegistrations);
-            ModulePostResolveBuilder.PerformPostResolveAssembly(this, componentRegistrations);
-        }
-
-        public object GetComponent(Type componentType, string componentName)
-        {
-            return _container.Resolve(componentType, componentName);
-        }
-
-        public IComponent GetComponent<IComponent>(string componentName)
-        {
-            return _container.Resolve<IComponent>(componentName);
-        }
-
         #region IDisposable
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             _container.Dispose();
