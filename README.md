@@ -17,7 +17,8 @@ This is where this framework can come in to save the day. Here are some facts ab
 * Build on the basis of the Unity Container(version 2).
 * Provides modules with fixed contracts via interfaces.
 * No fancy auto-wiring of your classes, every injection must be stated.
-* Supports property and method injection, NO constructor injection yet (because I didn't find a way to statically type that yet)
+* Provides compiler supports through the use of LINQ Lambda Expression
+* Supports property, constructor and method injection
 * Supports Unity interface interceptors (everything else is not clean from my point of view)
 * Supports injection into existing instances (called post injection).
 * Supports factory methods in modules.

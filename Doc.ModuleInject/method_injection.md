@@ -1,7 +1,7 @@
 ﻿Method injection
 ----------------
 
-In the tutorial you learned how property injection works. But there is one more kind of injection that ModuleInject provides, namely MethodInjection.
+In the tutorial you learned how property injection works. But there are other kinds of injection that ModuleInject provides. One is called method injection.
 
 There are two ways to implement method injection.
 
