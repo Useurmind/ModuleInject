@@ -61,6 +61,8 @@ namespace ModuleInject
                 CommonFunctions.ThrowTypeException<TModule>(Errors.InjectionModule_AlreadyResolved);
             }
 
+            ApplyDefaultConstructors();
+
             ModuleResolver.Resolve<IModule, TModule>((TModule)(object)this, _container);
 
             DoubleKeyDictionary<Type, string, IGatherPostResolveAssemblers> componentRegistrations = new DoubleKeyDictionary<Type, string, IGatherPostResolveAssemblers>();
@@ -74,6 +76,20 @@ namespace ModuleInject
 
             ModulePostResolveBuilder.PerformPostResolveAssembly(this, _instanceRegistrations);
             ModulePostResolveBuilder.PerformPostResolveAssembly(this, componentRegistrations);
+        }
+
+        private void ApplyDefaultConstructors()
+        {
+            foreach (var componentRegistration in _componentRegistrations)
+            {
+                ComponentRegistrationContext context = componentRegistration.Value;
+
+                if (!context.WasConstructorWithArgumentsCalled)
+                {
+                    _container.RegisterType(context.Types.IComponent, context.Types.TComponent, context.ComponentName,
+                        new InjectionConstructor());
+                }
+            }
         }
 
         /// <summary>
@@ -291,7 +307,7 @@ namespace ModuleInject
                 CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_FactoryMethodsWithParametersNotSupportedYet, functionName);
             }
 
-            _container.RegisterType<IComponent, TComponent>(functionName, new InjectionConstructor());
+            _container.RegisterType<IComponent, TComponent>(functionName);
 
             ComponentRegistrationContext context = GetOrCreateComponentRegistrationContext<IComponent, TComponent>(functionName);
             return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(context);
@@ -302,7 +318,7 @@ namespace ModuleInject
             RegisterContainerComponent<IComponent, TComponent>(string propName)
             where TComponent : IComponent, new()
         {
-            _container.RegisterType<IComponent, TComponent>(propName, new ContainerControlledLifetimeManager(), new InjectionConstructor());
+            _container.RegisterType<IComponent, TComponent>(propName, new ContainerControlledLifetimeManager());
 
             ComponentRegistrationContext context = GetOrCreateComponentRegistrationContext<IComponent, TComponent>(propName);
             return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(context);

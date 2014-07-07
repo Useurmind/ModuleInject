@@ -23,19 +23,19 @@ namespace Test.ModuleInject.Module
             _module = new PropertyModule();
             _module.SubModule = new Submodule();
             _container = new UnityContainer();
-            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InstanceRegistrationComponent));
-            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InitWithPropertiesComponent));
-            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InitWithInitialize1Component));
-            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InitWithInitialize1FromSubComponent));
-            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InitWithInitialize2Component));
-            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InitWithInitialize3Component));
-            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InitWithInjectorComponent));
-            _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((PropertyModule x) => x.Component2));
-            _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((PropertyModule x) => x.Component22));
-            _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((PropertyModule x) => x.PrivateComponent));
-            _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((PropertyModule x) => x.PrivateInstanceComponent));
-            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.PrivateComponentInjectedProperties));
-            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.AlsoRegisterForComponent));
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InstanceRegistrationComponent), new InjectionConstructor());
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InitWithPropertiesComponent), new InjectionConstructor());
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InitWithInitialize1Component), new InjectionConstructor());
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InitWithInitialize1FromSubComponent), new InjectionConstructor());
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InitWithInitialize2Component), new InjectionConstructor());
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InitWithInitialize3Component), new InjectionConstructor());
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InitWithInjectorComponent), new InjectionConstructor());
+            _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((PropertyModule x) => x.Component2), new InjectionConstructor());
+            _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((PropertyModule x) => x.Component22), new InjectionConstructor());
+            _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((PropertyModule x) => x.PrivateComponent), new InjectionConstructor());
+            _container.RegisterType<IMainComponent2, MainComponent2>(Property.Get((PropertyModule x) => x.PrivateInstanceComponent), new InjectionConstructor());
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.PrivateComponentInjectedProperties), new InjectionConstructor());
+            _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.AlsoRegisterForComponent), new InjectionConstructor());
         }
 
         [TestCase]

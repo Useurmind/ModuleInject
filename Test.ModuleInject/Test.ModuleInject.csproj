@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="BehaviourModuleTest.cs" />
     <Compile Include="AfterResolveModuleTest.cs" />
+    <Compile Include="ConstructorInjectionModuleTest.cs" />
     <Compile Include="Interception\SimpleUnityBehaviourTest.cs" />
     <Compile Include="MethodCallModuleTest.cs" />
     <Compile Include="ModuleWithRegistrationErrorsTest.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="SuperModuleTest.cs" />
     <Compile Include="TestModules\BehaviourModule.cs" />
     <Compile Include="TestModules\ChangeReturnValueBehaviour.cs" />
+    <Compile Include="TestModules\ConstructorInjectionModule.cs" />
     <Compile Include="TestModules\FactoryModule.cs" />
     <Compile Include="TestModules\AfterResolveModule.cs" />
     <Compile Include="TestModules\InjectorModule.cs" />

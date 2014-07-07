@@ -25,6 +25,7 @@ namespace ModuleInject.Fluent
         public ComponentRegistrationTypes Types { get; private set; }
         public bool IsInterceptorAlreadyAdded { get; private set; }
         public bool IsInterceptionActive { get; private set; }
+        public bool WasConstructorWithArgumentsCalled { get; private set; }
 
         public string ComponentName { get; private set; }
         public IUnityContainer Container { get; private set; }
@@ -33,6 +34,7 @@ namespace ModuleInject.Fluent
         {
             IsInterceptionActive = interceptionActive;
             IsInterceptorAlreadyAdded = false;
+            WasConstructorWithArgumentsCalled = false;
             ComponentName = name;
             Container = container;
             Types = types;
@@ -94,26 +96,39 @@ namespace ModuleInject.Fluent
             return this;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="constructorCallExpression">Expects an expression of the form module => new SomeConstructor(module.SomeComponent, ..).</param>
+        /// <returns></returns>
+        public ComponentRegistrationContext CallConstructor(LambdaExpression constructorCallExpression)
+        {
+            IList<MethodCallArgument> arguments;
+
+            arguments = LinqHelper.GetConstructorArguments(constructorCallExpression);
+
+            object[] argumentParams = GetContainerInjectionArguments(arguments);
+
+            Container.RegisterType(Types.IComponent, Types.TComponent, ComponentName,
+                new InjectionConstructor(argumentParams));
+
+            WasConstructorWithArgumentsCalled = true;
+
+            return this;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="methodCallExpression">Expects an expression of the form (component, module) => component.Method(module.SomeComponent, ..).</param>
+        /// <returns></returns>
         public ComponentRegistrationContext CallMethod(LambdaExpression methodCallExpression)
         {
             IList<MethodCallArgument> arguments;  // type and path in the module or value for constants etc.
             string methodName;
             LinqHelper.GetMethodNameAndArguments(methodCallExpression, out methodName, out arguments);
 
-            object[] argumentParams = new object[arguments.Count];
-            int i = 0;
-            foreach (var argumentItem in arguments)
-            {
-                if (argumentItem.Value == null)
-                {
-                    argumentParams[i] = new ResolvedParameter(argumentItem.ArgumentType, argumentItem.ResolvePath);
-                }
-                else
-                {
-                    argumentParams[i] = argumentItem.Value;
-                }
-                i++;
-            }
+            object[] argumentParams = GetContainerInjectionArguments(arguments);
 
             Container.RegisterType(Types.IComponent, Types.TComponent, ComponentName,
                 new InjectionMethod(methodName, argumentParams));
@@ -166,6 +181,25 @@ namespace ModuleInject.Fluent
         {
             this.PostResolveAssemblers.Add(assembler);
             return this;
+        }
+
+        private static object[] GetContainerInjectionArguments(IList<MethodCallArgument> arguments)
+        {
+            object[] argumentParams = new object[arguments.Count];
+            int i = 0;
+            foreach (var argumentItem in arguments)
+            {
+                if (argumentItem.Value == null)
+                {
+                    argumentParams[i] = new ResolvedParameter(argumentItem.ArgumentType, argumentItem.ResolvePath);
+                }
+                else
+                {
+                    argumentParams[i] = argumentItem.Value;
+                }
+                i++;
+            }
+            return argumentParams;
         }
 
         private static ResolvedParameter NewResolvedParameter(Expression dependencyExpression)

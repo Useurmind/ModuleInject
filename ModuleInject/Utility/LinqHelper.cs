@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -65,6 +66,17 @@ namespace ModuleInject.Utility
             return propertyExtractor.MemberPath;
         }
 
+        internal static IList<MethodCallArgument> GetConstructorArguments(LambdaExpression constructorCallExpression)
+        {
+            NewExpression constructorExpression = constructorCallExpression.Body as NewExpression;
+            if (constructorExpression == null)
+            {
+                CommonFunctions.ThrowFormatException("No constructor expression given.");
+            }
+
+            return EvaluateArgumentList(constructorExpression.Arguments);
+        }
+
         /// <summary>
         /// Checks the expression and calculates the method name as well as the parameters of the method.
         /// </summary>
@@ -83,12 +95,19 @@ namespace ModuleInject.Utility
             MethodCallExpression methodExpession = methodCallExpression.Body as MethodCallExpression;
             if (methodExpession == null)
             {
-                throw new ModuleInjectException("No method call expression given.");
+                CommonFunctions.ThrowFormatException("No method call expression given.");
             }
 
             methodName = methodExpession.Method.Name;
 
-            foreach (var parameter in methodExpession.Arguments)
+            arguments = EvaluateArgumentList(methodExpession.Arguments);
+        }
+
+        private static IList<MethodCallArgument> EvaluateArgumentList(ReadOnlyCollection<Expression> argumentsExpressionList)
+        {
+            IList<MethodCallArgument> arguments = new List<MethodCallArgument>();
+
+            foreach (var parameter in argumentsExpressionList)
             {
                 Expression parameter2 = parameter;
                 UnaryExpression unaryExpression = parameter as UnaryExpression;
@@ -132,8 +151,9 @@ namespace ModuleInject.Utility
                         Value = constantExpression.Value
                     });
                 }
-
             }
+
+            return arguments;
         }
 
         private static Type TryGetMemberTypeFromMemberOrMethod(Expression expression)
