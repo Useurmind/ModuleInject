@@ -139,7 +139,7 @@ namespace ModuleInject
         /// <returns>A context for fluent injection into the component.</returns>
         protected ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterPrivateComponent<IComponent, TComponent>(Expression<Func<TModule, IComponent>> moduleProperty)
-            where TComponent : IComponent, new()
+            where TComponent : IComponent
         {
             CommonFunctions.CheckNullArgument("moduleProperty", moduleProperty);
 
@@ -163,7 +163,7 @@ namespace ModuleInject
         /// <returns>A context for fluent injection into the component.</returns>
         protected ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterPublicComponent<IComponent, TComponent>(Expression<Func<IModule, IComponent>> moduleProperty)
-            where TComponent : IComponent, new()
+            where TComponent : IComponent
         {
             CommonFunctions.CheckNullArgument("moduleProperty", moduleProperty);
 
@@ -316,7 +316,7 @@ namespace ModuleInject
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Should be ok that way.")]
         private ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterContainerComponent<IComponent, TComponent>(string propName)
-            where TComponent : IComponent, new()
+            where TComponent : IComponent
         {
             _container.RegisterType<IComponent, TComponent>(propName, new ContainerControlledLifetimeManager());
 
@@ -324,7 +324,8 @@ namespace ModuleInject
             return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(context);
         }
 
-        private ComponentRegistrationContext GetOrCreateComponentRegistrationContext<IComponent, TComponent>(string componentName) where TComponent : IComponent, new()
+        private ComponentRegistrationContext GetOrCreateComponentRegistrationContext<IComponent, TComponent>(string componentName) 
+            where TComponent : IComponent
         {
             ComponentRegistrationContext context;
             if (!_componentRegistrations.TryGetValue(typeof(IComponent), componentName, out context))
