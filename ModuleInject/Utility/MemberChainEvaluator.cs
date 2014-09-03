@@ -122,7 +122,7 @@ namespace ModuleInject.Utility
 
             if (_lastMemberExpression == null)
             {
-                MemberType = m.Method.ReturnType; 
+                MemberType = m.Method.ReturnType;
                 SetReturnType();
             }
 
@@ -159,16 +159,36 @@ namespace ModuleInject.Utility
 
         private void CheckChainIsContinuous(Expression currentExpression)
         {
+            if (_lastMemberExpression == null)
+                return;
+
             MemberExpression memberExpression = _lastMemberExpression as MemberExpression;
-            if (memberExpression != null && memberExpression.Expression != currentExpression)
+            MethodCallExpression methodExpression = _lastMemberExpression as MethodCallExpression;
+            Expression checkedExpression = null;
+            if (memberExpression != null)
             {
-                ThrowMemberChainNotContinuous();
+                checkedExpression = memberExpression.Expression;
+            }
+            else if (methodExpression != null)
+            {
+                checkedExpression = methodExpression.Object;
             }
 
-            MethodCallExpression methodExpression = _lastMemberExpression as MethodCallExpression;
-            if (methodExpression != null && methodExpression.Object != currentExpression)
+            if (checkedExpression.NodeType == ExpressionType.MemberAccess || checkedExpression.NodeType == ExpressionType.Call)
             {
-                ThrowMemberChainNotContinuous();
+                if (checkedExpression != currentExpression)
+                {
+                    ThrowMemberChainNotContinuous();
+                }
+            }
+            else
+            {
+                ParameterExpression paramExpression = LinqHelper.GetParameterExpressionWithPossibleConvert(checkedExpression, TargetRootType);
+
+                if (paramExpression == null || paramExpression != currentExpression)
+                {
+                    ThrowMemberChainNotContinuous();
+                }
             }
         }
 

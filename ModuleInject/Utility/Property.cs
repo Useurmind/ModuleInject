@@ -52,18 +52,7 @@ namespace ModuleInject.Utility
                 throw exception;
             }
 
-            Expression paramExpBase = memberExpression.Expression;
-            UnaryExpression convertExp = paramExpBase as UnaryExpression;
-            if (convertExp != null && convertExp.NodeType == ExpressionType.Convert)
-            {
-                if (!convertExp.Type.IsAssignableFrom(parameterExpression.Type))
-                {
-                    throw exception;
-                }
-                paramExpBase = convertExp.Operand;
-            }
-
-            ParameterExpression paramExp = paramExpBase as ParameterExpression;
+            ParameterExpression paramExp = LinqHelper.GetParameterExpressionWithPossibleConvert(memberExpression.Expression, parameterExpression.Type);
             if (paramExp == null)
             {
                 throw exception;

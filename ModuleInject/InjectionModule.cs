@@ -363,6 +363,8 @@ namespace ModuleInject
                 CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_CannotRegisterPropertyOrMethodsWhichAreNotMembersOfTheModule, path);
             }
 
+            ParameterExpression parameterExpression = moduleProperty.Parameters[0];
+
             ParameterExpression paramExp = null;
             MemberExpression propExpression = moduleProperty.Body as MemberExpression;
             MethodCallExpression methodExpression = moduleProperty.Body as MethodCallExpression;
@@ -373,7 +375,7 @@ namespace ModuleInject
                 {
                     ThrowNoPropertyOrMethodOfModuleException(moduleProperty);
                 }
-                paramExp = propExpression.Expression as ParameterExpression;
+                paramExp = LinqHelper.GetParameterExpressionWithPossibleConvert(propExpression.Expression, parameterExpression.Type);
             }
             else if (methodExpression != null)
             {
@@ -382,7 +384,7 @@ namespace ModuleInject
                 {
                     ThrowNoPropertyOrMethodOfModuleException(moduleProperty);
                 }
-                paramExp = methodExpression.Object as ParameterExpression;
+                paramExp = LinqHelper.GetParameterExpressionWithPossibleConvert(methodExpression.Object, parameterExpression.Type);
             }
             else
             {
@@ -402,7 +404,7 @@ namespace ModuleInject
 
         private static bool IsTypeOfModule(Type type)
         {
-            return type == typeof(IModule) || type == typeof(TModule);
+            return type.IsAssignableFrom(typeof(IModule)) || type.IsAssignableFrom(typeof(TModule));
         }
 
         private static void CheckPropertyQualifiesForPrivateRegistration(MemberInfo propInfo)
