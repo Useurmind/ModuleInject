@@ -38,6 +38,8 @@ namespace ModuleInject.Utility
             Exception exception = new ModuleInjectException("Properties can only be constructed from expressions describing direct properties of an object.");
 
             LambdaExpression lambdaExpression = (LambdaExpression)propertyExpression;
+            ParameterExpression parameterExpression = lambdaExpression.Parameters[0];
+
             MemberExpression memberExpression = lambdaExpression.Body as MemberExpression;
             if (memberExpression == null)
             {
@@ -50,7 +52,18 @@ namespace ModuleInject.Utility
                 throw exception;
             }
 
-            ParameterExpression paramExp = memberExpression.Expression as ParameterExpression;
+            Expression paramExpBase = memberExpression.Expression;
+            UnaryExpression convertExp = paramExpBase as UnaryExpression;
+            if (convertExp != null && convertExp.NodeType == ExpressionType.Convert)
+            {
+                if (!convertExp.Type.IsAssignableFrom(parameterExpression.Type))
+                {
+                    throw exception;
+                }
+                paramExpBase = convertExp.Operand;
+            }
+
+            ParameterExpression paramExp = paramExpBase as ParameterExpression;
             if (paramExp == null)
             {
                 throw exception;

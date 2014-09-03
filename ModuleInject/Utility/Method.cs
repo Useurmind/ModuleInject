@@ -31,6 +31,8 @@ namespace ModuleInject.Utility
         {
             Exception exception = new ModuleInjectException("Methods can only be constructed from expressions describing direct methods of an object.");
 
+            ParameterExpression parameterExpression = methodExpression.Parameters[0];
+
             MethodCallExpression memberExpression = methodExpression.Body as MethodCallExpression;
             if (memberExpression == null)
             {
@@ -43,7 +45,18 @@ namespace ModuleInject.Utility
                 throw exception;
             }
 
-            ParameterExpression paramExp = memberExpression.Object as ParameterExpression;
+            Expression paramExpBase = memberExpression.Object;
+            UnaryExpression convertExp = paramExpBase as UnaryExpression;
+            if (convertExp != null && convertExp.NodeType == ExpressionType.Convert)
+            {
+                if (!convertExp.Type.IsAssignableFrom(parameterExpression.Type))
+                {
+                    throw exception;
+                }
+                paramExpBase = convertExp.Operand;
+            }
+
+            ParameterExpression paramExp = paramExpBase as ParameterExpression;
             if (paramExp == null)
             {
                 throw exception;

@@ -3,7 +3,9 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
+using Test.ModuleInject.TestModules;
 
 namespace Test.ModuleInject.Utility
 {
@@ -19,6 +21,23 @@ namespace Test.ModuleInject.Utility
         private class TestClass2
         {
             public int A { get; set; }
+        }
+
+        [TestCase]
+        public void Get_MemberExpressionWithCastOfParameter_ReturnsProperty()
+        {
+            Property prop = Property.Get((MainComponent1 m) => ((IMainComponent1)m).MainComponent2);
+
+            Assert.IsNotNull(prop);
+        }
+
+        [TestCase]
+        [ExpectedException(typeof(ModuleInjectException))]
+        public void Get_MemberExpressionWithInvalidCastOfParameter_ErrorThrown()
+        {
+            Property prop = Property.Get((MainComponent1 m) => ((IMainComponent2)m).StringProperty);
+
+            Assert.IsNotNull(prop);
         }
 
         [TestCase]

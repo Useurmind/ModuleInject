@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Test.ModuleInject.TestModules;
 
 namespace Test.ModuleInject.Utility
 {
@@ -20,6 +21,23 @@ namespace Test.ModuleInject.Utility
         private class TestClass2
         {
             public int Func() { return 0; }
+        }
+
+        [TestCase]
+        public void Get_MethodWithCastOfParameter_ReturnsProperty()
+        {
+            Method method = Method.Get((MainComponent1 m) => ((IMainComponent1)m).GetHashCode());
+
+            Assert.IsNotNull(method);
+        }
+
+        [TestCase]
+        [ExpectedException(typeof(ModuleInjectException))]
+        public void Get_MethodWithInvalidCastOfParameter_ErrorThrown()
+        {
+            Method method = Method.Get((MainComponent1 m) => ((IMainComponent2)m).StringProperty);
+
+            Assert.IsNotNull(method);
         }
 
         [TestCase]

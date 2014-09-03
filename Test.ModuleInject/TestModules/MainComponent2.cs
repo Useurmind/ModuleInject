@@ -10,6 +10,7 @@ namespace Test.ModuleInject.TestModules
     {
         int IntProperty { get; set; }
         IMainComponent2SubInterface Component2Sub { get; set; }
+        ISubComponent2 SubComponent2 { get; set; }
     }
 
     public interface IMainComponent2SubInterface
@@ -22,6 +23,7 @@ namespace Test.ModuleInject.TestModules
         public int IntProperty { get; set; }
         public string StringProperty { get; set; }
         public IMainComponent2SubInterface Component2Sub { get; set; }
+        public ISubComponent2 SubComponent2 { get; set; }
 
         public void Initialize(IMainComponent2SubInterface dependency1)
         {
