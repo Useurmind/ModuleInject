@@ -50,6 +50,21 @@ namespace ModuleInject
             }
         }
 
+        /// <summary>
+        /// Called before the <see cref="Resolve"/> method is executed.
+        /// </summary>
+        protected virtual void BeforeResolving() { }
+
+        /// <summary>
+        /// Called before the post resolve assembly of objects is executed.
+        /// </summary>
+        protected virtual void BeforePostResolveAssembly() { }
+
+        /// <summary>
+        /// Called after the <see cref="Resolve"/> method was executed.
+        /// </summary>
+        protected virtual void AfterResolved() { }
+
 
         /// <summary>
         /// Resolve the module and all its submodules.
@@ -60,6 +75,8 @@ namespace ModuleInject
             {
                 CommonFunctions.ThrowTypeException<TModule>(Errors.InjectionModule_AlreadyResolved);
             }
+
+            BeforeResolving();
 
             ApplyDefaultConstructors();
 
@@ -74,8 +91,12 @@ namespace ModuleInject
 
             IsResolved = true;
 
+            BeforePostResolveAssembly();
+
             ModulePostResolveBuilder.PerformPostResolveAssembly(this, _instanceRegistrations);
             ModulePostResolveBuilder.PerformPostResolveAssembly(this, componentRegistrations);
+
+            AfterResolved();
         }
 
         private void ApplyDefaultConstructors()
