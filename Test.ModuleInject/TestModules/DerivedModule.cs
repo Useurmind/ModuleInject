@@ -18,9 +18,13 @@ namespace Test.ModuleInject.TestModules
     {
         public IMainComponent1 MainComponent1 { get; set; }
 
+        [PrivateComponent]
+        public IMainComponent1 MainComponent1Private { get; set; }
+
         public BaseModule()
         {
             RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1);
+            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1Private);
         }
     }
 
@@ -33,9 +37,13 @@ namespace Test.ModuleInject.TestModules
     {
         public IMainComponent2 MainComponent2 { get; set; }
 
+        [PrivateComponent]
+        public IMainComponent2 MainComponent2Private { get; set; }
+
         public DerivedModule()
         {
             RegisterPublicComponent<IMainComponent2, MainComponent2>(x => x.MainComponent2);
+            RegisterPrivateComponent<IMainComponent2, MainComponent2>(x => x.MainComponent2Private);
         }
     }
 }

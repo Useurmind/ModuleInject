@@ -49,7 +49,7 @@ namespace ModuleInject.Module
             Type moduleInterface = typeof(IModule);
             Type injectionModuleType = typeof(IInjectionModule);
 
-            var interfaceProperties = moduleInterface.GetProperties()
+            var interfaceProperties = moduleInterface.GetPropertiesRecursive()
                                                      .Where(p =>
                                                       {
                                                           var searchedInterface = p.PropertyType.GetInterface(injectionModuleType.Name, false);
@@ -58,7 +58,7 @@ namespace ModuleInject.Module
                                                       })
                                                      .Select(p => moduleType.GetProperty(p.Name));
 
-            var privateProperties = moduleType.GetProperties(BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic)
+            var privateProperties = moduleType.GetPropertiesRecursive(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                                               .Where(p =>
                                               {
                                                   bool isPrivate = p.GetCustomAttributes(typeof(PrivateComponentAttribute), false).Length > 0;

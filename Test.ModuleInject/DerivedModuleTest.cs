@@ -22,6 +22,11 @@ namespace Test.ModuleInject
         public void Resolve__CorrectlyResolved()
         {
             _derivedModule.Resolve();
+
+            Assert.IsNotNull(_derivedModule.MainComponent1);
+            Assert.IsNotNull(_derivedModule.MainComponent2);
+            Assert.IsNotNull(_derivedModule.MainComponent1Private);
+            Assert.IsNotNull(_derivedModule.MainComponent2Private);
         }
     }
 }

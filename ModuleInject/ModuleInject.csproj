@@ -132,6 +132,7 @@
     <Compile Include="Utility\ModuleInjectException.cs" />
     <Compile Include="Utility\Method.cs" />
     <Compile Include="Utility\Property.cs" />
+    <Compile Include="Utility\TypeExtensions.cs" />
     <Compile Include="Utility\ValidatedNotNullAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
