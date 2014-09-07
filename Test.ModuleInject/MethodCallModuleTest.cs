@@ -63,5 +63,38 @@ namespace Test.ModuleInject
             Assert.NotNull(_module.SubModule.Component1);
             Assert.AreSame(_module.SubModule.Component1, _module.MainComponent1.SubComponent1);
         }
+
+        [TestCase]
+        public void Resolve_RegisterPublicComponentWithPropertyOfThis_FunctionCalledWithArguments()
+        {
+            _module.RegisterPublicComponentWithPropertyOfThis();
+            _module.Resolve();
+
+            Assert.NotNull(_module.MainComponent1);
+            Assert.IsNull(_module.MainComponent1.MainComponent2);
+            Assert.AreEqual(5, _module.MainComponent1.InjectedValue);
+        }
+
+        [TestCase]
+        public void Resolve_RegisterPublicComponentWithStackVariable_FunctionCalledWithArguments()
+        {
+            _module.RegisterPublicComponentWithStackVariable();
+            _module.Resolve();
+
+            Assert.NotNull(_module.MainComponent1);
+            Assert.NotNull(_module.MainComponent1.MainComponent2);
+            Assert.AreEqual(5, _module.MainComponent1.InjectedValue);
+        }
+
+        [TestCase]
+        public void Resolve_RegisterPublicComponentWithInlineNew_FunctionCalledWithArguments()
+        {
+            _module.RegisterPublicComponentWithInlineNew();
+            _module.Resolve();
+
+            Assert.NotNull(_module.MainComponent1);
+            Assert.NotNull(_module.MainComponent1.MainComponent2);
+            Assert.AreEqual(5, _module.MainComponent1.InjectedValue);
+        }
     }
 }

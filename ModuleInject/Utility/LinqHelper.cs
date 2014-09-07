@@ -85,8 +85,8 @@ namespace ModuleInject.Utility
         /// <param name="methodCallExpression"></param>
         /// <param name="methodName"></param>
         /// <param name="arguments"></param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", 
-            Justification="General catch is ok because an exception is thrown instead." )]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes",
+            Justification = "General catch is ok because an exception is thrown instead.")]
         internal static void GetMethodNameAndArguments(LambdaExpression methodCallExpression, out string methodName,
             out IList<MethodCallArgument> arguments)
         {
@@ -116,44 +116,100 @@ namespace ModuleInject.Utility
                     parameter2 = unaryExpression.Operand;
                 }
 
-                MemberExpression memberExpression = parameter2 as MemberExpression;
-                if (memberExpression != null)
+                switch (parameter2.NodeType)
                 {
-                    MemberChainEvaluator expEvaluator = new MemberChainEvaluator();
-                    try
-                    {
-                        expEvaluator.Extract(parameter);
-                    }
-                    catch
-                    {
-                        CommonFunctions.ThrowFormatException(Errors.MethodCallArgumentNotSupported, parameter);
-                    }
+                    case ExpressionType.MemberAccess:
+                        {
+                            MemberExpression memberExpression = parameter2 as MemberExpression;
+                            if (memberExpression == null)
+                            {
+                                CommonFunctions.ThrowFormatException(Errors.MethodCallArgumentNotSupported, parameter);
+                            }
+                            MemberChainEvaluator expEvaluator = new MemberChainEvaluator();
+                            try
+                            {
+                                expEvaluator.Extract(parameter);
 
-                    arguments.Add(new MethodCallArgument()
-                    {
-                        ArgumentType = expEvaluator.ReturnType,
-                        ResolvePath = expEvaluator.MemberPath,
-                        Value = null
-                    });
-                }
-                else
-                {
+                                if (expEvaluator.RootType != null)
+                                {
+                                    // member access to a parameter of the lambda
 
-                    ConstantExpression constantExpression = parameter2 as ConstantExpression;
-                    if (constantExpression == null)
-                    {
+                                    arguments.Add(new MethodCallArgument()
+                                    {
+                                        ArgumentType = expEvaluator.ReturnType,
+                                        ResolvePath = expEvaluator.MemberPath,
+                                        Value = null
+                                    });
+                                }
+                                else
+                                {
+                                    // member access to a constant value
+
+                                    object value = EvaluateLinqExpression(parameter);
+
+                                    arguments.Add(new MethodCallArgument()
+                                    {
+                                        ArgumentType = parameter.Type,
+                                        ResolvePath = null,
+                                        Value = value
+                                    });
+                                }
+                            }
+                            catch
+                            {
+                                CommonFunctions.ThrowFormatException(Errors.MethodCallArgumentNotSupported, parameter);
+                            }
+
+
+                        }
+                        break;
+                    case ExpressionType.Constant:
+                        {
+                            ConstantExpression constantExpression = parameter2 as ConstantExpression;
+                            if (constantExpression == null)
+                            {
+                                CommonFunctions.ThrowFormatException(Errors.MethodCallArgumentNotSupported, parameter);
+                            }
+                            arguments.Add(new MethodCallArgument()
+                            {
+                                ArgumentType = constantExpression.Type,
+                                ResolvePath = null,
+                                Value = constantExpression.Value
+                            });
+                        }
+                        break;
+                    case ExpressionType.New:
+                        {
+                            NewExpression newExpression = parameter2 as NewExpression;
+                            if (newExpression == null)
+                            {
+                                CommonFunctions.ThrowFormatException(Errors.MethodCallArgumentNotSupported, parameter);
+                            }
+
+                            object value = EvaluateLinqExpression(newExpression);
+
+                            arguments.Add(new MethodCallArgument()
+                            {
+                                ArgumentType = newExpression.Type,
+                                ResolvePath = null,
+                                Value = value
+                            });
+                        }
+                        break;
+                    default:
                         CommonFunctions.ThrowFormatException(Errors.MethodCallArgumentNotSupported, parameter);
-                    }
-                    arguments.Add(new MethodCallArgument()
-                    {
-                        ArgumentType = constantExpression.Type,
-                        ResolvePath = null,
-                        Value = constantExpression.Value
-                    });
+                        break;
+
                 }
             }
 
             return arguments;
+        }
+
+        private static object EvaluateLinqExpression(Expression newExpression)
+        {
+            LambdaExpression lambda = Expression.Lambda(newExpression, null);
+            return lambda.Compile().DynamicInvoke();
         }
 
         public static ParameterExpression GetParameterExpressionWithPossibleConvert(Expression expression, Type expectedParameterType)
@@ -165,7 +221,7 @@ namespace ModuleInject.Utility
                 if (expectedParameterType == null || convertExp.Type.IsAssignableFrom(expectedParameterType))
                 {
                     paramExpBase = convertExp.Operand;
-                }                
+                }
             }
 
             ParameterExpression paramExp = paramExpBase as ParameterExpression;

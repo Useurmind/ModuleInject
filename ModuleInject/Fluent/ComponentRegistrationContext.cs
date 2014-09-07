@@ -189,13 +189,13 @@ namespace ModuleInject.Fluent
             int i = 0;
             foreach (var argumentItem in arguments)
             {
-                if (argumentItem.Value == null)
+                if (argumentItem.ResolvePath != null)
                 {
                     argumentParams[i] = new ResolvedParameter(argumentItem.ArgumentType, argumentItem.ResolvePath);
                 }
                 else
                 {
-                    argumentParams[i] = argumentItem.Value;
+                    argumentParams[i] = new InjectionParameter(argumentItem.ArgumentType, argumentItem.Value);
                 }
                 i++;
             }

@@ -57,5 +57,26 @@ namespace Test.ModuleInject.TestModules
             RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
                 .CallMethod((comp, module) => comp.Initialize(module.SubModule.Component1));
         }
+
+        public void RegisterPublicComponentWithPropertyOfThis()
+        {
+            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
+                .CallMethod((comp, module) => comp.CallWithConstant(this.MainComponent2, 5));
+        }
+
+        public void RegisterPublicComponentWithStackVariable()
+        {
+            MainComponent2 mainComponent2 = new MainComponent2();
+
+            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
+                .CallMethod((comp, module) => comp.CallWithConstant(mainComponent2, 5));
+        }
+
+        public void RegisterPublicComponentWithInlineNew()
+        {
+            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
+                .CallMethod((comp, module) => comp.CallWithConstant(new MainComponent2(), 5));
+        }
+
     }
 }

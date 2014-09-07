@@ -105,7 +105,7 @@ namespace ModuleInject.Utility
 
             if (_lastMemberExpression == null)
             {
-                MemberType = ((PropertyInfo)m.Member).PropertyType;
+                MemberType = m.Type;
                 SetReturnType();
             }
 
