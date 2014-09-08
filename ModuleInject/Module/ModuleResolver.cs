@@ -33,10 +33,10 @@ namespace ModuleInject.Module
 
             foreach (var propInfo in GetModuleProperties<IModule, TModule>(false))
             {
-                if (!propInfo.PropertyType.IsInterface)
-                {
-                    CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.ModuleResolver_PropertyIsNoInterface, propInfo.Name);
-                }
+                //if (!propInfo.PropertyType.IsInterface)
+                //{
+                //    CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.ModuleResolver_PropertyIsNoInterface, propInfo.Name);
+                //}
 
                 TryResolveComponent<IModule, TModule>(module, container, propInfo);
             }
