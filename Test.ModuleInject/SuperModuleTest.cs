@@ -28,5 +28,13 @@ namespace Test.ModuleInject
             Assert.IsNotNull(_superModule.SubModule);
             Assert.AreSame(_superModule.SubModule, _superModule.MainModule.SubModule);
         }
+
+        [TestCase]
+        public void Resolve_SubModulePropertiesAppliedInMainModule()
+        {
+            _superModule.Resolve();
+
+            Assert.AreSame(_superModule.SubModule.Component1, _superModule.MainModule.InstanceRegistrationComponent.SubComponent1);
+        }
     }
 }

@@ -22,13 +22,10 @@ namespace Test.ModuleInject.TestModules
         // private factor without attribute
         public IMainComponent1 PublicComponent { get; private set; }
         public IMainComponent2 PublicComponent2 { get; private set; }
-        public IMainComponent2 Component22 { get; private set; }
         [PrivateComponent]
         private IMainComponent1 PrivateComponent { get; set; }
         private IMainComponent1 PrivateComponentWithoutAttribute { get; set; }
         private IMainComponent1 PrivateFactoryWithoutAttribute() { return null; }
-
-        private ISubComponent1 SubComponent { get; set; }
 
         public IMainComponent1 PublicFactory() { return null; }
         private IMainComponent1 PrivateFactory() { return null; }

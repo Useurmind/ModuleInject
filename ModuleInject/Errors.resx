@@ -135,6 +135,10 @@
   <data name="InjectionModule_FactoryMethodsWithParametersNotSupportedYet" xml:space="preserve">
     <value>The method '{0}' of module with type '{1}' can not be registered as a factory method. Only parameterless methods can currently be registered.</value>
   </data>
+  <data name="InjectionModule_InvalidProperty" xml:space="preserve">
+    <value>The module with type '{0}' has invalid properties that are neither private nor public properties. Declare them as public via the module interface or apply the PrivateComponent attribute. 
+The properties are: '{1}'</value>
+  </data>
   <data name="InjectionModule_MethodNotQualifiedForPrivateRegistration" xml:space="preserve">
     <value>The method '{0}' of module with type '{1}' is not qualified to be a private factory. Either it is a public factory or it was not marked with the PrivateFactoryAttribute.</value>
   </data>

@@ -9,14 +9,28 @@ namespace ModuleInject.Utility
 {
     public static class TypeExtensions
     {
-        public static IEnumerable<PropertyInfo> GetPropertiesRecursive(this Type type, BindingFlags? bindingFlags = null)
+        /// <summary>
+        /// Gets the properties that represent module components of the given type.
+        /// </summary>
+        /// <remarks>
+        /// Stops property search at Object, <see cref="IInjectionModule"/> and InjectionModule types, so no properties of these types
+        /// are included.
+        /// Also note that properties with the <see cref="NonModulePropertyAttribute"/> are excluded from the search.
+        /// </remarks>
+        /// <param name="type">The type.</param>
+        /// <param name="bindingFlags">The binding flags.</param>
+        /// <returns></returns>
+        public static IEnumerable<PropertyInfo> GetModuleComponentPropertiesRecursive(this Type type, BindingFlags? bindingFlags = null)
         {
-            if (type == typeof(object) || type == typeof(IInjectionModule) || type.Name == "InjectionModule")
+            if (type == typeof(object) || type == typeof(IInjectionModule) || type.Name.StartsWith("InjectionModule"))
             {
                 return new List<PropertyInfo>();
             }
 
-            IEnumerable<PropertyInfo> properties = bindingFlags == null ? type.GetProperties() : type.GetProperties(bindingFlags.Value);
+            IEnumerable<PropertyInfo> properties = bindingFlags == null ? type.GetProperties() : type.GetProperties(BindingFlags.DeclaredOnly|bindingFlags.Value);
+
+            properties =
+                properties.Where(p => p.GetCustomAttributes(typeof(NonModulePropertyAttribute), false).Count() == 0);
 
             Type[] checkedSubTypes = null;
             if (type.IsInterface)
@@ -30,7 +44,7 @@ namespace ModuleInject.Utility
 
             foreach (var subType in checkedSubTypes)
             {
-                properties = properties.Union(subType.GetPropertiesRecursive(bindingFlags));
+                properties = properties.Union(subType.GetModuleComponentPropertiesRecursive(bindingFlags));
             }
 
             return properties;

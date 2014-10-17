@@ -76,6 +76,8 @@ namespace ModuleInject
                 CommonFunctions.ThrowTypeException<TModule>(Errors.InjectionModule_AlreadyResolved);
             }
 
+            CheckAllPropertiesEitherPrivateOrPublic();
+
             BeforeResolving();
 
             ApplyDefaultConstructors();
@@ -97,6 +99,34 @@ namespace ModuleInject
             ModulePostResolveBuilder.PerformPostResolveAssembly(this, componentRegistrations);
 
             AfterResolved();
+        }
+
+        private void CheckAllPropertiesEitherPrivateOrPublic()
+        {
+            Type moduleType = typeof(TModule);
+            Type moduleInterface = typeof(IModule);
+            Type injectionModuleType = typeof(IInjectionModule);
+
+            var publicProperties = moduleInterface.GetModuleComponentPropertiesRecursive();
+            var moduleProperties = moduleType.GetModuleComponentPropertiesRecursive(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+            var nonPrivateProperties = moduleProperties.Where(
+                p =>
+                    {
+                        bool isPrivate = p.GetCustomAttributes(typeof(PrivateComponentAttribute), false).Length > 0;
+
+                        return !isPrivate;
+                    });
+
+            var publicPropertyNames = publicProperties.Select(x => x.Name);
+            var nonPrivatePropertyNames = nonPrivateProperties.Select(x => x.Name);
+
+            var invalidPropertyNames = nonPrivatePropertyNames.Except(publicPropertyNames);
+
+            if (invalidPropertyNames.Any())
+            {
+                CommonFunctions.ThrowTypeException<TModule>(Errors.InjectionModule_InvalidProperty, string.Join(", ", invalidPropertyNames));
+            }
         }
 
         private void ApplyDefaultConstructors()

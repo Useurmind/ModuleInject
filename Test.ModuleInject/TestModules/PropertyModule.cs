@@ -29,7 +29,9 @@ namespace Test.ModuleInject.TestModules
 
     internal class PropertyModule : InjectionModule<IPropertyModule, PropertyModule>, IPropertyModule
     {
+        [NonModuleProperty]
         public MainComponent1 FixedInstance { get; private set; }
+        [NonModuleProperty]
         public int InjectedValue { get; private set; }
 
         public IMainComponent1 InstanceRegistrationComponent { get; set; }
@@ -121,7 +123,8 @@ namespace Test.ModuleInject.TestModules
 
         #region Methods that should throw exceptions
 
-        public void RegisterUnattributedPrivateProperty() {
+        public void RegisterUnattributedPrivateProperty()
+        {
             RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.FixedInstance);
         }
 

@@ -42,6 +42,13 @@ namespace ModuleInject.Module
             }
         }
 
+        /// <summary>
+        /// Gets the properties of the all types in the module chain.
+        /// </summary>
+        /// <typeparam name="IModule">The interface of the module.</typeparam>
+        /// <typeparam name="TModule">The type of the module.</typeparam>
+        /// <param name="thatAreModules">if set to <c>true</c> only properties that are modules themselves are returned, else all other properties.</param>
+        /// <returns></returns>
         private static IEnumerable<PropertyInfo> GetModuleProperties<IModule, TModule>(bool thatAreModules)
             where TModule : IModule
         {
@@ -49,7 +56,7 @@ namespace ModuleInject.Module
             Type moduleInterface = typeof(IModule);
             Type injectionModuleType = typeof(IInjectionModule);
 
-            var interfaceProperties = moduleInterface.GetPropertiesRecursive()
+            var interfaceProperties = moduleInterface.GetModuleComponentPropertiesRecursive()
                                                      .Where(p =>
                                                       {
                                                           var searchedInterface = p.PropertyType.GetInterface(injectionModuleType.Name, false);
@@ -58,7 +65,7 @@ namespace ModuleInject.Module
                                                       })
                                                      .Select(p => moduleType.GetProperty(p.Name));
 
-            var privateProperties = moduleType.GetPropertiesRecursive(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+            var privateProperties = moduleType.GetModuleComponentPropertiesRecursive(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                                               .Where(p =>
                                               {
                                                   bool isPrivate = p.GetCustomAttributes(typeof(PrivateComponentAttribute), false).Length > 0;
@@ -116,7 +123,7 @@ namespace ModuleInject.Module
                 submodule.Resolve();
             }
 
-            foreach (var propInfo in subModulePropInfo.PropertyType.GetProperties())
+            foreach (var propInfo in subModulePropInfo.PropertyType.GetModuleComponentPropertiesRecursive())
             {
                 object subComponent = propInfo.GetValue(submodule, null);
                 string subComponentName = string.Format(CultureInfo.InvariantCulture, "{0}.{1}", submoduleName, propInfo.Name);

@@ -120,6 +120,7 @@
     <Compile Include="Interfaces\IPostResolveAssembler.cs" />
     <Compile Include="Module\ModulePostResolveBuilder.cs" />
     <Compile Include="Module\ModuleResolver.cs" />
+    <Compile Include="NonModulePropertyAttribute.cs" />
     <Compile Include="PrivateComponentAttribute.cs" />
     <Compile Include="PrivateFactoryAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
