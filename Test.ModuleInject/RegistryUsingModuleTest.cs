@@ -41,6 +41,37 @@ namespace Test.ModuleInject
         }
 
         [Test]
+        public void Resolved_AfterApplyingRegistry_RegistryComponentResolved()
+        {
+            _module.ApplyRegistry();
+            _module.Resolve();
+
+            var registryInstance = _module.Registry.GetComponent(typeof(IPropertyModule));
+            var registrySubInstance = _module.Registry.GetComponent(typeof(ISubModule));
+
+            Assert.IsNotNull(_module.PrivatePropertyModule);
+            Assert.AreSame(registryInstance, _module.PrivatePropertyModule);
+            Assert.IsNotNull(_module.PrivatePropertyModule.SubModule);
+            Assert.AreSame(registrySubInstance, _module.PrivatePropertyModule.SubModule);
+        }
+
+        [Test]
+        public void Resolved_AfterRegisteringPrivateComponentAndApplyingRegistry_PrivateComponentWinsOVerRegistryComponent()
+        {
+            _module.ApplyRegistry();
+            _module.RegisterPrivateWithRegistryComponentOverlap();
+            _module.Resolve();
+
+            var registryInstance = _module.Registry.GetComponent(typeof(IPropertyModule));
+            var registrySubInstance = _module.Registry.GetComponent(typeof(ISubModule));
+
+            Assert.IsNotNull(_module.PrivatePropertyModule);
+            Assert.AreNotSame(registryInstance, _module.PrivatePropertyModule);
+            Assert.IsNotNull(_module.PrivatePropertyModule.SubModule);
+            Assert.AreSame(registrySubInstance, _module.PrivatePropertyModule.SubModule);
+        }
+
+        [Test]
         public void Dispose__RegistryIsDisposed()
         {
             _module.ApplyRegistry();

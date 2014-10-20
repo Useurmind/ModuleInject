@@ -20,9 +20,18 @@ namespace Test.ModuleInject.TestModules
     {
         public IPropertyModule PropertyModule { get; set; }
 
+        [PrivateComponent]
+        [RegistryComponent]
+        public IPropertyModule PrivatePropertyModule { get; set; }
+
         public RegistryUsingModule()
         {
             RegisterPublicComponent<IPropertyModule, PropertyModule>(x => x.PropertyModule);
+        }
+
+        public void RegisterPrivateWithRegistryComponentOverlap()
+        {
+            RegisterPrivateComponent<IPropertyModule, PropertyModule>(x => x.PrivatePropertyModule);
         }
 
         public void ApplyRegistry()
@@ -30,6 +39,7 @@ namespace Test.ModuleInject.TestModules
             RegistryModule registryModule = new RegistryModule();
 
             registryModule.RegisterModule<ISubModule, Submodule>();
+            registryModule.RegisterModule<IPropertyModule, PropertyModule>();
 
             this.Registry = registryModule;
         }
