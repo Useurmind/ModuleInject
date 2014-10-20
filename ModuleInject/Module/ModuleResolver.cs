@@ -10,11 +10,26 @@ using System.Text;
 
 namespace ModuleInject.Module
 {
-    internal static class ModuleResolver
+    using System.Runtime.InteropServices;
+
+    using ModuleInject.Registry;
+
+    internal class ModuleResolver<IModule, TModule>
+        where TModule : IModule
+        where IModule : IInjectionModule
     {
-        public static void Resolve<IModule, TModule>(TModule module, IUnityContainer container)
-            where TModule : IModule
-            where IModule : IInjectionModule
+        private TModule _module;
+        private IUnityContainer _container;
+        private IRegistryModule _registry;
+
+        public ModuleResolver(TModule module, IUnityContainer container, IRegistryModule registry)
+        {
+            _module = module;
+            _container = container;
+            _registry = registry;
+        }
+
+        public void Resolve()
         {
             Type moduleInterfaceType = typeof(IModule);
 
@@ -26,9 +41,9 @@ namespace ModuleInject.Module
             var submodulePropertyInfos = GetModuleProperties<IModule, TModule>(true);
             foreach (var submodulePropInfo in submodulePropertyInfos)
             {
-                TryResolveComponent<IModule, TModule>(module, container, submodulePropInfo);
+                TryResolveComponent(submodulePropInfo);
 
-                TryResolveSubmodule<IModule, TModule>(module, container, submodulePropInfo);
+                TryResolveSubmodule(submodulePropInfo);
             }
 
             foreach (var propInfo in GetModuleProperties<IModule, TModule>(false))
@@ -38,15 +53,15 @@ namespace ModuleInject.Module
                 //    CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.ModuleResolver_PropertyIsNoInterface, propInfo.Name);
                 //}
 
-                TryResolveComponent<IModule, TModule>(module, container, propInfo);
+                TryResolveComponent(propInfo);
             }
         }
 
         /// <summary>
-        /// Gets the properties of the all types in the module chain.
+        /// Gets the properties of the all types in the _module chain.
         /// </summary>
-        /// <typeparam name="IModule">The interface of the module.</typeparam>
-        /// <typeparam name="TModule">The type of the module.</typeparam>
+        /// <typeparam name="IModule">The interface of the _module.</typeparam>
+        /// <typeparam name="TModule">The type of the _module.</typeparam>
         /// <param name="thatAreModules">if set to <c>true</c> only properties that are modules themselves are returned, else all other properties.</param>
         /// <returns></returns>
         private static IEnumerable<PropertyInfo> GetModuleProperties<IModule, TModule>(bool thatAreModules)
@@ -78,56 +93,88 @@ namespace ModuleInject.Module
             return privateProperties.Union(interfaceProperties);
         }
 
-        private static bool TryResolveComponent<IModule, TModule>(TModule module, IUnityContainer container, PropertyInfo propInfo)
-            where IModule : IInjectionModule
-            where TModule : IModule
+        private  bool TryResolveComponent(PropertyInfo propInfo)
         {
             bool resolved = true;
 
-            object currentValue = propInfo.GetValue(module, null);
+            object currentValue = propInfo.GetValue(_module, null);
             if (currentValue != null)
             {
                 resolved = false;
             }
             else
             {
-                ResolveComponent<IModule, TModule>(module, container, propInfo);
+                ResolveComponent(propInfo);
             }
 
             return resolved;
         }
 
-        private static void ResolveComponent<IModule, TModule>(TModule module, IUnityContainer container, PropertyInfo propInfo)
-            where IModule : IInjectionModule
-            where TModule : IModule
+        private void ResolveComponent(PropertyInfo propInfo)
         {
-            Type propType = propInfo.PropertyType;
             string propName = propInfo.Name;
-            if (!container.IsRegistered(propType, propName))
+
+            bool resolved = false;
+
+            resolved = this.TryResolveComponentFromContainer(propInfo);
+            if (!resolved)
+            {
+                resolved = this.TryResolveComponentFromRegistry(propInfo);
+            }
+
+            if (!resolved)
             {
                 CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.ModuleResolver_MissingPropertyRegistration, propName);
             }
-            var component = container.Resolve(propInfo.PropertyType, propInfo.Name);
-            propInfo.SetValue(module, component, BindingFlags.NonPublic, null, null, null);
         }
 
-        private static void TryResolveSubmodule<IModule, TModule>(TModule module, IUnityContainer container, PropertyInfo subModulePropInfo)
-            where TModule : IModule
-            where IModule : IInjectionModule
+        private bool TryResolveComponentFromContainer(PropertyInfo propInfo)
+        {
+            Type propType = propInfo.PropertyType;
+            string propName = propInfo.Name;
+
+            if (!_container.IsRegistered(propType, propName))
+            {
+                return false;
+            }
+            var component = _container.Resolve(propInfo.PropertyType, propInfo.Name);
+            propInfo.SetValue(_module, component, BindingFlags.NonPublic, null, null, null);
+            return true;
+        }
+
+        private bool TryResolveComponentFromRegistry(PropertyInfo propInfo)
+        {
+            Type propType = propInfo.PropertyType;
+
+            if (_registry == null)
+            {
+                return false;
+            }
+
+            if (!_registry.IsRegistered(propType))
+            {
+                return false;
+            }
+            var component = _registry.GetComponent(propType);
+            propInfo.SetValue(_module, component, BindingFlags.NonPublic, null, null, null);
+            return true;
+        }
+
+        private void TryResolveSubmodule(PropertyInfo subModulePropInfo)
         {
             string submoduleName = subModulePropInfo.Name;
-            IInjectionModule submodule = (IInjectionModule)subModulePropInfo.GetValue(module, null);
+            InjectionModule submodule = (InjectionModule)subModulePropInfo.GetValue(_module, null);
 
             if (!submodule.IsResolved)
             {
-                submodule.Resolve();
+                submodule.Resolve(_registry);
             }
 
             foreach (var propInfo in subModulePropInfo.PropertyType.GetModuleComponentPropertiesRecursive())
             {
                 object subComponent = propInfo.GetValue(submodule, null);
                 string subComponentName = string.Format(CultureInfo.InvariantCulture, "{0}.{1}", submoduleName, propInfo.Name);
-                container.RegisterInstance(propInfo.PropertyType, subComponentName, subComponent);
+                _container.RegisterInstance(propInfo.PropertyType, subComponentName, subComponent);
             }
         }
     }

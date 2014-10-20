@@ -15,7 +15,7 @@ namespace Test.ModuleInject.Utility
         private class TestClass
         {
             public int _a = 0;
-            public TestClass2 TestClass2 { get;set;}
+            public TestClass2 TestClass2 { get; set; }
         }
 
         private class TestClass2
@@ -75,6 +75,33 @@ namespace Test.ModuleInject.Utility
             Property prop = Property.Get((string s) => s.Length);
 
             Assert.AreEqual("Length", (string)prop);
+        }
+
+        [TestCase]
+        public void GetValue_ValidMemberExpression_ReturnsCorrectValue()
+        {
+            TestClass test = new TestClass()
+                                 {
+                                     TestClass2 =  new TestClass2()
+                                 };
+            Property prop = Property.Get((TestClass t) => t.TestClass2);
+
+            TestClass2 result = prop.GetValue<TestClass2>(test);
+
+            Assert.AreSame(test.TestClass2, result);
+        }
+
+        [TestCase]
+        public void SetValue_ValidMemberExpression_ValueIsSet()
+        {
+            TestClass2 test2 = new TestClass2();
+            TestClass test = new TestClass();
+
+            Property prop = Property.Get((TestClass t) => t.TestClass2);
+
+            prop.SetValue(test, test2);
+
+            Assert.AreSame(test2, test.TestClass2);
         }
     }
 }

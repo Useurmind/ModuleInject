@@ -16,6 +16,7 @@ namespace Test.ModuleInject.Module
     {
         private PropertyModule _module;
         private UnityContainer _container;
+        private ModuleResolver<IPropertyModule, PropertyModule> _moduleResolver;
 
         [SetUp]
         public void Init()
@@ -23,6 +24,10 @@ namespace Test.ModuleInject.Module
             _module = new PropertyModule();
             _module.SubModule = new Submodule();
             _container = new UnityContainer();
+            _moduleResolver = new ModuleResolver<IPropertyModule, PropertyModule>(
+                (PropertyModule)_module,
+                _container,
+                null);
             _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InstanceRegistrationComponent), new InjectionConstructor());
             _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InitWithPropertiesComponent), new InjectionConstructor());
             _container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InitWithInitialize1Component), new InjectionConstructor());
@@ -45,13 +50,18 @@ namespace Test.ModuleInject.Module
             IUnityContainer container = new UnityContainer();
             container.RegisterType<IMainComponent1, MainComponent1>(Property.Get((PropertyModule x) => x.InitWithPropertiesComponent));
 
-            ModuleResolver.Resolve<IPropertyModule, PropertyModule>((PropertyModule)_module, container); 
+            var moduleResolver = new ModuleResolver<PropertyModule, PropertyModule>(
+                (PropertyModule)_module,
+                container,
+                null);
+
+            moduleResolver.Resolve();
         }
 
         [TestCase]
         public void Resolve_AllComponentRegisteredInContainer_ComponentPropertiesNotNull()
         {
-            ModuleResolver.Resolve<IPropertyModule, PropertyModule>((PropertyModule)_module, _container);
+            _moduleResolver.Resolve();
             
             Assert.IsNotNull(_module.InitWithPropertiesComponent);
             Assert.IsNotNull(_module.InitWithInitialize1Component);
@@ -70,7 +80,12 @@ namespace Test.ModuleInject.Module
         [ExpectedException(typeof(ModuleInjectException))]
         public void Resolve_NonInterface_ExpectException()
         {
-            ModuleResolver.Resolve<PropertyModule, PropertyModule>(_module, _container);
+            var moduleResolver = new ModuleResolver<PropertyModule, PropertyModule>(
+                (PropertyModule)_module,
+                _container,
+                null);
+
+            moduleResolver.Resolve();
         }
     }
 }

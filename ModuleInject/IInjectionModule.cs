@@ -14,24 +14,80 @@ using System.Text;
 
 namespace ModuleInject
 {
+    using ModuleInject.Registry;
+
+    public abstract class InjectionModule : IInjectionModule, IDisposable
+    {
+        internal abstract void Resolve(IRegistryModule registry);
+
+        public abstract bool IsResolved { get; }
+
+        public abstract void Resolve();
+
+        public abstract object GetComponent(Type componentType, string componentName);
+
+        public abstract IComponent GetComponent<IComponent>(string componentName);
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected abstract void Dispose(bool disposing);
+    }
+
     /// <summary>
     /// Base class for all modules that you want to build.
     /// </summary>
     /// <typeparam name="IModule">The interface of the module.</typeparam>
     /// <typeparam name="TModule">The type of the module.</typeparam>
-    public abstract class InjectionModule<IModule, TModule> : IInjectionModule, IDisposable
+    public abstract class InjectionModule<IModule, TModule> : InjectionModule
         where TModule : InjectionModule<IModule, TModule>, IModule
         where IModule : IInjectionModule
     {
         private DoubleKeyDictionary<Type, string, IGatherPostResolveAssemblers> _instanceRegistrations;
         private DoubleKeyDictionary<Type, string, ComponentRegistrationContext> _componentRegistrations;
         private IUnityContainer _container;
+
+        private IRegistryModule _registry;
         private bool _isInterceptionActive;
+
+        private bool _isResolved;
 
         /// <summary>
         /// Is the module already resolved.
         /// </summary>
-        public bool IsResolved { get; private set; }
+        public override bool IsResolved
+        {
+            get
+            {
+                return _isResolved;
+            }
+        }
+
+        public IRegistryModule Registry
+        {
+            get
+            {
+                return _registry;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    _registry = new RegistryModule();
+                }
+                _registry = value;
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InjectionModule{IModule, TModule}"/> class.
@@ -39,8 +95,9 @@ namespace ModuleInject
         protected InjectionModule()
         {
             _isInterceptionActive = false;
-            IsResolved = false;
+            _isResolved = false;
             _container = new UnityContainer();
+            _registry = new RegistryModule();
             _instanceRegistrations = new DoubleKeyDictionary<Type, string, IGatherPostResolveAssemblers>();
             _componentRegistrations = new DoubleKeyDictionary<Type, string, ComponentRegistrationContext>();
 
@@ -69,20 +126,29 @@ namespace ModuleInject
         /// <summary>
         /// Resolve the module and all its submodules.
         /// </summary>
-        public void Resolve()
+        public override void Resolve()
+        {
+            this.Resolve(null);
+        }
+
+        internal override void Resolve(IRegistryModule registry)
         {
             if (IsResolved)
             {
                 CommonFunctions.ThrowTypeException<TModule>(Errors.InjectionModule_AlreadyResolved);
             }
 
-            CheckAllPropertiesEitherPrivateOrPublic();
+            CheckAllPropertiesAreValid();
 
             BeforeResolving();
 
             ApplyDefaultConstructors();
 
-            ModuleResolver.Resolve<IModule, TModule>((TModule)(object)this, _container);
+            var usedRegistry = this.GetUsedRegistry(registry);
+
+            ModuleResolver<IModule, TModule> resolver = new ModuleResolver<IModule, TModule>((TModule)(object)this, _container, usedRegistry);
+
+            resolver.Resolve();
 
             DoubleKeyDictionary<Type, string, IGatherPostResolveAssemblers> componentRegistrations = new DoubleKeyDictionary<Type, string, IGatherPostResolveAssemblers>();
 
@@ -91,7 +157,7 @@ namespace ModuleInject
                 componentRegistrations.Add(item.Key1, item.Key2, item.Value);
             }
 
-            IsResolved = true;
+            _isResolved = true;
 
             BeforePostResolveAssembly();
 
@@ -101,22 +167,40 @@ namespace ModuleInject
             AfterResolved();
         }
 
-        private void CheckAllPropertiesEitherPrivateOrPublic()
+        private IRegistryModule GetUsedRegistry(IRegistryModule registry)
+        {
+            var usedRegistry = this._registry;
+            if (registry != null)
+            {
+                usedRegistry = this._registry.Merge(registry);
+            }
+            return usedRegistry;
+        }
+
+        /// <summary>
+        /// Checks all properties are valid.
+        /// </summary>
+        /// <remarks>
+        /// Properties of a module must either be:
+        /// - public: declared in the module interface
+        /// - private: marked with PrivateComponent on the property
+        /// - non module: they are no components of the module but manually handled properties
+        /// </remarks>
+        private static void CheckAllPropertiesAreValid()
         {
             Type moduleType = typeof(TModule);
             Type moduleInterface = typeof(IModule);
-            Type injectionModuleType = typeof(IInjectionModule);
 
             var publicProperties = moduleInterface.GetModuleComponentPropertiesRecursive();
             var moduleProperties = moduleType.GetModuleComponentPropertiesRecursive(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
             var nonPrivateProperties = moduleProperties.Where(
                 p =>
-                    {
-                        bool isPrivate = p.GetCustomAttributes(typeof(PrivateComponentAttribute), false).Length > 0;
+                {
+                    bool isPrivate = p.GetCustomAttributes(typeof(PrivateComponentAttribute), false).Length > 0;
 
-                        return !isPrivate;
-                    });
+                    return !isPrivate;
+                });
 
             var publicPropertyNames = publicProperties.Select(x => x.Name);
             var nonPrivatePropertyNames = nonPrivateProperties.Select(x => x.Name);
@@ -151,7 +235,7 @@ namespace ModuleInject
         /// <returns>
         /// If the component is found it is returned, else an exception is thrown.
         /// </returns>
-        public object GetComponent(Type componentType, string componentName)
+        public override object GetComponent(Type componentType, string componentName)
         {
             return _container.Resolve(componentType, componentName);
         }
@@ -164,7 +248,7 @@ namespace ModuleInject
         /// <returns>
         /// If the component is found it is returned, else an exception is thrown.
         /// </returns>
-        public IComponent GetComponent<IComponent>(string componentName)
+        public override IComponent GetComponent<IComponent>(string componentName)
         {
             return _container.Resolve<IComponent>(componentName);
         }
@@ -375,7 +459,7 @@ namespace ModuleInject
             return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(context);
         }
 
-        private ComponentRegistrationContext GetOrCreateComponentRegistrationContext<IComponent, TComponent>(string componentName) 
+        private ComponentRegistrationContext GetOrCreateComponentRegistrationContext<IComponent, TComponent>(string componentName)
             where TComponent : IComponent
         {
             ComponentRegistrationContext context;
@@ -494,21 +578,13 @@ namespace ModuleInject
         #region IDisposable
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             _container.Dispose();
+            _registry.Dispose();
         }
 
         #endregion

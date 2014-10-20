@@ -6,7 +6,7 @@ using System.Text;
 namespace ModuleInject
 {
     [AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
-    public class NonModulePropertyAttribute : Attribute
+    public sealed class NonModulePropertyAttribute : Attribute
     {
         public NonModulePropertyAttribute()
         {

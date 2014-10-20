@@ -76,6 +76,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Errors.resx</DependentUpon>
     </Compile>
+    <Compile Include="Fluent\ComponentExtensionContextGeneric.cs" />
+    <Compile Include="Fluent\ComponentExtensionContextExtensions.cs" />
+    <Compile Include="Fluent\ComponentExtensionContext.cs" />
     <Compile Include="Fluent\InterfaceInjector.cs" />
     <Compile Include="Fluent\ComponentRegistrationContext.cs" />
     <Compile Include="Fluent\ComponentRegistrationContextExtensions.cs" />
@@ -100,7 +103,7 @@
     <Compile Include="Fluent\InterfaceValueInjectionContextGeneric.cs" />
     <Compile Include="Fluent\ValueInjectionContextGeneric.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="InjectionModule.cs" />
+    <Compile Include="IInjectionModule.cs" />
     <Compile Include="Interception\IParameterCollection.cs" />
     <Compile Include="Interception\ISimpleBehaviour.cs" />
     <Compile Include="Interception\IMethodInvocation.cs" />
@@ -109,6 +112,7 @@
     <Compile Include="Interception\MethodReturn.cs" />
     <Compile Include="Interception\ParameterCollection.cs" />
     <Compile Include="Interception\SimpleUnityBehaviour.cs" />
+    <Compile Include="Interfaces\IDisposableExt.cs" />
     <Compile Include="Interfaces\IInitializable1.cs" />
     <Compile Include="Interfaces\IInitializable5.cs" />
     <Compile Include="Interfaces\IInitializable4.cs" />
@@ -124,7 +128,12 @@
     <Compile Include="PrivateComponentAttribute.cs" />
     <Compile Include="PrivateFactoryAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Registry\IRegistryModule.cs" />
+    <Compile Include="Registry\RegistrationEntry.cs" />
+    <Compile Include="Registry\RegistryModule.cs" />
+    <Compile Include="Registry\RegistryModuleExtensions.cs" />
     <Compile Include="Utility\CommonFunctions.cs" />
+    <Compile Include="Utility\DisposableExtBase.cs" />
     <Compile Include="Utility\DoubleKeyDictionary.cs" />
     <Compile Include="Utility\ExpressionVisitor.cs" />
     <Compile Include="Utility\LinqHelper.cs" />

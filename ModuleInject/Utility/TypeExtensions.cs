@@ -18,16 +18,18 @@ namespace ModuleInject.Utility
         /// Also note that properties with the <see cref="NonModulePropertyAttribute"/> are excluded from the search.
         /// </remarks>
         /// <param name="type">The type.</param>
-        /// <param name="bindingFlags">The binding flags.</param>
+        /// <param name="bindingOptions">The binding flags.</param>
         /// <returns></returns>
-        public static IEnumerable<PropertyInfo> GetModuleComponentPropertiesRecursive(this Type type, BindingFlags? bindingFlags = null)
+        public static IEnumerable<PropertyInfo> GetModuleComponentPropertiesRecursive(this Type type, BindingFlags? bindingOptions = null)
         {
-            if (type == typeof(object) || type == typeof(IInjectionModule) || type.Name.StartsWith("InjectionModule"))
+            CommonFunctions.CheckNullArgument("type", type);
+
+            if (type == typeof(object) || type == typeof(IInjectionModule) || type.Name.StartsWith("InjectionModule", StringComparison.Ordinal))
             {
                 return new List<PropertyInfo>();
             }
 
-            IEnumerable<PropertyInfo> properties = bindingFlags == null ? type.GetProperties() : type.GetProperties(BindingFlags.DeclaredOnly|bindingFlags.Value);
+            IEnumerable<PropertyInfo> properties = bindingOptions == null ? type.GetProperties() : type.GetProperties(BindingFlags.DeclaredOnly|bindingOptions.Value);
 
             properties =
                 properties.Where(p => p.GetCustomAttributes(typeof(NonModulePropertyAttribute), false).Count() == 0);
@@ -44,7 +46,7 @@ namespace ModuleInject.Utility
 
             foreach (var subType in checkedSubTypes)
             {
-                properties = properties.Union(subType.GetModuleComponentPropertiesRecursive(bindingFlags));
+                properties = properties.Union(subType.GetModuleComponentPropertiesRecursive(bindingOptions));
             }
 
             return properties;

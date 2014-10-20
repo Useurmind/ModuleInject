@@ -160,3 +160,4 @@ $RECYCLE.BIN/
 /ModuleInject/NuGetPackages
 /Sandcastle.ModuleInject/Help
 /Sandcastle.ModuleInject/ModuleInject.shfbproj
+/ModuleInject/Settings.StyleCop

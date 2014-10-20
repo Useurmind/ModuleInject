@@ -161,9 +161,12 @@ The properties are: '{1}'</value>
     <value>The expression '{0}' is currently not supported as a method call argument.</value>
   </data>
   <data name="ModuleResolver_MissingPropertyRegistration" xml:space="preserve">
-    <value>The property '{0}' of module with type '{1}' could not be resolved. Did you inject a property that was neither a member of the modules interface nor marked with the PrivateComponentAttribute?</value>
+    <value>The property '{0}' of module with type '{1}' could not be resolved. Neither the module nor the registry of the module contained the component. Did you inject a property that was neither a member of the modules interface nor marked with the PrivateComponentAttribute? Did you forget to put the component into the registry or setting the registry of the module?</value>
   </data>
   <data name="ModuleResolver_PropertyIsNoInterface" xml:space="preserve">
     <value>The property '{0}' of module with type '{1}' has no interface. Please make sure that all properties of your modules are implemented with interface types.</value>
+  </data>
+  <data name="RegistryModule_TypeNotRegistered" xml:space="preserve">
+    <value>The registry does not contain a registration for the type '{0}'.</value>
   </data>
 </root>

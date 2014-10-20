@@ -16,6 +16,16 @@ namespace ModuleInject.Utility
             _propertyInfo = propInfo;
         }
 
+        public void SetValue<TObject, TValue>(TObject instance, TValue value)
+        {
+            _propertyInfo.SetValue(instance, value, null);
+        }
+
+        public T GetValue<T>(object instance)
+        {
+            return (T)_propertyInfo.GetValue(instance, null);
+        }
+
         internal static Property Get(Expression propertyExpression)
         {
             CommonFunctions.CheckNullArgument("propertyExpression", propertyExpression);
