@@ -9,6 +9,25 @@ namespace ModuleInject.Utility
 {
     public static class TypeExtensions
     {
+        public static bool IsInjectionModuleType(this PropertyInfo propertyInfo)
+        {
+            var injectionModuleType = typeof(IInjectionModule);
+            var searchedInterface = propertyInfo.PropertyType.GetInterface(injectionModuleType.Name, false);
+            bool isModule = searchedInterface != null;
+            return isModule;
+        }
+
+        public static bool HasCustomAttribute<TAttribute>(this MemberInfo memberInfo)
+            where TAttribute : Attribute
+        {
+            return memberInfo.HasCustomAttribute(typeof(TAttribute));
+        }
+
+        public static bool HasCustomAttribute(this MemberInfo memberInfo, Type attributeType)
+        {
+            return memberInfo.GetCustomAttributes(attributeType, false).Length > 0;
+        }
+
         /// <summary>
         /// Gets the properties that represent module components of the given type.
         /// </summary>

@@ -166,6 +166,9 @@ The properties are: '{1}'</value>
   <data name="ModuleResolver_PropertyIsNoInterface" xml:space="preserve">
     <value>The property '{0}' of module with type '{1}' has no interface. Please make sure that all properties of your modules are implemented with interface types.</value>
   </data>
+  <data name="ModuleResolver_PropertyWithoutExternalAttribute" xml:space="preserve">
+    <value>The property '{0}' of module with type '{1}' is already set before resolving it despite not being marked with ExternalComponentAttribute. Please set the ExternalComponentAttribute if the property is set outside the resolution process of the module itself.</value>
+  </data>
   <data name="RegistryModule_TypeNotRegistered" xml:space="preserve">
     <value>The registry does not contain a registration for the type '{0}'.</value>
   </data>

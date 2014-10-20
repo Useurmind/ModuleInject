@@ -194,18 +194,21 @@ namespace ModuleInject
             var publicProperties = moduleInterface.GetModuleComponentPropertiesRecursive();
             var moduleProperties = moduleType.GetModuleComponentPropertiesRecursive(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
-            var nonPrivateProperties = moduleProperties.Where(
+            var unattributedProperties = moduleProperties.Where(
                 p =>
                 {
-                    bool isPrivate = p.GetCustomAttributes(typeof(PrivateComponentAttribute), false).Length > 0;
+                    bool isPrivate = p.HasCustomAttribute<PrivateComponentAttribute>();
+                    bool isRegistry = p.HasCustomAttribute<RegistryComponentAttribute>();
+                    bool isExternal = p.HasCustomAttribute<ExternalComponentAttribute>();
+                    bool isNonModule = p.HasCustomAttribute<NonModulePropertyAttribute>();
 
-                    return !isPrivate;
+                    return !isPrivate && !isRegistry && !isExternal && !isNonModule;
                 });
 
             var publicPropertyNames = publicProperties.Select(x => x.Name);
-            var nonPrivatePropertyNames = nonPrivateProperties.Select(x => x.Name);
+            var unattributedPropertyNames = unattributedProperties.Select(x => x.Name);
 
-            var invalidPropertyNames = nonPrivatePropertyNames.Except(publicPropertyNames);
+            var invalidPropertyNames = unattributedPropertyNames.Except(publicPropertyNames);
 
             if (invalidPropertyNames.Any())
             {
@@ -547,7 +550,7 @@ namespace ModuleInject
             string propName = propInfo.Name;
             var isInterfaceProperty = typeof(IModule).GetProperty(propName) != null;
 
-            if (isInterfaceProperty || propInfo.GetCustomAttributes(typeof(PrivateComponentAttribute), false).Length == 0)
+            if (isInterfaceProperty || !propInfo.HasCustomAttribute<PrivateComponentAttribute>())
             {
                 CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_PropertyNotQualifiedForPrivateRegistration, propName);
             }
@@ -558,7 +561,7 @@ namespace ModuleInject
             string methodName = methodInfo.Name;
             var isInterfaceProperty = typeof(IModule).GetProperty(methodName) != null;
 
-            if (isInterfaceProperty || methodInfo.GetCustomAttributes(typeof(PrivateFactoryAttribute), false).Length == 0)
+            if (isInterfaceProperty || !methodInfo.HasCustomAttribute<PrivateFactoryAttribute>())
             {
                 CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_MethodNotQualifiedForPrivateRegistration, methodName);
             }

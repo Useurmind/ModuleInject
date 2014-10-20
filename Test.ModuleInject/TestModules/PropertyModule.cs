@@ -53,6 +53,8 @@ namespace Test.ModuleInject.TestModules
         [PrivateComponent]
         public IMainComponent2 PrivateInstanceComponent { get; private set; }
 
+        [ExternalComponent]
+        [RegistryComponent]
         public ISubModule SubModule { get; set; }
 
         public PropertyModule()

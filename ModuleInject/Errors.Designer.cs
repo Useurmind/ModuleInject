@@ -206,6 +206,15 @@ namespace ModuleInject {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The property &apos;{0}&apos; of module with type &apos;{1}&apos; is already set before resolving it despite not being marked with ExternalComponentAttribute. Please set the ExternalComponentAttribute if the property is set outside the resolution process of the module itself..
+        /// </summary>
+        internal static string ModuleResolver_PropertyWithoutExternalAttribute {
+            get {
+                return ResourceManager.GetString("ModuleResolver_PropertyWithoutExternalAttribute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The registry does not contain a registration for the type &apos;{0}&apos;..
         /// </summary>
         internal static string RegistryModule_TypeNotRegistered {

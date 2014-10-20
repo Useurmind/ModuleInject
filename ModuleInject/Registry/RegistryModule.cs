@@ -85,7 +85,7 @@ namespace ModuleInject.Registry
         /// <typeparam name="T">The type that should be registered</typeparam>
         /// <param name="factoryFunc">The factory function that will create the instance.</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Disposed in RegistryModule dispose method")]
-        public void Register<T>(Func<T> factoryFunc)
+        internal void Register<T>(Func<T> factoryFunc)
         {
             RegistrationEntry entry = new RegistrationEntry(typeof(T), () => factoryFunc());
             this.AddRegistrationEntry(entry);

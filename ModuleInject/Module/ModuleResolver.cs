@@ -69,13 +69,11 @@ namespace ModuleInject.Module
         {
             Type moduleType = typeof(TModule);
             Type moduleInterface = typeof(IModule);
-            Type injectionModuleType = typeof(IInjectionModule);
 
             var interfaceProperties = moduleInterface.GetModuleComponentPropertiesRecursive()
                                                      .Where(p =>
                                                       {
-                                                          var searchedInterface = p.PropertyType.GetInterface(injectionModuleType.Name, false);
-                                                          bool isModule = searchedInterface != null;
+                                                          bool isModule = p.IsInjectionModuleType();
                                                           return thatAreModules ? isModule : !isModule;
                                                       })
                                                      .Select(p => moduleType.GetProperty(p.Name));
@@ -83,23 +81,27 @@ namespace ModuleInject.Module
             var privateProperties = moduleType.GetModuleComponentPropertiesRecursive(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                                               .Where(p =>
                                               {
-                                                  bool isPrivate = p.GetCustomAttributes(typeof(PrivateComponentAttribute), false).Length > 0;
-                                                  var searchedInterface = p.PropertyType.GetInterface(injectionModuleType.Name, false);
-                                                  bool isModule = searchedInterface != null;
+                                                  bool isPrivate = p.HasCustomAttribute<PrivateComponentAttribute>();
+                                                  bool isRegistry = p.HasCustomAttribute<RegistryComponentAttribute>();
+                                                  bool isModule = p.IsInjectionModuleType();
 
-                                                  return isPrivate && (thatAreModules ? isModule : !isModule);
+                                                  return (isRegistry || isPrivate) && (thatAreModules ? isModule : !isModule);
                                               });
 
             return privateProperties.Union(interfaceProperties);
         }
 
-        private  bool TryResolveComponent(PropertyInfo propInfo)
+        private bool TryResolveComponent(PropertyInfo propInfo)
         {
             bool resolved = true;
 
             object currentValue = propInfo.GetValue(_module, null);
             if (currentValue != null)
             {
+                if (!propInfo.HasCustomAttribute<ExternalComponentAttribute>())
+                {
+                    CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.ModuleResolver_PropertyWithoutExternalAttribute, propInfo.Name);
+                }
                 resolved = false;
             }
             else
@@ -116,10 +118,21 @@ namespace ModuleInject.Module
 
             bool resolved = false;
 
-            resolved = this.TryResolveComponentFromContainer(propInfo);
-            if (!resolved)
+            if (!resolved && propInfo.HasCustomAttribute<PrivateComponentAttribute>())
+            {
+                // private components take priority over registry components
+                resolved = this.TryResolveComponentFromContainer(propInfo);
+            }
+
+            if (!resolved && propInfo.HasCustomAttribute<RegistryComponentAttribute>())
             {
                 resolved = this.TryResolveComponentFromRegistry(propInfo);
+            }
+            
+            if(!resolved)
+            {
+                // public components
+                resolved = this.TryResolveComponentFromContainer(propInfo);
             }
 
             if (!resolved)

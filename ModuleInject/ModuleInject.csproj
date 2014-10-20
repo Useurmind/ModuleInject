@@ -76,6 +76,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Errors.resx</DependentUpon>
     </Compile>
+    <Compile Include="ExternalComponentAttribute.cs" />
     <Compile Include="Fluent\ComponentExtensionContextGeneric.cs" />
     <Compile Include="Fluent\ComponentExtensionContextExtensions.cs" />
     <Compile Include="Fluent\ComponentExtensionContext.cs" />
@@ -103,7 +104,7 @@
     <Compile Include="Fluent\InterfaceValueInjectionContextGeneric.cs" />
     <Compile Include="Fluent\ValueInjectionContextGeneric.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="IInjectionModule.cs" />
+    <Compile Include="InjectionModule.cs" />
     <Compile Include="Interception\IParameterCollection.cs" />
     <Compile Include="Interception\ISimpleBehaviour.cs" />
     <Compile Include="Interception\IMethodInvocation.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="PrivateComponentAttribute.cs" />
     <Compile Include="PrivateFactoryAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegistryComponentAttribute.cs" />
     <Compile Include="Registry\IRegistryModule.cs" />
     <Compile Include="Registry\RegistrationEntry.cs" />
     <Compile Include="Registry\RegistryModule.cs" />

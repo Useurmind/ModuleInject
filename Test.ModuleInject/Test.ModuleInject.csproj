@@ -84,7 +84,7 @@
     <Compile Include="DerivedModuleTest.cs" />
     <Compile Include="Interception\SimpleUnityBehaviourTest.cs" />
     <Compile Include="MethodCallModuleTest.cs" />
-    <Compile Include="ModuleWithNonMarkedPrivateComponentTest.cs" />
+    <Compile Include="ModulesWithAttributeErrosTest.cs" />
     <Compile Include="ModuleWithRegistrationErrorsTest.cs" />
     <Compile Include="NoAutoWiringModuleTest.cs" />
     <Compile Include="InjectorModuleTest.cs" />
@@ -107,10 +107,11 @@
     <Compile Include="TestModules\DerivedModule.cs" />
     <Compile Include="TestModules\FactoryModule.cs" />
     <Compile Include="TestModules\AfterResolveModule.cs" />
+    <Compile Include="TestModules\IEmptyModule.cs" />
     <Compile Include="TestModules\InjectorModule.cs" />
     <Compile Include="TestModules\ISubModule.cs" />
     <Compile Include="TestModules\MethodCallModule.cs" />
-    <Compile Include="TestModules\ModuleWithNonMarkedPrivateComponent.cs" />
+    <Compile Include="TestModules\ModulesWithAttributeErrors.cs" />
     <Compile Include="TestModules\ModuleWithRegistrationErrors.cs" />
     <Compile Include="TestModules\NoAutoWiringModule.cs" />
     <Compile Include="TestModules\NoInterfaceModule.cs" />
