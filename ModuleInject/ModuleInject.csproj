@@ -156,13 +156,17 @@
       <Project>{4c6ea330-ad9a-4a0e-8869-7b7ec1d8db13}</Project>
       <Name>ModuleInject.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ModuleInject.Container\ModuleInject.Container.csproj">
+      <Project>{6a423006-aae9-4c5a-b168-6a2d7f7fcd71}</Project>
+      <Name>ModuleInject.Container</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if "$(ConfigurationName)" == "NuGet Package" (
-   cd $(SolutionDir)$(ProjectName)
-   "C:\Windows\SysWOW64\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -file $(ProjectDir)BuildNuGetPackage.ps1
+   cd $(SolutionDir)
+   "C:\Windows\SysWOW64\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -file $(SolutionDir)BuildNuGetPackage.ps1
 )</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

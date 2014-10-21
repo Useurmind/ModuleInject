@@ -9,7 +9,8 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <copyright>Copyright © 2014 Jochen Grün</copyright>
-	<projectUrl>https://github.com/Useurmind/ModuleInject</projectUrl>
+    <projectUrl>https://github.com/Useurmind/ModuleInject</projectUrl>
+    <licenseUrl>https://github.com/Useurmind/ModuleInject/blob/master/LICENSE.txt</licenseUrl>
     <dependencies>
       <dependency id="Unity.Interception" version="2.1.505.2" />
     </dependencies>

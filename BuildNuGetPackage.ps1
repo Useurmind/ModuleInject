@@ -17,7 +17,7 @@ Write-Host "Filling .nuspec file"
 
 [String]$nuspecContent = $nuspecTemplate.Replace("@minorVersion@", $minorVersion)
 
-Set-Content .\ModuleInject.nuspec $nuspecContent
+Set-Content .\ModuleInject\ModuleInject.nuspec $nuspecContent
 
 [string]$completeVersion =  [regex]::match($nuspecContent,"\<version\>.*\<\/version\>").ToString()
 
@@ -27,7 +27,7 @@ $nugetPackage = "ModuleInject.$completeVersion.nupkg"
 
 $result = mkdir "NuGetPackages" -Force
 $packCommand = @'
-nuget.exe Pack ModuleInject.csproj -Prop Configuration='NuGet Package' -OutputDirectory NuGetPackages
+nuget.exe Pack ModuleInject\ModuleInject.csproj -Prop Configuration='NuGet Package' -OutputDirectory NuGetPackages -includereferencedprojects
 '@
 
 $pushCommand = "nuget.exe Push NuGetPackages\$nugetPackage"
@@ -35,6 +35,6 @@ $pushCommand = "nuget.exe Push NuGetPackages\$nugetPackage"
 Write-Host "Packing NuGet package"
 Invoke-Expression -Command:$packCommand
 Write-Host "Pushing NuGet package"
-Invoke-Expression -Command:$pushCommand
+#Invoke-Expression -Command:$pushCommand
 Write-Host "Done."
 
