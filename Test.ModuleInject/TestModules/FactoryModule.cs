@@ -28,7 +28,6 @@ namespace Test.ModuleInject.TestModules
         [PrivateComponent]
         private IMainComponent2 Component2 { get; set; }
 
-
         public FactoryModule()
         {
             RegisterPrivateComponent<IMainComponent2, MainComponent2>(x => x.Component2);

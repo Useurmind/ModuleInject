@@ -10,5 +10,7 @@ namespace Test.ModuleInject.TestModules
     {
         ISubComponent1 Component1 { get; }
         ISubComponent2 Component2 { get; }
+
+        ISubComponent1 CreateComponent1();
     }
 }

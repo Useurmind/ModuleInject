@@ -78,6 +78,5 @@ namespace Test.ModuleInject.TestModules
             RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
                 .CallMethod((comp, module) => comp.CallWithConstant(new MainComponent2(), 5));
         }
-
     }
 }

@@ -16,5 +16,10 @@ namespace Test.ModuleInject.TestModules
             RegisterPublicComponent<ISubComponent1, SubComponent1>(x => x.Component1);
             RegisterPublicComponent<ISubComponent2, SubComponent2>(x => x.Component2);
         }
+
+        public ISubComponent1 CreateComponent1()
+        {
+            return CreateInstance(x => x.CreateComponent1());
+        }
     }
 }

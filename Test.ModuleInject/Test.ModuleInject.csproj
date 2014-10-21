@@ -125,6 +125,8 @@
     <Compile Include="TestModules\Submodule.cs" />
     <Compile Include="TestModules\SubPropertyInjectionModule.cs" />
     <Compile Include="TestModules\TestSuperModule.cs" />
+    <Compile Include="TestModules\UseSubmoduleModule.cs" />
+    <Compile Include="UseSubmoduleModuleTest.cs" />
     <Compile Include="Utility\DoubleDictionaryTest.cs" />
     <Compile Include="Utility\LinqHelperTest.cs" />
     <Compile Include="Utility\MemberChainEvaluatorTest.cs" />
@@ -136,6 +138,10 @@
     <None Include="Test.ModuleInject.snk" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ModuleInject.Common\ModuleInject.Common.csproj">
+      <Project>{4c6ea330-ad9a-4a0e-8869-7b7ec1d8db13}</Project>
+      <Name>ModuleInject.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ModuleInject\ModuleInject.csproj">
       <Project>{53221937-aeff-477f-b132-91a5449c9738}</Project>
       <Name>ModuleInject</Name>
