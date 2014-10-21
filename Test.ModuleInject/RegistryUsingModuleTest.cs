@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Test.ModuleInject
 {
+    using global::ModuleInject.Common.Exceptions;
     using global::ModuleInject.Utility;
 
     using NUnit.Framework;

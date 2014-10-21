@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace ModuleInject.Utility
+namespace ModuleInject.Common.Exceptions
 {
+    using System;
+
     [Serializable]
     public class ModuleInjectException : Exception
     {

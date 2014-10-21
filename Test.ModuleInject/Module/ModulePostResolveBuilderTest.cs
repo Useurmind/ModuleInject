@@ -12,6 +12,8 @@ using System.Text;
 
 namespace Test.ModuleInject.Module
 {
+    using global::ModuleInject.Common.Utility;
+
     [TestFixture]
     public class ModulePostResolveBuilderTest
     {

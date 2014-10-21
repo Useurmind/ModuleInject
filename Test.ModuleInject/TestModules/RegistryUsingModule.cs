@@ -8,6 +8,7 @@ namespace Test.ModuleInject.TestModules
     using System.Runtime.Remoting.Messaging;
 
     using global::ModuleInject;
+    using global::ModuleInject.Decoration;
     using global::ModuleInject.Interfaces;
     using global::ModuleInject.Registry;
 

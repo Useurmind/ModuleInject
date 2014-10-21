@@ -9,6 +9,8 @@ using System.Text;
 
 namespace Test.ModuleInject.Utility
 {
+    using global::ModuleInject.Common.Linq;
+
     [TestFixture]
     public class MemberChainEvaluatorTest
     {

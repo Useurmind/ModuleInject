@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace ModuleInject
+namespace ModuleInject.Decoration
 {
     using System;
 

@@ -11,6 +11,9 @@ using Test.ModuleInject.TestModules;
 
 namespace Test.ModuleInject.Module
 {
+    using global::ModuleInject.Common.Exceptions;
+    using global::ModuleInject.Common.Linq;
+
     [TestFixture]
     public class ModuleResolverTest
     {

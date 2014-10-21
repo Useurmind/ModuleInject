@@ -10,6 +10,9 @@ using System.Text;
 
 namespace ModuleInject.Module
 {
+    using ModuleInject.Common.Exceptions;
+    using ModuleInject.Common.Utility;
+
     public static class ModulePostResolveBuilder
     {
         public static void PerformPostResolveAssembly(IInjectionModule module, DoubleKeyDictionary<Type, string, IGatherPostResolveAssemblers> assemblerCollectionDictionary)

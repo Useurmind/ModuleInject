@@ -6,6 +6,7 @@ using System.Text;
 namespace Test.ModuleInject.TestModules
 {
     using global::ModuleInject;
+    using global::ModuleInject.Decoration;
     using global::ModuleInject.Fluent;
     using global::ModuleInject.Interfaces;
 

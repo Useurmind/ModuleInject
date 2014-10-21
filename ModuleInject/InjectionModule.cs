@@ -14,6 +14,10 @@ using System.Text;
 
 namespace ModuleInject
 {
+    using ModuleInject.Common.Exceptions;
+    using ModuleInject.Common.Linq;
+    using ModuleInject.Common.Utility;
+    using ModuleInject.Decoration;
     using ModuleInject.Registry;
 
     public abstract class InjectionModule : IInjectionModule, IDisposable
@@ -103,7 +107,7 @@ namespace ModuleInject
 
             if (!typeof(IModule).IsInterface)
             {
-                CommonFunctions.ThrowTypeException<IModule>(Errors.InjectionModule_ModulesMustHaveAnInterface);
+                ExceptionHelper.ThrowTypeException<IModule>(Errors.InjectionModule_ModulesMustHaveAnInterface);
             }
         }
 
@@ -135,7 +139,7 @@ namespace ModuleInject
         {
             if (IsResolved)
             {
-                CommonFunctions.ThrowTypeException<TModule>(Errors.InjectionModule_AlreadyResolved);
+                ExceptionHelper.ThrowTypeException<TModule>(Errors.InjectionModule_AlreadyResolved);
             }
 
             CheckAllPropertiesAreValid();
@@ -212,7 +216,7 @@ namespace ModuleInject
 
             if (invalidPropertyNames.Any())
             {
-                CommonFunctions.ThrowTypeException<TModule>(Errors.InjectionModule_InvalidProperty, string.Join(", ", invalidPropertyNames));
+                ExceptionHelper.ThrowTypeException<TModule>(Errors.InjectionModule_InvalidProperty, string.Join(", ", invalidPropertyNames));
             }
         }
 
@@ -424,12 +428,12 @@ namespace ModuleInject
 
             if (!IsResolved)
             {
-                CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_CreateInstanceBeforeResolve, functionName);
+                ExceptionHelper.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_CreateInstanceBeforeResolve, functionName);
             }
 
             if (!_container.IsRegistered<IComponent>(functionName))
             {
-                CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_FactoryMethodNotRegistered, functionName);
+                ExceptionHelper.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_FactoryMethodNotRegistered, functionName);
             }
 
             return _container.Resolve<IComponent>(functionName);
@@ -442,7 +446,7 @@ namespace ModuleInject
             string functionName = methodInfo.Name;
             if (methodInfo.GetParameters().Length > 0)
             {
-                CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_FactoryMethodsWithParametersNotSupportedYet, functionName);
+                ExceptionHelper.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_FactoryMethodsWithParametersNotSupportedYet, functionName);
             }
 
             _container.RegisterType<IComponent, TComponent>(functionName);
@@ -498,7 +502,7 @@ namespace ModuleInject
             string path = LinqHelper.GetMemberPath(moduleProperty, out depth);
             if (depth > 1)
             {
-                CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_CannotRegisterPropertyOrMethodsWhichAreNotMembersOfTheModule, path);
+                ExceptionHelper.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_CannotRegisterPropertyOrMethodsWhichAreNotMembersOfTheModule, path);
             }
 
             ParameterExpression parameterExpression = moduleProperty.Parameters[0];
@@ -513,7 +517,7 @@ namespace ModuleInject
                 {
                     ThrowNoPropertyOrMethodOfModuleException(moduleProperty);
                 }
-                paramExp = LinqHelper.GetParameterExpressionWithPossibleConvert(propExpression.Expression, parameterExpression.Type);
+                paramExp = CommonLinq.GetParameterExpressionWithPossibleConvert(propExpression.Expression, parameterExpression.Type);
             }
             else if (methodExpression != null)
             {
@@ -522,7 +526,7 @@ namespace ModuleInject
                 {
                     ThrowNoPropertyOrMethodOfModuleException(moduleProperty);
                 }
-                paramExp = LinqHelper.GetParameterExpressionWithPossibleConvert(methodExpression.Object, parameterExpression.Type);
+                paramExp = CommonLinq.GetParameterExpressionWithPossibleConvert(methodExpression.Object, parameterExpression.Type);
             }
             else
             {
@@ -537,7 +541,7 @@ namespace ModuleInject
 
         private static void ThrowNoPropertyOrMethodOfModuleException<TObject, IComponent>(Expression<Func<TObject, IComponent>> expression)
         {
-            CommonFunctions.ThrowTypeException<TModule>(Errors.InjectionModule_NeitherPropertyNorMethodExpression, expression);
+            ExceptionHelper.ThrowTypeException<TModule>(Errors.InjectionModule_NeitherPropertyNorMethodExpression, expression);
         }
 
         private static bool IsTypeOfModule(Type type)
@@ -552,7 +556,7 @@ namespace ModuleInject
 
             if (isInterfaceProperty || !propInfo.HasCustomAttribute<PrivateComponentAttribute>())
             {
-                CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_PropertyNotQualifiedForPrivateRegistration, propName);
+                ExceptionHelper.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_PropertyNotQualifiedForPrivateRegistration, propName);
             }
         }
 
@@ -563,7 +567,7 @@ namespace ModuleInject
 
             if (isInterfaceProperty || !methodInfo.HasCustomAttribute<PrivateFactoryAttribute>())
             {
-                CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_MethodNotQualifiedForPrivateRegistration, methodName);
+                ExceptionHelper.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_MethodNotQualifiedForPrivateRegistration, methodName);
             }
         }
 

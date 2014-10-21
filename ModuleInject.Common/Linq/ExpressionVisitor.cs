@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 
-namespace ModuleInject.Utility
+namespace ModuleInject.Common.Linq
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
+    using System.Linq.Expressions;
+
     [SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0", Justification="Externally created code.", Scope="method")]
-    internal abstract class ExpressionVisitor
+    public abstract class ExpressionVisitor
     {
         protected ExpressionVisitor()
         {

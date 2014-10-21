@@ -11,6 +11,8 @@ using Test.ModuleInject.TestModules;
 
 namespace Test.ModuleInject.Fluent
 {
+    using global::ModuleInject.Common.Linq;
+
     [TestFixture]
     public class ComponentRegistrationContextTest
     {

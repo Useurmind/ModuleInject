@@ -7,6 +7,9 @@ using System.Text;
 
 namespace ModuleInject.Utility
 {
+    using ModuleInject.Common.Utility;
+    using ModuleInject.Decoration;
+
     public static class TypeExtensions
     {
         public static bool IsInjectionModuleType(this PropertyInfo propertyInfo)
@@ -15,17 +18,6 @@ namespace ModuleInject.Utility
             var searchedInterface = propertyInfo.PropertyType.GetInterface(injectionModuleType.Name, false);
             bool isModule = searchedInterface != null;
             return isModule;
-        }
-
-        public static bool HasCustomAttribute<TAttribute>(this MemberInfo memberInfo)
-            where TAttribute : Attribute
-        {
-            return memberInfo.HasCustomAttribute(typeof(TAttribute));
-        }
-
-        public static bool HasCustomAttribute(this MemberInfo memberInfo, Type attributeType)
-        {
-            return memberInfo.GetCustomAttributes(attributeType, false).Length > 0;
         }
 
         /// <summary>

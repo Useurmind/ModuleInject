@@ -9,6 +9,8 @@ using System.Text;
 
 namespace ModuleInject.Fluent
 {
+    using ModuleInject.Common.Utility;
+
     public static class DependencyInjectionContextExtensions
     {
         public static ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> 

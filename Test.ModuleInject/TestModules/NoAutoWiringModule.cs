@@ -8,6 +8,8 @@ using Microsoft.Practices.Unity;
 
 namespace Test.ModuleInject.TestModules
 {
+    using global::ModuleInject.Decoration;
+
     public interface IAutoWiringClass
     {
         MainComponent2 PropertyComponent { get; }

@@ -5,6 +5,7 @@ namespace ModuleInject.Registry
     using System;
     using System.Collections.Generic;
 
+    using ModuleInject.Common.Disposing;
     using ModuleInject.Interfaces;
     using ModuleInject.Utility;
 

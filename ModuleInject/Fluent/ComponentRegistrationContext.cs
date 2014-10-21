@@ -12,6 +12,8 @@ using System.Linq.Expressions;
 
 namespace ModuleInject.Fluent
 {
+    using ModuleInject.Common.Exceptions;
+
     internal class ComponentRegistrationTypes
     {
         public Type IComponent { get; set; }
@@ -141,7 +143,7 @@ namespace ModuleInject.Fluent
         {
             if (!IsInterceptionActive)
             {
-                CommonFunctions.ThrowTypeException(Types.TModule, Errors.ComponentRegistrationContext_InterceptionNotActivated);
+                ExceptionHelper.ThrowTypeException(Types.TModule, Errors.ComponentRegistrationContext_InterceptionNotActivated);
             }
 
             Unity.InterceptionBehavior unityBehaviour = new Unity.InterceptionBehavior<SimpleUnityBehaviour<TBehaviour>>();

@@ -8,7 +8,9 @@ using System.Text;
 
 namespace ModuleInject.Utility
 {
-    internal static class LinqHelper
+    using ModuleInject.Common.Exceptions;
+
+    public static class LinqHelper
     {
         /// <summary>
         /// Calculates the path of the member and its type for an lambda expression that gives an component/subcomponent
@@ -17,7 +19,7 @@ namespace ModuleInject.Utility
         /// <param name="expression"></param>
         /// <param name="memberPath"></param>
         /// <param name="memberType"></param>
-        internal static void GetMemberPathAndType(Expression expression, out string memberPath, out Type memberType)
+        public static void GetMemberPathAndType(Expression expression, out string memberPath, out Type memberType)
         {
             memberType = null;
             int depth;
@@ -45,18 +47,18 @@ namespace ModuleInject.Utility
             throw new ModuleInjectException("Expression must describe a property or method.");
         }
 
-        internal static string GetMemberPath<TObject, TProperty>(Expression<Func<TObject, TProperty>> expression)
+        public static string GetMemberPath<TObject, TProperty>(Expression<Func<TObject, TProperty>> expression)
         {
             int depth;
             return GetMemberPath(expression, out depth);
         }
 
-        internal static string GetMemberPath<TObject, TProperty>(Expression<Func<TObject, TProperty>> expression, out int depth)
+        public static string GetMemberPath<TObject, TProperty>(Expression<Func<TObject, TProperty>> expression, out int depth)
         {
             return GetMemberPath((Expression)expression, out depth);
         }
 
-        internal static string GetMemberPath(Expression expression, out int depth)
+        public static string GetMemberPath(Expression expression, out int depth)
         {
             MemberChainEvaluator propertyExtractor = new MemberChainEvaluator();
 
@@ -66,12 +68,12 @@ namespace ModuleInject.Utility
             return propertyExtractor.MemberPath;
         }
 
-        internal static IList<MethodCallArgument> GetConstructorArguments(LambdaExpression constructorCallExpression)
+        public static IList<MethodCallArgument> GetConstructorArguments(LambdaExpression constructorCallExpression)
         {
             NewExpression constructorExpression = constructorCallExpression.Body as NewExpression;
             if (constructorExpression == null)
             {
-                CommonFunctions.ThrowFormatException("No constructor expression given.");
+                ExceptionHelper.ThrowFormatException("No constructor expression given.");
             }
 
             return EvaluateArgumentList(constructorExpression.Arguments);
@@ -87,7 +89,7 @@ namespace ModuleInject.Utility
         /// <param name="arguments"></param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes",
             Justification = "General catch is ok because an exception is thrown instead.")]
-        internal static void GetMethodNameAndArguments(LambdaExpression methodCallExpression, out string methodName,
+        public static void GetMethodNameAndArguments(LambdaExpression methodCallExpression, out string methodName,
             out IList<MethodCallArgument> arguments)
         {
             arguments = new List<MethodCallArgument>();
@@ -95,7 +97,7 @@ namespace ModuleInject.Utility
             MethodCallExpression methodExpession = methodCallExpression.Body as MethodCallExpression;
             if (methodExpession == null)
             {
-                CommonFunctions.ThrowFormatException("No method call expression given.");
+                ExceptionHelper.ThrowFormatException("No method call expression given.");
             }
 
             methodName = methodExpession.Method.Name;
@@ -123,7 +125,7 @@ namespace ModuleInject.Utility
                             MemberExpression memberExpression = parameter2 as MemberExpression;
                             if (memberExpression == null)
                             {
-                                CommonFunctions.ThrowFormatException(Errors.MethodCallArgumentNotSupported, parameter);
+                                ExceptionHelper.ThrowFormatException(Errors.MethodCallArgumentNotSupported, parameter);
                             }
                             MemberChainEvaluator expEvaluator = new MemberChainEvaluator();
                             try
@@ -157,7 +159,7 @@ namespace ModuleInject.Utility
                             }
                             catch
                             {
-                                CommonFunctions.ThrowFormatException(Errors.MethodCallArgumentNotSupported, parameter);
+                                ExceptionHelper.ThrowFormatException(Errors.MethodCallArgumentNotSupported, parameter);
                             }
 
 
@@ -168,7 +170,7 @@ namespace ModuleInject.Utility
                             ConstantExpression constantExpression = parameter2 as ConstantExpression;
                             if (constantExpression == null)
                             {
-                                CommonFunctions.ThrowFormatException(Errors.MethodCallArgumentNotSupported, parameter);
+                                ExceptionHelper.ThrowFormatException(Errors.MethodCallArgumentNotSupported, parameter);
                             }
                             arguments.Add(new MethodCallArgument()
                             {
@@ -183,7 +185,7 @@ namespace ModuleInject.Utility
                             NewExpression newExpression = parameter2 as NewExpression;
                             if (newExpression == null)
                             {
-                                CommonFunctions.ThrowFormatException(Errors.MethodCallArgumentNotSupported, parameter);
+                                ExceptionHelper.ThrowFormatException(Errors.MethodCallArgumentNotSupported, parameter);
                             }
 
                             object value = EvaluateLinqExpression(newExpression);
@@ -197,7 +199,7 @@ namespace ModuleInject.Utility
                         }
                         break;
                     default:
-                        CommonFunctions.ThrowFormatException(Errors.MethodCallArgumentNotSupported, parameter);
+                        ExceptionHelper.ThrowFormatException(Errors.MethodCallArgumentNotSupported, parameter);
                         break;
 
                 }
@@ -210,22 +212,6 @@ namespace ModuleInject.Utility
         {
             LambdaExpression lambda = Expression.Lambda(newExpression, null);
             return lambda.Compile().DynamicInvoke();
-        }
-
-        public static ParameterExpression GetParameterExpressionWithPossibleConvert(Expression expression, Type expectedParameterType)
-        {
-            Expression paramExpBase = expression;
-            UnaryExpression convertExp = paramExpBase as UnaryExpression;
-            if (convertExp != null && convertExp.NodeType == ExpressionType.Convert)
-            {
-                if (expectedParameterType == null || convertExp.Type.IsAssignableFrom(expectedParameterType))
-                {
-                    paramExpBase = convertExp.Operand;
-                }
-            }
-
-            ParameterExpression paramExp = paramExpBase as ParameterExpression;
-            return paramExp;
         }
 
         private static Type TryGetMemberTypeFromMemberOrMethod(Expression expression)

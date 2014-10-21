@@ -1,21 +1,26 @@
-﻿using ModuleInject.Utility;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Test.ModuleInject.TestModules;
+﻿using System.Linq;
 
-namespace Test.ModuleInject.Utility
+namespace Test.ModuleInject.Common.Linq
 {
+    using global::ModuleInject.Common.Exceptions;
+    using global::ModuleInject.Common.Linq;
+
+    using NUnit.Framework;
+
     [TestFixture]
     public class MethodTest
     {
-        private class TestClass
+        private interface ITestClass
+        {
+            string StringProperty { get; set; }
+        }
+
+        private class TestClass : ITestClass
         {
             public int _a = 0;
             public int Func() { return 0; }
             public TestClass2 TestClass2 { get; set; }
+            public string StringProperty { get; set; }
         }
 
         private class TestClass2
@@ -26,7 +31,7 @@ namespace Test.ModuleInject.Utility
         [TestCase]
         public void Get_MethodWithCastOfParameter_ReturnsProperty()
         {
-            Method method = Method.Get((MainComponent1 m) => ((IMainComponent1)m).GetHashCode());
+            Method method = Method.Get((TestClass m) => ((ITestClass)m).GetHashCode());
 
             Assert.IsNotNull(method);
         }
@@ -35,7 +40,7 @@ namespace Test.ModuleInject.Utility
         [ExpectedException(typeof(ModuleInjectException))]
         public void Get_MethodWithInvalidCastOfParameter_ErrorThrown()
         {
-            Method method = Method.Get((MainComponent1 m) => ((IMainComponent2)m).StringProperty);
+            Method method = Method.Get((TestClass m) => ((ITestClass)m).StringProperty);
 
             Assert.IsNotNull(method);
         }

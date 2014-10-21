@@ -7,6 +7,8 @@ using ModuleInject.Utility;
 
 namespace ModuleInject.Interception
 {
+    using ModuleInject.Common.Utility;
+
     internal class SimpleUnityBehaviour<TBehaviour> : Unity.IInterceptionBehavior
         where TBehaviour : ISimpleBehaviour, new()
     {

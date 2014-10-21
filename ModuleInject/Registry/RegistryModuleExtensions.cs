@@ -5,6 +5,7 @@ using System.Text;
 
 namespace ModuleInject.Registry
 {
+    using ModuleInject.Common.Utility;
     using ModuleInject.Interfaces;
     using ModuleInject.Utility;
 

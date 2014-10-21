@@ -12,6 +12,9 @@ namespace ModuleInject.Module
 {
     using System.Runtime.InteropServices;
 
+    using ModuleInject.Common.Exceptions;
+    using ModuleInject.Common.Linq;
+    using ModuleInject.Decoration;
     using ModuleInject.Registry;
 
     internal class ModuleResolver<IModule, TModule>
@@ -100,7 +103,7 @@ namespace ModuleInject.Module
             {
                 if (!propInfo.HasCustomAttribute<ExternalComponentAttribute>())
                 {
-                    CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.ModuleResolver_PropertyWithoutExternalAttribute, propInfo.Name);
+                    ExceptionHelper.ThrowPropertyAndTypeException<TModule>(Errors.ModuleResolver_PropertyWithoutExternalAttribute, propInfo.Name);
                 }
                 resolved = false;
             }
@@ -137,7 +140,7 @@ namespace ModuleInject.Module
 
             if (!resolved)
             {
-                CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.ModuleResolver_MissingPropertyRegistration, propName);
+                ExceptionHelper.ThrowPropertyAndTypeException<TModule>(Errors.ModuleResolver_MissingPropertyRegistration, propName);
             }
         }
 

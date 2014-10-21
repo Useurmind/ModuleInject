@@ -9,6 +9,8 @@ using System.Text;
 
 namespace ModuleInject.Fluent
 {
+    using ModuleInject.Common.Linq;
+
     internal class ValueInjectionContext
     {
         public ComponentRegistrationContext ComponentContext { get; set; }

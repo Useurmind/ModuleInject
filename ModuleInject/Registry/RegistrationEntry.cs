@@ -4,6 +4,7 @@ namespace ModuleInject.Registry
 {
     using System;
 
+    using ModuleInject.Common.Disposing;
     using ModuleInject.Utility;
 
     /// <summary>

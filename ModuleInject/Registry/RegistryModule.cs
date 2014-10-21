@@ -7,6 +7,7 @@ namespace ModuleInject.Registry
 {
     using System.Dynamic;
 
+    using ModuleInject.Common.Exceptions;
     using ModuleInject.Interfaces;
     using ModuleInject.Utility;
 
@@ -34,7 +35,7 @@ namespace ModuleInject.Registry
             RegistrationEntry entry = null;
             if (!_RegistrationEntries.TryGetValue(type, out entry))
             {
-                CommonFunctions.ThrowFormatException(Errors.RegistryModule_TypeNotRegistered, type.Name);
+                ExceptionHelper.ThrowFormatException(Errors.RegistryModule_TypeNotRegistered, type.Name);
             }
 
             return entry.ResolvedInstance;

@@ -1,19 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
+﻿using System.Linq;
 
-namespace ModuleInject.Utility
+namespace ModuleInject.Common.Linq
 {
+    using System;
+    using System.Linq.Expressions;
+    using System.Reflection;
+
+    using ModuleInject.Common.Exceptions;
+    using ModuleInject.Common.Utility;
+
     public class Method
     {
         private MethodInfo _methodInfo;
 
         private Method(MethodInfo methodInfo)
         {
-            _methodInfo = methodInfo;
+            this._methodInfo = methodInfo;
         }
 
         public static Method Get<TObject, TMethodReturn>(Expression<Func<TObject, TMethodReturn>> methodExpression)
@@ -45,7 +47,7 @@ namespace ModuleInject.Utility
                 throw exception;
             }
 
-            ParameterExpression paramExp = LinqHelper.GetParameterExpressionWithPossibleConvert(memberExpression.Object, parameterExpression.Type);
+            ParameterExpression paramExp = CommonLinq.GetParameterExpressionWithPossibleConvert(memberExpression.Object, parameterExpression.Type);
             if (paramExp == null)
             {
                 throw exception;
@@ -62,7 +64,7 @@ namespace ModuleInject.Utility
         public override string ToString()
         {
 
-            return _methodInfo.Name;
+            return this._methodInfo.Name;
         }
     }
 }

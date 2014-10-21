@@ -71,12 +71,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Decoration\ExternalComponentAttribute.cs" />
+    <Compile Include="Decoration\NonModulePropertyAttribute.cs" />
+    <Compile Include="Decoration\PrivateComponentAttribute.cs" />
+    <Compile Include="Decoration\PrivateFactoryAttribute.cs" />
+    <Compile Include="Decoration\RegistryComponentAttribute.cs" />
     <Compile Include="Errors.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Errors.resx</DependentUpon>
     </Compile>
-    <Compile Include="ExternalComponentAttribute.cs" />
     <Compile Include="Fluent\ComponentExtensionContextGeneric.cs" />
     <Compile Include="Fluent\ComponentExtensionContextExtensions.cs" />
     <Compile Include="Fluent\ComponentExtensionContext.cs" />
@@ -113,7 +117,6 @@
     <Compile Include="Interception\MethodReturn.cs" />
     <Compile Include="Interception\ParameterCollection.cs" />
     <Compile Include="Interception\SimpleUnityBehaviour.cs" />
-    <Compile Include="Interfaces\IDisposableExt.cs" />
     <Compile Include="Interfaces\IInitializable1.cs" />
     <Compile Include="Interfaces\IInitializable5.cs" />
     <Compile Include="Interfaces\IInitializable4.cs" />
@@ -125,27 +128,15 @@
     <Compile Include="Interfaces\IPostResolveAssembler.cs" />
     <Compile Include="Module\ModulePostResolveBuilder.cs" />
     <Compile Include="Module\ModuleResolver.cs" />
-    <Compile Include="NonModulePropertyAttribute.cs" />
-    <Compile Include="PrivateComponentAttribute.cs" />
-    <Compile Include="PrivateFactoryAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegistryComponentAttribute.cs" />
     <Compile Include="Registry\IRegistryModule.cs" />
     <Compile Include="Registry\RegistrationEntry.cs" />
     <Compile Include="Registry\RegistryModule.cs" />
     <Compile Include="Registry\RegistryModuleExtensions.cs" />
-    <Compile Include="Utility\CommonFunctions.cs" />
-    <Compile Include="Utility\DisposableExtBase.cs" />
-    <Compile Include="Utility\DoubleKeyDictionary.cs" />
-    <Compile Include="Utility\ExpressionVisitor.cs" />
     <Compile Include="Utility\LinqHelper.cs" />
     <Compile Include="Utility\MemberChainEvaluator.cs" />
     <Compile Include="Utility\MethodCallArgument.cs" />
-    <Compile Include="Utility\ModuleInjectException.cs" />
-    <Compile Include="Utility\Method.cs" />
-    <Compile Include="Utility\Property.cs" />
     <Compile Include="Utility\TypeExtensions.cs" />
-    <Compile Include="Utility\ValidatedNotNullAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ModuleInject.snk" />
@@ -166,6 +157,7 @@
       <Name>ModuleInject.Common</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if "$(ConfigurationName)" == "NuGet Package" (

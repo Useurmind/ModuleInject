@@ -1,21 +1,31 @@
-﻿using ModuleInject.Utility;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using Test.ModuleInject.TestModules;
+﻿using System.Linq;
 
-namespace Test.ModuleInject.Utility
+namespace Test.ModuleInject.Common.Linq
 {
+    using global::ModuleInject.Common.Exceptions;
+    using global::ModuleInject.Common.Linq;
+
+    using NUnit.Framework;
+
     [TestFixture]
     public class PropertyTest
     {
-        private class TestClass
+        private interface ITestClass2
+        {
+            string StringProperty { get; set; }
+        }
+
+        private interface ITestClass
+        {
+            string StringProperty { get; set; }
+        }
+
+        private class TestClass : ITestClass
         {
             public int _a = 0;
+            public int Func() { return 0; }
             public TestClass2 TestClass2 { get; set; }
+            public string StringProperty { get; set; }
         }
 
         private class TestClass2
@@ -26,7 +36,7 @@ namespace Test.ModuleInject.Utility
         [TestCase]
         public void Get_MemberExpressionWithCastOfParameter_ReturnsProperty()
         {
-            Property prop = Property.Get((MainComponent1 m) => ((IMainComponent1)m).MainComponent2);
+            Property prop = Property.Get((TestClass m) => ((ITestClass)m).StringProperty);
 
             Assert.IsNotNull(prop);
         }
@@ -35,7 +45,7 @@ namespace Test.ModuleInject.Utility
         [ExpectedException(typeof(ModuleInjectException))]
         public void Get_MemberExpressionWithInvalidCastOfParameter_ErrorThrown()
         {
-            Property prop = Property.Get((MainComponent1 m) => ((IMainComponent2)m).StringProperty);
+            Property prop = Property.Get((TestClass m) => ((ITestClass2)m).StringProperty);
 
             Assert.IsNotNull(prop);
         }

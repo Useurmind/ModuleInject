@@ -127,11 +127,8 @@
     <Compile Include="TestModules\TestSuperModule.cs" />
     <Compile Include="TestModules\UseSubmoduleModule.cs" />
     <Compile Include="UseSubmoduleModuleTest.cs" />
-    <Compile Include="Utility\DoubleDictionaryTest.cs" />
     <Compile Include="Utility\LinqHelperTest.cs" />
     <Compile Include="Utility\MemberChainEvaluatorTest.cs" />
-    <Compile Include="Utility\MethodTest.cs" />
-    <Compile Include="Utility\PropertyTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

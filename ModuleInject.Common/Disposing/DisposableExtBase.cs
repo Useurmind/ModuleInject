@@ -1,10 +1,8 @@
 ﻿using System.Linq;
 
-namespace ModuleInject.Utility
+namespace ModuleInject.Common.Disposing
 {
     using System;
-
-    using ModuleInject.Interfaces;
 
     /// <summary>
     /// The disposable ext base.

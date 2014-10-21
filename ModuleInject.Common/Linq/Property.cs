@@ -1,32 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
+﻿using System.Linq;
 
-namespace ModuleInject.Utility
+namespace ModuleInject.Common.Linq
 {
+    using System;
+    using System.Linq.Expressions;
+    using System.Reflection;
+
+    using ModuleInject.Common.Exceptions;
+    using ModuleInject.Common.Utility;
+
     public class Property
     {
         private PropertyInfo _propertyInfo;
 
         private Property(PropertyInfo propInfo)
         {
-            _propertyInfo = propInfo;
+            this._propertyInfo = propInfo;
         }
 
         public void SetValue<TObject, TValue>(TObject instance, TValue value)
         {
-            _propertyInfo.SetValue(instance, value, null);
+            this._propertyInfo.SetValue(instance, value, null);
         }
 
         public T GetValue<T>(object instance)
         {
-            return (T)_propertyInfo.GetValue(instance, null);
+            return (T)this._propertyInfo.GetValue(instance, null);
         }
 
-        internal static Property Get(Expression propertyExpression)
+        public static Property Get(Expression propertyExpression)
         {
             CommonFunctions.CheckNullArgument("propertyExpression", propertyExpression);
 
@@ -62,7 +64,7 @@ namespace ModuleInject.Utility
                 throw exception;
             }
 
-            ParameterExpression paramExp = LinqHelper.GetParameterExpressionWithPossibleConvert(memberExpression.Expression, parameterExpression.Type);
+            ParameterExpression paramExp = CommonLinq.GetParameterExpressionWithPossibleConvert(memberExpression.Expression, parameterExpression.Type);
             if (paramExp == null)
             {
                 throw exception;
@@ -78,7 +80,7 @@ namespace ModuleInject.Utility
 
         public override string ToString()
         {
-            return _propertyInfo.Name;
+            return this._propertyInfo.Name;
         }
     }
 }

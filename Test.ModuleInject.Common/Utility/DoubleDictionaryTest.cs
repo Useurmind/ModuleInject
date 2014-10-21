@@ -1,12 +1,11 @@
-﻿using ModuleInject.Utility;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace Test.ModuleInject.Utility
+namespace Test.ModuleInject.Common.Utility
 {
+    using global::ModuleInject.Common.Utility;
+
+    using NUnit.Framework;
+
     [TestFixture]
     public class DoubleDictionaryTest
     {
@@ -15,7 +14,7 @@ namespace Test.ModuleInject.Utility
         [SetUp]
         public void Init()
         {
-            mDictionary = new DoubleKeyDictionary<int, string, int>();
+            this.mDictionary = new DoubleKeyDictionary<int, string, int>();
         }
 
         [TestCase]
@@ -28,8 +27,8 @@ namespace Test.ModuleInject.Utility
             int resultValue = 0;
             bool found = false;
 
-            mDictionary.Add(key1, key2, value);
-            found = mDictionary.TryGetValue(key1, key2, out resultValue);
+            this.mDictionary.Add(key1, key2, value);
+            found = this.mDictionary.TryGetValue(key1, key2, out resultValue);
 
             Assert.IsTrue(found);
             Assert.AreEqual(value, resultValue);
@@ -46,10 +45,10 @@ namespace Test.ModuleInject.Utility
             string key22 = "sdf";
             int value2 = 98;
 
-            mDictionary.Add(key11, key21, value1);
-            mDictionary.Add(key12, key22, value2);
+            this.mDictionary.Add(key11, key21, value1);
+            this.mDictionary.Add(key12, key22, value2);
 
-            foreach (var dictItem in mDictionary)
+            foreach (var dictItem in this.mDictionary)
             {
                 Assert.IsTrue(dictItem.Key1 == key11 && dictItem.Key2 == key21 && dictItem.Value == value1
                            || dictItem.Key1 == key12 && dictItem.Key2 == key22 && dictItem.Value == value2);

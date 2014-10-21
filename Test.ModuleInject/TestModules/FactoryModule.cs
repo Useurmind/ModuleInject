@@ -8,6 +8,8 @@ using System.Text;
 
 namespace Test.ModuleInject.TestModules
 {
+    using global::ModuleInject.Decoration;
+
     public interface IFactoryModule : IInjectionModule
     {
         IMainComponent1 InstanceComponent { get; set; }

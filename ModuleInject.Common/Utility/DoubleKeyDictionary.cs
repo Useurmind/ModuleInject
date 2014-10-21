@@ -1,24 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace ModuleInject.Utility
+namespace ModuleInject.Common.Utility
 {
-    public class DoubleKeyDictionaryItem<TKey1, TKey2, TValue>
-    {
-        public TKey1 Key1 { get; private set; }
-        public TKey2 Key2 { get; private set; }
-        public TValue Value { get; private set; }
-
-        public DoubleKeyDictionaryItem(TKey1 key1, TKey2 key2, TValue value)
-        {
-            Key1 = key1;
-            Key2 = key2;
-            Value = value;
-        }
-    }
+    using System.Collections;
+    using System.Collections.Generic;
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldHaveCorrectSuffix"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "This is really a dictionary.")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "This is really a dictionary.")]
@@ -27,21 +12,21 @@ namespace ModuleInject.Utility
         private Dictionary<TKey1, Dictionary<TKey2, TValue>> _dictionary;
         private IList<DoubleKeyDictionaryItem<TKey1, TKey2, TValue>> _items;
 
-        public int Count { get { return _items.Count; } }
+        public int Count { get { return this._items.Count; } }
 
         public DoubleKeyDictionary()
         {
-            _dictionary = new Dictionary<TKey1, Dictionary<TKey2, TValue>>();
-            _items = new List<DoubleKeyDictionaryItem<TKey1, TKey2, TValue>>();
+            this._dictionary = new Dictionary<TKey1, Dictionary<TKey2, TValue>>();
+            this._items = new List<DoubleKeyDictionaryItem<TKey1, TKey2, TValue>>();
         }
 
         public void Add(TKey1 key1, TKey2 key2, TValue value)
         {
-            var secondLevel = GetSecondLevel(key1, true);
+            var secondLevel = this.GetSecondLevel(key1, true);
 
             secondLevel.Add(key2, value);
 
-            _items.Add(new DoubleKeyDictionaryItem<TKey1, TKey2, TValue>(key1, key2, value));
+            this._items.Add(new DoubleKeyDictionaryItem<TKey1, TKey2, TValue>(key1, key2, value));
         }
 
         public bool TryGetValue(TKey1 key1, TKey2 key2, out TValue value)
@@ -49,7 +34,7 @@ namespace ModuleInject.Utility
             bool result = false; 
             value = default(TValue);
 
-            var secondLevel = GetSecondLevel(key1);
+            var secondLevel = this.GetSecondLevel(key1);
             if (secondLevel != null)
             {
                 result = secondLevel.TryGetValue(key2, out value);
@@ -62,12 +47,12 @@ namespace ModuleInject.Utility
         {
             Dictionary<TKey2, TValue> secondLevel = null;
 
-            if (!_dictionary.TryGetValue(key1, out secondLevel))
+            if (!this._dictionary.TryGetValue(key1, out secondLevel))
             {
                 if (create)
                 {
                     secondLevel = new Dictionary<TKey2, TValue>();
-                    _dictionary.Add(key1, secondLevel);
+                    this._dictionary.Add(key1, secondLevel);
                 }
             }
 
@@ -76,12 +61,12 @@ namespace ModuleInject.Utility
 
         public IEnumerator<DoubleKeyDictionaryItem<TKey1, TKey2, TValue>> GetEnumerator()
         {
-            return _items.GetEnumerator();
+            return this._items.GetEnumerator();
         }
 
         IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return _items.GetEnumerator();
+            return this._items.GetEnumerator();
         }
     }
 }

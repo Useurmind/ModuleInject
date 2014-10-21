@@ -8,6 +8,9 @@ using System.Text;
 
 namespace ModuleInject.Utility
 {
+    using ModuleInject.Common.Exceptions;
+    using ModuleInject.Common.Linq;
+
     /// <summary>
     /// This class evaluates an expression describing a chain of access to members of a class.
     /// </summary>
@@ -142,7 +145,7 @@ namespace ModuleInject.Utility
 
             if (TargetRootType != null && RootType != TargetRootType)
             {
-                CommonFunctions.ThrowFormatException(Errors.MemberChainEvaluator_RootTypeMismatch, EvaluatedExpression);
+                ExceptionHelper.ThrowFormatException(Errors.MemberChainEvaluator_RootTypeMismatch, EvaluatedExpression);
             }
 
             return base.VisitParameter(parameterExpression);
@@ -183,7 +186,7 @@ namespace ModuleInject.Utility
             }
             else
             {
-                ParameterExpression paramExpression = LinqHelper.GetParameterExpressionWithPossibleConvert(checkedExpression, TargetRootType);
+                ParameterExpression paramExpression = CommonLinq.GetParameterExpressionWithPossibleConvert(checkedExpression, TargetRootType);
 
                 if (paramExpression == null || paramExpression != currentExpression)
                 {
@@ -194,7 +197,7 @@ namespace ModuleInject.Utility
 
         private void ThrowMemberChainNotContinuous()
         {
-            CommonFunctions.ThrowFormatException(Errors.MemberChainEvaluator_MemberChainNotContinuous, EvaluatedExpression);
+            ExceptionHelper.ThrowFormatException(Errors.MemberChainEvaluator_MemberChainNotContinuous, EvaluatedExpression);
         }
 
         private void SetReturnType()

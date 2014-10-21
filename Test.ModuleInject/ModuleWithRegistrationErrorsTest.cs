@@ -8,6 +8,8 @@ using Test.ModuleInject.TestModules;
 
 namespace Test.ModuleInject
 {
+    using global::ModuleInject.Common.Exceptions;
+
     [TestFixture]
     public class ModuleWithRegistrationErrorsTest
     {
