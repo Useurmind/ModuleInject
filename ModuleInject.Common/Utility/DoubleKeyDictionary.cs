@@ -59,6 +59,21 @@ namespace ModuleInject.Common.Utility
             return secondLevel;
         }
 
+        public IEnumerable<TValue> GetAll()
+        {
+            IList<TValue> values = new List<TValue>();
+
+            foreach (var kv1 in this._dictionary)
+            {
+                foreach (var kv2 in kv1.Value)
+                {
+                    values.Add(kv2.Value);
+                }
+            }
+
+            return values;
+        } 
+
         public IEnumerator<DoubleKeyDictionaryItem<TKey1, TKey2, TValue>> GetEnumerator()
         {
             return this._items.GetEnumerator();

@@ -49,10 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DebuggerShim.cs" />
-    <Compile Include="DependencyContainerTest\and_registering_a_type_without_interface.cs" />
-    <Compile Include="DependencyContainerTest\DependencyContainer.cs" />
-    <Compile Include="DependencyContainerTest\IContainerRegistration.cs" />
-    <Compile Include="DependencyContainerTest\TypeRegistration.cs" />
+    <Compile Include="DependencyContainerTest\and_injecting_into_a_property.cs" />
+    <Compile Include="DependencyContainerTest\and_injecting_through_a_constructor.cs" />
+    <Compile Include="DependencyContainerTest\and_injecting_through_a_method.cs" />
+    <Compile Include="DependencyContainerTest\and_registering_a_type.cs" />
     <Compile Include="DependencyContainerTest\when_using_the_DependencyContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -60,6 +60,10 @@
     <ProjectReference Include="..\ModuleInject.Common\ModuleInject.Common.csproj">
       <Project>{4c6ea330-ad9a-4a0e-8869-7b7ec1d8db13}</Project>
       <Name>ModuleInject.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ModuleInject.Container.Interface\ModuleInject.Container.Interface.csproj">
+      <Project>{2be60231-ead7-4330-b40e-fc21e97bac66}</Project>
+      <Name>ModuleInject.Container.Interface</Name>
     </ProjectReference>
     <ProjectReference Include="..\ModuleInject.Container\ModuleInject.Container.csproj">
       <Project>{6a423006-aae9-4c5a-b168-6a2d7f7fcd71}</Project>

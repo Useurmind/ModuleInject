@@ -29,7 +29,18 @@ namespace ModuleInject.Common.Linq
             return new Method(methodInfo);
         }
 
-        private static void CheckExpression<TObject, TMethodReturn>(Expression<Func<TObject, TMethodReturn>> methodExpression)
+        public static Method Get<TObject>(Expression<Action<TObject>> methodExpression)
+        {
+            CommonFunctions.CheckNullArgument("methodExpression", methodExpression);
+
+            CheckExpression(methodExpression);
+
+            MethodCallExpression memberExpression = (MethodCallExpression)methodExpression.Body;
+            MethodInfo methodInfo = (MethodInfo)memberExpression.Method;
+            return new Method(methodInfo);
+        }
+
+        private static void CheckExpression(LambdaExpression methodExpression)
         {
             Exception exception = new ModuleInjectException("Methods can only be constructed from expressions describing direct methods of an object.");
 
