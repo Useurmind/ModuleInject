@@ -7,6 +7,8 @@ using System.Text;
 
 namespace ModuleInject.Fluent
 {
+    using ModuleInject.Container.Interface;
+
     public class InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> : IGatherPostResolveAssemblers
         where TComponent : IComponent
         where TModule : IModule
@@ -15,9 +17,9 @@ namespace ModuleInject.Fluent
         private IList<IPostResolveAssembler> _postResolveAssemblers;
 
         public string ComponentName { get; private set; }
-        internal IUnityContainer Container { get; private set; }
+        internal IDependencyContainer Container { get; private set; }
 
-        public InstanceRegistrationContext(string name, IUnityContainer container)
+        public InstanceRegistrationContext(string name, IDependencyContainer container)
         {
             ComponentName = name;
             Container = container;

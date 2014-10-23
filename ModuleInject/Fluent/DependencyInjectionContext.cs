@@ -9,6 +9,7 @@ using System.Text;
 namespace ModuleInject.Fluent
 {
     using ModuleInject.Common.Linq;
+    using ModuleInject.Container.Resolving;
 
     internal class DependencyInjectionContext
     {
@@ -31,9 +32,7 @@ namespace ModuleInject.Fluent
             string sourceName = DependencyName;
             string targetName = Property.Get(dependencyTargetExpression);
 
-            component.Container.RegisterType(types.IComponent, types.TComponent, component.ComponentName,
-                new InjectionProperty(targetName, new ResolvedParameter(DependencyType, sourceName))
-            );
+            component.Container.InjectProperty(component.ComponentName,types.IComponent, targetName, new ContainerReference(component.Container, sourceName, DependencyType));
 
             return component;
         }

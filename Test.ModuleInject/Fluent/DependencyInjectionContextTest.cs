@@ -13,13 +13,14 @@ using Test.ModuleInject.TestModules;
 namespace Test.ModuleInject.Fluent
 {
     using global::ModuleInject.Common.Linq;
+    using global::ModuleInject.Container.Interface;
 
     [TestFixture]
     public class DependencyInjectionContextTest
     {
         string _propertyName;
         string _depPropertyName;
-        Mock<IUnityContainer> _containerMock;
+        Mock<IDependencyContainer> _containerMock;
         ComponentRegistrationContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule> _componentContext;
         DependencyInjectionContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule, IMainComponent2> _depContext;
         private ComponentRegistrationTypes _types;
@@ -38,7 +39,7 @@ namespace Test.ModuleInject.Fluent
             };
             _propertyName = Property.Get((IPropertyModule x) => x.InitWithPropertiesComponent);
             _depPropertyName = Property.Get((IPropertyModule x) => x.Component2);
-            _containerMock = new Mock<IUnityContainer>();
+            _containerMock = new Mock<IDependencyContainer>();
             _componentContextUntyped = new ComponentRegistrationContext(_propertyName, _containerMock.Object, _types, false);
             _componentContext = new ComponentRegistrationContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule>(
                 _componentContextUntyped);

@@ -59,6 +59,7 @@
     </Compile>
     <Compile Include="InstanceCreation\ConstructorDependencyInjection.cs" />
     <Compile Include="InstanceCreation\ExistingInstance.cs" />
+    <Compile Include="InstanceCreation\FactoryInstanceCreation.cs" />
     <Compile Include="InstanceCreation\IInstanceCreation.cs" />
     <Compile Include="Lifetime\DynamicLifetime.cs" />
     <Compile Include="Lifetime\SingletonLifetime.cs" />
@@ -66,7 +67,6 @@
     <Compile Include="ContainerRegistration.cs" />
     <Compile Include="Resolving\ConstantValue.cs" />
     <Compile Include="Resolving\ContainerReference.cs" />
-    <Compile Include="Resolving\IResolvedValue.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ModuleInject.Common\ModuleInject.Common.csproj">

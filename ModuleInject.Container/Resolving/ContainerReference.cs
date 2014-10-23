@@ -9,18 +9,18 @@ namespace ModuleInject.Container.Resolving
     public class ContainerReference : IResolvedValue
     {
         private string name;
-        private Type type;
+        public Type Type { get; set; }
         private IDependencyContainer container;
         public ContainerReference(IDependencyContainer container, string name, Type type)
         {
             this.name = name;
-            this.type = type;
+            this.Type = type;
             this.container = container;
         }
 
         public object Resolve()
         {
-            return this.container.Resolve(this.name, this.type);
+            return this.container.Resolve(this.name, this.Type);
         }
     }
 }

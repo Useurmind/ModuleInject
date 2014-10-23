@@ -11,9 +11,9 @@ namespace Test.ModuleInject.Container.DependencyContainerTest
 
     using NSpec;
 
-    public class inject_constant_value_into_property : NSpecTest<IInjectionTestSpec>
+    public class inject_constant_value_into_property : INSpecTest<IInjectionTestSpec>
     {
-        public override void Check(IInjectionTestSpec spec)
+        public void Check(IInjectionTestSpec spec)
         {
             string value = "afsdfg";
             string propertyName = Property.Get((TestClass x) => x.StringProperty);
@@ -26,7 +26,7 @@ namespace Test.ModuleInject.Container.DependencyContainerTest
                         spec.Name,
                         spec.RegisteredType,
                         propertyName,
-                        new ConstantValue(value));
+                        new ConstantValue<string>(value));
 
                     instance = (TestClass)spec.Container.Resolve(spec.Name, spec.RegisteredType);
                 };
@@ -35,9 +35,9 @@ namespace Test.ModuleInject.Container.DependencyContainerTest
         }
     }
 
-    public class inject_a_container_internal_resolved_value_into_property : NSpecTest<IInjectionTestSpec>
+    public class inject_a_container_internal_resolved_value_into_property : INSpecTest<IInjectionTestSpec>
     {
-        public override void Check(IInjectionTestSpec spec)
+        public void Check(IInjectionTestSpec spec)
         {
             string propertyValueName = "asgds";
             Type propertyValueType = typeof(TestClass2);
@@ -64,9 +64,9 @@ namespace Test.ModuleInject.Container.DependencyContainerTest
         }
     }
 
-    public class inject_a_resolved_value_from_another_container_into_property : NSpecTest<IInjectionTestSpec>
+    public class inject_a_resolved_value_from_another_container_into_property : INSpecTest<IInjectionTestSpec>
     {
-        public override void Check(IInjectionTestSpec spec)
+        public void Check(IInjectionTestSpec spec)
         {
             string propertyValueName = "asgds";
             Type propertyValueType = typeof(TestClass2);

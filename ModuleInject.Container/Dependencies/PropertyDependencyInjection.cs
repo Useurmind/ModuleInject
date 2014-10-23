@@ -4,6 +4,7 @@ namespace ModuleInject.Container.Dependencies
 {
     using System;
 
+    using ModuleInject.Container.Interface;
     using ModuleInject.Container.Resolving;
 
     public class PropertyDependencyInjection : IDependencyInjection

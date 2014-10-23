@@ -75,5 +75,20 @@ namespace Test.ModuleInject.Container.DependencyContainerTest
 
             it["then both instances should not be the same"] = () => instance1.should_not_be_same(instance2);
         }
+
+        void and_call_an_overloaded_funtion_without_arguments()
+        {
+            new call_an_overloaded_funtion_without_arguments().Check(this);
+        }
+
+        void and_call_an_overloaded_funtion_with_single_argument()
+        {
+            new call_an_overloaded_funtion_with_single_argument().Check(this);
+        }
+
+        void and_call_an_overloaded_funtion_with_two_arguments()
+        {
+            new call_an_overloaded_funtion_with_two_arguments().Check(this);
+        }
     }
 }

@@ -30,6 +30,11 @@ namespace ModuleInject.Container
             this.registrations = new DoubleKeyDictionary<Type, string, ContainerRegistration>();
         }
 
+        public bool IsRegistered(string name, Type type)
+        {
+            return registrations.Contains(type, name);
+        }
+
         public void Register(string name, Type registeredType, Type actualType)
         {
             ContainerRegistration registration = this.GetOrCreateRegistration(name, registeredType);
@@ -41,6 +46,12 @@ namespace ModuleInject.Container
             ContainerRegistration registration = this.GetOrCreateRegistration(name, registeredType);
             registration.ActualType = instance.GetType();
             registration.InstanceCreation = new ExistingInstance(instance);
+        }
+
+        public void Register(string name, Type registeredType, Func<IDependencyContainer, object> createInstance)
+        {
+            ContainerRegistration registration = this.GetOrCreateRegistration(name, registeredType);
+            registration.InstanceCreation = new FactoryInstanceCreation(this, createInstance);
         }
 
         public void SetLifetime(string name, Type type, ILifetime lifetime)
@@ -133,6 +144,19 @@ namespace ModuleInject.Container
         private static void ThrowRegistrationError(IContainerRegistration registration, string errorMsgFormat)
         {
             ExceptionHelper.ThrowFormatException(errorMsgFormat, registration.RegisteredType, registration.Name);
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            foreach (var registration in registrations)
+            {
+                registration.Value.Lifetime.Dispose();
+            }
         }
     }
 }

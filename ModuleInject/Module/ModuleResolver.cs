@@ -14,6 +14,7 @@ namespace ModuleInject.Module
 
     using ModuleInject.Common.Exceptions;
     using ModuleInject.Common.Linq;
+    using ModuleInject.Container.Interface;
     using ModuleInject.Decoration;
     using ModuleInject.Registry;
 
@@ -22,10 +23,10 @@ namespace ModuleInject.Module
         where IModule : IInjectionModule
     {
         private TModule _module;
-        private IUnityContainer _container;
+        private IDependencyContainer _container;
         private IRegistryModule _registry;
 
-        public ModuleResolver(TModule module, IUnityContainer container, IRegistryModule registry)
+        public ModuleResolver(TModule module, IDependencyContainer container, IRegistryModule registry)
         {
             _module = module;
             _container = container;
@@ -131,8 +132,8 @@ namespace ModuleInject.Module
             {
                 resolved = this.TryResolveComponentFromRegistry(propInfo);
             }
-            
-            if(!resolved)
+
+            if (!resolved)
             {
                 // public components
                 resolved = this.TryResolveComponentFromContainer(propInfo);
@@ -149,11 +150,11 @@ namespace ModuleInject.Module
             Type propType = propInfo.PropertyType;
             string propName = propInfo.Name;
 
-            if (!_container.IsRegistered(propType, propName))
+            if (!_container.IsRegistered(propName, propType))
             {
                 return false;
             }
-            var component = _container.Resolve(propInfo.PropertyType, propInfo.Name);
+            var component = _container.Resolve(propInfo.Name, propInfo.PropertyType);
             propInfo.SetValue(_module, component, BindingFlags.NonPublic, null, null, null);
             return true;
         }
@@ -186,11 +187,12 @@ namespace ModuleInject.Module
                 submodule.Resolve(_registry);
             }
 
+            // TODO
             foreach (var propInfo in subModulePropInfo.PropertyType.GetModuleComponentPropertiesRecursive())
             {
                 object subComponent = propInfo.GetValue(submodule, null);
                 string subComponentName = string.Format(CultureInfo.InvariantCulture, "{0}.{1}", submoduleName, propInfo.Name);
-                _container.RegisterInstance(propInfo.PropertyType, subComponentName, subComponent);
+                _container.Register(subComponentName, propInfo.PropertyType, subComponent);
             }
         }
     }

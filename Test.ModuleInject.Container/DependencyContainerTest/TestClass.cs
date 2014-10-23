@@ -22,6 +22,14 @@ namespace Test.ModuleInject.Container.DependencyContainerTest
             this.Component = component;
         }
 
+        public void OverloadedFunction()
+        {
+        }
+
+        public void OverloadedFunction(string p1) { }
+
+        public void OverloadedFunction(string p1, int p2) { }
+
         public void SetStringProperty(string value)
         {
             this.StringProperty = value;

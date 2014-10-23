@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Test.ModuleInject.Container
 {
-    public abstract class NSpecTest<TSpec>
+    public interface INSpecTest<TSpec>
         where TSpec : INSpec
     {
-        public abstract void Check(TSpec spec);
+        void Check(TSpec spec);
     }
 }

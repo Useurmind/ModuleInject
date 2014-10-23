@@ -6,6 +6,7 @@ using System.Text;
 namespace Test.ModuleInject.Container.DependencyContainerTest
 {
     using global::ModuleInject.Common.Exceptions;
+    using global::ModuleInject.Container.Interface;
     using global::ModuleInject.Container.Resolving;
     using NSpec;
 
@@ -40,6 +41,21 @@ namespace Test.ModuleInject.Container.DependencyContainerTest
                 { this.Container.InjectConstructor(this.Name, this.RegisteredType, new IResolvedValue[0]); };
 
             it["an exception is thrown"] = this.expect<ModuleInjectException>();
+        }
+
+        void and_call_an_overloaded_funtion_without_arguments()
+        {
+            new call_an_overloaded_funtion_without_arguments().Check(this);
+        }
+
+        void and_call_an_overloaded_funtion_with_single_argument()
+        {
+            new call_an_overloaded_funtion_with_single_argument().Check(this);
+        }
+
+        void and_call_an_overloaded_funtion_with_two_arguments()
+        {
+            new call_an_overloaded_funtion_with_two_arguments().Check(this);
         }
     }
 }

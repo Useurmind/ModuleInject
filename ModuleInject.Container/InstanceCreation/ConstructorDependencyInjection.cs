@@ -5,6 +5,7 @@ namespace ModuleInject.Container.InstanceCreation
     using System;
     using System.Collections.Generic;
 
+    using ModuleInject.Container.Interface;
     using ModuleInject.Container.Resolving;
 
     public class ConstructorDependencyInjection : IInstanceCreation

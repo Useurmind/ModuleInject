@@ -2,8 +2,10 @@
 
 namespace ModuleInject.Container.Dependencies
 {
+    using System;
     using System.Collections.Generic;
 
+    using ModuleInject.Container.Interface;
     using ModuleInject.Container.Resolving;
 
     public class MethodDependencyInjection : IDependencyInjection
@@ -24,14 +26,16 @@ namespace ModuleInject.Container.Dependencies
 
         public void Resolve(object instance)
         {
-            var methodInfo = instance.GetType().GetMethod(this.MethodName);
-
+            Type[] parameterTypes = new Type[this.methodParameters.Count];
             object[] parameters = new object[this.methodParameters.Count];
             for (int index = 0; index < this.methodParameters.Count; index++)
             {
                 var resolvedParameter = this.methodParameters[index];
                 parameters[index] = resolvedParameter.Resolve();
+                parameterTypes[index] = resolvedParameter.Type;
             }
+
+            var methodInfo = instance.GetType().GetMethod(this.MethodName, parameterTypes);
 
             methodInfo.Invoke(instance, parameters);
         }

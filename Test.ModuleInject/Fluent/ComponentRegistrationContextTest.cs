@@ -12,12 +12,14 @@ using Test.ModuleInject.TestModules;
 namespace Test.ModuleInject.Fluent
 {
     using global::ModuleInject.Common.Linq;
+    using global::ModuleInject.Container;
+    using global::ModuleInject.Container.Interface;
 
     [TestFixture]
     public class ComponentRegistrationContextTest
     {
         private string _componentName;
-        private IUnityContainer _container;
+        private IDependencyContainer _container;
         private ComponentRegistrationContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule> _context;
         private ComponentRegistrationTypes _types;
         private ComponentRegistrationContext _contextUntyped;
@@ -33,7 +35,7 @@ namespace Test.ModuleInject.Fluent
                 TModule = typeof(PropertyModule)
             };
             _componentName = Property.Get((IPropertyModule x) => x.InitWithPropertiesComponent);
-            _container = new UnityContainer();
+            _container = new DependencyContainer();
             _contextUntyped = new ComponentRegistrationContext(_componentName, _container, _types, false);
             _context = new ComponentRegistrationContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule>(
                 _contextUntyped

@@ -22,16 +22,8 @@ namespace Test.ModuleInject
         }
 
         [TestCase]
-        [ExpectedException(typeof(ModuleInjectException))]
-        public void RegisterBehaviour_InterceptionNotActivated_ExceptionThrown()
-        {
-            _module.RegisterBehaviour();
-        }
-
-        [TestCase]
         public void CallIntFunctionReturns5_OnComponentWithChangeReturnBehaviour_ReturnsChangedReturnValue()
         {
-            _module.ActivateInterception();
             _module.RegisterBehaviour();
             _module.Resolve();
 

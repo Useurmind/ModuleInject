@@ -29,6 +29,12 @@ namespace ModuleInject.Common.Utility
             this._items.Add(new DoubleKeyDictionaryItem<TKey1, TKey2, TValue>(key1, key2, value));
         }
 
+        public bool Contains(TKey1 key1, TKey2 key2)
+        {
+            TValue value = default(TValue);
+            return this.TryGetValue(key1, key2, out value);
+        }
+
         public bool TryGetValue(TKey1 key1, TKey2 key2, out TValue value)
         {
             bool result = false; 

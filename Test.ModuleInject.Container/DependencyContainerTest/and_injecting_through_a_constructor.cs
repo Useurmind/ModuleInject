@@ -6,6 +6,8 @@ using System.Text;
 
 namespace Test.ModuleInject.Container.DependencyContainerTest
 {
+    using global::ModuleInject.Container.Interface;
+
     using NSpec;
 
     class and_injecting_through_a_constructor : and_registering_a_type
@@ -21,7 +23,7 @@ namespace Test.ModuleInject.Container.DependencyContainerTest
                     this.Container.InjectConstructor(
                         this.Name,
                         this.RegisteredType,
-                        new IResolvedValue[] { new ConstantValue(value) });
+                        new IResolvedValue[] { new ConstantValue(value, typeof(string)) });
 
                     instance = (TestClass)this.Container.Resolve(this.Name, this.RegisteredType);
                 };

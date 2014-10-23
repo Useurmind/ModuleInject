@@ -13,6 +13,8 @@ using System.Linq.Expressions;
 namespace ModuleInject.Fluent
 {
     using ModuleInject.Common.Exceptions;
+    using ModuleInject.Container.Interface;
+    using ModuleInject.Container.Resolving;
 
     internal class ComponentRegistrationTypes
     {
@@ -30,9 +32,9 @@ namespace ModuleInject.Fluent
         public bool WasConstructorWithArgumentsCalled { get; private set; }
 
         public string ComponentName { get; private set; }
-        public IUnityContainer Container { get; private set; }
+        public IDependencyContainer Container { get; private set; }
 
-        public ComponentRegistrationContext(string name, IUnityContainer container, ComponentRegistrationTypes types, bool interceptionActive)
+        public ComponentRegistrationContext(string name, IDependencyContainer container, ComponentRegistrationTypes types, bool interceptionActive)
         {
             IsInterceptionActive = interceptionActive;
             IsInterceptorAlreadyAdded = false;
@@ -64,8 +66,11 @@ namespace ModuleInject.Fluent
 
         public ComponentRegistrationContext InitializeWith(Expression dependency1SourceExpression)
         {
-            Container.RegisterType(Types.IComponent, Types.TComponent, ComponentName,
-                new InjectionMethod(_initialize1MethodName, NewResolvedParameter(dependency1SourceExpression)));
+            Container.InjectMethod(
+                ComponentName,
+                Types.IComponent,
+                _initialize1MethodName,
+                NewResolvedParameter(dependency1SourceExpression));
 
             return this;
         }
@@ -74,11 +79,11 @@ namespace ModuleInject.Fluent
             Expression dependency1SourceExpression,
             Expression dependency2SourceExpression)
         {
-            Container.RegisterType(Types.IComponent, Types.TComponent, ComponentName,
-                new InjectionMethod(_initialize2MethodName,
+            Container.InjectMethod(ComponentName, Types.IComponent,
+                _initialize2MethodName,
                     NewResolvedParameter(dependency1SourceExpression),
                     NewResolvedParameter(dependency2SourceExpression)
-                    ));
+                    );
 
             return this;
         }
@@ -88,12 +93,12 @@ namespace ModuleInject.Fluent
             Expression dependency2SourceExpression,
             Expression dependency3SourceExpression)
         {
-            Container.RegisterType(Types.IComponent, Types.TComponent, ComponentName,
-                new InjectionMethod(_initialize3MethodName,
+            Container.InjectMethod(ComponentName, Types.IComponent,
+                _initialize3MethodName,
                     NewResolvedParameter(dependency1SourceExpression),
                     NewResolvedParameter(dependency2SourceExpression),
                     NewResolvedParameter(dependency3SourceExpression)
-                    ));
+                    );
 
             return this;
         }
@@ -109,10 +114,10 @@ namespace ModuleInject.Fluent
 
             arguments = LinqHelper.GetConstructorArguments(constructorCallExpression);
 
-            object[] argumentParams = GetContainerInjectionArguments(arguments);
+            IResolvedValue[] argumentParams = GetContainerInjectionArguments(arguments);
 
-            Container.RegisterType(Types.IComponent, Types.TComponent, ComponentName,
-                new InjectionConstructor(argumentParams));
+            Container.InjectConstructor(ComponentName, Types.IComponent,
+                argumentParams);
 
             WasConstructorWithArgumentsCalled = true;
 
@@ -130,10 +135,9 @@ namespace ModuleInject.Fluent
             string methodName;
             LinqHelper.GetMethodNameAndArguments(methodCallExpression, out methodName, out arguments);
 
-            object[] argumentParams = GetContainerInjectionArguments(arguments);
+            IResolvedValue[] argumentParams = GetContainerInjectionArguments(arguments);
 
-            Container.RegisterType(Types.IComponent, Types.TComponent, ComponentName,
-                new InjectionMethod(methodName, argumentParams));
+            Container.InjectMethod(ComponentName,Types.IComponent, methodName, argumentParams);
 
             return this;
         }
@@ -141,27 +145,28 @@ namespace ModuleInject.Fluent
         public ComponentRegistrationContext AddBehaviour<TBehaviour>()
             where TBehaviour : ISimpleBehaviour, new()
         {
-            if (!IsInterceptionActive)
-            {
-                ExceptionHelper.ThrowTypeException(Types.TModule, Errors.ComponentRegistrationContext_InterceptionNotActivated);
-            }
+            // TODO: fix behaviors
+            //if (!IsInterceptionActive)
+            //{
+            //    ExceptionHelper.ThrowTypeException(Types.TModule, Errors.ComponentRegistrationContext_InterceptionNotActivated);
+            //}
 
-            Unity.InterceptionBehavior unityBehaviour = new Unity.InterceptionBehavior<SimpleUnityBehaviour<TBehaviour>>();
+            //Unity.InterceptionBehavior unityBehaviour = new Unity.InterceptionBehavior<SimpleUnityBehaviour<TBehaviour>>();
 
-            if (this.IsInterceptorAlreadyAdded)
-            {
-                this.Container.RegisterType(Types.IComponent, Types.TComponent, this.ComponentName,
-                    unityBehaviour
-                    );
-            }
-            else
-            {
-                this.Container.RegisterType(Types.IComponent, Types.TComponent, this.ComponentName,
-                    new Unity.Interceptor<Unity.InterfaceInterceptor>(),
-                    unityBehaviour
-                    );
-                this.IsInterceptorAlreadyAdded = true;
-            }
+            //if (this.IsInterceptorAlreadyAdded)
+            //{
+            //    this.Container.RegisterType(Types.IComponent, Types.TComponent, this.ComponentName,
+            //        unityBehaviour
+            //        );
+            //}
+            //else
+            //{
+            //    this.Container.RegisterType(Types.IComponent, Types.TComponent, this.ComponentName,
+            //        new Unity.Interceptor<Unity.InterfaceInterceptor>(),
+            //        unityBehaviour
+            //        );
+            //    this.IsInterceptorAlreadyAdded = true;
+            //}
 
             return this;
         }
@@ -171,10 +176,10 @@ namespace ModuleInject.Fluent
             string memberPath;
             Type memberType;
             LinqHelper.GetMemberPathAndType(moduleProperty, out memberPath, out memberType);
-            this.Container.RegisterType(memberType, memberPath, new InjectionFactory(cont =>
+            this.Container.Register(memberPath, memberType, cont =>
             {
-                return cont.Resolve(Types.IComponent, this.ComponentName);
-            }));
+                return cont.Resolve(this.ComponentName, Types.IComponent);
+            });
 
             return this;
         }
@@ -185,32 +190,32 @@ namespace ModuleInject.Fluent
             return this;
         }
 
-        private static object[] GetContainerInjectionArguments(IList<MethodCallArgument> arguments)
+        private IResolvedValue[] GetContainerInjectionArguments(IList<MethodCallArgument> arguments)
         {
-            object[] argumentParams = new object[arguments.Count];
+            IResolvedValue[] argumentParams = new IResolvedValue[arguments.Count];
             int i = 0;
             foreach (var argumentItem in arguments)
             {
                 if (argumentItem.ResolvePath != null)
                 {
-                    argumentParams[i] = new ResolvedParameter(argumentItem.ArgumentType, argumentItem.ResolvePath);
+                    argumentParams[i] = new ContainerReference(Container, argumentItem.ResolvePath, argumentItem.ArgumentType);
                 }
                 else
                 {
-                    argumentParams[i] = new InjectionParameter(argumentItem.ArgumentType, argumentItem.Value);
+                    argumentParams[i] = new ConstantValue(argumentItem.Value, argumentItem.ArgumentType);
                 }
                 i++;
             }
             return argumentParams;
         }
 
-        private static ResolvedParameter NewResolvedParameter(Expression dependencyExpression)
+        private IResolvedValue NewResolvedParameter(Expression dependencyExpression)
         {
             string memberPath;
             Type memberType;
             LinqHelper.GetMemberPathAndType(dependencyExpression, out memberPath, out memberType);
 
-            return new ResolvedParameter(memberType, memberPath);
+            return new ContainerReference(Container, memberPath, memberType);
         }
 
         private static string ExtractMethodName<TObject>(Expression<Action<TObject>> methodExpression)

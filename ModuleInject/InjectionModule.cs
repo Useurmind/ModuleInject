@@ -17,6 +17,9 @@ namespace ModuleInject
     using ModuleInject.Common.Exceptions;
     using ModuleInject.Common.Linq;
     using ModuleInject.Common.Utility;
+    using ModuleInject.Container;
+    using ModuleInject.Container.Interface;
+    using ModuleInject.Container.Lifetime;
     using ModuleInject.Decoration;
     using ModuleInject.Registry;
 
@@ -59,7 +62,7 @@ namespace ModuleInject
     {
         private DoubleKeyDictionary<Type, string, IGatherPostResolveAssemblers> _instanceRegistrations;
         private DoubleKeyDictionary<Type, string, ComponentRegistrationContext> _componentRegistrations;
-        private IUnityContainer _container;
+        private IDependencyContainer _container;
 
         private IRegistryModule _registry;
         private bool _isInterceptionActive;
@@ -100,7 +103,7 @@ namespace ModuleInject
         {
             _isInterceptionActive = false;
             _isResolved = false;
-            _container = new UnityContainer();
+            _container = new DependencyContainer();
             _registry = new RegistryModule();
             _instanceRegistrations = new DoubleKeyDictionary<Type, string, IGatherPostResolveAssemblers>();
             _componentRegistrations = new DoubleKeyDictionary<Type, string, ComponentRegistrationContext>();
@@ -145,8 +148,6 @@ namespace ModuleInject
             CheckAllPropertiesAreValid();
 
             BeforeResolving();
-
-            ApplyDefaultConstructors();
 
             var usedRegistry = this.GetUsedRegistry(registry);
 
@@ -220,20 +221,6 @@ namespace ModuleInject
             }
         }
 
-        private void ApplyDefaultConstructors()
-        {
-            foreach (var componentRegistration in _componentRegistrations)
-            {
-                ComponentRegistrationContext context = componentRegistration.Value;
-
-                if (!context.WasConstructorWithArgumentsCalled)
-                {
-                    _container.RegisterType(context.Types.IComponent, context.Types.TComponent, context.ComponentName,
-                        new InjectionConstructor());
-                }
-            }
-        }
-
         /// <summary>
         /// Get a component of the specified type with the specified name.
         /// </summary>
@@ -244,7 +231,7 @@ namespace ModuleInject
         /// </returns>
         public override object GetComponent(Type componentType, string componentName)
         {
-            return _container.Resolve(componentType, componentName);
+            return _container.Resolve(componentName, componentType);
         }
 
         /// <summary>
@@ -258,18 +245,6 @@ namespace ModuleInject
         public override IComponent GetComponent<IComponent>(string componentName)
         {
             return _container.Resolve<IComponent>(componentName);
-        }
-
-        /// <summary>
-        /// After calling this you can apply behaviors to the components that are registered via interfaces.
-        /// </summary>
-        protected void ActivateInterception()
-        {
-            if (!_isInterceptionActive)
-            {
-                _container.AddNewExtension<Microsoft.Practices.Unity.InterceptionExtension.Interception>();
-                _isInterceptionActive = true;
-            }
         }
 
         /// <summary>
@@ -449,7 +424,8 @@ namespace ModuleInject
                 ExceptionHelper.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_FactoryMethodsWithParametersNotSupportedYet, functionName);
             }
 
-            _container.RegisterType<IComponent, TComponent>(functionName);
+            _container.Register<IComponent, TComponent>(functionName);
+            _container.SetLifetime<IComponent>(functionName, new DynamicLifetime());
 
             ComponentRegistrationContext context = GetOrCreateComponentRegistrationContext<IComponent, TComponent>(functionName);
             return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(context);
@@ -460,7 +436,7 @@ namespace ModuleInject
             RegisterContainerComponent<IComponent, TComponent>(string propName)
             where TComponent : IComponent
         {
-            _container.RegisterType<IComponent, TComponent>(propName, new ContainerControlledLifetimeManager());
+            _container.Register<IComponent, TComponent>(propName);
 
             ComponentRegistrationContext context = GetOrCreateComponentRegistrationContext<IComponent, TComponent>(propName);
             return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(context);
@@ -486,7 +462,7 @@ namespace ModuleInject
             IGatherPostResolveAssemblers instanceContext;
             if (!_instanceRegistrations.TryGetValue(typeof(IComponent), componentName, out instanceContext))
             {
-                _container.RegisterInstance<IComponent>(componentName, instance);
+                _container.Register<IComponent>(componentName, instance);
 
                 instanceContext = new InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>(componentName, _container);
 
