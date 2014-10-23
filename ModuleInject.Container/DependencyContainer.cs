@@ -8,6 +8,7 @@ namespace ModuleInject.Container
     using ModuleInject.Common.Exceptions;
     using ModuleInject.Common.Utility;
     using ModuleInject.Container.Dependencies;
+    using ModuleInject.Container.InstanceCreation;
     using ModuleInject.Container.Interface;
     using ModuleInject.Container.Lifetime;
     using ModuleInject.Container.Resolving;
@@ -33,6 +34,13 @@ namespace ModuleInject.Container
         {
             ContainerRegistration registration = this.GetOrCreateRegistration(name, registeredType);
             registration.ActualType = actualType;
+        }
+
+        public void Register(string name, Type registeredType, object instance)
+        {
+            ContainerRegistration registration = this.GetOrCreateRegistration(name, registeredType);
+            registration.ActualType = instance.GetType();
+            registration.InstanceCreation = new ExistingInstance(instance);
         }
 
         public void SetLifetime(string name, Type type, ILifetime lifetime)
@@ -61,7 +69,7 @@ namespace ModuleInject.Container
                         RegisteredType = registeredType,
                         Name = name,
                         Lifetime = new SingletonLifetime(),
-                        ConstructorDependencyInjection = new ConstructorDependencyInjection()
+                        InstanceCreation = new ConstructorDependencyInjection()
                     };
 
                 this.registrations.Add(registeredType, name, registration);
@@ -106,6 +114,11 @@ namespace ModuleInject.Container
         public void InjectConstructor(string name, Type type, IEnumerable<IResolvedValue> resolvedValue)
         {
             ContainerRegistration registration = this.GetOrCreateRegistration(name, type);
+            if (registration.InstanceCreation as ExistingInstance != null)
+            {
+                ThrowRegistrationError(registration, Errors.DependencyContainer_ConstructorCannotBeConfiguredForExistingInstance);
+            }
+
 
             var constructorDependencyInjection = new ConstructorDependencyInjection();
 
@@ -114,7 +127,12 @@ namespace ModuleInject.Container
                 constructorDependencyInjection.AddParameter(resolvedParameter);
             }
 
-            registration.ConstructorDependencyInjection=constructorDependencyInjection;
+            registration.InstanceCreation=constructorDependencyInjection;
+        }
+
+        private static void ThrowRegistrationError(IContainerRegistration registration, string errorMsgFormat)
+        {
+            ExceptionHelper.ThrowFormatException(errorMsgFormat, registration.RegisteredType, registration.Name);
         }
     }
 }

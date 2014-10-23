@@ -61,7 +61,16 @@ namespace ModuleInject.Container {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The registration with type &apos;{0}&apos; and name &apos; {1}&apos; could not be found in the container..
+        ///   Looks up a localized string similar to The registration with type &apos;{0}&apos; and name &apos;{1}&apos; must not define a constructor because it resolves an existing instance..
+        /// </summary>
+        internal static string DependencyContainer_ConstructorCannotBeConfiguredForExistingInstance {
+            get {
+                return ResourceManager.GetString("DependencyContainer_ConstructorCannotBeConfiguredForExistingInstance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The registration with type &apos;{0}&apos; and name &apos;{1}&apos; could not be found in the container..
         /// </summary>
         internal static string DependencyContainer_RegistrationNotFound {
             get {

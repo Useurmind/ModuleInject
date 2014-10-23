@@ -52,8 +52,19 @@
     <Compile Include="DependencyContainerTest\and_injecting_into_a_property.cs" />
     <Compile Include="DependencyContainerTest\and_injecting_through_a_constructor.cs" />
     <Compile Include="DependencyContainerTest\and_injecting_through_a_method.cs" />
+    <Compile Include="DependencyContainerTest\and_post_inject_a_property.cs" />
+    <Compile Include="DependencyContainerTest\and_post_inject_via_method.cs" />
+    <Compile Include="DependencyContainerTest\and_registering_an_instance.cs" />
     <Compile Include="DependencyContainerTest\and_registering_a_type.cs" />
+    <Compile Include="DependencyContainerTest\IInjectionTestSpec.cs" />
+    <Compile Include="DependencyContainerTest\MethodInjectionTests.cs" />
+    <Compile Include="DependencyContainerTest\PropertyInjectionTests.cs" />
+    <Compile Include="DependencyContainerTest\TestClass.cs" />
+    <Compile Include="DependencyContainerTest\TestClass2.cs" />
     <Compile Include="DependencyContainerTest\when_using_the_DependencyContainer.cs" />
+    <Compile Include="INSpec.cs" />
+    <Compile Include="NSpec.cs" />
+    <Compile Include="NSpecTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -6,6 +6,7 @@ namespace ModuleInject.Container
     using System.Collections;
 
     using ModuleInject.Container.Dependencies;
+    using ModuleInject.Container.InstanceCreation;
     using ModuleInject.Container.Interface;
     using System.Collections.Generic;
 
@@ -44,7 +45,7 @@ namespace ModuleInject.Container
             object instance = null;
             if (Lifetime.OnObjectResolving())
             {
-                instance = ConstructorDependencyInjection.Resolve(ActualType);
+                instance = this.InstanceCreation.Resolve(ActualType);
                 ResolveDependencies(instance);
                 Lifetime.OnObjectResolved(instance);
             }
@@ -62,6 +63,6 @@ namespace ModuleInject.Container
                 dependencyInjection.Resolve(instance);
             }
         }
-        public ConstructorDependencyInjection ConstructorDependencyInjection { get; set; }
+        public IInstanceCreation InstanceCreation { get; set; }
     }
 }

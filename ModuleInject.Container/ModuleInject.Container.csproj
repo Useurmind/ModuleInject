@@ -48,7 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConstructorDependencyInjection.cs" />
     <Compile Include="Dependencies\IDependencyInjection.cs" />
     <Compile Include="Dependencies\MethodDependencyInjection.cs" />
     <Compile Include="Dependencies\PropertyDependencyInjection.cs" />
@@ -58,6 +57,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="InstanceCreation\ConstructorDependencyInjection.cs" />
+    <Compile Include="InstanceCreation\ExistingInstance.cs" />
+    <Compile Include="InstanceCreation\IInstanceCreation.cs" />
     <Compile Include="Lifetime\DynamicLifetime.cs" />
     <Compile Include="Lifetime\SingletonLifetime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

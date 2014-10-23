@@ -10,19 +10,19 @@ namespace Test.ModuleInject.Container.DependencyContainerTest
 
     using NSpec;
 
-    class when_using_the_DependencyContainer : nspec
+    class when_using_the_DependencyContainer : NSpecBase
     {
-        protected DependencyContainer container;
+        public DependencyContainer Container { get; set; }
 
         void before_each()
         {
-            container = new DependencyContainer();
+            this.Container = new DependencyContainer();
         }
 
         void and_resolving_unregistered_type()
         {
             beforeEach = () =>
-                { container.Resolve(null, typeof(object)); };
+                { this.Container.Resolve(null, typeof(object)); };
 
             it["an exception is thrown"] = this.expect<ModuleInjectException>();
         }

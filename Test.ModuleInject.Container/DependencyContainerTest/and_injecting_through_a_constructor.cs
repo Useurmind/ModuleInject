@@ -18,12 +18,12 @@ namespace Test.ModuleInject.Container.DependencyContainerTest
 
             beforeEach = () =>
                 {
-                    container.InjectConstructor(
-                        this.name,
-                        this.registeredType,
+                    this.Container.InjectConstructor(
+                        this.Name,
+                        this.RegisteredType,
                         new IResolvedValue[] { new ConstantValue(value) });
 
-                    instance = (TestClass)container.Resolve(this.name, this.registeredType);
+                    instance = (TestClass)this.Container.Resolve(this.Name, this.RegisteredType);
                 };
 
             it["the property should be set to the correct value"] = () => instance.StringProperty.should_be(value);

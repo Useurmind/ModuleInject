@@ -11,7 +11,7 @@ namespace Test.ModuleInject.Container.DependencyContainerTest
 
     using NSpec;
 
-    class and_injecting_into_a_property : and_registering_a_type
+    class and_post_injecting_into_a_property : and_registering_an_instance
     {
         void a_constant_value()
         {
@@ -29,3 +29,4 @@ namespace Test.ModuleInject.Container.DependencyContainerTest
         }
     }
 }
+

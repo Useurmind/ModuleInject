@@ -117,7 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DependencyContainer_ConstructorCannotBeConfiguredForExistingInstance" xml:space="preserve">
+    <value>The registration with type '{0}' and name '{1}' must not define a constructor because it resolves an existing instance.</value>
+  </data>
   <data name="DependencyContainer_RegistrationNotFound" xml:space="preserve">
-    <value>The registration with type '{0}' and name ' {1}' could not be found in the container.</value>
+    <value>The registration with type '{0}' and name '{1}' could not be found in the container.</value>
   </data>
 </root>
