@@ -65,10 +65,10 @@ namespace Test.ModuleInject.TestModules
             InjectedValue = 8;
 
             RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.InstanceRegistrationComponent, FixedInstance)
-                .PostInject(x => x.Component22).IntoProperty(x => x.MainComponent22)
-                .PostInject(x => x.PrivateComponent).IntoProperty(x => x.MainComponent23)
-                .PostInject(x => x.SubModule.Component1).IntoProperty(x => x.SubComponent1)
-                .PostInitializeWith(x => x.Component2);
+                .Inject(x => x.Component22).IntoProperty(x => x.MainComponent22)
+                .Inject(x => x.PrivateComponent).IntoProperty(x => x.MainComponent23)
+                .Inject(x => x.SubModule.Component1).IntoProperty(x => x.SubComponent1)
+                .InitializeWith(x => x.Component2);
 
             RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.InitWithPropertiesComponent)
                 .Inject(x => x.Component2).IntoProperty(x => x.MainComponent2)

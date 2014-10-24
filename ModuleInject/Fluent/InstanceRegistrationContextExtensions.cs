@@ -13,8 +13,8 @@ namespace ModuleInject.Fluent
 
     public static class InstanceRegistrationContextExtensions
     {
-        public static PostInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>
-            PostInject<IComponent, TComponent, IModule, TModule, TDependency>(
+        public static InstanceDependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>
+            Inject<IComponent, TComponent, IModule, TModule, TDependency>(
             this InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
             Expression<Func<TModule, TDependency>> dependencySourceExpression
             )
@@ -27,11 +27,11 @@ namespace ModuleInject.Fluent
             
             LinqHelper.GetMemberPathAndType(dependencySourceExpression, out dependencyName, out dependencyType);
 
-            return new PostInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>(instance, dependencyName, dependencyType);
+            return new InstanceDependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>(instance, dependencyName, dependencyType);
         }
 
         public static InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
-            PostInitializeWith<IComponent, TComponent, IModule, TModule, TDependency1>(
+            InitializeWith<IComponent, TComponent, IModule, TModule, TDependency1>(
            this InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
            Expression<Func<TModule, TDependency1>> dependency1SourceExpression)
             where TComponent : IComponent, IInitializable<TDependency1>
@@ -48,7 +48,7 @@ namespace ModuleInject.Fluent
         }
 
         public static InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
-            PostInitializeWith<IComponent, TComponent, IModule, TModule, TDependency1, TDependency2>(
+            InitializeWith<IComponent, TComponent, IModule, TModule, TDependency1, TDependency2>(
             this InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
             Expression<Func<TModule, TDependency1>> dependency1SourceExpression,
             Expression<Func<TModule, TDependency2>> dependency2SourceExpression)
@@ -68,7 +68,7 @@ namespace ModuleInject.Fluent
         }
 
         public static InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
-            PostInitializeWith<IComponent, TComponent, IModule, TModule, TDependency1, TDependency2, TDependency3>(
+            InitializeWith<IComponent, TComponent, IModule, TModule, TDependency1, TDependency2, TDependency3>(
            this InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
            Expression<Func<TModule, TDependency1>> dependency1SourceExpression,
            Expression<Func<TModule, TDependency2>> dependency2SourceExpression,

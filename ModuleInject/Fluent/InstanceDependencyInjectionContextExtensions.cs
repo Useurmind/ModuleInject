@@ -10,11 +10,11 @@ using System.Text;
 
 namespace ModuleInject.Fluent
 {
-    public static class PostInjectionContextExtensions
+    public static class InstanceDependencyInjectionContextExtensions
     {
         public static InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
             IntoProperty<IComponent, TComponent, IModule, TModule, TProperty>(
-            this PostInjectionContext<IComponent, TComponent, IModule, TModule, TProperty> postInject,
+            this InstanceDependencyInjectionContext<IComponent, TComponent, IModule, TModule, TProperty> instanceDependencyInject,
             Expression<Func<TComponent, TProperty>> dependencyTargetExpression
             )
             where TComponent : IComponent
@@ -23,9 +23,9 @@ namespace ModuleInject.Fluent
         {
             string targetPropertyName = LinqHelper.GetMemberPath(dependencyTargetExpression);
 
-            postInject.DependencyInjectionContext.IntoProperty(dependencyTargetExpression);
+            instanceDependencyInject.DependencyInjectionContext.IntoProperty(dependencyTargetExpression);
 
-            return postInject.InstanceContext;
+            return instanceDependencyInject.InstanceContext;
         }
     }
 }

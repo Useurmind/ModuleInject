@@ -91,11 +91,10 @@
     <Compile Include="Fluent\InterfaceDependencyInjectionContextGeneric.cs" />
     <Compile Include="Fluent\InterfaceRegistrationContextGeneric.cs" />
     <Compile Include="Fluent\DependencyInjectionContext.cs" />
-    <Compile Include="Fluent\PostInjectionContextExtensions.cs" />
+    <Compile Include="Fluent\InstanceDependencyInjectionContextExtensions.cs" />
     <Compile Include="Fluent\InstanceRegistrationContextExtensions.cs" />
     <Compile Include="Fluent\InstanceRegistrationContext.cs" />
-    <Compile Include="Fluent\PostInjectionContext.cs" />
-    <Compile Include="Fluent\PostResolveAssembler.cs" />
+    <Compile Include="Fluent\InstanceDependencyInjectionContext.cs" />
     <Compile Include="Fluent\ComponentRegistrationContextGeneric.cs" />
     <Compile Include="Fluent\InterfaceRegistrationContextExtensions.cs" />
     <Compile Include="Fluent\DependencyInjectionContextExtensions.cs" />

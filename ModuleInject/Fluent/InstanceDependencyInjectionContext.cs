@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ModuleInject.Fluent
 {
-    public class PostInjectionContext<IComponent, TComponent, IModule, TModule, IDependencyComponent>
+    public class InstanceDependencyInjectionContext<IComponent, TComponent, IModule, TModule, IDependencyComponent>
         where TComponent : IComponent
         where TModule : IModule
         where IModule : IInjectionModule
@@ -15,7 +15,7 @@ namespace ModuleInject.Fluent
         public InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> InstanceContext { get; set; }
         public string DependencyName { get; set; }
 
-        public PostInjectionContext(InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instanceContext,
+        public InstanceDependencyInjectionContext(InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instanceContext,
             string dependencyName, Type dependencyType)
         {
             InstanceContext = instanceContext;

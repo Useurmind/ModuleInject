@@ -91,7 +91,6 @@
     <Compile Include="NoInterfaceModuleTests.cs" />
     <Compile Include="Fluent\ComponentRegistrationContextTest.cs" />
     <Compile Include="Fluent\DependencyInjectionContextTest.cs" />
-    <Compile Include="Fluent\PostResolveAssemblerTest.cs" />
     <Compile Include="FactoryModuleTest.cs" />
     <Compile Include="PropertyModuleTest.cs" />
     <Compile Include="Module\ModuleResolverTest.cs" />

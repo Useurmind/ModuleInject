@@ -35,9 +35,9 @@ namespace Test.ModuleInject.TestModules
             RegisterPrivateComponent<IMainComponent2, MainComponent2>(x => x.Component2);
 
             RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.InstanceComponent, new MainComponent1())
-                .PostInject(x => x.CreateComponent2()).IntoProperty(x => x.MainComponent22)
-                .PostInject(x => x.CreateComponent2()).IntoProperty(x => x.MainComponent23)
-                .PostInitializeWith(x => CreateComponent2());
+                .Inject(x => x.CreateComponent2()).IntoProperty(x => x.MainComponent22)
+                .Inject(x => x.CreateComponent2()).IntoProperty(x => x.MainComponent23)
+                .InitializeWith(x => CreateComponent2());
 
             RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.Component1)
                 .Inject(x => x.CreateComponent2()).IntoProperty(x => x.MainComponent22)
