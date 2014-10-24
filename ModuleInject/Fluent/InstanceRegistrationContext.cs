@@ -9,31 +9,30 @@ namespace ModuleInject.Fluent
 {
     using ModuleInject.Container.Interface;
 
-    public class InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> : IGatherPostResolveAssemblers
+    internal class InstanceRegistrationContext
+    {
+        internal ComponentRegistrationContext ComponentRegistrationContext { get; private set; }
+        public string ComponentName { get; private set; }
+        internal IDependencyContainer Container { get; private set; }
+
+        public InstanceRegistrationContext(string name, InjectionModule module, IDependencyContainer container, ComponentRegistrationTypes types)
+        {
+            this.ComponentRegistrationContext = new ComponentRegistrationContext(name, module, container, types, false);
+            ComponentName = name;
+            Container = container;
+        }
+    }
+
+    public class InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
         where TComponent : IComponent
         where TModule : IModule
         where IModule : IInjectionModule
     {
-        private IList<IPostResolveAssembler> _postResolveAssemblers;
+        internal InstanceRegistrationContext Context { get; private set; }
 
-        public string ComponentName { get; private set; }
-        internal IDependencyContainer Container { get; private set; }
-
-        public InstanceRegistrationContext(string name, IDependencyContainer container)
+        internal InstanceRegistrationContext(InstanceRegistrationContext context)
         {
-            ComponentName = name;
-            Container = container;
-            _postResolveAssemblers = new List<IPostResolveAssembler>();
-        }
-
-        public IList<IPostResolveAssembler> PostResolveAssemblers
-        {
-            get { return _postResolveAssemblers; }
-        }
-
-        public void AddAssembler(IPostResolveAssembler assembler)
-        {
-            _postResolveAssemblers.Add(assembler);
+            Context = context;
         }
     }
 }

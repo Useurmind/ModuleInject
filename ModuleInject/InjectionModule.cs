@@ -25,6 +25,8 @@ namespace ModuleInject
 
     public abstract class InjectionModule : IInjectionModule, IDisposable
     {
+        internal abstract IDependencyContainer Container { get; }
+
         internal abstract void Resolve(IRegistryModule registry);
 
         public abstract bool IsResolved { get; }
@@ -60,14 +62,20 @@ namespace ModuleInject
         where TModule : InjectionModule<IModule, TModule>, IModule
         where IModule : IInjectionModule
     {
-        private DoubleKeyDictionary<Type, string, IGatherPostResolveAssemblers> _instanceRegistrations;
-        private DoubleKeyDictionary<Type, string, ComponentRegistrationContext> _componentRegistrations;
         private IDependencyContainer _container;
 
         private IRegistryModule _registry;
         private bool _isInterceptionActive;
 
         private bool _isResolved;
+
+        internal override IDependencyContainer Container
+        {
+            get
+            {
+                return _container;
+            }
+        }
 
         /// <summary>
         /// Is the module already resolved.
@@ -105,8 +113,6 @@ namespace ModuleInject
             _isResolved = false;
             _container = new DependencyContainer();
             _registry = new RegistryModule();
-            _instanceRegistrations = new DoubleKeyDictionary<Type, string, IGatherPostResolveAssemblers>();
-            _componentRegistrations = new DoubleKeyDictionary<Type, string, ComponentRegistrationContext>();
 
             if (!typeof(IModule).IsInterface)
             {
@@ -155,19 +161,9 @@ namespace ModuleInject
 
             resolver.Resolve();
 
-            DoubleKeyDictionary<Type, string, IGatherPostResolveAssemblers> componentRegistrations = new DoubleKeyDictionary<Type, string, IGatherPostResolveAssemblers>();
-
-            foreach (var item in _componentRegistrations)
-            {
-                componentRegistrations.Add(item.Key1, item.Key2, item.Value);
-            }
-
             _isResolved = true;
 
             BeforePostResolveAssembly();
-
-            ModulePostResolveBuilder.PerformPostResolveAssembly(this, _instanceRegistrations);
-            ModulePostResolveBuilder.PerformPostResolveAssembly(this, componentRegistrations);
 
             AfterResolved();
         }
@@ -446,12 +442,8 @@ namespace ModuleInject
             where TComponent : IComponent
         {
             ComponentRegistrationContext context;
-            if (!_componentRegistrations.TryGetValue(typeof(IComponent), componentName, out context))
-            {
-                ComponentRegistrationTypes types = CreateTypes<IComponent, TComponent>();
-                context = new ComponentRegistrationContext(componentName, _container, types, _isInterceptionActive);
-                _componentRegistrations.Add(typeof(IComponent), componentName, context);
-            }
+            ComponentRegistrationTypes types = CreateTypes<IComponent, TComponent>();
+            context = new ComponentRegistrationContext(componentName, this, _container, types, _isInterceptionActive);
             return context;
         }
 
@@ -459,15 +451,12 @@ namespace ModuleInject
             RegisterContainerInstance<IComponent, TComponent>(TComponent instance, string componentName)
             where TComponent : IComponent
         {
-            IGatherPostResolveAssemblers instanceContext;
-            if (!_instanceRegistrations.TryGetValue(typeof(IComponent), componentName, out instanceContext))
-            {
-                _container.Register<IComponent>(componentName, instance);
+            InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instanceContext;
+            _container.Register<IComponent>(componentName, instance);
 
-                instanceContext = new InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>(componentName, _container);
-
-                _instanceRegistrations.Add(typeof(IComponent), componentName, instanceContext);
-            }
+            ComponentRegistrationTypes types = CreateTypes<IComponent, TComponent>();
+            InstanceRegistrationContext context = new InstanceRegistrationContext(componentName, this, _container, types);
+            instanceContext = new InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>(context);
 
             return (InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>)instanceContext;
         }

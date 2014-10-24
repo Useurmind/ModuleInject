@@ -9,18 +9,44 @@ namespace ModuleInject.Container.Resolving
     public class ContainerReference : IResolvedValue
     {
         private string name;
-        public Type Type { get; set; }
+
+        private Func<IDependencyContainer> getContainer;
         private IDependencyContainer container;
-        public ContainerReference(IDependencyContainer container, string name, Type type)
+        
+        public Type Type { get; set; }
+
+        private IDependencyContainer Container
+        {
+            get
+            {
+                if (container == null)
+                {
+                    container = getContainer();
+                }
+                return container;
+            }
+        }
+
+        private ContainerReference(string name, Type type)
         {
             this.name = name;
             this.Type = type;
+        }
+ 
+        public ContainerReference(IDependencyContainer container, string name, Type type) :this(name, type)
+        {
             this.container = container;
+        }
+
+        public ContainerReference(Func<IDependencyContainer> getContainer, string name, Type type)
+            : this(name, type)
+        {
+            this.getContainer = getContainer;
         }
 
         public object Resolve()
         {
-            return this.container.Resolve(this.name, this.Type);
+            return this.Container.Resolve(this.name, this.Type);
         }
     }
 }

@@ -23,12 +23,7 @@ namespace ModuleInject.Fluent
         {
             string targetPropertyName = LinqHelper.GetMemberPath(dependencyTargetExpression);
 
-            postInject.InstanceContext.AddAssembler(new PostResolveAssembler<TComponent, IModule, TModule>((comp, module) =>
-            {
-                PropertyInfo targetProperty = typeof(TComponent).GetProperty(targetPropertyName);
-                TProperty dependency = module.GetComponent<TProperty>(postInject.DependencyName);
-                targetProperty.SetValue(comp, dependency, null);
-            }));
+            postInject.DependencyInjectionContext.IntoProperty(dependencyTargetExpression);
 
             return postInject.InstanceContext;
         }

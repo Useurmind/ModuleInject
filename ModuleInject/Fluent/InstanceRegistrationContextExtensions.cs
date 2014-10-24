@@ -22,9 +22,12 @@ namespace ModuleInject.Fluent
             where TModule : IModule
             where IModule : IInjectionModule
         {
-            string dependencyName = LinqHelper.GetMemberPath(dependencySourceExpression);
+            string dependencyName =null;
+            Type dependencyType = null;
+            
+            LinqHelper.GetMemberPathAndType(dependencySourceExpression, out dependencyName, out dependencyType);
 
-            return new PostInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>(instance, dependencyName);
+            return new PostInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>(instance, dependencyName, dependencyType);
         }
 
         public static InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
@@ -39,11 +42,7 @@ namespace ModuleInject.Fluent
 
             string memberPath = LinqHelper.GetMemberPath(dependency1SourceExpression);
 
-            instance.AddAssembler(new PostResolveAssembler<TComponent, IModule, TModule>((comp, module) =>
-            {
-                TDependency1 dependency = module.GetComponent<TDependency1>(memberPath);
-                comp.Initialize(dependency);
-            }));
+            instance.Context.ComponentRegistrationContext.InitializeWith(dependency1SourceExpression);
 
             return instance;
         }
@@ -62,12 +61,8 @@ namespace ModuleInject.Fluent
             string memberPath1 = LinqHelper.GetMemberPath(dependency1SourceExpression);
             string memberPath2 = LinqHelper.GetMemberPath(dependency2SourceExpression);
 
-            instance.AddAssembler(new PostResolveAssembler<TComponent, IModule, TModule>((comp, module) =>
-            {
-                TDependency1 dependency1 = module.GetComponent<TDependency1>(memberPath1);
-                TDependency2 dependency2 = module.GetComponent<TDependency2>(memberPath2);
-                comp.Initialize(dependency1, dependency2);
-            }));
+
+            instance.Context.ComponentRegistrationContext.InitializeWith(dependency1SourceExpression, dependency2SourceExpression);
 
             return instance;
         }
@@ -88,50 +83,26 @@ namespace ModuleInject.Fluent
             string memberPath2 = LinqHelper.GetMemberPath(dependency2SourceExpression);
             string memberPath3 = LinqHelper.GetMemberPath(dependency3SourceExpression);
 
-            instance.AddAssembler(new PostResolveAssembler<TComponent, IModule, TModule>((comp, module) =>
-            {
-                TDependency1 dependency1 = module.GetComponent<TDependency1>(memberPath1);
-                TDependency2 dependency2 = module.GetComponent<TDependency2>(memberPath2);
-                TDependency3 dependency3 = module.GetComponent<TDependency3>(memberPath3);
-                comp.Initialize(dependency1, dependency2, dependency3);
-            }));
+
+            instance.Context.ComponentRegistrationContext.InitializeWith(dependency1SourceExpression, dependency2SourceExpression, dependency3SourceExpression);
 
             return instance;
         }
 
         public static InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
-            AddAssembler<IComponent, TComponent, IModule, TModule>(
+            CallMethod<IComponent, TComponent, IModule, TModule>(
             this InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
-            IPostResolveAssembler<TComponent, IModule, TModule> assembler
-            )
+            Expression<Action<TComponent, TModule>> methodCallExpression)
             where TComponent : IComponent
             where TModule : IModule
             where IModule : IInjectionModule
         {
             CommonFunctions.CheckNullArgument("instance", instance);
 
-            instance.AddAssembler(assembler);
+            instance.Context.ComponentRegistrationContext.CallMethod(methodCallExpression);
 
             return instance;
         }
 
-        public static InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
-            AfterResolve<IComponent, TComponent, IModule, TModule>(
-            this InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
-            Action<TComponent, TModule> afterResolveCode
-            )
-            where TComponent : IComponent
-            where TModule : IModule
-            where IModule : IInjectionModule
-        {
-            CommonFunctions.CheckNullArgument("instance", instance);
-            CommonFunctions.CheckNullArgument("afterResolveCode", afterResolveCode);
-
-            IPostResolveAssembler<TComponent, IModule, TModule> assembler = new PostResolveAssembler<TComponent, IModule, TModule>(afterResolveCode);
-
-            instance.AddAssembler(assembler);
-
-            return instance;
-        }
     }
 }

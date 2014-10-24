@@ -40,7 +40,7 @@ namespace Test.ModuleInject.Fluent
             _propertyName = Property.Get((IPropertyModule x) => x.InitWithPropertiesComponent);
             _depPropertyName = Property.Get((IPropertyModule x) => x.Component2);
             _containerMock = new Mock<IDependencyContainer>();
-            _componentContextUntyped = new ComponentRegistrationContext(_propertyName, _containerMock.Object, _types, false);
+            _componentContextUntyped = new ComponentRegistrationContext(_propertyName, null, _containerMock.Object, _types, false);
             _componentContext = new ComponentRegistrationContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule>(
                 _componentContextUntyped);
             _depContextUntyped = new DependencyInjectionContext(_componentContextUntyped, _depPropertyName, typeof(IMainComponent2));

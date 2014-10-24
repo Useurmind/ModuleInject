@@ -186,14 +186,6 @@ namespace ModuleInject.Module
             {
                 submodule.Resolve(_registry);
             }
-
-            // TODO
-            foreach (var propInfo in subModulePropInfo.PropertyType.GetModuleComponentPropertiesRecursive())
-            {
-                object subComponent = propInfo.GetValue(submodule, null);
-                string subComponentName = string.Format(CultureInfo.InvariantCulture, "{0}.{1}", submoduleName, propInfo.Name);
-                _container.Register(subComponentName, propInfo.PropertyType, subComponent);
-            }
         }
     }
 }

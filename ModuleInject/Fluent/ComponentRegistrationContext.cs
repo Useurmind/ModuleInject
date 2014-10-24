@@ -33,13 +33,15 @@ namespace ModuleInject.Fluent
 
         public string ComponentName { get; private set; }
         public IDependencyContainer Container { get; private set; }
+        public InjectionModule Module { get; private set; }
 
-        public ComponentRegistrationContext(string name, IDependencyContainer container, ComponentRegistrationTypes types, bool interceptionActive)
+        public ComponentRegistrationContext(string name, InjectionModule module, IDependencyContainer container, ComponentRegistrationTypes types, bool interceptionActive)
         {
             IsInterceptionActive = interceptionActive;
             IsInterceptorAlreadyAdded = false;
             WasConstructorWithArgumentsCalled = false;
             ComponentName = name;
+            Module = module;
             Container = container;
             Types = types;
             PostResolveAssemblers = new List<IPostResolveAssembler>();
@@ -198,7 +200,7 @@ namespace ModuleInject.Fluent
             {
                 if (argumentItem.ResolvePath != null)
                 {
-                    argumentParams[i] = new ContainerReference(Container, argumentItem.ResolvePath, argumentItem.ArgumentType);
+                    argumentParams[i] = LinqHelper.GetContainerReference(Module, argumentItem.ResolvePath, argumentItem.ArgumentType);
                 }
                 else
                 {
@@ -215,7 +217,7 @@ namespace ModuleInject.Fluent
             Type memberType;
             LinqHelper.GetMemberPathAndType(dependencyExpression, out memberPath, out memberType);
 
-            return new ContainerReference(Container, memberPath, memberType);
+            return LinqHelper.GetContainerReference(Module, memberPath, memberType);
         }
 
         private static string ExtractMethodName<TObject>(Expression<Action<TObject>> methodExpression)
@@ -225,5 +227,6 @@ namespace ModuleInject.Fluent
         }
 
         public IList<IPostResolveAssembler> PostResolveAssemblers { get; private set; }
+
     }
 }

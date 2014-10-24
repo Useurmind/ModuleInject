@@ -9,9 +9,42 @@ using System.Text;
 namespace ModuleInject.Utility
 {
     using ModuleInject.Common.Exceptions;
+    using ModuleInject.Common.Linq;
+    using ModuleInject.Container.Interface;
+    using ModuleInject.Container.Resolving;
 
     public static class LinqHelper
     {
+        public static ContainerReference GetContainerReference(
+            InjectionModule module,
+            string memberPath,
+            Type memberType)
+        {
+            Func<IDependencyContainer> getContainer = null;
+            string dependencyName = string.Empty;
+
+            var pathParths = memberPath.Split('.');
+
+            if (pathParths.Count() == 1)
+            {
+                getContainer = () => module.Container;
+                dependencyName = memberPath;
+            }
+            else if (pathParths.Count() == 2)
+            {
+                string submoduleName = pathParths[0];
+                var memberInfo = module.GetType().GetProperty(submoduleName);
+                getContainer = () => (IDependencyContainer)((InjectionModule)memberInfo.GetValue(module, null)).Container;
+                dependencyName = pathParths[1];
+            }
+            else
+            {
+                ExceptionHelper.ThrowFormatException("");
+            }
+
+            return new ContainerReference(getContainer, dependencyName, memberType);
+        }
+
         /// <summary>
         /// Calculates the path of the member and its type for an lambda expression that gives an component/subcomponent
         /// or method/submethod of a module.
@@ -121,9 +154,11 @@ namespace ModuleInject.Utility
                 switch (parameter2.NodeType)
                 {
                     case ExpressionType.MemberAccess:
+                    case ExpressionType.Call:
                         {
                             MemberExpression memberExpression = parameter2 as MemberExpression;
-                            if (memberExpression == null)
+                            MethodCallExpression callExpression = parameter2 as MethodCallExpression;
+                            if (memberExpression == null && callExpression == null)
                             {
                                 ExceptionHelper.ThrowFormatException(Errors.MethodCallArgumentNotSupported, parameter);
                             }

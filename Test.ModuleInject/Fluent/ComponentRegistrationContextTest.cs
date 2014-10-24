@@ -36,7 +36,7 @@ namespace Test.ModuleInject.Fluent
             };
             _componentName = Property.Get((IPropertyModule x) => x.InitWithPropertiesComponent);
             _container = new DependencyContainer();
-            _contextUntyped = new ComponentRegistrationContext(_componentName, _container, _types, false);
+            _contextUntyped = new ComponentRegistrationContext(_componentName, null, _container, _types, false);
             _context = new ComponentRegistrationContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule>(
                 _contextUntyped
                 );

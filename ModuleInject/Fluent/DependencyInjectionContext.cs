@@ -32,7 +32,9 @@ namespace ModuleInject.Fluent
             string sourceName = DependencyName;
             string targetName = Property.Get(dependencyTargetExpression);
 
-            component.Container.InjectProperty(component.ComponentName,types.IComponent, targetName, new ContainerReference(component.Container, sourceName, DependencyType));
+            var containerReference = LinqHelper.GetContainerReference(component.Module, sourceName, DependencyType);
+
+            component.Container.InjectProperty(component.ComponentName,types.IComponent, targetName, containerReference);
 
             return component;
         }
