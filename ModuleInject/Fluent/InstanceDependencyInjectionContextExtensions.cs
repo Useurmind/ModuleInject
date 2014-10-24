@@ -10,6 +10,8 @@ using System.Text;
 
 namespace ModuleInject.Fluent
 {
+    using ModuleInject.Common.Utility;
+
     public static class InstanceDependencyInjectionContextExtensions
     {
         public static InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
@@ -21,6 +23,8 @@ namespace ModuleInject.Fluent
             where TModule : IModule
             where IModule : IInjectionModule
         {
+            CommonFunctions.CheckNullArgument("instanceDependencyInject", instanceDependencyInject);
+
             string targetPropertyName = LinqHelper.GetMemberPath(dependencyTargetExpression);
 
             instanceDependencyInject.DependencyInjectionContext.IntoProperty(dependencyTargetExpression);

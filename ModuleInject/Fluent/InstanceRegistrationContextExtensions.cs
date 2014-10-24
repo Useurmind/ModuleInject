@@ -40,8 +40,6 @@ namespace ModuleInject.Fluent
         {
             CommonFunctions.CheckNullArgument("instance", instance);
 
-            string memberPath = LinqHelper.GetMemberPath(dependency1SourceExpression);
-
             instance.Context.ComponentRegistrationContext.InitializeWith(dependency1SourceExpression);
 
             return instance;
@@ -57,10 +55,6 @@ namespace ModuleInject.Fluent
             where IModule : IInjectionModule
         {
             CommonFunctions.CheckNullArgument("instance", instance);
-
-            string memberPath1 = LinqHelper.GetMemberPath(dependency1SourceExpression);
-            string memberPath2 = LinqHelper.GetMemberPath(dependency2SourceExpression);
-
 
             instance.Context.ComponentRegistrationContext.InitializeWith(dependency1SourceExpression, dependency2SourceExpression);
 
@@ -78,11 +72,6 @@ namespace ModuleInject.Fluent
             where IModule : IInjectionModule
         {
             CommonFunctions.CheckNullArgument("instance", instance);
-
-            string memberPath1 = LinqHelper.GetMemberPath(dependency1SourceExpression);
-            string memberPath2 = LinqHelper.GetMemberPath(dependency2SourceExpression);
-            string memberPath3 = LinqHelper.GetMemberPath(dependency3SourceExpression);
-
 
             instance.Context.ComponentRegistrationContext.InitializeWith(dependency1SourceExpression, dependency2SourceExpression, dependency3SourceExpression);
 

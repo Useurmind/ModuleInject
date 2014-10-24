@@ -10,6 +10,7 @@ namespace ModuleInject.Utility
 {
     using ModuleInject.Common.Exceptions;
     using ModuleInject.Common.Linq;
+    using ModuleInject.Common.Utility;
     using ModuleInject.Container.Interface;
     using ModuleInject.Container.Resolving;
 
@@ -20,6 +21,8 @@ namespace ModuleInject.Utility
             string memberPath,
             Type memberType)
         {
+            CommonFunctions.CheckNullArgument("memberPath", memberPath);
+
             Func<IDependencyContainer> getContainer = null;
             string dependencyName = string.Empty;
 
@@ -103,6 +106,8 @@ namespace ModuleInject.Utility
 
         public static IList<MethodCallArgument> GetConstructorArguments(LambdaExpression constructorCallExpression)
         {
+            CommonFunctions.CheckNullArgument("constructorCallExpression", constructorCallExpression);
+
             NewExpression constructorExpression = constructorCallExpression.Body as NewExpression;
             if (constructorExpression == null)
             {
@@ -125,6 +130,8 @@ namespace ModuleInject.Utility
         public static void GetMethodNameAndArguments(LambdaExpression methodCallExpression, out string methodName,
             out IList<MethodCallArgument> arguments)
         {
+            CommonFunctions.CheckNullArgument("methodCallExpression", methodCallExpression);
+
             arguments = new List<MethodCallArgument>();
 
             MethodCallExpression methodExpession = methodCallExpression.Body as MethodCallExpression;

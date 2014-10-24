@@ -182,7 +182,6 @@ namespace ModuleInject.Module
 
         private void TryResolveSubmodule(PropertyInfo subModulePropInfo)
         {
-            string submoduleName = subModulePropInfo.Name;
             InjectionModule submodule = (InjectionModule)subModulePropInfo.GetValue(_module, null);
 
             if (!submodule.IsResolved)

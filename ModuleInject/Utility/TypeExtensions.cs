@@ -14,6 +14,8 @@ namespace ModuleInject.Utility
     {
         public static bool IsInjectionModuleType(this PropertyInfo propertyInfo)
         {
+            CommonFunctions.CheckNullArgument("propertyInfo", propertyInfo);
+
             var injectionModuleType = typeof(IInjectionModule);
             var searchedInterface = propertyInfo.PropertyType.GetInterface(injectionModuleType.Name, false);
             bool isModule = searchedInterface != null;
