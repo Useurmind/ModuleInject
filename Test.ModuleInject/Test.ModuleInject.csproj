@@ -94,7 +94,6 @@
     <Compile Include="Fluent\PostResolveAssemblerTest.cs" />
     <Compile Include="FactoryModuleTest.cs" />
     <Compile Include="PropertyModuleTest.cs" />
-    <Compile Include="Module\ModulePostResolveBuilderTest.cs" />
     <Compile Include="Module\ModuleResolverTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistryModuleTest.cs" />

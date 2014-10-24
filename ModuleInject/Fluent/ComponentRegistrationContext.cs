@@ -24,7 +24,7 @@ namespace ModuleInject.Fluent
         public Type TModule { get; set; }
     }
 
-    internal class ComponentRegistrationContext : IGatherPostResolveAssemblers
+    internal class ComponentRegistrationContext
     {
         public ComponentRegistrationTypes Types { get; private set; }
         public bool IsInterceptorAlreadyAdded { get; private set; }
@@ -44,7 +44,6 @@ namespace ModuleInject.Fluent
             Module = module;
             Container = container;
             Types = types;
-            PostResolveAssemblers = new List<IPostResolveAssembler>();
         }
 
         private static readonly string _initialize1MethodName = ExtractMethodName<IInitializable<object>>(x => x.Initialize(null));
@@ -186,12 +185,6 @@ namespace ModuleInject.Fluent
             return this;
         }
 
-        public ComponentRegistrationContext AddAssembler(IPostResolveAssembler assembler)
-        {
-            this.PostResolveAssemblers.Add(assembler);
-            return this;
-        }
-
         private IResolvedValue[] GetContainerInjectionArguments(IList<MethodCallArgument> arguments)
         {
             IResolvedValue[] argumentParams = new IResolvedValue[arguments.Count];
@@ -225,8 +218,6 @@ namespace ModuleInject.Fluent
             MethodCallExpression methodCallExpression = (MethodCallExpression)methodExpression.Body;
             return methodCallExpression.Method.Name;
         }
-
-        public IList<IPostResolveAssembler> PostResolveAssemblers { get; private set; }
 
     }
 }
