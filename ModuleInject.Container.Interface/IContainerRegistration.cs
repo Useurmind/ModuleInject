@@ -3,7 +3,7 @@
 namespace ModuleInject.Container.Interface
 {
     using System;
-
+    
     public interface IContainerRegistration
     {
         Type ActualType { get; }

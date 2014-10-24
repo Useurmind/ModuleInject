@@ -102,10 +102,12 @@ namespace ModuleInject.Module
             object currentValue = propInfo.GetValue(_module, null);
             if (currentValue != null)
             {
-                if (!propInfo.HasCustomAttribute<ExternalComponentAttribute>())
-                {
-                    ExceptionHelper.ThrowPropertyAndTypeException<TModule>(Errors.ModuleResolver_PropertyWithoutExternalAttribute, propInfo.Name);
-                }
+                // does not work anymore because the module is connected with the container
+                // the properties are now set when resolved in the container
+                //if (!propInfo.HasCustomAttribute<ExternalComponentAttribute>())
+                //{
+                //    ExceptionHelper.ThrowPropertyAndTypeException<TModule>(Errors.ModuleResolver_PropertyWithoutExternalAttribute, propInfo.Name);
+                //}
                 resolved = false;
             }
             else
@@ -155,6 +157,7 @@ namespace ModuleInject.Module
                 return false;
             }
             var component = _container.Resolve(propInfo.Name, propInfo.PropertyType);
+            // unecessary because set by ComponentLifetime, but used for unit test
             propInfo.SetValue(_module, component, BindingFlags.NonPublic, null, null, null);
             return true;
         }

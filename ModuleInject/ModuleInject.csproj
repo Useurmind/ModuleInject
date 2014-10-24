@@ -124,6 +124,8 @@
     <Compile Include="Interfaces\IClassInjector.cs" />
     <Compile Include="Interfaces\IInterfaceInjector.cs" />
     <Compile Include="Interfaces\IPostResolveAssembler.cs" />
+    <Compile Include="Module\ComponentLifetime.cs" />
+    <Compile Include="Module\FactoryLifetime.cs" />
     <Compile Include="Module\ModuleResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Registry\IRegistryModule.cs" />

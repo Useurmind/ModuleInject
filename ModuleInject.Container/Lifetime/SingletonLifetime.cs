@@ -5,9 +5,10 @@ using System.Text;
 
 namespace ModuleInject.Container.Lifetime
 {
+    using ModuleInject.Common.Disposing;
     using ModuleInject.Container.Interface;
 
-    public sealed class SingletonLifetime : ILifetime
+    public class SingletonLifetime : DisposableExtBase, ILifetime
     {
         private bool isResolved;
         private object instance;
@@ -18,24 +19,30 @@ namespace ModuleInject.Container.Lifetime
             instance = null;
         }
 
-        public bool OnObjectResolving()
+        public virtual bool OnObjectResolving()
         {
             return !isResolved;
         }
 
-        public void OnObjectResolved(object instance)
+        public virtual void OnObjectResolved(ObjectResolvedContext context)
         {
-            this.instance = instance;
+            this.instance = context.Instance;
             this.isResolved = true;
         }
 
-        public object OnObjectNotResolved()
+        public virtual object OnObjectNotResolved()
         {
             return this.instance;
         }
 
-        public void Dispose()
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected override void Dispose(bool disposing)
         {
+            base.Dispose(disposing);
+
             var disposable = instance as IDisposable;
             if (disposable != null)
             {

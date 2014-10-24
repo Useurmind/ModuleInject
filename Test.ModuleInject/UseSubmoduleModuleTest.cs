@@ -29,5 +29,14 @@ namespace Test.ModuleInject
             Assert.IsNotNull(_module.SubModule.Component1);
             Assert.AreSame(_module.SubModule.Component1, _module.MainComponent.SubComponent1);
         }
+
+        [TestCase]
+        public void Resolve_InjectingSubmoduleFactory_PropertySetCorrectly()
+        {
+            _module.RegisterMainComponent_Injecting_SubmoduleFactory();
+            _module.Resolve();
+
+            Assert.IsNotNull(_module.MainComponent.SubComponent1);
+        }
     }
 }

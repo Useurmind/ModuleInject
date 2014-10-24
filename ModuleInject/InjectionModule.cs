@@ -51,6 +51,8 @@ namespace ModuleInject
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected abstract void Dispose(bool disposing);
+
+        internal abstract void OnComponentResolved(ObjectResolvedContext context);
     }
 
     /// <summary>
@@ -421,7 +423,7 @@ namespace ModuleInject
             }
 
             _container.Register<IComponent, TComponent>(functionName);
-            _container.SetLifetime<IComponent>(functionName, new DynamicLifetime());
+            _container.SetLifetime<IComponent>(functionName, new FactoryLifetime(this));
 
             ComponentRegistrationContext context = GetOrCreateComponentRegistrationContext<IComponent, TComponent>(functionName);
             return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(context);
@@ -433,6 +435,7 @@ namespace ModuleInject
             where TComponent : IComponent
         {
             _container.Register<IComponent, TComponent>(propName);
+            _container.SetLifetime<IComponent>(propName, new ComponentLifetime(this));
 
             ComponentRegistrationContext context = GetOrCreateComponentRegistrationContext<IComponent, TComponent>(propName);
             return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(context);
@@ -453,6 +456,7 @@ namespace ModuleInject
         {
             InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instanceContext;
             _container.Register<IComponent>(componentName, instance);
+            _container.SetLifetime<IComponent>(componentName, new ComponentLifetime(this));
 
             ComponentRegistrationTypes types = CreateTypes<IComponent, TComponent>();
             InstanceRegistrationContext context = new InstanceRegistrationContext(componentName, this, _container, types);
@@ -545,6 +549,15 @@ namespace ModuleInject
                 IModule = typeof(IModule),
                 TModule = typeof(TModule)
             };
+        }
+
+        internal override void OnComponentResolved(ObjectResolvedContext context)
+        {
+            Type moduleType = typeof(TModule);
+
+            var propertyInfo = moduleType.GetPropertyRecursive(context.Name, BindingFlags.NonPublic|BindingFlags.Public);
+
+            propertyInfo.SetValue(this, context.Instance, BindingFlags.NonPublic, null, null, null);
         }
 
         #region IDisposable

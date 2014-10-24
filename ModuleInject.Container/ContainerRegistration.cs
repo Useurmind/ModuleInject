@@ -47,7 +47,13 @@ namespace ModuleInject.Container
             {
                 instance = this.InstanceCreation.Resolve(ActualType);
                 ResolveDependencies(instance);
-                Lifetime.OnObjectResolved(instance);
+                Lifetime.OnObjectResolved(new ObjectResolvedContext()
+                                              {
+                                                  ActualType = ActualType,
+                                                  RegisteredType = RegisteredType,
+                                                  Name = Name,
+                                                  Instance = instance
+                                              });
             }
             else
             {

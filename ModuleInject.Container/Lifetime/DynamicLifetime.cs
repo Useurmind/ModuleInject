@@ -5,26 +5,23 @@ using System.Text;
 
 namespace ModuleInject.Container.Lifetime
 {
+    using ModuleInject.Common.Disposing;
     using ModuleInject.Container.Interface;
 
-    public class DynamicLifetime : ILifetime
+    public class DynamicLifetime : DisposableExtBase, ILifetime
     {
-        public bool OnObjectResolving()
+        public virtual bool OnObjectResolving()
         {
             return true;
         }
 
-        public void OnObjectResolved(object instance)
+        public virtual void OnObjectResolved(ObjectResolvedContext context)
         {
         }
 
-        public object OnObjectNotResolved()
+        public virtual object OnObjectNotResolved()
         {
             throw new NotImplementedException();
-        }
-
-        public void Dispose()
-        {
         }
     }
 }

@@ -20,6 +20,39 @@ namespace ModuleInject.Utility
             return isModule;
         }
 
+        public static PropertyInfo GetPropertyRecursive(this Type type, string name, BindingFlags? bindingOptions = null)
+        {
+            CommonFunctions.CheckNullArgument("type", type);
+
+            if (type.ShouldStopModuleTypeRecursion())
+            {
+                return null;
+            }
+
+            PropertyInfo propertyInfo = bindingOptions.HasValue ? type.GetProperty(name, BindingFlags.Instance|bindingOptions.Value) : type.GetProperty(name);
+
+            if (propertyInfo == null)
+            {
+                type.ForEachBaseTypeInModuleHierarchy(
+                    subType =>
+                        {
+                            propertyInfo = bindingOptions.HasValue ? subType.GetProperty(name, BindingFlags.Instance|bindingOptions.Value) : subType.GetProperty(name);
+                            if (propertyInfo != null)
+                            {
+                                return true;
+                            }
+                            return false;
+                        });
+            }
+
+            return propertyInfo;
+        }
+
+        private static bool ShouldStopModuleTypeRecursion(this Type type)
+        {
+            return type == typeof(object) || type == typeof(IInjectionModule) || type.Name.StartsWith("InjectionModule", StringComparison.Ordinal);
+        }
+
         /// <summary>
         /// Gets the properties that represent module components of the given type.
         /// </summary>
@@ -35,7 +68,7 @@ namespace ModuleInject.Utility
         {
             CommonFunctions.CheckNullArgument("type", type);
 
-            if (type == typeof(object) || type == typeof(IInjectionModule) || type.Name.StartsWith("InjectionModule", StringComparison.Ordinal))
+            if (type.ShouldStopModuleTypeRecursion())
             {
                 return new List<PropertyInfo>();
             }
@@ -45,6 +78,19 @@ namespace ModuleInject.Utility
             properties =
                 properties.Where(p => p.GetCustomAttributes(typeof(NonModulePropertyAttribute), false).Count() == 0);
 
+            type.ForEachBaseTypeInModuleHierarchy(
+                subType =>
+                    {
+                        properties = properties.Union(subType.GetModuleComponentPropertiesRecursive(bindingOptions));
+                        return false;
+                    });
+
+
+            return properties;
+        }
+
+        private static void ForEachBaseTypeInModuleHierarchy(this Type type, Func<Type, bool> action)
+        {
             Type[] checkedSubTypes = null;
             if (type.IsInterface)
             {
@@ -57,10 +103,11 @@ namespace ModuleInject.Utility
 
             foreach (var subType in checkedSubTypes)
             {
-                properties = properties.Union(subType.GetModuleComponentPropertiesRecursive(bindingOptions));
+                if (action(subType))
+                {
+                    break;
+                }
             }
-
-            return properties;
         }
     }
 }
