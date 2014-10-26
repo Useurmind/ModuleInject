@@ -25,7 +25,7 @@ namespace ModuleInject.Fluent
         }
 
         internal InterfaceRegistrationContext<IComponent, IModule, TModule> AddBehaviour<TBehaviour>()
-            where TBehaviour : ISimpleBehaviour, new()
+            where TBehaviour : Unity.IInterceptionBehavior, new()
         {
             Context.AddBehaviour<TBehaviour>();
             

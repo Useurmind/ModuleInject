@@ -17,13 +17,13 @@ namespace Test.ModuleInject.Container.DependencyContainerTest
         {
             string value = "AFdsg";
 
-            string methodName = Method.Get<TestClass>(x => x.SetStringProperty(""));
-            TestClass instance = null;
+            string methodName = Method.Get<ITestClass>(x => x.SetStringProperty(""));
+            ITestClass instance = null;
 
             spec.BeforeEach = () =>
             {
                 spec.Container.InjectMethod(spec.Name, spec.RegisteredType, methodName, new IResolvedValue[] { new ConstantValue<string>(value) });
-                instance = (TestClass)spec.Container.Resolve(spec.Name, spec.RegisteredType);
+                instance = (ITestClass)spec.Container.Resolve(spec.Name, spec.RegisteredType);
             };
 
             spec.It["the property should be set to the correct value"] = () => instance.StringProperty.should_be(value);
@@ -37,8 +37,8 @@ namespace Test.ModuleInject.Container.DependencyContainerTest
             string propertyValueName = "adfsfg";
             Type propertyValueType = typeof(TestClass2);
 
-            string methodName = Method.Get<TestClass>(x => x.SetComponent(null));
-            TestClass instance = null;
+            string methodName = Method.Get<ITestClass>(x => x.SetComponent(null));
+            ITestClass instance = null;
             TestClass2 instance2 = null;
 
             spec.BeforeEach = () =>
@@ -46,7 +46,7 @@ namespace Test.ModuleInject.Container.DependencyContainerTest
                 spec.Container.Register(propertyValueName, propertyValueType, propertyValueType);
 
                 spec.Container.InjectMethod(spec.Name, spec.RegisteredType, methodName, new IResolvedValue[] { new ContainerReference(spec.Container, propertyValueName, propertyValueType) });
-                instance = (TestClass)spec.Container.Resolve(spec.Name, spec.RegisteredType);
+                instance = (ITestClass)spec.Container.Resolve(spec.Name, spec.RegisteredType);
                 instance2 = (TestClass2)spec.Container.Resolve(propertyValueName, propertyValueType);
             };
 
@@ -58,13 +58,13 @@ namespace Test.ModuleInject.Container.DependencyContainerTest
     {
         public void Check(IInjectionTestSpec spec)
         {
-            string methodName = Method.Get<TestClass>(x => x.OverloadedFunction());
-            TestClass instance = null;
+            string methodName = Method.Get<ITestClass>(x => x.OverloadedFunction());
+            ITestClass instance = null;
 
             spec.BeforeEach = () =>
                 {
                     spec.Container.InjectMethod(spec.Name, spec.RegisteredType, methodName, new IResolvedValue[0]);
-                    instance = (TestClass)spec.Container.Resolve(spec.Name, spec.RegisteredType);
+                    instance = (ITestClass)spec.Container.Resolve(spec.Name, spec.RegisteredType);
                 };
 
             spec.It["no exception is thrown"] = () => { };
@@ -75,13 +75,13 @@ namespace Test.ModuleInject.Container.DependencyContainerTest
     {
         public void Check(IInjectionTestSpec spec)
         {
-            string methodName = Method.Get<TestClass>(x => x.OverloadedFunction());
-            TestClass instance = null;
+            string methodName = Method.Get<ITestClass>(x => x.OverloadedFunction());
+            ITestClass instance = null;
 
             spec.BeforeEach = () =>
             {
                 spec.Container.InjectMethod(spec.Name, spec.RegisteredType, methodName, new IResolvedValue[] { new ConstantValue<string>("") });
-                instance = (TestClass)spec.Container.Resolve(spec.Name, spec.RegisteredType);
+                instance = (ITestClass)spec.Container.Resolve(spec.Name, spec.RegisteredType);
             };
 
             spec.It["no exception is thrown"] = () => { };
@@ -92,13 +92,13 @@ namespace Test.ModuleInject.Container.DependencyContainerTest
     {
         public void Check(IInjectionTestSpec spec)
         {
-            string methodName = Method.Get<TestClass>(x => x.OverloadedFunction());
-            TestClass instance = null;
+            string methodName = Method.Get<ITestClass>(x => x.OverloadedFunction());
+            ITestClass instance = null;
 
             spec.BeforeEach = () =>
             {
                 spec.Container.InjectMethod(spec.Name, spec.RegisteredType, methodName, new IResolvedValue[] { new ConstantValue<string>(""), new ConstantValue<int>(1)  });
-                instance = (TestClass)spec.Container.Resolve(spec.Name, spec.RegisteredType);
+                instance = (ITestClass)spec.Container.Resolve(spec.Name, spec.RegisteredType);
             };
 
             spec.It["no exception is thrown"] = () => { };

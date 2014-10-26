@@ -144,30 +144,11 @@ namespace ModuleInject.Fluent
         }
 
         public ComponentRegistrationContext AddBehaviour<TBehaviour>()
-            where TBehaviour : ISimpleBehaviour, new()
+            where TBehaviour : Unity.IInterceptionBehavior, new()
         {
-            // TODO: fix behaviors
-            //if (!IsInterceptionActive)
-            //{
-            //    ExceptionHelper.ThrowTypeException(Types.TModule, Errors.ComponentRegistrationContext_InterceptionNotActivated);
-            //}
+            var behaviour = new TBehaviour();
 
-            //Unity.InterceptionBehavior unityBehaviour = new Unity.InterceptionBehavior<SimpleUnityBehaviour<TBehaviour>>();
-
-            //if (this.IsInterceptorAlreadyAdded)
-            //{
-            //    this.Container.RegisterType(Types.IComponent, Types.TComponent, this.ComponentName,
-            //        unityBehaviour
-            //        );
-            //}
-            //else
-            //{
-            //    this.Container.RegisterType(Types.IComponent, Types.TComponent, this.ComponentName,
-            //        new Unity.Interceptor<Unity.InterfaceInterceptor>(),
-            //        unityBehaviour
-            //        );
-            //    this.IsInterceptorAlreadyAdded = true;
-            //}
+            this.Container.AddBehaviour(this.ComponentName, this.Types.IComponent, behaviour);
 
             return this;
         }

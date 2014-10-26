@@ -2,5 +2,5 @@ using System.Linq;
 
 namespace Test.ModuleInject.Container.DependencyContainerTest
 {
-    class TestClass2 { }
+    public class TestClass2 { }
 }

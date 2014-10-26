@@ -12,7 +12,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace ModuleInject.Fluent
 {
     public class ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
-        where TModule : IModule        
+        where TModule : IModule
         where TComponent : IComponent
         where IModule : IInjectionModule
     {
@@ -25,7 +25,7 @@ namespace ModuleInject.Fluent
 
         internal ComponentRegistrationContext(ComponentRegistrationContext context)
         {
-            Context = context;            
+            Context = context;
         }
 
         /// <summary>
@@ -33,12 +33,12 @@ namespace ModuleInject.Fluent
         /// </summary>
         /// <typeparam name="TBehaviour">The type of the behavior to add.</typeparam>
         /// <returns>The current context of the fluent API.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification="This API is by design statically typed")]
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "This API is by design statically typed")]
         internal ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> AddBehaviour<TBehaviour>()
-            where TBehaviour : ISimpleBehaviour, new()
+            where TBehaviour : Unity.IInterceptionBehavior, new()
         {
             Context.AddBehaviour<TBehaviour>();
-            
+
             return this;
         }
     }

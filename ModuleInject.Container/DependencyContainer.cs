@@ -12,6 +12,7 @@ namespace ModuleInject.Container
     using ModuleInject.Container.Interface;
     using ModuleInject.Container.Lifetime;
     using ModuleInject.Container.Resolving;
+    using Microsoft.Practices.Unity.InterceptionExtension;
 
     public class DependencyContainer : IDependencyContainer
     {
@@ -157,6 +158,12 @@ namespace ModuleInject.Container
             {
                 registration.Value.Lifetime.Dispose();
             }
+        }
+
+        public void AddBehaviour(string name, Type type, IInterceptionBehavior behaviour)
+        {
+            var registration = this.GetOrCreateRegistration(name, type);
+            registration.AddBehaviour(behaviour);
         }
     }
 }

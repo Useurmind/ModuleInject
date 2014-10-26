@@ -1,12 +1,13 @@
-﻿using ModuleInject.Interception;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace Test.ModuleInject.TestModules
 {
-    public class ChangeReturnValueBehaviour : ISimpleBehaviour
+    using Microsoft.Practices.Unity.InterceptionExtension;
+
+    public class ChangeReturnValueBehaviour : IInterceptionBehavior
     {
         public static int ReturnValue { get; private set; }
 
@@ -15,39 +16,24 @@ namespace Test.ModuleInject.TestModules
             ReturnValue = 6;
         }
 
+        public IEnumerable<Type> GetRequiredInterfaces()
+        {
+            return Type.EmptyTypes;
+        }
+
+        public IMethodReturn Invoke(IMethodInvocation input, GetNextInterceptionBehaviorDelegate getNext)
+        {
+            getNext().Invoke(input, getNext);
+            return input.CreateMethodReturn(ReturnValue, null);
+        }
+
+
         public bool WillExecute
         {
             get
             {
                 return true;
             }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public IEnumerable<Type> RequiredInterfaces
-        {
-            get
-            {
-                return Type.EmptyTypes;
-            }
-        }
-
-        public IMethodReturn BeforeMethodCall(IMethodInvocation methodInvocation)
-        {
-            return null;
-        }
-
-        public IMethodReturn AfterMethodCall(IMethodInvocation methodInvocation, IMethodReturn actualMethodReturn)
-        {
-            return methodInvocation.CreateMethodReturn(ReturnValue);
-        }
-
-        public IMethodReturn OnExceptionThrown(IMethodInvocation methodInvocation, IMethodReturn actualMethodReturn)
-        {
-            throw new NotImplementedException();
         }
     }
 }

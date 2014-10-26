@@ -9,10 +9,13 @@ namespace ModuleInject.Container
     using ModuleInject.Container.InstanceCreation;
     using ModuleInject.Container.Interface;
     using System.Collections.Generic;
+    using Microsoft.Practices.Unity.InterceptionExtension;
 
     public class ContainerRegistration : IContainerRegistration
     {
         private IList<IDependencyInjection> dependencyInjections;
+
+        private IList<IInterceptionBehavior> behaviours; 
 
         public Type ActualType { get; set; }
 
@@ -33,6 +36,7 @@ namespace ModuleInject.Container
         public ContainerRegistration()
         {
             dependencyInjections = new List<IDependencyInjection>();
+            behaviours = new List<IInterceptionBehavior>();
         }
 
         public void AddDependencyInjection(IDependencyInjection dependencyInjection)
@@ -47,6 +51,9 @@ namespace ModuleInject.Container
             {
                 instance = this.InstanceCreation.Resolve(ActualType);
                 ResolveDependencies(instance);
+
+                instance = ApplyBehaviours(instance);
+
                 Lifetime.OnObjectResolved(new ObjectResolvedContext()
                                               {
                                                   ActualType = ActualType,
@@ -62,6 +69,22 @@ namespace ModuleInject.Container
             return instance;
         }
 
+        private object ApplyBehaviours(object instance)
+        {
+            if (behaviours.Count == 0)
+            {
+                return instance;
+            }
+
+            InterfaceInterceptor interfaceInterceptor = new InterfaceInterceptor();
+            var proxy = interfaceInterceptor.CreateProxy(RegisteredType, instance);
+            foreach (var behaviour in behaviours)
+            {
+                proxy.AddInterceptionBehavior(behaviour);
+            }
+            return proxy;
+        }
+
         private void ResolveDependencies(object instance)
         {
             foreach (var dependencyInjection in dependencyInjections)
@@ -70,5 +93,10 @@ namespace ModuleInject.Container
             }
         }
         public IInstanceCreation InstanceCreation { get; set; }
+
+        public void AddBehaviour(IInterceptionBehavior behaviour)
+        {
+            behaviours.Add(behaviour);
+        }
     }
 }
