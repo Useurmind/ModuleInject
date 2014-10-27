@@ -26,12 +26,14 @@ namespace Test.ModuleInject
         [ExpectedException(typeof(ModuleInjectException))]
         public void Resolve_NoRegistrySet_ExceptionForMissingSubmodule()
         {
+            _module.RegisterComponentFromPublicSubmodule();
             _module.Resolve();
         }
 
         [Test]
         public void Resolved_AfterApplyingRegistryWithSubmodule_SubmoduleIsResolved()
         {
+            _module.RegisterComponentFromPublicSubmodule();
             _module.ApplyRegistry();
             _module.Resolve();
 
@@ -44,6 +46,7 @@ namespace Test.ModuleInject
         [Test]
         public void Resolved_AfterApplyingRegistry_RegistryComponentResolved()
         {
+            _module.RegisterComponentFromPublicSubmodule();
             _module.ApplyRegistry();
             _module.Resolve();
 
@@ -61,6 +64,7 @@ namespace Test.ModuleInject
         [Test]
         public void Resolved_AfterRegisteringPrivateComponentAndApplyingRegistry_PrivateComponentWinsOVerRegistryComponent()
         {
+            _module.RegisterComponentFromPublicSubmodule();
             _module.ApplyRegistry();
             _module.RegisterPrivateWithRegistryComponentOverlap();
             _module.Resolve();
@@ -73,10 +77,23 @@ namespace Test.ModuleInject
             Assert.IsNotNull(_module.PrivatePropertyModule.SubModule);
             Assert.AreSame(registrySubInstance, _module.PrivatePropertyModule.SubModule);
         }
+        
+        [Test]
+        public void Resolved_AfterRegisteringPropertyOfPrivateComponentFromPrivateSubmodule_ComponentOfSubmoduleInjected()
+        {
+            _module.RegisterComponentFromPrivateSubmodule();
+            _module.ApplyRegistry();
+            _module.Resolve();
+
+            IPropertyModule registryInstance = (IPropertyModule)_module.Registry.GetComponent(typeof(IPropertyModule));
+
+            Assert.AreSame(registryInstance.Component2, _module.MainComponent1.MainComponent2);
+        }
 
         [Test]
         public void Dispose__RegistryIsDisposed()
         {
+            _module.RegisterComponentFromPublicSubmodule();
             _module.ApplyRegistry();
             _module.Resolve();
 

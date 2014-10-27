@@ -25,6 +25,9 @@ namespace ModuleInject
 
     public abstract class InjectionModule : IInjectionModule, IDisposable
     {
+        internal abstract Type ModuleInterface { get; }
+        internal abstract Type ModuleType { get; }
+
         internal abstract IDependencyContainer Container { get; }
 
         internal abstract void Resolve(IRegistry registry);
@@ -70,6 +73,23 @@ namespace ModuleInject
         private bool _isInterceptionActive;
 
         private bool _isResolved;
+
+
+        internal override Type ModuleInterface
+        {
+            get
+            {
+                return typeof(IModule);
+            }
+        }
+
+        internal override Type ModuleType
+        {
+            get
+            {
+                return typeof(TModule);
+            }
+        }
 
         internal override IDependencyContainer Container
         {
@@ -555,7 +575,7 @@ namespace ModuleInject
         {
             Type moduleType = typeof(TModule);
 
-            var propertyInfo = moduleType.GetPropertyRecursive(context.Name, BindingFlags.NonPublic|BindingFlags.Public);
+            var propertyInfo = moduleType.GetPropertyRecursive(context.Name, BindingFlags.NonPublic | BindingFlags.Public);
 
             propertyInfo.SetValue(this, context.Instance, BindingFlags.NonPublic, null, null, null);
         }

@@ -29,11 +29,25 @@ namespace Test.ModuleInject.TestModules
         [RegistryComponent]
         public IPropertyModule PrivatePropertyModule { get; set; }
 
+        [RegistryComponent]
+        private IPropertyModule PrivatePrivatePropertyModule { get; set; }
+
         public RegistryUsingModule()
         {
             RegisterPublicComponent<IPropertyModule, PropertyModule>(x => x.PropertyModule);
-            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
+        }
+
+        public void RegisterComponentFromPublicSubmodule()
+        {
+            this.RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
                 .Inject(x => x.PrivatePropertyModule.Component2)
+                .IntoProperty(x => x.MainComponent2);
+        }
+
+        public void RegisterComponentFromPrivateSubmodule()
+        {
+            this.RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
+                .Inject(x => x.PrivatePrivatePropertyModule.Component2)
                 .IntoProperty(x => x.MainComponent2);
         }
 

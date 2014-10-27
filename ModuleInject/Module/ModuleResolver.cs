@@ -42,7 +42,7 @@ namespace ModuleInject.Module
                 throw new ModuleInjectException("Modules must always have an Interface");
             }
 
-            var submodulePropertyInfos = GetModuleProperties<IModule, TModule>(true);
+            var submodulePropertyInfos = TypeExtensions.GetModuleProperties<IModule, TModule>(true);
             foreach (var submodulePropInfo in submodulePropertyInfos)
             {
                 TryResolveComponent(submodulePropInfo);
@@ -50,7 +50,7 @@ namespace ModuleInject.Module
                 TryResolveSubmodule(submodulePropInfo);
             }
 
-            foreach (var propInfo in GetModuleProperties<IModule, TModule>(false))
+            foreach (var propInfo in TypeExtensions.GetModuleProperties<IModule, TModule>(false))
             {
                 //if (!propInfo.PropertyType.IsInterface)
                 //{
@@ -59,40 +59,6 @@ namespace ModuleInject.Module
 
                 TryResolveComponent(propInfo);
             }
-        }
-
-        /// <summary>
-        /// Gets the properties of the all types in the _module chain.
-        /// </summary>
-        /// <typeparam name="IModule">The interface of the _module.</typeparam>
-        /// <typeparam name="TModule">The type of the _module.</typeparam>
-        /// <param name="thatAreModules">if set to <c>true</c> only properties that are modules themselves are returned, else all other properties.</param>
-        /// <returns></returns>
-        private static IEnumerable<PropertyInfo> GetModuleProperties<IModule, TModule>(bool thatAreModules)
-            where TModule : IModule
-        {
-            Type moduleType = typeof(TModule);
-            Type moduleInterface = typeof(IModule);
-
-            var interfaceProperties = moduleInterface.GetModuleComponentPropertiesRecursive()
-                                                     .Where(p =>
-                                                      {
-                                                          bool isModule = p.IsInjectionModuleType();
-                                                          return thatAreModules ? isModule : !isModule;
-                                                      })
-                                                     .Select(p => moduleType.GetProperty(p.Name));
-
-            var privateProperties = moduleType.GetModuleComponentPropertiesRecursive(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                                              .Where(p =>
-                                              {
-                                                  bool isPrivate = p.HasCustomAttribute<PrivateComponentAttribute>();
-                                                  bool isRegistry = p.HasCustomAttribute<RegistryComponentAttribute>();
-                                                  bool isModule = p.IsInjectionModuleType();
-
-                                                  return (isRegistry || isPrivate) && (thatAreModules ? isModule : !isModule);
-                                              });
-
-            return privateProperties.Union(interfaceProperties);
         }
 
         private bool TryResolveComponent(PropertyInfo propInfo)

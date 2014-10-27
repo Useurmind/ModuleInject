@@ -19,12 +19,12 @@ namespace Test.ModuleInject.TestModules
     {
         public IMainComponent1 MainComponent { get; set; }
 
-        [NonModuleProperty]
+        [PrivateComponent]
         public ISubModule SubModule { get; set; }
 
         public UseSubmoduleModule()
         {
-            SubModule = new Submodule();
+            RegisterPrivateComponent<ISubModule, Submodule>(x => x.SubModule);
         }
 
         public void RegisterMainComponent_Injecting_SubmoduleProperty()
