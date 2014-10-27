@@ -215,6 +215,15 @@ namespace ModuleInject {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The registry is already composed, you can not add further catalogs to it..
+        /// </summary>
+        internal static string Registry_AlreadyComposedNoFurtherCatalogs {
+            get {
+                return ResourceManager.GetString("Registry_AlreadyComposedNoFurtherCatalogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The registry does not contain a registration for the type &apos;{0}&apos;..
         /// </summary>
         internal static string RegistryModule_TypeNotRegistered {

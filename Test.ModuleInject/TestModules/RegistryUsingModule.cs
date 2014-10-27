@@ -9,6 +9,7 @@ namespace Test.ModuleInject.TestModules
 
     using global::ModuleInject;
     using global::ModuleInject.Decoration;
+    using global::ModuleInject.Fluent;
     using global::ModuleInject.Interfaces;
     using global::ModuleInject.Registry;
 
@@ -22,12 +23,18 @@ namespace Test.ModuleInject.TestModules
         public IPropertyModule PropertyModule { get; set; }
 
         [PrivateComponent]
+        public IMainComponent1 MainComponent1 { get; set; }
+
+        [PrivateComponent]
         [RegistryComponent]
         public IPropertyModule PrivatePropertyModule { get; set; }
 
         public RegistryUsingModule()
         {
             RegisterPublicComponent<IPropertyModule, PropertyModule>(x => x.PropertyModule);
+            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
+                .Inject(x => x.PrivatePropertyModule.Component2)
+                .IntoProperty(x => x.MainComponent2);
         }
 
         public void RegisterPrivateWithRegistryComponentOverlap()
@@ -37,12 +44,12 @@ namespace Test.ModuleInject.TestModules
 
         public void ApplyRegistry()
         {
-            RegistryModule registryModule = new RegistryModule();
+            Registry registry = new Registry();
 
-            registryModule.RegisterModule<ISubModule, Submodule>();
-            registryModule.RegisterModule<IPropertyModule, PropertyModule>();
+            registry.RegisterModule<ISubModule, Submodule>();
+            registry.RegisterModule<IPropertyModule, PropertyModule>();
 
-            this.Registry = registryModule;
+            this.Registry = registry;
         }
     }
 }

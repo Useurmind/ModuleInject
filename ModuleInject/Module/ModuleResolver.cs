@@ -24,9 +24,9 @@ namespace ModuleInject.Module
     {
         private TModule _module;
         private IDependencyContainer _container;
-        private IRegistryModule _registry;
+        private IRegistry _registry;
 
-        public ModuleResolver(TModule module, IDependencyContainer container, IRegistryModule registry)
+        public ModuleResolver(TModule module, IDependencyContainer container, IRegistry registry)
         {
             _module = module;
             _container = container;

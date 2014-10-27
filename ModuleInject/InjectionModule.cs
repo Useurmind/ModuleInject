@@ -27,7 +27,7 @@ namespace ModuleInject
     {
         internal abstract IDependencyContainer Container { get; }
 
-        internal abstract void Resolve(IRegistryModule registry);
+        internal abstract void Resolve(IRegistry registry);
 
         public abstract bool IsResolved { get; }
 
@@ -66,7 +66,7 @@ namespace ModuleInject
     {
         private IDependencyContainer _container;
 
-        private IRegistryModule _registry;
+        private IRegistry _registry;
         private bool _isInterceptionActive;
 
         private bool _isResolved;
@@ -90,7 +90,7 @@ namespace ModuleInject
             }
         }
 
-        public IRegistryModule Registry
+        public IRegistry Registry
         {
             get
             {
@@ -100,7 +100,7 @@ namespace ModuleInject
             {
                 if (value == null)
                 {
-                    _registry = new RegistryModule();
+                    _registry = new Registry.EmptyRegistry();
                 }
                 _registry = value;
             }
@@ -114,7 +114,7 @@ namespace ModuleInject
             _isInterceptionActive = false;
             _isResolved = false;
             _container = new DependencyContainer();
-            _registry = new RegistryModule();
+            _registry = new Registry.EmptyRegistry();
 
             if (!typeof(IModule).IsInterface)
             {
@@ -146,7 +146,7 @@ namespace ModuleInject
             this.Resolve(null);
         }
 
-        internal override void Resolve(IRegistryModule registry)
+        internal override void Resolve(IRegistry registry)
         {
             if (IsResolved)
             {
@@ -170,7 +170,7 @@ namespace ModuleInject
             AfterResolved();
         }
 
-        private IRegistryModule GetUsedRegistry(IRegistryModule registry)
+        private IRegistry GetUsedRegistry(IRegistry registry)
         {
             var usedRegistry = this._registry;
             if (registry != null)

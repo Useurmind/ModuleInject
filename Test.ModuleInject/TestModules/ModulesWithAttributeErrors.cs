@@ -23,13 +23,18 @@ namespace Test.ModuleInject.TestModules
         }
     }
 
+    class RegistryWithInt : MefRegistryBase
+    {
+        
+    }
+
     class ModuleWithNonMarkedRegistryComponent : InjectionModule<IEmptyModule, ModuleWithNonMarkedRegistryComponent>, IEmptyModule
     {
         public int UnmarkedRegistryComponent { get; set; }
 
         public ModuleWithNonMarkedRegistryComponent()
         {
-            RegistryModule registry = new RegistryModule();
+            Registry registry = new Registry();
 
             registry.Register(() => 1);
 

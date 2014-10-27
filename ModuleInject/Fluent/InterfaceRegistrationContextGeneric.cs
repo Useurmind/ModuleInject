@@ -1,6 +1,5 @@
 ﻿using Microsoft.Practices.Unity;
 using Unity = Microsoft.Practices.Unity.InterceptionExtension;
-using ModuleInject.Interception;
 using ModuleInject.Interfaces;
 using System;
 using System.Collections.Generic;

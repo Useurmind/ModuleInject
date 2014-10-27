@@ -172,4 +172,7 @@ The properties are: '{1}'</value>
   <data name="RegistryModule_TypeNotRegistered" xml:space="preserve">
     <value>The registry does not contain a registration for the type '{0}'.</value>
   </data>
+  <data name="Registry_AlreadyComposedNoFurtherCatalogs" xml:space="preserve">
+    <value>The registry is already composed, you can not add further catalogs to it.</value>
+  </data>
 </root>

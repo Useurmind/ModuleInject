@@ -47,13 +47,15 @@ namespace Test.ModuleInject
             _module.ApplyRegistry();
             _module.Resolve();
 
-            var registryInstance = _module.Registry.GetComponent(typeof(IPropertyModule));
+            IPropertyModule registryInstance = (IPropertyModule)_module.Registry.GetComponent(typeof(IPropertyModule));
             var registrySubInstance = _module.Registry.GetComponent(typeof(ISubModule));
 
             Assert.IsNotNull(_module.PrivatePropertyModule);
             Assert.AreSame(registryInstance, _module.PrivatePropertyModule);
             Assert.IsNotNull(_module.PrivatePropertyModule.SubModule);
             Assert.AreSame(registrySubInstance, _module.PrivatePropertyModule.SubModule);
+            Assert.IsNotNull(_module.MainComponent1);
+            Assert.AreSame(registryInstance.Component2, _module.MainComponent1.MainComponent2);
         }
 
         [Test]
