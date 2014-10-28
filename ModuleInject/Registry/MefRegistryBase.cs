@@ -43,7 +43,7 @@ namespace ModuleInject.Registry
             return base.GetComponent(type);
         }
 
-        protected void AddCatalog(AssemblyCatalog catalog)
+        protected void AddCatalog(ComposablePartCatalog catalog)
         {
             if (isComposed)
             {
