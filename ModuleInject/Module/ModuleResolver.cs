@@ -124,7 +124,7 @@ namespace ModuleInject.Module
             }
             var component = _container.Resolve(propInfo.Name, propInfo.PropertyType);
             // unecessary because set by ComponentLifetime, but used for unit test
-            propInfo.SetValue(_module, component, BindingFlags.NonPublic, null, null, null);
+            typeof(TModule).SetPropertyRecursive(_module, propInfo.Name, component);
             return true;
         }
 
@@ -142,7 +142,7 @@ namespace ModuleInject.Module
                 return false;
             }
             var component = _registry.GetComponent(propType);
-            propInfo.SetValue(_module, component, BindingFlags.NonPublic, null, null, null);
+            typeof(TModule).SetPropertyRecursive(_module, propInfo.Name, component);
             return true;
         }
 

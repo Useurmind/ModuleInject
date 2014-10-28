@@ -231,5 +231,14 @@ namespace ModuleInject {
                 return ResourceManager.GetString("RegistryModule_TypeNotRegistered", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The property &apos;{0}&apos; of type  &apos;{1}&apos; does not have a setter anywhere in the module inheritance chain..
+        /// </summary>
+        internal static string TypeExtensions_NoPropertySetterFound {
+            get {
+                return ResourceManager.GetString("TypeExtensions_NoPropertySetterFound", resourceCulture);
+            }
+        }
     }
 }

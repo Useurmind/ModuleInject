@@ -175,4 +175,7 @@ The properties are: '{1}'</value>
   <data name="Registry_AlreadyComposedNoFurtherCatalogs" xml:space="preserve">
     <value>The registry is already composed, you can not add further catalogs to it.</value>
   </data>
+  <data name="TypeExtensions_NoPropertySetterFound" xml:space="preserve">
+    <value>The property '{0}' of type  '{1}' does not have a setter anywhere in the module inheritance chain.</value>
+  </data>
 </root>

@@ -36,15 +36,15 @@ namespace Test.ModuleInject.TestModules
         [NonModuleProperty]
         public int InjectedValue { get; private set; }
 
-        public IMainComponent1 InstanceRegistrationComponent { get; set; }
-        public IMainComponent1 InitWithPropertiesComponent { get; set; }
-        public IMainComponent1 InitWithInitialize1Component { get; set; }
-        public IMainComponent1 InitWithInitialize1FromSubComponent { get; set; }
-        public IMainComponent1 InitWithInitialize2Component { get; set; }
-        public IMainComponent1 InitWithInitialize3Component { get; set; }
-        public IMainComponent1 InitWithInjectorComponent { get; set; }
-        public IMainComponent2 Component2 { get; set; }
-        public IMainComponent2 Component22 { get; set; }
+        public IMainComponent1 InstanceRegistrationComponent { get; private set; }
+        public IMainComponent1 InitWithPropertiesComponent { get; private set; }
+        public IMainComponent1 InitWithInitialize1Component { get; private set; }
+        public IMainComponent1 InitWithInitialize1FromSubComponent { get; private set; }
+        public IMainComponent1 InitWithInitialize2Component { get; private set; }
+        public IMainComponent1 InitWithInitialize3Component { get; private set; }
+        public IMainComponent1 InitWithInjectorComponent { get; private set; }
+        public IMainComponent2 Component2 { get; private set; }
+        public IMainComponent2 Component22 { get; private set; }
 
         public IMainComponent1 AlsoRegisterForComponent { get; set; }
 

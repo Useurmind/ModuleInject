@@ -7,6 +7,9 @@ using System.Text;
 
 namespace ModuleInject.Utility
 {
+    using System.Globalization;
+
+    using ModuleInject.Common.Exceptions;
     using ModuleInject.Common.Linq;
     using ModuleInject.Common.Utility;
     using ModuleInject.Decoration;
@@ -66,6 +69,49 @@ namespace ModuleInject.Utility
             return isModule;
         }
 
+        public static void SetPropertyRecursive(this Type type, object instance, string name, object value)
+        {
+            var propertySetter = type.GetPropertySetterRecursive(name, BindingFlags.NonPublic | BindingFlags.Public);
+            if (propertySetter == null)
+            {
+                ExceptionHelper.ThrowFormatException(Errors.TypeExtensions_NoPropertySetterFound, name, type.Name);
+            }
+            propertySetter.Invoke(
+                instance,
+                BindingFlags.NonPublic | BindingFlags.Public,
+                null,
+                new object[] { value },
+                CultureInfo.InvariantCulture);
+        }
+
+        public static MethodInfo GetPropertySetterRecursive(this Type type, string name, BindingFlags? bindingOptions = null)
+        {
+            CommonFunctions.CheckNullArgument("type", type);
+
+            if (type.ShouldStopModuleTypeRecursion())
+            {
+                return null;
+            }
+
+            var propertyInfo = GetPropertyInfo(type, name, bindingOptions);
+            var setMethod = propertyInfo == null ? null : propertyInfo.GetSetMethod(true);
+            if (setMethod == null)
+            {
+                type.ForEachBaseTypeInModuleHierarchy(
+                    subType =>
+                    {
+                        setMethod = subType.GetPropertySetterRecursive(name, bindingOptions);
+                        if (setMethod != null)
+                        {
+                            return true;
+                        }
+                        return false;
+                    });
+            }
+
+            return setMethod;
+        }
+
         public static PropertyInfo GetPropertyRecursive(this Type type, string name, BindingFlags? bindingOptions = null)
         {
             CommonFunctions.CheckNullArgument("type", type);
@@ -75,22 +121,30 @@ namespace ModuleInject.Utility
                 return null;
             }
 
-            PropertyInfo propertyInfo = bindingOptions.HasValue ? type.GetProperty(name, BindingFlags.Instance|bindingOptions.Value) : type.GetProperty(name);
+            var propertyInfo = GetPropertyInfo(type, name, bindingOptions);
 
             if (propertyInfo == null)
             {
                 type.ForEachBaseTypeInModuleHierarchy(
                     subType =>
+                    {
+                        propertyInfo = GetPropertyRecursive(subType, name, bindingOptions);
+                        if (propertyInfo != null)
                         {
-                            propertyInfo = bindingOptions.HasValue ? subType.GetProperty(name, BindingFlags.Instance|bindingOptions.Value) : subType.GetProperty(name);
-                            if (propertyInfo != null)
-                            {
-                                return true;
-                            }
-                            return false;
-                        });
+                            return true;
+                        }
+                        return false;
+                    });
             }
 
+            return propertyInfo;
+        }
+
+        private static PropertyInfo GetPropertyInfo(Type type, string name, BindingFlags? bindingOptions)
+        {
+            PropertyInfo propertyInfo = bindingOptions.HasValue
+                                            ? type.GetProperty(name, BindingFlags.Instance | bindingOptions.Value)
+                                            : type.GetProperty(name);
             return propertyInfo;
         }
 
@@ -119,17 +173,17 @@ namespace ModuleInject.Utility
                 return new List<PropertyInfo>();
             }
 
-            IEnumerable<PropertyInfo> properties = bindingOptions == null ? type.GetProperties() : type.GetProperties(BindingFlags.DeclaredOnly|bindingOptions.Value);
+            IEnumerable<PropertyInfo> properties = bindingOptions == null ? type.GetProperties() : type.GetProperties(BindingFlags.DeclaredOnly | bindingOptions.Value);
 
             properties =
                 properties.Where(p => p.GetCustomAttributes(typeof(NonModulePropertyAttribute), false).Count() == 0);
 
             type.ForEachBaseTypeInModuleHierarchy(
                 subType =>
-                    {
-                        properties = properties.Union(subType.GetModuleComponentPropertiesRecursive(bindingOptions));
-                        return false;
-                    });
+                {
+                    properties = properties.Union(subType.GetModuleComponentPropertiesRecursive(bindingOptions));
+                    return false;
+                });
 
 
             return properties;

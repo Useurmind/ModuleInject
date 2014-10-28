@@ -575,9 +575,7 @@ namespace ModuleInject
         {
             Type moduleType = typeof(TModule);
 
-            var propertyInfo = moduleType.GetPropertyRecursive(context.Name, BindingFlags.NonPublic | BindingFlags.Public);
-
-            propertyInfo.SetValue(this, context.Instance, BindingFlags.NonPublic, null, null, null);
+            moduleType.SetPropertyRecursive(this, context.Name, context.Instance);
         }
 
         #region IDisposable

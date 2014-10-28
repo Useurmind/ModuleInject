@@ -18,10 +18,10 @@ namespace Test.ModuleInject.TestModules
         where TDerivedModule : BaseModule<IDerivedModule, TDerivedModule>, IDerivedModule
         where IDerivedModule : IBaseModule
     {
-        public IMainComponent1 MainComponent1 { get; set; }
+        public IMainComponent1 MainComponent1 { get; private set; }
 
         [PrivateComponent]
-        public IMainComponent1 MainComponent1Private { get; set; }
+        public IMainComponent1 MainComponent1Private { get; private set; }
 
         public BaseModule()
         {
@@ -37,10 +37,10 @@ namespace Test.ModuleInject.TestModules
 
     public class DerivedModule : BaseModule<IDerivedModule, DerivedModule>, IDerivedModule
     {
-        public IMainComponent2 MainComponent2 { get; set; }
+        public IMainComponent2 MainComponent2 { get; private set; }
 
         [PrivateComponent]
-        public IMainComponent2 MainComponent2Private { get; set; }
+        public IMainComponent2 MainComponent2Private { get; private set; }
 
         public DerivedModule()
         {

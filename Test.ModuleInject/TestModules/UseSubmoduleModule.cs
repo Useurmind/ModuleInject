@@ -12,12 +12,12 @@ namespace Test.ModuleInject.TestModules
 
     public interface IUseSubmoduleModule : IInjectionModule
     {
-        IMainComponent1 MainComponent { get; set; }
+        IMainComponent1 MainComponent { get; }
     }
 
     public class UseSubmoduleModule : InjectionModule<IUseSubmoduleModule, UseSubmoduleModule>, IUseSubmoduleModule
     {
-        public IMainComponent1 MainComponent { get; set; }
+        public IMainComponent1 MainComponent { get; private set; }
 
         [PrivateComponent]
         public ISubModule SubModule { get; set; }
