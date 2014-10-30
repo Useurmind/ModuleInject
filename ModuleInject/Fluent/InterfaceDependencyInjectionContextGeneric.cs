@@ -21,4 +21,18 @@ namespace ModuleInject.Fluent
             ComponentContext = componentContext;
         }
     }
+
+    public class InterfaceDependencyInjectionContext<IComponentBase, IModuleBase, IDependencyComponent>
+    {
+        internal DependencyInjectionContext Context { get; private set; }
+        public InterfaceRegistrationContext<IComponentBase, IModuleBase> ComponentContext { get; private set; }
+        public string DependencyName { get { return Context.DependencyName; } }
+
+        internal InterfaceDependencyInjectionContext(InterfaceRegistrationContext<IComponentBase, IModuleBase> componentContext,
+            DependencyInjectionContext context)
+        {
+            Context = context;
+            ComponentContext = componentContext;
+        }
+    }
 }

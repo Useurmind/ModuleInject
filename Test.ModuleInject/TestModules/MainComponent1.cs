@@ -6,10 +6,14 @@ using System.Text;
 
 namespace Test.ModuleInject.TestModules
 {
-    public interface IMainComponent1 : IInitializable<IMainComponent2>
+    public interface IMainComponent1Sub
+    {
+        IMainComponent2 MainComponent2 { get; set; }
+    }
+
+    public interface IMainComponent1 : IInitializable<IMainComponent2>, IMainComponent1Sub
     {
         int InjectedValue { get;  }
-        IMainComponent2 MainComponent2 { get; set; }
         IMainComponent2 MainComponent22 { get; }
         IMainComponent2 MainComponent23 { get; }
         ISubComponent1 SubComponent1 { get; }

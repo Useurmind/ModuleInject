@@ -23,4 +23,20 @@ namespace ModuleInject.Fluent
             _injectInto(context);
         }
     }
+
+    public class InterfaceInjector<IComponentBase, IModuleBase> :
+        IInterfaceInjector<IComponentBase, IModuleBase>
+    {
+        private Action<InterfaceRegistrationContext<IComponentBase, IModuleBase>> _injectInto;
+
+        public InterfaceInjector(Action<InterfaceRegistrationContext<IComponentBase, IModuleBase>> injectInto)
+        {
+            _injectInto = injectInto;
+        }
+
+        public void InjectInto(InterfaceRegistrationContext<IComponentBase, IModuleBase> context)
+        {
+            _injectInto(context);
+        }
+    }
 }

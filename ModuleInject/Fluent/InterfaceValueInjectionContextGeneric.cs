@@ -21,4 +21,18 @@ namespace ModuleInject.Fluent
             Context = context;
         }
     }
+
+    public class InterfaceValueInjectionContext<IComponentBase, IModuleBase, TValue>
+    {
+        internal ValueInjectionContext Context { get; private set; }
+
+        public InterfaceRegistrationContext<IComponentBase, IModuleBase> ComponentContext { get; private set; }
+        public TValue Value { get { return (TValue)Context.Value; } }
+
+        internal InterfaceValueInjectionContext(InterfaceRegistrationContext<IComponentBase, IModuleBase> componentContext, ValueInjectionContext context)
+        {
+            ComponentContext = componentContext;
+            Context = context;
+        }
+    }
 }

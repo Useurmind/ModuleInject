@@ -28,5 +28,19 @@ namespace ModuleInject.Fluent
 
             return dependency.ComponentContext;
         }
+
+        public static InterfaceRegistrationContext<IComponent, IModule>
+            IntoProperty<IComponent, IModule, TDependency, TProperty>(
+            this InterfaceDependencyInjectionContext<IComponent, IModule, TDependency> dependency,
+            Expression<Func<IComponent, TProperty>> dependencyTargetExpression
+            )
+            where TProperty : TDependency
+        {
+            CommonFunctions.CheckNullArgument("dependency", dependency);
+
+            dependency.Context.IntoProperty(dependencyTargetExpression);
+
+            return dependency.ComponentContext;
+        }
     }
 }

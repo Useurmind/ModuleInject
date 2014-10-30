@@ -10,9 +10,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace ModuleInject.Fluent
 {
-    public class InterfaceRegistrationContext<IComponent, IModule, TModule>
-        where TModule : IModule      
-        where IModule : IInjectionModule
+    public class InterfaceRegistrationContext<IComponent, IModuleBase, TModule>
+        where TModule : IModuleBase      
+        where IModuleBase : IInjectionModule
     {
         internal ComponentRegistrationContext Context { get; private set; }
 
@@ -23,11 +23,31 @@ namespace ModuleInject.Fluent
             Context = context;            
         }
 
-        internal InterfaceRegistrationContext<IComponent, IModule, TModule> AddBehaviour<TBehaviour>()
+        internal InterfaceRegistrationContext<IComponent, IModuleBase, TModule> AddBehaviour<TBehaviour>()
             where TBehaviour : Unity.IInterceptionBehavior, new()
         {
             Context.AddBehaviour<TBehaviour>();
             
+            return this;
+        }
+    }
+
+    public class InterfaceRegistrationContext<IComponentBase, IModuleBase>
+    {
+        internal ComponentRegistrationContext Context { get; private set; }
+
+        public string ComponentName { get { return Context.ComponentName; } }
+
+        internal InterfaceRegistrationContext(ComponentRegistrationContext context)
+        {
+            Context = context;
+        }
+
+        internal InterfaceRegistrationContext<IComponentBase, IModuleBase> AddBehaviour<TBehaviour>()
+            where TBehaviour : Unity.IInterceptionBehavior, new()
+        {
+            Context.AddBehaviour<TBehaviour>();
+
             return this;
         }
     }

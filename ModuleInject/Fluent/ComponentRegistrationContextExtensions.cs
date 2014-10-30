@@ -153,6 +153,22 @@ namespace ModuleInject.Fluent
         }
 
         public static ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
+            AddInjector<IComponent, TComponent, IModule, TModule, IComponentBase, IModuleBase>(
+            this ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+            IInterfaceInjector<IComponentBase, IModuleBase> injector)
+            where TComponent : IComponent, IComponentBase
+            where TModule : IModule, IModuleBase
+            where IModule : IInjectionModule
+        {
+            CommonFunctions.CheckNullArgument("component", component);
+            CommonFunctions.CheckNullArgument("injector", injector);
+
+            var interfaceContext = new InterfaceRegistrationContext<IComponentBase, IModuleBase>(component.Context);
+            injector.InjectInto(interfaceContext);
+            return component;
+        }
+
+        public static ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             AddTypeInjection<IComponent, TComponent, IModule, TModule>(
             this ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
             Action<ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>> injectInto)
@@ -181,6 +197,23 @@ namespace ModuleInject.Fluent
 
             InterfaceInjector<IComponent, IModule, TModule> injector =
                 new InterfaceInjector<IComponent, IModule, TModule>(injectInto);
+
+            component.AddInjector(injector);
+            return component;
+        }
+
+        public static ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
+            AddInterfaceInjection<IComponent, TComponent, IModule, TModule, IComponentBase, IModuleBase>(
+            this ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+            Action<InterfaceRegistrationContext<IComponentBase, IModuleBase>> injectInto)
+            where TComponent : IComponent, IComponentBase
+            where TModule : IModule, IModuleBase
+            where IModule : IInjectionModule
+        {
+            CommonFunctions.CheckNullArgument("injectInto", injectInto);
+
+            InterfaceInjector<IComponentBase, IModuleBase> injector =
+                new InterfaceInjector<IComponentBase, IModuleBase>(injectInto);
 
             component.AddInjector(injector);
             return component;

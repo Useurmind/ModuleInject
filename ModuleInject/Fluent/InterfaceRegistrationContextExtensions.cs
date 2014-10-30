@@ -12,8 +12,10 @@ namespace ModuleInject.Fluent
 {
     using ModuleInject.Common.Utility;
 
-    public static class InterfaceRegistrationContextExtensions
+    public static class ComponentInterfaceRegistrationContextExtensions
     {
+        #region component interface
+
         public static InterfaceValueInjectionContext<IComponent, IModule, TModule, TDependency>
             Inject<IComponent, IModule, TModule, TDependency>(
             this InterfaceRegistrationContext<IComponent, IModule, TModule> component,
@@ -102,6 +104,92 @@ namespace ModuleInject.Fluent
             injector.InjectInto(component);
             return component;
         }
+
+        #endregion
+    }
+
+    public static class ComponentAndModuleInterfaceRegistrationContextExtensions{
+
+        #region component and module interface
+
+        public static InterfaceValueInjectionContext<IComponent, IModule, TDependency>
+            Inject<IComponent, IModule, TDependency>(
+            this InterfaceRegistrationContext<IComponent, IModule> component,
+            TDependency value)
+        {
+            CommonFunctions.CheckNullArgument("component", component);
+
+            var valueContext = component.Context.Inject(value, typeof(TDependency));
+            return new InterfaceValueInjectionContext<IComponent, IModule, TDependency>(component, valueContext);
+        }
+
+        public static InterfaceDependencyInjectionContext<IComponent, IModule, TDependency>
+            Inject<IComponent, IModule, TDependency>(
+            this InterfaceRegistrationContext<IComponent, IModule> component,
+            Expression<Func<IModule, TDependency>> dependencySourceExpression)
+        {
+            CommonFunctions.CheckNullArgument("component", component);
+
+            var dependencyContext = component.Context.Inject(dependencySourceExpression);
+
+            return new InterfaceDependencyInjectionContext<IComponent, IModule, TDependency>(
+                component, dependencyContext);
+        }
+
+        public static InterfaceRegistrationContext<IComponent, IModule>
+            InitializeWith<IComponent, IModule, TDependency1>(
+            this InterfaceRegistrationContext<IComponent, IModule> component,
+            Expression<Func<IModule, TDependency1>> dependency1SourceExpression)
+            where IComponent : IInitializable<TDependency1>
+        {
+            CommonFunctions.CheckNullArgument("component", component);
+
+            component.Context.InitializeWith(dependency1SourceExpression);
+
+            return component;
+        }
+
+        public static InterfaceRegistrationContext<IComponent, IModule>
+            InitializeWith<IComponent, IModule, TDependency1, TDependency2>(
+            this InterfaceRegistrationContext<IComponent, IModule> component,
+            Expression<Func<IModule, TDependency1>> dependency1SourceExpression,
+            Expression<Func<IModule, TDependency2>> dependency2SourceExpression)
+            where IComponent : IInitializable<TDependency1, TDependency2>
+        {
+            CommonFunctions.CheckNullArgument("component", component);
+
+            component.Context.InitializeWith(dependency1SourceExpression, dependency2SourceExpression);
+
+            return component;
+        }
+
+        public static InterfaceRegistrationContext<IComponent, IModule>
+            InitializeWith<IComponent, IModule, TDependency1, TDependency2, TDependency3>(
+            this InterfaceRegistrationContext<IComponent, IModule> component,
+            Expression<Func<IModule, TDependency1>> dependency1SourceExpression,
+            Expression<Func<IModule, TDependency2>> dependency2SourceExpression,
+            Expression<Func<IModule, TDependency3>> dependency3SourceExpression)
+            where IComponent : IInitializable<TDependency1, TDependency2, TDependency3>
+        {
+            CommonFunctions.CheckNullArgument("component", component);
+
+            component.Context.InitializeWith(dependency1SourceExpression, dependency2SourceExpression, dependency3SourceExpression);
+
+            return component;
+        }
+
+        public static InterfaceRegistrationContext<IComponent, IModule>
+            AddInjector<IComponent, IModule>(
+            this InterfaceRegistrationContext<IComponent, IModule> component,
+            IInterfaceInjector<IComponent, IModule> injector)
+        {
+            CommonFunctions.CheckNullArgument("injector", injector);
+
+            injector.InjectInto(component);
+            return component;
+        }
+
+        #endregion
     }
 }
 

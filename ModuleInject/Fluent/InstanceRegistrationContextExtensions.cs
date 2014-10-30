@@ -93,5 +93,71 @@ namespace ModuleInject.Fluent
             return instance;
         }
 
+        public static InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
+            AddInjector<IComponent, TComponent, IModule, TModule>(
+            this InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+            IInterfaceInjector<IComponent, IModule, TModule> injector)
+            where TComponent : IComponent
+            where TModule : IModule
+            where IModule : IInjectionModule
+        {
+            CommonFunctions.CheckNullArgument("component", component);
+            CommonFunctions.CheckNullArgument("injector", injector);
+
+            var interfaceContext = new InterfaceRegistrationContext<IComponent, IModule, TModule>(component.Context.ComponentRegistrationContext);
+            injector.InjectInto(interfaceContext);
+            return component;
+        }
+
+        public static InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
+            AddInjector<IComponent, TComponent, IModule, TModule, IComponentBase, IModuleBase>(
+            this InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+            IInterfaceInjector<IComponentBase, IModuleBase> injector)
+            where TComponent : IComponent, IComponentBase
+            where TModule : IModule, IModuleBase
+            where IModule : IInjectionModule
+        {
+            CommonFunctions.CheckNullArgument("component", component);
+            CommonFunctions.CheckNullArgument("injector", injector);
+
+            var interfaceContext = new InterfaceRegistrationContext<IComponentBase, IModuleBase>(component.Context.ComponentRegistrationContext);
+            injector.InjectInto(interfaceContext);
+            return component;
+        }
+
+        public static InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
+            AddInterfaceInjection<IComponent, TComponent, IModule, TModule>(
+            this InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+            Action<InterfaceRegistrationContext<IComponent, IModule, TModule>> injectInto)
+            where TComponent : IComponent
+            where TModule : IModule
+            where IModule : IInjectionModule
+        {
+            CommonFunctions.CheckNullArgument("injectInto", injectInto);
+
+            InterfaceInjector<IComponent, IModule, TModule> injector =
+                new InterfaceInjector<IComponent, IModule, TModule>(injectInto);
+
+            component.AddInjector(injector);
+            return component;
+        }
+
+        public static InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
+            AddInterfaceInjection<IComponent, TComponent, IModule, TModule, IComponentBase, IModuleBase>(
+            this InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+            Action<InterfaceRegistrationContext<IComponentBase, IModuleBase>> injectInto)
+            where TComponent : IComponent, IComponentBase
+            where TModule : IModule, IModuleBase
+            where IModule : IInjectionModule
+        {
+            CommonFunctions.CheckNullArgument("injectInto", injectInto);
+
+            InterfaceInjector<IComponentBase, IModuleBase> injector =
+                new InterfaceInjector<IComponentBase, IModuleBase>(injectInto);
+
+            component.AddInjector(injector);
+            return component;
+        }
+
     }
 }

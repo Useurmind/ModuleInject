@@ -95,6 +95,7 @@
     <Compile Include="PropertyModuleTest.cs" />
     <Compile Include="Module\ModuleResolverTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PureInterfaceInjectionModuleTest.cs" />
     <Compile Include="RegistryModuleTest.cs" />
     <Compile Include="RegistryUsingModuleTest.cs" />
     <Compile Include="Registry\MefRegistryBaseTest.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="TestModules\ModuleWithRegistrationErrors.cs" />
     <Compile Include="TestModules\NoAutoWiringModule.cs" />
     <Compile Include="TestModules\NoInterfaceModule.cs" />
+    <Compile Include="TestModules\PureInterfaceInjectionModule.cs" />
     <Compile Include="TestModules\RegistryUsingModule.cs" />
     <Compile Include="TestModules\RuleBreakingModule.cs" />
     <Compile Include="TestModules\SubComponent1.cs" />
