@@ -201,6 +201,7 @@ Now our PrintComponent will produce log output on the debug stream and the compl
 ####Conclusion
 Well, so far you saw how to write your first small modules. Yet, there are more topics that need to be covered before you can say you saw all of the features of ModuleInject, e.g.:
 
+* Constructor injection
 * Method injection
 * Factory methods
 * Injectors

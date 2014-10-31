@@ -191,6 +191,7 @@
     <Content Include="home.md" />
     <Content Include="method_injection.md" />
     <Content Include="injectors.md" />
+    <Content Include="registries.md" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
