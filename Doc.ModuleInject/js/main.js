@@ -16,6 +16,6 @@ function loadPageContent(element) {
     var pageUrl = $(element).attr("pageName") + ".html";
     $.get(pageUrl, function (pageContent) {
         $("#content-div").html(pageContent);
-        $('code').each(function (i, e) { hljs.highlightBlock(e) });
+        $('pre > code').each(function (i, e) { hljs.highlightBlock(e) });
     });
 }

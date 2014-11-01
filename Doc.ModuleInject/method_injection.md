@@ -5,15 +5,15 @@ In the tutorial you learned how property injection works. But there are other ki
 
 There are two ways to implement method injection.
 
-* The CallMethod function.
-* The IInitializable interface.
+* The `CallMethod` function.
+* The `IInitializable` interface.
 
-Personally, I prefer the CallMethod function because you don't need to implement some interface on your component classes that is not concerned with what your classes will do.
-When using the approach with IInitializable interface you need to implement this interface on each component that you want to initialize in that way.
+Personally, I prefer the `CallMethod` function because you don't need to implement some interface on your component classes that is not concerned with what your classes will do.
+When using the approach with `IInitializable` interface you need to implement this interface on each component that you want to initialize in that way.
 
 
 ###CallMethod
-So the first method to implement method injection is the function CallMethod which can be used like in the following example:
+So the first method to implement method injection is the function `CallMethod` which can be used like in the following example:
 
     RegisterPublicComponent<IInitializableComponent, InitializableComponent>(x => x.Component)
         .CallMethod((comp, module) => comp.Initialize(module.ComponentToInject));
@@ -25,7 +25,7 @@ You can even call a method repeatedly to e.g. fill a list via the add method.
 
 The second way requires you to implement a special interface of the component that you want to inject into through method injection. 
 
-This interface is called IInitializable. It is generic  and it's type parameters are the types of the parameters that go into the function that is used for method injection. Here is the version with one parameter:
+This interface is called `IInitializable`. It is generic  and it's type parameters are the types of the parameters that go into the function that is used for method injection. Here is the version with one parameter:
 
     public interface IInitializable<TArgument>
     {
@@ -34,7 +34,7 @@ This interface is called IInitializable. It is generic  and it's type parameters
 
 It is available with a range of numbers of arguments. But keep in mind that in a "good" class design only a limited number of dependencies are required per class.
 
-So, let's dive into implementing and using the IInitializable interface. First we define our components interface and implementation:
+So, let's dive into implementing and using the `IInitializable` interface. First we define our components interface and implementation:
 
     public interface IInitializableComponent {
         ISomeUndefinedComponent InjectedComponent { get; }
@@ -66,7 +66,7 @@ Finally, lets use the method injection to inject something into our class. I wil
             .InitializeWith(x => x.ComponentToInject);
     }
 
-So we just register the initializable component and its dependency. Afterwards, we use the dependency in the InitializeWith call. This results in the components Initialize method being called after construction with the injected component as an argument.
+So we just register the initializable component and its dependency. Afterwards, we use the dependency in the `InitializeWith` call. This results in the components Initialize method being called after construction with the injected component as an argument.
 
 ###Current limitations
-Their are currently only InitializeWith calls for up to 3 arguments and no overloads for using constant values. Can be easily fixed by creating the overloads. But time is so scarce.
+Their are currently only `InitializeWith` calls for up to 3 arguments and no overloads for using constant values. Can be easily fixed by creating the overloads. But time is so scarce.
