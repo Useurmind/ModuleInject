@@ -37,6 +37,18 @@ namespace ModuleInject.Registry
         /// <returns></returns>
         internal static IRegistry Merge(this IRegistry registry, IRegistry otherRegistry)
         {
+            var emptyRegistry1 = registry as EmptyRegistry;
+            var emptyRegistry2 = registry as EmptyRegistry;
+
+            if (emptyRegistry1 != null)
+            {
+                return otherRegistry;
+            } 
+            else if (emptyRegistry2 != null)
+            {
+                return registry;
+            }
+
             var newRegistry = new AggregateRegistry();
             newRegistry.AddRegistry(registry);
             newRegistry.AddRegistry(otherRegistry);

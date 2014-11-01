@@ -146,6 +146,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="constructor_injection.md" />
+    <Content Include="interceptors.html">
+      <DependentUpon>interceptors.md</DependentUpon>
+    </Content>
+    <Content Include="interceptors.md" />
     <None Include="factory_methods.md" />
     <Content Include="factory_methods.html">
       <DependentUpon>factory_methods.md</DependentUpon>
@@ -180,6 +184,9 @@
     <Content Include="method_injection.html">
       <DependentUpon>method_injection.md</DependentUpon>
     </Content>
+    <Content Include="module_trees.html">
+      <DependentUpon>module_trees.md</DependentUpon>
+    </Content>
     <Content Include="tutorial.html">
       <DependentUpon>tutorial.md</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -191,7 +198,7 @@
     <Content Include="home.md" />
     <Content Include="method_injection.md" />
     <Content Include="injectors.md" />
-    <Content Include="registries.md" />
+    <Content Include="module_trees.md" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

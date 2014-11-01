@@ -114,6 +114,11 @@ namespace ModuleInject
         {
             get
             {
+                if (_registry as EmptyRegistry != null)
+                {
+                    return null;
+                }
+
                 return _registry;
             }
             set

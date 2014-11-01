@@ -1,7 +1,11 @@
 ﻿Injectors
 ---------
 
-Sometimes you want to define common injection patterns for a set of components of a module. In ModuleInject you can use injectors for this purpose. Per component you can use several injectors that can inject different sets of dependencies into your component. This composition approach easily enables you to inject dependencies that come from different base classes or the composition of the class from different other classes/interface (though in the case of class composition you should then think about injecting the classes that your class is composed of).
+Sometimes you want to define common injection patterns for a set of components of a module. In ModuleInject you can use 
+injectors for this purpose. Per component you can use several injectors that can inject different sets of dependencies 
+into your component. This composition approach easily enables you to inject dependencies that come from different 
+base classes or the composition of the class from different other classes/interface (though in the case of class 
+composition you should then think about injecting the classes that your class is composed of).
 
 But now let us have a look at how an injector is implemented. So, assume that we have the following components:
 
@@ -24,7 +28,9 @@ But now let us have a look at how an injector is implemented. So, assume that we
         public ILog Log { get; private set; }
     }
 
-In this example the ILog interface is used for logging messages. All classes that want to use logging implement the ILogging interface, which contains a property with the log component required for logging. Our component InjectorComponent implements the ILogging interface and needs to injected with a proper log component.
+In this example the ILog interface is used for logging messages. All classes that want to use logging implement the ILogging 
+interface, which contains a property with the log component required for logging. Our component InjectorComponent implements
+the ILogging interface and needs to be injected with a proper log component.
 
 First, we will have a look at how to do this without injectors.
 
@@ -65,7 +71,7 @@ Looks pretty much the same for all three of them. So how do we solve this duplic
 Well, let's try using an injector:
 
     public class DebugLogInjector :  
-        ClassInjector<IInjectorComponent, InjectorComponent, IInjectorModule, InjectorModule> 
+        InterfaceInjector<IInjectorComponent, IHaveLogComponent> 
     {
         public DebugLogInjector() : base(context => {
             context.Inject(x => x.LogComponent).IntoProperty(x.Log);
@@ -75,21 +81,36 @@ Well, let's try using an injector:
 
 You can then apply it by writing the following.
 
-    public InjectorModule() {
-        ...
-        RegisterPublicComponent<IInjectorComponent, InjectorComponent>(x => x.InjectorComponent1)
-            .AddInjector(new DebugLogInjector());
-        RegisterPublicComponent<IInjectorComponent, InjectorComponent>(x => x.InjectorComponent2)
-            .AddInjector(new DebugLogInjector());
-        RegisterPublicComponent<IInjectorComponent, InjectorComponent>(x => x.InjectorComponent3)
-            .AddInjector(new DebugLogInjector());
+    // this interface is required for the injector to know where the logging component is available
+    public interface IHaveLogComponent 
+    {
+          ILog LogComponent { get; } 
     }
 
-What we just did is that we defined an injector. An injector encapsulates an injection pattern for a certain range of types. When defining such injection patterns inside an injector it works exactly the same as registering injections the usual way.
+    // the interface is applied to the module
+    public class InjectorModule : ..., IHaveLogComponent 
+    {
 
-### Class injectors vs. interface injectors
-One additional hint. We need different types of injectors for different scenarios. 
+        public InjectorModule() {
+            ...
+            RegisterPublicComponent<IInjectorComponent, InjectorComponent>(x => x.InjectorComponent1)
+                .AddInjector(new DebugLogInjector());
+            RegisterPublicComponent<IInjectorComponent, InjectorComponent>(x => x.InjectorComponent2)
+                .AddInjector(new DebugLogInjector());
+            RegisterPublicComponent<IInjectorComponent, InjectorComponent>(x => x.InjectorComponent3)
+                .AddInjector(new DebugLogInjector());
+        }
+    }
 
-Just now we used a ClassInjector. This injector can only be used inside a special module on a special concrete type. You can easily see this as it requires the interface and type of both module and component for which the injection pattern is defined.
+What we just did is that we defined an injector. An injector encapsulates an injection pattern for a certain range of types.
+When defining such injection patterns inside an injector it works exactly the same as registering injections the usual way.
 
-In comparison the InterfaceInjector requires the interface and type of the module as well as only the interface of the component. This allows you to define injectors for a wider range of types by targeting an interface with it.
+In this case we used the most abstract injector that is available, an `InterfaceInjector`. It works on any interfaces for 
+a component and a module.
+In that way you can use it in a lot of places, given you reuse the interfaces for modules and components.
+
+### Other types of injectors
+One additional hint. There are other types of injectors which limit the range of types even further. 
+
+A `ClassInjector` for example requires the exaxt interfaces and types of component and module. Therefore it is only usable
+for a specific combination of module and component types.
