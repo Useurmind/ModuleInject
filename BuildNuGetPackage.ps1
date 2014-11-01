@@ -35,6 +35,6 @@ $pushCommand = "nuget.exe Push NuGetPackages\$nugetPackage"
 Write-Host "Packing NuGet package"
 Invoke-Expression -Command:$packCommand
 Write-Host "Pushing NuGet package"
-#Invoke-Expression -Command:$pushCommand
+Invoke-Expression -Command:$pushCommand
 Write-Host "Done."
 
