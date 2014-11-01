@@ -79,10 +79,17 @@ For the registry to be available in the module we can do the following:
     // now the registry will be used to resolve the submodule
     parentModule.Resolve(); 
 
+###Example
+
+The following image shows the difference between direct resolution and resolution from a registry.
+
+![Usage of registries in ModuleInject](/images/direct_vs_registry_resolution.svg)
+
+
 ###MEF Registries
 
 To make the module resolution in registries less cumbersome or more flexible you can use a MEF registry.
-These registries use MEF to load the modules that they distribute accross your module tree.
+These registries use MEF to load the modules that they distribute across your module tree.
 
 The creation of such a registry is relatively simple. You derive from `MefRegistryBase` and do something like the
 following:
@@ -122,3 +129,18 @@ parent module.
 Note that types in the local registry of the module take priority over types in the parent registry. Also be warned that
 a module which is placed in different subtrees with different registries, it will only be resolved once with the registry
 of the subtree it is resolved in first.
+
+###Example
+
+The following diagram should give you a rough overview of what happens.
+
+![Usage of registries in ModuleInject](/images/registries.svg)
+
+In this example ModuleC holds a registry that has two modules registered. 
+
+As ModuleC requires IModuleA, it resolves it from its own registry with an instance of ModuleA.
+
+When ModuleD is resolved it will create a merged registry out of its own registry and the registry of ModuleC.
+Because IModuleA is only registered in the registry of ModuleC it is taken from there. However IModuleB is registered in
+both registries. Therefore, the registry of ModuleD takes precedence and the requested IModuleB interface is filled with
+an instance of ModuleE.

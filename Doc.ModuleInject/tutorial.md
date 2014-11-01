@@ -4,20 +4,34 @@
 ###Modules & Components
 In ModuleInject everything is centered around modules and components. 
 
-Components are the working units in your application, the classes that provide your functionality.
+Components are the working units in your application, the classes that provide your functionality. I will call them the
+runtime tree because they roughly make up a tree that represents your application during runtime.
 
-On the other hand, modules are purely made to divide your application in logical sections. They provide an interface that other modules can rely on and initialize the components that are managed by them. The interface of a module is standard C# interface with properties representing the components that the module should provide to other modules.
+On the other hand, modules are purely made to create and connect the components of your program. They can also divide 
+your application in logical sections. Because they are mostly used on application startup to create the runtime tree of 
+the application, I will call them the setup tree.
+
+The following image shows an example of these two trees.
+
+![Runtime vs. setup tree](/images/module_basics.svg)
+
+ They provide an interface that
+other modules can rely on and initialize the components that are managed by them. The interface of a module is standard 
+C# interface with properties representing the components that the module should provide to other modules.
 
     public interface IMainModule : IInjectionModule
     {
         IPrintComponent PrintComponent { get; }
     }
 
-This is how a very basic interface for module named IMainModule could look like. Other modules will consume this module purely by working with this interface.
+This is how a very basic interface for module named IMainModule could look like. Other modules will consume this module
+purely by working with this interface.
 
-This gives you nice boundaries that won't be crossed so easily. Also notice that components are offered in the form of interfaces. This is also important because else you would reveal the inner workings of your module to other modules. 
+This gives you nice boundaries that won't be crossed so easily. Also notice that components are offered in the form of
+interfaces. This is also important because else you would reveal the inner workings of your module to other modules. 
 
-You can see that ModuleInject is all about contracting between different parts of your application and separating them clearly through these contracts. This also allows to exchange modules relatively easy when you see the need to do so.
+You can see that ModuleInject is all about contracting between different parts of your application and separating them
+clearly through these contracts. This also allows to exchange modules relatively easy when you see the need to do so.
 
 ###Your first module
 ####The modules interface is its contract
