@@ -1,12 +1,31 @@
 ﻿<h2>Method injection</h2>
 
-<p>In the tutorial you learned how property injection works. But there is one more kind of injection that ModuleInject provides, namely MethodInjection.</p>
+<p>In the tutorial you learned how property injection works. But there are other kinds of injection that ModuleInject provides. One is called method injection.</p>
 
 <p>There are two ways to implement method injection.</p>
 
+<ul>
+<li>The CallMethod function.</li>
+<li>The IInitializable interface.</li>
+</ul>
+
+<p>Personally, I prefer the CallMethod function because you don't need to implement some interface on your component classes that is not concerned with what your classes will do.
+When using the approach with IInitializable interface you need to implement this interface on each component that you want to initialize in that way.</p>
+
+<h3>CallMethod</h3>
+
+<p>So the first method to implement method injection is the function CallMethod which can be used like in the following example:</p>
+
+<pre><code>RegisterPublicComponent&lt;IInitializableComponent, InitializableComponent&gt;(x =&gt; x.Component)
+    .CallMethod((comp, module) =&gt; comp.Initialize(module.ComponentToInject));
+</code></pre>
+
+<p>This is a very flexible approach because you can call any method on the component.
+You can even call a method repeatedly to e.g. fill a list via the add method.</p>
+
 <h3>IInitializable</h3>
 
-<p>Method injection in ModuleInject is strongly typed. The first way requires you to implement a special interface of the component that you want to inject into through method injection. </p>
+<p>The second way requires you to implement a special interface of the component that you want to inject into through method injection. </p>
 
 <p>This interface is called IInitializable. It is generic  and it's type parameters are the types of the parameters that go into the function that is used for method injection. Here is the version with one parameter:</p>
 
@@ -57,14 +76,3 @@ public ModuleWithMethodInjectionComponent() {
 <h3>Current limitations</h3>
 
 <p>Their are currently only InitializeWith calls for up to 3 arguments and no overloads for using constant values. Can be easily fixed by creating the overloads. But time is so scarce.</p>
-
-<h3>CallMethod</h3>
-
-<p>The second way to implement method injection is the function CallMethod which can be used like in the following example:</p>
-
-<pre><code>RegisterPublicComponent&lt;IInitializableComponent, InitializableComponent&gt;(x =&gt; x.Component)
-    .CallMethod((comp, module) =&gt; comp.Initialize(module.ComponentToInject));
-</code></pre>
-
-<p>This works pretty much the same as calling InitializeWith but is much more flexible. This is because you can call any method.
-Note that you can only inject components of the module specified in the parameter list and constant values. Both types of parameters can be casted to get the correct type.</p>
