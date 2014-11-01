@@ -51,3 +51,7 @@
     padding-right: 10px;
 
 }
+
+.center-block img {
+    max-width: 850px;
+}
