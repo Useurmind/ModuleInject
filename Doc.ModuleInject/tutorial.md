@@ -13,7 +13,7 @@ the application, I will call them the setup tree.
 
 The following image shows an example of these two trees.
 
-![Runtime vs. setup tree](/images/module_basics.svg)
+![Runtime vs. setup tree](images/module_basics.svg)
 
  They provide an interface that
 other modules can rely on and initialize the components that are managed by them. The interface of a module is standard 

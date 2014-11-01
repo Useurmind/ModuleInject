@@ -83,7 +83,7 @@ For the registry to be available in the module we can do the following:
 
 The following image shows the difference between direct resolution and resolution from a registry.
 
-![Usage of registries in ModuleInject](/images/direct_vs_registry_resolution.svg)
+![Usage of registries in ModuleInject](images/direct_vs_registry_resolution.svg)
 
 
 ###MEF Registries
@@ -134,7 +134,7 @@ of the subtree it is resolved in first.
 
 The following diagram should give you a rough overview of what happens.
 
-![Usage of registries in ModuleInject](/images/registries.svg)
+![Usage of registries in ModuleInject](images/registries.svg)
 
 In this example ModuleC holds a registry that has two modules registered. 
 
