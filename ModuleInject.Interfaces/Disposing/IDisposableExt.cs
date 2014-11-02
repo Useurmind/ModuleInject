@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace ModuleInject.Common.Disposing
+namespace ModuleInject.Interfaces.Disposing
 {
     using System;
 

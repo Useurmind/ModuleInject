@@ -45,6 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Disposing\DisposedEventArgs.cs" />
+    <Compile Include="Disposing\DisposingEventArgs.cs" />
+    <Compile Include="Disposing\IDisposableExt.cs" />
     <Compile Include="Fluent\IComponentRegistrationContext.cs" />
     <Compile Include="Fluent\IDependencyInjectionContext.cs" />
     <Compile Include="Fluent\IInstanceDependencyInjectionContext.cs" />

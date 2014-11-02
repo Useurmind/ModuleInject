@@ -99,6 +99,10 @@
       <Project>{6a423006-aae9-4c5a-b168-6a2d7f7fcd71}</Project>
       <Name>ModuleInject.Container</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ModuleInject.Interfaces\ModuleInject.Interfaces.csproj">
+      <Project>{f220afe2-9601-4f1b-9c4b-4ca04089073b}</Project>
+      <Name>ModuleInject.Interfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

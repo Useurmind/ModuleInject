@@ -1,4 +1,6 @@
-﻿namespace ModuleInject.Common.Disposing
+﻿using System.Linq;
+
+namespace ModuleInject.Interfaces.Disposing
 {
     using System;
 

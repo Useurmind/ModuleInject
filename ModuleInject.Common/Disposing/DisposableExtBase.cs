@@ -4,6 +4,8 @@ namespace ModuleInject.Common.Disposing
 {
     using System;
 
+    using ModuleInject.Interfaces.Disposing;
+
     /// <summary>
     /// The disposable ext base.
     /// </summary>

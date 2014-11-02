@@ -93,6 +93,10 @@
       <Project>{2be60231-ead7-4330-b40e-fc21e97bac66}</Project>
       <Name>ModuleInject.Container.Interface</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ModuleInject.Interfaces\ModuleInject.Interfaces.csproj">
+      <Project>{f220afe2-9601-4f1b-9c4b-4ca04089073b}</Project>
+      <Name>ModuleInject.Interfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="ModuleInject.snk" />
