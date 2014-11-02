@@ -1,4 +1,4 @@
-![ModuleInject](Doc.ModuleInject/images/ModuleInjectLogo.svg)
+![ModuleInject](ModuleInjectLogo.png)
 
 Welcome to the ModuleInject homepage.
 
