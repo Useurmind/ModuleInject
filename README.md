@@ -1,5 +1,5 @@
-Project Description
-===================
+![ModuleInject](Doc.ModuleInject/images/ModuleInjectLogo.svg)
+
 Welcome to the ModuleInject homepage.
 
 This project aims at creating an IoC framework that is strongly typed, modular, explicit and provides a high degree of compiler support for detecting errors.
