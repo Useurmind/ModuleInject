@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Jochen Grün")]
 [assembly: AssemblyProduct("ModuleInject")]
-[assembly: AssemblyCopyright("Copyright ©  2014 Jochen Grün")]
+[assembly: AssemblyCopyright("Copyright © Jochen Grün 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
