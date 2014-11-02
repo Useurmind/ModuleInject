@@ -1,7 +1,6 @@
 ﻿using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.InterceptionExtension;
 using ModuleInject.Fluent;
-using ModuleInject.Interfaces;
 using ModuleInject.Module;
 using ModuleInject.Utility;
 using System;
@@ -21,6 +20,7 @@ namespace ModuleInject
     using ModuleInject.Container.Interface;
     using ModuleInject.Container.Lifetime;
     using ModuleInject.Decoration;
+    using ModuleInject.Interfaces;
     using ModuleInject.Registry;
 
     public abstract class InjectionModule : IInjectionModule, IDisposable

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Practices.Unity;
 using Unity = Microsoft.Practices.Unity.InterceptionExtension;
-using ModuleInject.Interfaces;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,10 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace ModuleInject.Fluent
 {
-    public class InterfaceRegistrationContext<IComponent, IModuleBase, TModule>
+    using ModuleInject.Interfaces;
+    using ModuleInject.Interfaces.Fluent;
+
+    public class InterfaceRegistrationContext<IComponent, IModuleBase, TModule> : IInterfaceRegistrationContext<IComponent, IModuleBase, TModule>
         where TModule : IModuleBase      
         where IModuleBase : IInjectionModule
     {
@@ -32,7 +35,7 @@ namespace ModuleInject.Fluent
         }
     }
 
-    public class InterfaceRegistrationContext<IComponentBase, IModuleBase>
+    public class InterfaceRegistrationContext<IComponentBase, IModuleBase> : IInterfaceRegistrationContext<IComponentBase, IModuleBase>
     {
         internal ComponentRegistrationContext Context { get; private set; }
 

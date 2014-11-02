@@ -1,6 +1,6 @@
 ﻿using Microsoft.Practices.Unity;
 using Unity = Microsoft.Practices.Unity.InterceptionExtension;
-using ModuleInject.Interfaces;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +14,7 @@ namespace ModuleInject.Fluent
     using ModuleInject.Common.Exceptions;
     using ModuleInject.Container.Interface;
     using ModuleInject.Container.Resolving;
+    using ModuleInject.Interfaces;
 
     internal class ComponentRegistrationTypes
     {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Practices.Unity;
-using ModuleInject.Interfaces;
+
 using ModuleInject.Utility;
 using System;
 using System.Collections.Generic;
@@ -10,12 +10,14 @@ using System.Text;
 namespace ModuleInject.Fluent
 {
     using ModuleInject.Common.Utility;
+    using ModuleInject.Interfaces;
+    using ModuleInject.Interfaces.Fluent;
 
     public static class ValueInjectionContextExtensions
     {
-        public static ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> 
+        public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> 
             IntoProperty<IComponent, TComponent, IModule, TModule, TDependency, TProperty>(
-            this ValueInjectionContext<IComponent, TComponent, IModule, TModule, TDependency> value,
+            this IValueInjectionContext<IComponent, TComponent, IModule, TModule, TDependency> value,
             Expression<Func<TComponent, TProperty>> dependencyTargetExpression
         )
             where TComponent : IComponent
@@ -25,9 +27,11 @@ namespace ModuleInject.Fluent
         {
             CommonFunctions.CheckNullArgument("value", value);
 
-            value.Context.IntoProperty(dependencyTargetExpression);
+            var contextImpl = (ValueInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>)value;
 
-            return value.ComponentContext;
+            contextImpl.Context.IntoProperty(dependencyTargetExpression);
+
+            return contextImpl.ComponentContext;
         }
     }
 }

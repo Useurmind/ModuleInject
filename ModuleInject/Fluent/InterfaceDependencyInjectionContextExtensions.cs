@@ -1,5 +1,5 @@
 ﻿using Microsoft.Practices.Unity;
-using ModuleInject.Interfaces;
+
 using ModuleInject.Utility;
 using System;
 using System.Collections.Generic;
@@ -10,12 +10,14 @@ using System.Text;
 namespace ModuleInject.Fluent
 {
     using ModuleInject.Common.Utility;
+    using ModuleInject.Interfaces;
+    using ModuleInject.Interfaces.Fluent;
 
     public static class InterfaceDependencyInjectionContextExtensions
     {
-        public static InterfaceRegistrationContext<IComponent, IModule, TModule> 
+        public static IInterfaceRegistrationContext<IComponent, IModule, TModule> 
             IntoProperty<IComponent, IModule, TModule, TDependency, TProperty>(
-            this InterfaceDependencyInjectionContext<IComponent, IModule, TModule, TDependency> dependency,
+            this IInterfaceDependencyInjectionContext<IComponent, IModule, TModule, TDependency> dependency,
             Expression<Func<IComponent, TProperty>> dependencyTargetExpression
             )
             where TProperty : TDependency
@@ -24,23 +26,39 @@ namespace ModuleInject.Fluent
         {
             CommonFunctions.CheckNullArgument("dependency", dependency);
 
-            dependency.Context.IntoProperty(dependencyTargetExpression);
+            var contextImpl = GetContextImplementation(dependency);
 
-            return dependency.ComponentContext;
+            contextImpl.Context.IntoProperty(dependencyTargetExpression);
+
+            return contextImpl.ComponentContext;
         }
 
-        public static InterfaceRegistrationContext<IComponent, IModule>
+        public static IInterfaceRegistrationContext<IComponent, IModule>
             IntoProperty<IComponent, IModule, TDependency, TProperty>(
-            this InterfaceDependencyInjectionContext<IComponent, IModule, TDependency> dependency,
+            this IInterfaceDependencyInjectionContext<IComponent, IModule, TDependency> dependency,
             Expression<Func<IComponent, TProperty>> dependencyTargetExpression
             )
             where TProperty : TDependency
         {
             CommonFunctions.CheckNullArgument("dependency", dependency);
 
-            dependency.Context.IntoProperty(dependencyTargetExpression);
+            var contextImpl = GetContextImplementation(dependency);
 
-            return dependency.ComponentContext;
+            contextImpl.Context.IntoProperty(dependencyTargetExpression);
+
+            return contextImpl.ComponentContext;
+        }
+
+        private static InterfaceDependencyInjectionContext<IComponent, IModule, TModule, TDependency> GetContextImplementation<IComponent, IModule, TModule, TDependency>(IInterfaceDependencyInjectionContext<IComponent, IModule, TModule, TDependency> dependency)
+            where TModule : IModule
+            where IModule : IInjectionModule
+        {
+            return (InterfaceDependencyInjectionContext<IComponent, IModule, TModule, TDependency>)dependency;
+        }
+
+        private static InterfaceDependencyInjectionContext<IComponent, IModule, TDependency> GetContextImplementation<IComponent, IModule, TDependency>(IInterfaceDependencyInjectionContext<IComponent, IModule, TDependency> dependency)
+        {
+            return (InterfaceDependencyInjectionContext<IComponent, IModule, TDependency>)dependency;
         }
     }
 }

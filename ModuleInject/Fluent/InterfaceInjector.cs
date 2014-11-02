@@ -1,24 +1,26 @@
-﻿using ModuleInject.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace ModuleInject.Fluent
 {
+    using ModuleInject.Interfaces;
+    using ModuleInject.Interfaces.Fluent;
+
     public class InterfaceInjector<IComponent, IModule, TModule> :
         IInterfaceInjector<IComponent, IModule, TModule>
         where TModule : IModule
         where IModule : IInjectionModule
     {
-        private Action<InterfaceRegistrationContext<IComponent, IModule, TModule>> _injectInto;
+        private Action<IInterfaceRegistrationContext<IComponent, IModule, TModule>> _injectInto;
 
-        public InterfaceInjector(Action<InterfaceRegistrationContext<IComponent, IModule, TModule>> injectInto)
+        public InterfaceInjector(Action<IInterfaceRegistrationContext<IComponent, IModule, TModule>> injectInto)
         {
             _injectInto = injectInto;
         }
 
-        public void InjectInto(InterfaceRegistrationContext<IComponent, IModule, TModule> context)
+        public void InjectInto(IInterfaceRegistrationContext<IComponent, IModule, TModule> context)
         {
             _injectInto(context);
         }
@@ -27,14 +29,14 @@ namespace ModuleInject.Fluent
     public class InterfaceInjector<IComponentBase, IModuleBase> :
         IInterfaceInjector<IComponentBase, IModuleBase>
     {
-        private Action<InterfaceRegistrationContext<IComponentBase, IModuleBase>> _injectInto;
+        private Action<IInterfaceRegistrationContext<IComponentBase, IModuleBase>> _injectInto;
 
-        public InterfaceInjector(Action<InterfaceRegistrationContext<IComponentBase, IModuleBase>> injectInto)
+        public InterfaceInjector(Action<IInterfaceRegistrationContext<IComponentBase, IModuleBase>> injectInto)
         {
             _injectInto = injectInto;
         }
 
-        public void InjectInto(InterfaceRegistrationContext<IComponentBase, IModuleBase> context)
+        public void InjectInto(IInterfaceRegistrationContext<IComponentBase, IModuleBase> context)
         {
             _injectInto(context);
         }

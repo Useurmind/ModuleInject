@@ -1,6 +1,6 @@
 ﻿using ModuleInject;
 using ModuleInject.Fluent;
-using ModuleInject.Interfaces;
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,6 +9,8 @@ using System.Text;
 
 namespace Test.ModuleInject.TestModules
 {
+    using global::ModuleInject.Interfaces;
+
     public interface ITestSuperModule : IInjectionModule
     {
         IPropertyModule MainModule { get; }

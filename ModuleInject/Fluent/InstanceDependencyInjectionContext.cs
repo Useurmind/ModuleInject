@@ -1,12 +1,14 @@
-﻿using ModuleInject.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace ModuleInject.Fluent
 {
-    public class InstanceDependencyInjectionContext<IComponent, TComponent, IModule, TModule, IDependencyComponent>
+    using ModuleInject.Interfaces;
+    using ModuleInject.Interfaces.Fluent;
+
+    public class InstanceDependencyInjectionContext<IComponent, TComponent, IModule, TModule, IDependencyComponent> : IInstanceDependencyInjectionContext<IComponent, TComponent, IModule, TModule, IDependencyComponent>
         where TComponent : IComponent
         where TModule : IModule
         where IModule : IInjectionModule

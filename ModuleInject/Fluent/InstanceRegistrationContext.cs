@@ -1,5 +1,5 @@
 ﻿using Microsoft.Practices.Unity;
-using ModuleInject.Interfaces;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,19 +20,6 @@ namespace ModuleInject.Fluent
             this.ComponentRegistrationContext = new ComponentRegistrationContext(name, module, container, types, false);
             ComponentName = name;
             Container = container;
-        }
-    }
-
-    public class InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
-        where TComponent : IComponent
-        where TModule : IModule
-        where IModule : IInjectionModule
-    {
-        internal InstanceRegistrationContext Context { get; private set; }
-
-        internal InstanceRegistrationContext(InstanceRegistrationContext context)
-        {
-            Context = context;
         }
     }
 }

@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace ModuleInject.Interfaces
 {
+    using System;
+
     /// <summary>
     /// Interface for an module which is part of the injection process.
     /// </summary>

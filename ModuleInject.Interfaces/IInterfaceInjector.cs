@@ -1,8 +1,5 @@
-﻿using ModuleInject.Fluent;
-using System;
-using System.Collections.Generic;
+﻿using ModuleInject.Interfaces.Fluent;
 using System.Linq;
-using System.Text;
 
 namespace ModuleInject.Interfaces
 {
@@ -22,7 +19,7 @@ namespace ModuleInject.Interfaces
         /// </summary>
         /// <remarks>Only the component interface is available here, so you can only use that one.</remarks>
         /// <param name="context">The context which can be used to inject other components into this one.</param>
-        void InjectInto(InterfaceRegistrationContext<IComponent, IModule, TModule> context);
+        void InjectInto(IInterfaceRegistrationContext<IComponent, IModule, TModule> context);
     }
 
     /// <summary>
@@ -38,6 +35,6 @@ namespace ModuleInject.Interfaces
         /// </summary>
         /// <remarks>Only an interface of component and module is available here, so you can only use these.</remarks>
         /// <param name="context">The context which can be used to inject other components into this one.</param>
-        void InjectInto(InterfaceRegistrationContext<IComponentBase, IModuleBase> context);
+        void InjectInto(IInterfaceRegistrationContext<IComponentBase, IModuleBase> context);
     }
 }

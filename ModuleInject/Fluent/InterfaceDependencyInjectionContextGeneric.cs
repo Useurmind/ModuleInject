@@ -1,12 +1,14 @@
-﻿using ModuleInject.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace ModuleInject.Fluent
 {
-    public class InterfaceDependencyInjectionContext<IComponent, IModule, TModule, IDependencyComponent>
+    using ModuleInject.Interfaces;
+    using ModuleInject.Interfaces.Fluent;
+
+    public class InterfaceDependencyInjectionContext<IComponent, IModule, TModule, IDependencyComponent> : IInterfaceDependencyInjectionContext<IComponent, IModule, TModule, IDependencyComponent>
         where TModule : IModule
         where IModule : IInjectionModule
     {
@@ -22,7 +24,7 @@ namespace ModuleInject.Fluent
         }
     }
 
-    public class InterfaceDependencyInjectionContext<IComponentBase, IModuleBase, IDependencyComponent>
+    public class InterfaceDependencyInjectionContext<IComponentBase, IModuleBase, IDependencyComponent> : IInterfaceDependencyInjectionContext<IComponentBase, IModuleBase, IDependencyComponent>
     {
         internal DependencyInjectionContext Context { get; private set; }
         public InterfaceRegistrationContext<IComponentBase, IModuleBase> ComponentContext { get; private set; }

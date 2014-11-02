@@ -1,11 +1,12 @@
-﻿using ModuleInject.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace Test.ModuleInject.TestModules
 {
+    using global::ModuleInject.Interfaces;
+
     public interface IMainComponent1Sub
     {
         IMainComponent2 MainComponent2 { get; set; }

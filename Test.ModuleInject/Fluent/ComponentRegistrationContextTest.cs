@@ -52,7 +52,7 @@ namespace Test.ModuleInject.Fluent
         public void Inject_DependencyContextValuesSetCorrectly()
         {
             string depPropName = Property.Get((IPropertyModule x) => x.Component2);
-            var depContext = _context.Inject(x => x.Component2);
+            var depContext = (DependencyInjectionContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule, IMainComponent2>)_context.Inject(x => x.Component2);
 
             Assert.AreSame(_context, depContext.ComponentContext);
             Assert.AreEqual(depPropName, depContext.DependencyName);

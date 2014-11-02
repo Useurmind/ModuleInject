@@ -1,5 +1,5 @@
 ﻿using Microsoft.Practices.Unity;
-using ModuleInject.Interfaces;
+
 using ModuleInject.Utility;
 using System;
 using System.Collections.Generic;
@@ -11,12 +11,14 @@ using System.Text;
 namespace ModuleInject.Fluent
 {
     using ModuleInject.Common.Utility;
+    using ModuleInject.Interfaces;
+    using ModuleInject.Interfaces.Fluent;
 
     public static class InstanceDependencyInjectionContextExtensions
     {
-        public static InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
+        public static IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
             IntoProperty<IComponent, TComponent, IModule, TModule, TProperty>(
-            this InstanceDependencyInjectionContext<IComponent, TComponent, IModule, TModule, TProperty> instanceDependencyInject,
+            this IInstanceDependencyInjectionContext<IComponent, TComponent, IModule, TModule, TProperty> instanceDependencyInject,
             Expression<Func<TComponent, TProperty>> dependencyTargetExpression
             )
             where TComponent : IComponent
@@ -26,10 +28,13 @@ namespace ModuleInject.Fluent
             CommonFunctions.CheckNullArgument("instanceDependencyInject", instanceDependencyInject);
 
             string targetPropertyName = LinqHelper.GetMemberPath(dependencyTargetExpression);
+            var contextImpl =
+                (InstanceDependencyInjectionContext<IComponent, TComponent, IModule, TModule, TProperty>)
+                instanceDependencyInject;
 
-            instanceDependencyInject.DependencyInjectionContext.IntoProperty(dependencyTargetExpression);
+            contextImpl.DependencyInjectionContext.IntoProperty(dependencyTargetExpression);
 
-            return instanceDependencyInject.InstanceContext;
+            return contextImpl.InstanceContext;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using ModuleInject.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -13,6 +12,7 @@ namespace ModuleInject.Utility
     using ModuleInject.Common.Linq;
     using ModuleInject.Common.Utility;
     using ModuleInject.Decoration;
+    using ModuleInject.Interfaces;
 
     public static class TypeExtensions
     {

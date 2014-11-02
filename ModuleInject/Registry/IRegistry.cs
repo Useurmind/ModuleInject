@@ -7,7 +7,6 @@ namespace ModuleInject.Registry
 
     using ModuleInject.Common.Disposing;
     using ModuleInject.Container;
-    using ModuleInject.Interfaces;
     using ModuleInject.Utility;
 
     /// <summary>

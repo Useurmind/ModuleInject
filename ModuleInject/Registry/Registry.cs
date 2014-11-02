@@ -8,7 +8,6 @@ namespace ModuleInject.Registry
     using System.Dynamic;
 
     using ModuleInject.Common.Exceptions;
-    using ModuleInject.Interfaces;
     using ModuleInject.Utility;
     using ModuleInject.Container.Interface;
     using ModuleInject.Container;
