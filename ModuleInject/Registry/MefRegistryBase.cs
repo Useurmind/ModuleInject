@@ -17,14 +17,14 @@ namespace ModuleInject.Registry
     using ModuleInject.Container.Lifetime;
 
 
-    public abstract class MefRegistryBase : Registry
+    public abstract class MefRegistryBase : StandardRegistry
     {
         private CompositionContainer compositionContainer;
 
         private AggregateCatalog aggregateCatalog;
         private bool isComposed;
 
-        public MefRegistryBase()
+        protected MefRegistryBase()
         {
             aggregateCatalog = new AggregateCatalog();
             compositionContainer = new CompositionContainer(aggregateCatalog);

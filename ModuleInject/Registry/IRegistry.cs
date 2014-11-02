@@ -10,7 +10,7 @@ namespace ModuleInject.Registry
     using ModuleInject.Utility;
 
     /// <summary>
-    /// Internal interface for a <see cref="Registry"/>.
+    /// Internal interface for a <see cref="StandardRegistry"/>.
     /// </summary>
     /// <remarks>
     /// Registries are meant to distribute top level modules whose interface is unique but which are required 

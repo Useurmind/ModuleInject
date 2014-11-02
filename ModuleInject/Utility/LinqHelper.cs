@@ -55,6 +55,7 @@ namespace ModuleInject.Utility
         /// <param name="expression"></param>
         /// <param name="memberPath"></param>
         /// <param name="memberType"></param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "1#"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#")]
         public static void GetMemberPathAndType(Expression expression, out string memberPath, out Type memberType)
         {
             memberType = null;
@@ -89,11 +90,13 @@ namespace ModuleInject.Utility
             return GetMemberPath(expression, out depth);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "1#")]
         public static string GetMemberPath<TObject, TProperty>(Expression<Func<TObject, TProperty>> expression, out int depth)
         {
             return GetMemberPath((Expression)expression, out depth);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "1#")]
         public static string GetMemberPath(Expression expression, out int depth)
         {
             MemberChainEvaluator propertyExtractor = new MemberChainEvaluator();
@@ -125,7 +128,7 @@ namespace ModuleInject.Utility
         /// <param name="methodCallExpression"></param>
         /// <param name="methodName"></param>
         /// <param name="arguments"></param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes",
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "1#"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes",
             Justification = "General catch is ok because an exception is thrown instead.")]
         public static void GetMethodNameAndArguments(LambdaExpression methodCallExpression, out string methodName,
             out IList<MethodCallArgument> arguments)

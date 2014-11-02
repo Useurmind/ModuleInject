@@ -27,7 +27,6 @@ namespace ModuleInject.Fluent
         {
             CommonFunctions.CheckNullArgument("instanceDependencyInject", instanceDependencyInject);
 
-            string targetPropertyName = LinqHelper.GetMemberPath(dependencyTargetExpression);
             var contextImpl =
                 (InstanceDependencyInjectionContext<IComponent, TComponent, IModule, TModule, TProperty>)
                 instanceDependencyInject;

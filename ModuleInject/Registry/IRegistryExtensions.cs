@@ -17,7 +17,8 @@ namespace ModuleInject.Registry
         /// <typeparam name="IModule">The interface of the module.</typeparam>
         /// <typeparam name="TModule">The type of the module.</typeparam>
         /// <param name="registry">The registry module in which the module is registered.</param>
-        public static void RegisterModule<IModule, TModule>(this Registry registry)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Explicit generic interface")]
+        public static void RegisterModule<IModule, TModule>(this StandardRegistry registry)
             where TModule : IModule, new()
             where IModule : IInjectionModule
         {
@@ -38,7 +39,7 @@ namespace ModuleInject.Registry
         internal static IRegistry Merge(this IRegistry registry, IRegistry otherRegistry)
         {
             var emptyRegistry1 = registry as EmptyRegistry;
-            var emptyRegistry2 = registry as EmptyRegistry;
+            var emptyRegistry2 = otherRegistry as EmptyRegistry;
 
             if (emptyRegistry1 != null)
             {

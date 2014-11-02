@@ -8,6 +8,8 @@ using System.Text;
 
 namespace ModuleInject.Utility
 {
+    using System.Diagnostics.CodeAnalysis;
+
     using ModuleInject.Common.Exceptions;
     using ModuleInject.Common.Linq;
 
@@ -102,6 +104,7 @@ namespace ModuleInject.Utility
             return _memberExpressions;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0")]
         protected override Expression VisitMemberAccess(MemberExpression m)
         {
             CheckChainIsContinuous(m);
@@ -119,6 +122,7 @@ namespace ModuleInject.Utility
             return base.VisitMemberAccess(m);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0")]
         protected override Expression VisitMethodCall(MethodCallExpression m)
         {
             CheckChainIsContinuous(m);
@@ -136,6 +140,7 @@ namespace ModuleInject.Utility
             return base.VisitMethodCall(m);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0")]
         protected override Expression VisitParameter(ParameterExpression parameterExpression)
         {
             CheckChainIsContinuous(parameterExpression);
@@ -151,6 +156,7 @@ namespace ModuleInject.Utility
             return base.VisitParameter(parameterExpression);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0")]
         protected override Expression VisitUnary(UnaryExpression unaryExpression)
         {
             if (unaryExpression.NodeType == ExpressionType.Convert)

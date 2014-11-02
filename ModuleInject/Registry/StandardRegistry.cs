@@ -15,35 +15,35 @@ namespace ModuleInject.Registry
     /// <summary>
     /// A simple registry module that implements type based resolution of entries.
     /// </summary>
-    public class Registry : IRegistry
+    public class StandardRegistry : IRegistry
     {
         private const string componentName = "a";
 
-        protected IDependencyContainer container;
+        protected IDependencyContainer Container { get; private set; }
 
-        public Registry()
+        public StandardRegistry()
         {
-            container = new DependencyContainer();
+            this.Container = new DependencyContainer();
         }
 
         internal override  bool IsRegistered(Type type)
         {
-            return container.IsRegistered(componentName, type);
+            return this.Container.IsRegistered(componentName, type);
         }
 
         internal override object GetComponent(Type type)
         {
-            return container.Resolve(componentName, type);
+            return this.Container.Resolve(componentName, type);
         }
 
         public virtual void Register<T>(Func<T> factoryFunc)
         {
-            container.Register(componentName, typeof(T), depCont => (object)factoryFunc());
+            this.Container.Register(componentName, typeof(T), depCont => (object)factoryFunc());
         }
 
         protected virtual void Register(Type type, object instance)
         {
-            container.Register(componentName, type, instance);
+            this.Container.Register(componentName, type, instance);
         }
     }
 }

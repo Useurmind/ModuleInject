@@ -69,8 +69,8 @@ namespace ModuleInject.Module
             object currentValue = propInfo.GetValue(_module, null);
             if (currentValue != null)
             {
-                // does not work anymore because the module is connected with the container
-                // the properties are now set when resolved in the container
+                // does not work anymore because the module is connected with the Container
+                // the properties are now set when resolved in the Container
                 //if (!propInfo.HasCustomAttribute<ExternalComponentAttribute>())
                 //{
                 //    ExceptionHelper.ThrowPropertyAndTypeException<TModule>(Errors.ModuleResolver_PropertyWithoutExternalAttribute, propInfo.Name);

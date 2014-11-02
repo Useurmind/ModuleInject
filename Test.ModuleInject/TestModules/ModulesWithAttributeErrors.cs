@@ -34,7 +34,7 @@ namespace Test.ModuleInject.TestModules
 
         public ModuleWithNonMarkedRegistryComponent()
         {
-            Registry registry = new Registry();
+            StandardRegistry registry = new StandardRegistry();
 
             registry.Register(() => 1);
 

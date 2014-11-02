@@ -115,7 +115,7 @@
     <Compile Include="Registry\IRegistry.cs" />
     <Compile Include="Registry\MefRegistryBase.cs" />
     <Compile Include="Registry\RegistrationEntry.cs" />
-    <Compile Include="Registry\Registry.cs" />
+    <Compile Include="Registry\StandardRegistry.cs" />
     <Compile Include="Registry\IRegistryExtensions.cs" />
     <Compile Include="Utility\LinqHelper.cs" />
     <Compile Include="Utility\MemberChainEvaluator.cs" />

@@ -11,12 +11,12 @@ namespace Test.ModuleInject
     [TestFixture]
     public class RegistryModuleTest
     {
-        private global::ModuleInject.Registry.Registry _registry;
+        private global::ModuleInject.Registry.StandardRegistry _registry;
 
         [SetUp]
         public void Setup()
         {
-            _registry = new global::ModuleInject.Registry.Registry();
+            _registry = new global::ModuleInject.Registry.StandardRegistry();
         }
 
         [TestCase]
@@ -49,8 +49,8 @@ namespace Test.ModuleInject
         [TestCase]
         public void Merge_TwoRegistries_ContainsAllRegistrations()
         {
-            var registry1 = new global::ModuleInject.Registry.Registry();
-            var registry2 = new global::ModuleInject.Registry.Registry();
+            var registry1 = new global::ModuleInject.Registry.StandardRegistry();
+            var registry2 = new global::ModuleInject.Registry.StandardRegistry();
 
             registry1.Register(() => new object());
             registry2.Register(() => 1);
@@ -64,8 +64,8 @@ namespace Test.ModuleInject
         [TestCase]
         public void Merge_TwoRegistries_OtherRegistryDoesNotOverrideFirstRegistry()
         {
-            var registry1 = new global::ModuleInject.Registry.Registry();
-            var registry2 = new global::ModuleInject.Registry.Registry();
+            var registry1 = new global::ModuleInject.Registry.StandardRegistry();
+            var registry2 = new global::ModuleInject.Registry.StandardRegistry();
 
             registry1.Register(() => new object());
             registry2.Register(() => new object());

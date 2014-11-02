@@ -58,7 +58,7 @@ namespace Test.ModuleInject.TestModules
 
         public void ApplyRegistry()
         {
-            Registry registry = new Registry();
+            StandardRegistry registry = new StandardRegistry();
 
             registry.RegisterModule<ISubModule, Submodule>();
             registry.RegisterModule<IPropertyModule, PropertyModule>();
