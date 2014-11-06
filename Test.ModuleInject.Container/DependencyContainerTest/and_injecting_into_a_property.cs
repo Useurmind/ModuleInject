@@ -27,5 +27,10 @@ namespace Test.ModuleInject.Container.DependencyContainerTest
         {
             new inject_a_resolved_value_from_another_container_into_property().Check(this);
         }
+
+        void a_resolved_and_modified_value_from_another_container()
+        {
+            new inject_a_resolved_and_modified_value_from_another_container_into_property().Check(this);
+        }
     }
 }

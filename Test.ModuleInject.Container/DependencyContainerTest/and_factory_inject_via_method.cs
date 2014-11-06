@@ -28,6 +28,11 @@ namespace Test.ModuleInject.Container.DependencyContainerTest
             {
                 new inject_a_container_internal_resolved_value_via_method().Check(this);
             }
+
+            void a_container_internal_resolved_and_modified_value()
+            {
+                new inject_a_container_internal_resolved_and_modified_value_via_method().Check(this);
+            }
         }
     }
 

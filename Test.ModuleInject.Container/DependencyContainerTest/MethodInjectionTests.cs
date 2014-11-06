@@ -54,6 +54,44 @@ namespace Test.ModuleInject.Container.DependencyContainerTest
         }
     }
 
+    public class inject_a_container_internal_resolved_and_modified_value_via_method : INSpecTest<IInjectionTestSpec>
+    {
+        public void Check(IInjectionTestSpec spec)
+        {
+            string propertyValueName = "adfsfg";
+            Type propertyValueType = typeof(TestClass2);
+
+            string methodName = Method.Get<ITestClass>(x => x.SetComponent(null));
+            ITestClass instance = null;
+            TestClass2 instance2 = null;
+
+            bool modifyWasCalled = false;
+            object modifiedObject = null;
+            Action<object> modifyAction = obj =>
+                {
+                    modifiedObject = obj;
+                    modifyWasCalled = true;
+                };
+
+            spec.BeforeEach = () =>
+            {
+                spec.Container.Register(propertyValueName, propertyValueType, propertyValueType);
+
+                IResolvedValue resolvedValue = new ContainerReference(spec.Container, propertyValueName, propertyValueType);
+                resolvedValue = new ModifiedResolvedValue(resolvedValue, modifyAction);
+
+                spec.Container.InjectMethod(spec.Name, spec.RegisteredType, methodName, new IResolvedValue[] { resolvedValue });
+                instance = (ITestClass)spec.Container.Resolve(spec.Name, spec.RegisteredType);
+                instance2 = (TestClass2)spec.Container.Resolve(propertyValueName, propertyValueType);
+            };
+
+            spec.It["the property should be set to the instance in the container"] = () => instance.Component.should_be_same(instance2);
+            spec.It["the modify action should have been called"] = () => modifyWasCalled.should_be_true();
+            spec.It["the modified instance should not be null"] = () => modifiedObject.should_not_be_null();
+            spec.It["the modified instance should be the same as the resolved instance"] = () => modifiedObject.should_be_same(instance2);
+        }
+    }
+
     public class call_an_overloaded_funtion_without_arguments : INSpecTest<IInjectionTestSpec>
     {
         public void Check(IInjectionTestSpec spec)

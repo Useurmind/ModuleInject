@@ -83,6 +83,7 @@
     <Compile Include="ContainerRegistration.cs" />
     <Compile Include="Resolving\ConstantValue.cs" />
     <Compile Include="Resolving\ContainerReference.cs" />
+    <Compile Include="Resolving\ModifiedResolvedValue.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ModuleInject.Common\ModuleInject.Common.csproj">
