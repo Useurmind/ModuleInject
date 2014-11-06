@@ -16,10 +16,11 @@ namespace ModuleInject.Utility
 
     public static class LinqHelper
     {
-        public static ContainerReference GetContainerReference(
+        public static IResolvedValue GetContainerReference(
             InjectionModule module,
             string memberPath,
-            Type memberType)
+            Type memberType,
+            IList<Action<object>> modifyActions=null)
         {
             CommonFunctions.CheckNullArgument("memberPath", memberPath);
 
@@ -45,7 +46,19 @@ namespace ModuleInject.Utility
                 ExceptionHelper.ThrowFormatException("");
             }
 
-            return new ContainerReference(getContainer, dependencyName, memberType);
+            IResolvedValue resolvedValue = new ContainerReference(getContainer, dependencyName, memberType);
+
+            if (modifyActions != null && modifyActions.Any())
+            {
+                var modifiedValue = new ModifiedResolvedValue(resolvedValue);
+                foreach (var modificationAction in modifyActions)
+                {
+                    modifiedValue.AddModification(modificationAction);
+                }
+                resolvedValue = modifiedValue;
+            }
+
+            return resolvedValue;
         }
 
         /// <summary>
