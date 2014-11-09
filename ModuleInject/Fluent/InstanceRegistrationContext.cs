@@ -1,25 +1,28 @@
-﻿using Microsoft.Practices.Unity;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace ModuleInject.Fluent
 {
-    using ModuleInject.Container.Interface;
+    using ModuleInject.Interfaces;
+    using ModuleInject.Interfaces.Fluent;
 
-    internal class InstanceRegistrationContext
+    public class InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> : IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
+        where TComponent : IComponent
+        where TModule : IModule
+        where IModule : IInjectionModule
     {
-        internal ComponentRegistrationContext ComponentRegistrationContext { get; private set; }
-        public string ComponentName { get; private set; }
-        internal IDependencyContainer Container { get; private set; }
+        internal RegistrationContext Context { get; private set; }
 
-        public InstanceRegistrationContext(string name, InjectionModule module, IDependencyContainer container, ComponentRegistrationTypes types)
+        public IRegistrationContext ReflectionContext
         {
-            this.ComponentRegistrationContext = new ComponentRegistrationContext(name, module, container, types, false);
-            ComponentName = name;
-            Container = container;
+            get
+            {
+                return Context;
+            }
+        }
+
+        internal InstanceRegistrationContext(RegistrationContext context)
+        {
+            this.Context = context;
         }
     }
 }

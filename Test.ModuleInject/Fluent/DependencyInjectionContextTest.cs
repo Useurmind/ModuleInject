@@ -23,14 +23,14 @@ namespace Test.ModuleInject.Fluent
         Mock<IDependencyContainer> _containerMock;
         ComponentRegistrationContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule> _componentContext;
         DependencyInjectionContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule, IMainComponent2> _depContext;
-        private ComponentRegistrationTypes _types;
-        private ComponentRegistrationContext _componentContextUntyped;
+        private RegistrationTypes _types;
+        private RegistrationContext registraitonContextUntyped;
         private DependencyInjectionContext _depContextUntyped;
 
         [SetUp]
         public void Init()
         {
-            _types = new ComponentRegistrationTypes()
+            _types = new RegistrationTypes()
             {
                 IComponent = typeof(IMainComponent1),
                 TComponent = typeof(MainComponent1),
@@ -40,10 +40,10 @@ namespace Test.ModuleInject.Fluent
             _propertyName = Property.Get((IPropertyModule x) => x.InitWithPropertiesComponent);
             _depPropertyName = Property.Get((IPropertyModule x) => x.Component2);
             _containerMock = new Mock<IDependencyContainer>();
-            _componentContextUntyped = new ComponentRegistrationContext(_propertyName, null, _containerMock.Object, _types, false);
+            this.registraitonContextUntyped = new RegistrationContext(_propertyName, null, _containerMock.Object, _types, false);
             _componentContext = new ComponentRegistrationContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule>(
-                _componentContextUntyped);
-            _depContextUntyped = new DependencyInjectionContext(_componentContextUntyped, _depPropertyName, typeof(IMainComponent2));
+                this.registraitonContextUntyped);
+            _depContextUntyped = new DependencyInjectionContext(this.registraitonContextUntyped, _depPropertyName, typeof(IMainComponent2));
             _depContext = new DependencyInjectionContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule, IMainComponent2>(
                 _componentContext, _depContextUntyped);
         }
@@ -66,7 +66,7 @@ namespace Test.ModuleInject.Fluent
         //[TestCase]
         //public void IntoProperty_MainComponent2_RegisterTypeCalledOnContainer()
         //{
-        //    var componentContext = _depContext.IntoProperty(x => x.MainComponent2);
+        //    var registrationContext = _depContext.IntoProperty(x => x.MainComponent2);
 
         //    this is not possible due to limitations of mock
         //    _containerMock.Verify(x => x.RegisterType<IMainComponent1, MainComponent1>(_propertyName, It.IsAny<InjectionProperty>()), Times.Once);

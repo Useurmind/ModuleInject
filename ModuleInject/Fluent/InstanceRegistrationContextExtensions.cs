@@ -28,7 +28,7 @@ namespace ModuleInject.Fluent
 
             var contextImpl = GetContextImplementation(instance);
 
-            contextImpl.Context.ComponentRegistrationContext.ModifyDependencyBy(dependencySourceExpression, obj => modifyAction((TDependency)obj));
+            contextImpl.Context.ModifyDependencyBy(dependencySourceExpression, obj => modifyAction((TDependency)obj));
 
             return instance;
         }
@@ -62,7 +62,7 @@ namespace ModuleInject.Fluent
 
             var contextImpl = GetContextImplementation(instance);
 
-            contextImpl.Context.ComponentRegistrationContext.InitializeWith(dependency1SourceExpression);
+            contextImpl.Context.InitializeWith(dependency1SourceExpression);
 
             return instance;
         }
@@ -79,7 +79,7 @@ namespace ModuleInject.Fluent
 
             var contextImpl = GetContextImplementation(instance);
 
-            contextImpl.Context.ComponentRegistrationContext.InitializeWith(dependency1SourceExpression, dependency2SourceExpression);
+            contextImpl.Context.InitializeWith(dependency1SourceExpression, dependency2SourceExpression);
 
             return instance;
         }
@@ -97,7 +97,7 @@ namespace ModuleInject.Fluent
 
             var contextImpl = GetContextImplementation(instance);
 
-            contextImpl.Context.ComponentRegistrationContext.InitializeWith(dependency1SourceExpression, dependency2SourceExpression, dependency3SourceExpression);
+            contextImpl.Context.InitializeWith(dependency1SourceExpression, dependency2SourceExpression, dependency3SourceExpression);
 
             return instance;
         }
@@ -113,7 +113,7 @@ namespace ModuleInject.Fluent
 
             var contextImpl = GetContextImplementation(instance);
 
-            contextImpl.Context.ComponentRegistrationContext.CallMethod(methodCallExpression);
+            contextImpl.Context.CallMethod(methodCallExpression);
 
             return instance;
         }
@@ -130,7 +130,7 @@ namespace ModuleInject.Fluent
 
             var contextImpl = GetContextImplementation(instance);
 
-            var interfaceContext = new InterfaceRegistrationContext<IComponent, IModule, TModule>(contextImpl.Context.ComponentRegistrationContext);
+            var interfaceContext = new InterfaceRegistrationContext<IComponent, IModule, TModule>(contextImpl.Context);
             injector.InjectInto(interfaceContext);
             return instance;
         }
@@ -147,7 +147,7 @@ namespace ModuleInject.Fluent
 
             var contextImpl = GetContextImplementation(instance);
 
-            var interfaceContext = new InterfaceRegistrationContext<IComponentBase, IModuleBase>(contextImpl.Context.ComponentRegistrationContext);
+            var interfaceContext = new InterfaceRegistrationContext<IComponentBase, IModuleBase>(contextImpl.Context);
             injector.InjectInto(interfaceContext);
             return instance;
         }

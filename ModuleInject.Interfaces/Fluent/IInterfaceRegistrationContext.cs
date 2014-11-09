@@ -5,14 +5,14 @@ using System.Text;
 
 namespace ModuleInject.Interfaces.Fluent
 {
-    public interface IInterfaceRegistrationContext<IComponent, IModuleBase, TModule>
+    public interface IInterfaceRegistrationContext<IComponent, IModuleBase, TModule> : IRegistrationContextT
         where TModule : IModuleBase
         where IModuleBase : IInjectionModule
     {
     }
 
-    public interface IInterfaceRegistrationContext<IComponentBase, IModuleBase>
+    public interface IInterfaceRegistrationContext<IComponentBase, IModuleBase> : IRegistrationContextT
     {
-        
+
     }
 }

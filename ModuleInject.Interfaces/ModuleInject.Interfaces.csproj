@@ -58,6 +58,8 @@
     <Compile Include="Fluent\IInterfaceDependencyInjectionContext.cs" />
     <Compile Include="Fluent\IInterfaceRegistrationContext.cs" />
     <Compile Include="Fluent\IInterfaceValueInjectionContext.cs" />
+    <Compile Include="Fluent\IRegistrationContext.cs" />
+    <Compile Include="Fluent\IRegistrationTypes.cs" />
     <Compile Include="Fluent\IValueInjectionContext.cs" />
     <Compile Include="IClassInjector.cs" />
     <Compile Include="IInitializable1.cs" />

@@ -451,7 +451,7 @@ namespace ModuleInject
             _container.Register<IComponent, TComponent>(functionName);
             _container.SetLifetime<IComponent>(functionName, new FactoryLifetime(this));
 
-            ComponentRegistrationContext context = GetOrCreateComponentRegistrationContext<IComponent, TComponent>(functionName);
+            RegistrationContext context = GetOrCreateComponentRegistrationContext<IComponent, TComponent>(functionName);
             return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(context);
         }
 
@@ -463,16 +463,16 @@ namespace ModuleInject
             _container.Register<IComponent, TComponent>(propName);
             _container.SetLifetime<IComponent>(propName, new ComponentLifetime(this));
 
-            ComponentRegistrationContext context = GetOrCreateComponentRegistrationContext<IComponent, TComponent>(propName);
+            RegistrationContext context = GetOrCreateComponentRegistrationContext<IComponent, TComponent>(propName);
             return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(context);
         }
 
-        private ComponentRegistrationContext GetOrCreateComponentRegistrationContext<IComponent, TComponent>(string componentName)
+        private RegistrationContext GetOrCreateComponentRegistrationContext<IComponent, TComponent>(string componentName)
             where TComponent : IComponent
         {
-            ComponentRegistrationContext context;
-            ComponentRegistrationTypes types = CreateTypes<IComponent, TComponent>();
-            context = new ComponentRegistrationContext(componentName, this, _container, types, _isInterceptionActive);
+            RegistrationContext context;
+            RegistrationTypes types = CreateTypes<IComponent, TComponent>();
+            context = new RegistrationContext(componentName, this, _container, types, _isInterceptionActive);
             return context;
         }
 
@@ -484,8 +484,8 @@ namespace ModuleInject
             _container.Register<IComponent>(componentName, instance);
             _container.SetLifetime<IComponent>(componentName, new ComponentLifetime(this));
 
-            ComponentRegistrationTypes types = CreateTypes<IComponent, TComponent>();
-            InstanceRegistrationContext context = new InstanceRegistrationContext(componentName, this, _container, types);
+            RegistrationTypes types = CreateTypes<IComponent, TComponent>();
+            RegistrationContext context = new RegistrationContext(componentName, this, _container, types, true);
             instanceContext = new InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>(context);
 
             return (InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>)instanceContext;
@@ -566,9 +566,9 @@ namespace ModuleInject
             }
         }
 
-        private static ComponentRegistrationTypes CreateTypes<IComponent, TComponent>()
+        private static RegistrationTypes CreateTypes<IComponent, TComponent>()
         {
-            return new ComponentRegistrationTypes()
+            return new RegistrationTypes()
             {
                 IComponent = typeof(IComponent),
                 TComponent = typeof(TComponent),

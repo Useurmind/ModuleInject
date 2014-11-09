@@ -22,7 +22,7 @@ namespace ModuleInject.Fluent
         {
             InstanceContext = instanceContext;
             DependencyName = dependencyName;
-            DependencyInjectionContext = new DependencyInjectionContext(InstanceContext.Context.ComponentRegistrationContext, dependencyName, dependencyType);
+            DependencyInjectionContext = new DependencyInjectionContext(InstanceContext.Context, dependencyName, dependencyType);
         }
     }
 }

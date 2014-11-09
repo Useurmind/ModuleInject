@@ -82,19 +82,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Errors.resx</DependentUpon>
     </Compile>
-    <Compile Include="Fluent\InstanceRegistrationContextGeneric.cs" />
+    <Compile Include="Fluent\InstanceRegistrationContext.cs" />
     <Compile Include="Fluent\InterfaceInjector.cs" />
-    <Compile Include="Fluent\ComponentRegistrationContext.cs" />
+    <Compile Include="Fluent\RegistrationContext.cs" />
     <Compile Include="Fluent\ComponentRegistrationContextExtensions.cs" />
     <Compile Include="Fluent\InterfaceDependencyInjectionContextExtensions.cs" />
-    <Compile Include="Fluent\InterfaceDependencyInjectionContextGeneric.cs" />
-    <Compile Include="Fluent\InterfaceRegistrationContextGeneric.cs" />
+    <Compile Include="Fluent\InterfaceDependencyInjectionContext.cs" />
+    <Compile Include="Fluent\InterfaceRegistrationContext.cs" />
     <Compile Include="Fluent\DependencyInjectionContext.cs" />
     <Compile Include="Fluent\InstanceDependencyInjectionContextExtensions.cs" />
     <Compile Include="Fluent\InstanceRegistrationContextExtensions.cs" />
-    <Compile Include="Fluent\InstanceRegistrationContext.cs" />
     <Compile Include="Fluent\InstanceDependencyInjectionContext.cs" />
-    <Compile Include="Fluent\ComponentRegistrationContextGeneric.cs" />
+    <Compile Include="Fluent\ComponentRegistrationContext.cs" />
     <Compile Include="Fluent\InterfaceRegistrationContextExtensions.cs" />
     <Compile Include="Fluent\DependencyInjectionContextExtensions.cs" />
     <Compile Include="Fluent\DependencyInjectionContextGeneric.cs" />
@@ -103,7 +102,7 @@
     <Compile Include="Fluent\ModifiedDependency.cs" />
     <Compile Include="Fluent\ValueInjectionContextExtensions.cs" />
     <Compile Include="Fluent\ValueInjectionContext.cs" />
-    <Compile Include="Fluent\InterfaceValueInjectionContextGeneric.cs" />
+    <Compile Include="Fluent\InterfaceValueInjectionContext.cs" />
     <Compile Include="Fluent\ValueInjectionContextGeneric.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="InjectionModule.cs" />

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ModuleInject.Interfaces.Fluent
 {
-    public interface IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
+    public interface IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule> : IRegistrationContextT
         where TComponent : IComponent
         where TModule : IModule
         where IModule : IInjectionModule
