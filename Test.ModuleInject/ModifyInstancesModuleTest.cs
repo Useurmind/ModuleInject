@@ -38,6 +38,24 @@ namespace Test.ModuleInject
         }
 
         [TestCase]
+        public void Resolved_AfterRegisterComponentAndModifySubModulePropertyOnStrongInterfaceInjectorInjection_PropertyOfSubComponentSetByModification()
+        {
+            this.module.RegisterComponentAndModifySubModulePropertyOnStrongInterfaceInjectorInjection();
+            this.module.Resolve();
+
+            Assert.AreSame(this.module.Component.SubComponent1.SubComponent2, this.module.SubComponent);
+        }
+
+        [TestCase]
+        public void Resolved_AfterRegisterComponentAndModifySubModulePropertyOnWeakInterfaceInjectorInjection_PropertyOfSubComponentSetByModification()
+        {
+            this.module.RegisterComponentAndModifySubModulePropertyOnWeakInterfaceInjectorInjection();
+            this.module.Resolve();
+
+            Assert.AreSame(this.module.Component.SubComponent1.SubComponent2, this.module.SubComponent);
+        }
+
+        [TestCase]
         public void Resolved_AfterRegisterComponentAndModifySubModulePropertyOnConstructorInjection_PropertyOfComponentsMainComponent2SetToIntValue()
         {
             this.module.RegisterComponentAndModifySubModulePropertyOnConstructorInjection();

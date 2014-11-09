@@ -7,11 +7,14 @@ using System.Text;
 
 namespace Test.ModuleInject.TestModules
 {
-    using System.Security.Cryptography.X509Certificates;
-
     using global::ModuleInject.Fluent;
 
-    class ModifyInstancesModule : InjectionModule<IEmptyModule, ModifyInstancesModule>, IEmptyModule
+    interface IModifyInstancesModule
+    {
+        ISubModule Submodule { get; }
+    }
+
+    class ModifyInstancesModule : InjectionModule<IEmptyModule, ModifyInstancesModule>, IEmptyModule,IModifyInstancesModule
     {
         [PrivateComponent]
         public IMainComponent1 Component { get; private set; }
@@ -64,6 +67,32 @@ namespace Test.ModuleInject.TestModules
             RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.Component)
                 .ModifyDependencyBy(x => x.Component2, x => x.IntProperty = IntValue)
                 .CallMethod((x, mod) => x.Initialize(mod.Component2));
+        }
+
+        public void RegisterComponentAndModifySubModulePropertyOnStrongInterfaceInjectorInjection()
+        {
+            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.Component)
+                .ModifyDependencyBy(x => x.Component2, x => x.IntProperty = IntValue)
+                .AddInterfaceInjection(
+                    context =>
+                    {
+                        context.ModifyDependencyBy(x => x.Submodule.Component1, x => x.SubComponent2 = SubComponent)
+                            .Inject(x => x.Submodule.Component1)
+                            .IntoProperty(x => x.SubComponent1);
+                    });
+        }
+
+        public void RegisterComponentAndModifySubModulePropertyOnWeakInterfaceInjectorInjection()
+        {
+            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.Component)
+                .ModifyDependencyBy(x => x.Component2, x => x.IntProperty = IntValue)
+                .AddInterfaceInjection<IMainComponent1, MainComponent1, IEmptyModule, ModifyInstancesModule, IMainComponent1, IModifyInstancesModule>(
+                    context =>
+                    {
+                        context.ModifyDependencyBy(x => x.Submodule.Component1, x => x.SubComponent2 = SubComponent)
+                            .Inject(x => x.Submodule.Component1)
+                            .IntoProperty(x => x.SubComponent1);
+                    });
         }
     }
 }

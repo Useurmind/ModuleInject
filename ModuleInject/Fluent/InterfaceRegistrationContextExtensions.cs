@@ -20,6 +20,23 @@ namespace ModuleInject.Fluent
     {
         #region component interface
 
+        public static IInterfaceRegistrationContext<IComponent, IModule, TModule>
+            ModifyDependencyBy<IComponent, IModule, TModule, TDependency>(
+            this IInterfaceRegistrationContext<IComponent, IModule, TModule> component,
+            Expression<Func<TModule, TDependency>> dependencySourceExpression,
+            Action<TDependency> modifyAction)
+            where TModule : IModule
+            where IModule : IInjectionModule
+        {
+            CommonFunctions.CheckNullArgument("component", component);
+
+            var contextImpl = GetContextImplementation(component);
+
+            contextImpl.Context.ModifyDependencyBy(dependencySourceExpression, obj => modifyAction((TDependency)obj));
+
+            return component;
+        }
+
         public static IInterfaceValueInjectionContext<IComponent, IModule, TModule, TDependency>
             Inject<IComponent, IModule, TModule, TDependency>(
             this IInterfaceRegistrationContext<IComponent, IModule, TModule> component,
@@ -154,6 +171,21 @@ namespace ModuleInject.Fluent
     public static class ComponentAndModuleInterfaceRegistrationContextExtensions{
 
         #region component and module interface
+
+        public static IInterfaceRegistrationContext<IComponent, IModule>
+            ModifyDependencyBy<IComponent, IModule, TDependency>(
+            this IInterfaceRegistrationContext<IComponent, IModule> component,
+            Expression<Func<IModule, TDependency>> dependencySourceExpression,
+            Action<TDependency> modifyAction)
+        {
+            CommonFunctions.CheckNullArgument("component", component);
+
+            var contextImpl = GetContextImplementation(component);
+
+            contextImpl.Context.ModifyDependencyBy(dependencySourceExpression, obj => modifyAction((TDependency)obj));
+
+            return component;
+        }
 
         public static IInterfaceValueInjectionContext<IComponent, IModule, TDependency>
             Inject<IComponent, IModule, TDependency>(
