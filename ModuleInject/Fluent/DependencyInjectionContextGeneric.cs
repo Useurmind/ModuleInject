@@ -8,7 +8,7 @@ namespace ModuleInject.Fluent
     using ModuleInject.Interfaces;
     using ModuleInject.Interfaces.Fluent;
 
-    public class DependencyInjectionContext<IComponent, TComponent, IModule, TModule, IDependencyComponent> : IDependencyInjectionContext<IComponent, TComponent, IModule, TModule, IDependencyComponent>
+    internal class DependencyInjectionContext<IComponent, TComponent, IModule, TModule, IDependencyComponent> : IDependencyInjectionContext<IComponent, TComponent, IModule, TModule, IDependencyComponent>
         where TModule : IModule
         where TComponent : IComponent
         where IModule : IInjectionModule

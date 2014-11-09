@@ -100,6 +100,7 @@
     <Compile Include="Fluent\ClassInjector.cs" />
     <Compile Include="Fluent\InterfaceValueInjectionContextExtensions.cs" />
     <Compile Include="Fluent\ModifiedDependency.cs" />
+    <Compile Include="Fluent\RegistrationContextBase.cs" />
     <Compile Include="Fluent\ValueInjectionContextExtensions.cs" />
     <Compile Include="Fluent\ValueInjectionContext.cs" />
     <Compile Include="Fluent\InterfaceValueInjectionContext.cs" />

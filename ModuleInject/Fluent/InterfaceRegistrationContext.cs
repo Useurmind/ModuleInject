@@ -12,42 +12,21 @@ namespace ModuleInject.Fluent
 {
     using ModuleInject.Interfaces;
     using ModuleInject.Interfaces.Fluent;
+    using ModuleInject.Module;
 
-    public class InterfaceRegistrationContext<IComponent, IModuleBase, TModule> : IInterfaceRegistrationContext<IComponent, IModuleBase, TModule>
+    internal class InterfaceRegistrationContext<IComponent, IModuleBase, TModule> : RegistrationContextBase, IInterfaceRegistrationContext<IComponent, IModuleBase, TModule>
         where TModule : IModuleBase      
         where IModuleBase : IInjectionModule
     {
-        internal RegistrationContext Context { get; private set; }
-
-        public IRegistrationContext ReflectionContext
-        {
-            get
-            {
-                return Context;
-            }
-        }
-
-        internal InterfaceRegistrationContext(RegistrationContext context)
-        {
-            Context = context;            
+        internal InterfaceRegistrationContext(RegistrationContext context) : base(context)
+        {        
         }
     }
 
-    public class InterfaceRegistrationContext<IComponentBase, IModuleBase> : IInterfaceRegistrationContext<IComponentBase, IModuleBase>
+    internal class InterfaceRegistrationContext<IComponentBase, IModuleBase> : RegistrationContextBase, IInterfaceRegistrationContext<IComponentBase, IModuleBase>
     {
-        internal RegistrationContext Context { get; private set; }
-
-        public IRegistrationContext ReflectionContext
+        internal InterfaceRegistrationContext(RegistrationContext context) : base(context)
         {
-            get
-            {
-                return Context;
-            }
-        }
-
-        internal InterfaceRegistrationContext(RegistrationContext context)
-        {
-            Context = context;
         }
     }
 }
