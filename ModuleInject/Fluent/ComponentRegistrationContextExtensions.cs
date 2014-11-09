@@ -10,12 +10,31 @@ using System.Text;
 
 namespace ModuleInject.Fluent
 {
+    using System.Diagnostics.CodeAnalysis;
+
     using ModuleInject.Common.Utility;
     using ModuleInject.Interfaces;
     using ModuleInject.Interfaces.Fluent;
 
     public static class ComponentRegistrationContextExtensions
     {
+        public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
+            ModifyDependencyBy<IComponent, TComponent, IModule, TModule, TDependency>(
+            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+            Expression<Func<TModule, TDependency>> dependencySourceExpression,
+            Action<TDependency> modifyAction)
+            where TComponent : IComponent
+            where TModule : IModule
+            where IModule : IInjectionModule
+        {
+            CommonFunctions.CheckNullArgument("component", component);
+
+            var contextImpl = GetContextImplementation(component);
+
+            contextImpl.Context.ModifyDependencyBy(dependencySourceExpression, obj => modifyAction((TDependency)obj));
+            return component;
+        }
+
         public static IValueInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>
             Inject<IComponent, TComponent, IModule, TModule, TDependency>(
             this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
@@ -253,6 +272,29 @@ namespace ModuleInject.Fluent
             var contextImpl = GetContextImplementation(component);
 
             contextImpl.Context.AlsoRegisterFor(secondModuleProperty);
+
+            return component;
+        }
+
+        /// <summary>
+        /// Add a behavior of the given type.
+        /// </summary>
+        /// <typeparam name="TBehaviour">The type of the behavior to add.</typeparam>
+        /// <returns>The current context of the fluent API.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "This API is by design statically typed")]
+        public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> AddBehaviour<IComponent, TComponent, IModule, TModule, TBehaviour>(
+            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+            TBehaviour behaviour)
+            where TComponent : IComponent
+            where TModule : IModule
+            where IModule : IInjectionModule
+            where TBehaviour : Microsoft.Practices.Unity.InterceptionExtension.IInterceptionBehavior
+        {
+            CommonFunctions.CheckNullArgument("component", component);
+
+            var contextImpl = GetContextImplementation(component);
+
+            contextImpl.Context.AddBehaviour(behaviour);
 
             return component;
         }

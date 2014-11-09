@@ -36,5 +36,23 @@ namespace Test.ModuleInject
 
             Assert.AreSame(this.module.Component.SubComponent1.SubComponent2, this.module.SubComponent);
         }
+
+        [TestCase]
+        public void Resolved_AfterRegisterComponentAndModifySubModulePropertyOnConstructorInjection_PropertyOfComponentsMainComponent2SetToIntValue()
+        {
+            this.module.RegisterComponentAndModifySubModulePropertyOnConstructorInjection();
+            this.module.Resolve();
+
+            Assert.AreEqual(this.module.IntValue, this.module.Component.MainComponent2.IntProperty);
+        }
+
+        [TestCase]
+        public void Resolved_AfterRegisterComponentAndModifySubModulePropertyOnMethodInjection_PropertyOfComponentsMainComponent2SetToIntValue()
+        {
+            this.module.RegisterComponentAndModifySubModulePropertyOnMethodInjection();
+            this.module.Resolve();
+
+            Assert.AreEqual(this.module.IntValue, this.module.Component.MainComponent2.IntProperty);
+        }
     }
 }

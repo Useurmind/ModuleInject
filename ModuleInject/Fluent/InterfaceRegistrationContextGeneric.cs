@@ -25,14 +25,6 @@ namespace ModuleInject.Fluent
         {
             Context = context;            
         }
-
-        internal InterfaceRegistrationContext<IComponent, IModuleBase, TModule> AddBehaviour<TBehaviour>()
-            where TBehaviour : Unity.IInterceptionBehavior, new()
-        {
-            Context.AddBehaviour<TBehaviour>();
-            
-            return this;
-        }
     }
 
     public class InterfaceRegistrationContext<IComponentBase, IModuleBase> : IInterfaceRegistrationContext<IComponentBase, IModuleBase>
@@ -44,14 +36,6 @@ namespace ModuleInject.Fluent
         internal InterfaceRegistrationContext(ComponentRegistrationContext context)
         {
             Context = context;
-        }
-
-        internal InterfaceRegistrationContext<IComponentBase, IModuleBase> AddBehaviour<TBehaviour>()
-            where TBehaviour : Unity.IInterceptionBehavior, new()
-        {
-            Context.AddBehaviour<TBehaviour>();
-
-            return this;
         }
     }
 }

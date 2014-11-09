@@ -15,25 +15,6 @@ namespace ModuleInject.Fluent
 
     public static class DependencyInjectionContextExtensions
     {
-        public static IDependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>
-           ModifiedBy<IComponent, TComponent, IModule, TModule, TDependency>(
-           this IDependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency> dependency,
-           Action<TDependency> modificationAction
-           )
-            where TComponent : IComponent
-            where TModule : IModule
-            where IModule : IInjectionModule
-        {
-            CommonFunctions.CheckNullArgument("dependency", dependency);
-
-            var contextImpl =
-                (DependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>)dependency;
-
-            contextImpl.Context.ModifiedBy(obj => modificationAction((TDependency)obj));
-
-            return dependency;
-        }
-
         public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> 
             IntoProperty<IComponent, TComponent, IModule, TModule, TDependency, TProperty>(
             this IDependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency> dependency,

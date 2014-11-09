@@ -7,6 +7,8 @@ using System.Text;
 
 namespace Test.ModuleInject.TestModules
 {
+    using System.Security.Cryptography.X509Certificates;
+
     using global::ModuleInject.Fluent;
 
     class ModifyInstancesModule : InjectionModule<IEmptyModule, ModifyInstancesModule>, IEmptyModule
@@ -20,26 +22,48 @@ namespace Test.ModuleInject.TestModules
         [PrivateComponent]
         public ISubModule Submodule { get; private set; }
 
+        [PrivateComponent]
+        public IMainComponent2 Component2 { get; private set; }
+
+        [NonModuleProperty]
+        public int IntValue { get; private set; }
+
         public ModifyInstancesModule()
         {
+            IntValue = 134563456;
             SubComponent = new SubComponent2();
             RegisterPrivateComponent<ISubModule, Submodule>(x => x.Submodule);
+            RegisterPrivateComponent<IMainComponent2, MainComponent2>(x => x.Component2);
         }
 
         public void RegisterComponentAndModifySubModulePropertyOnPropertyInjection()
         {
             RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.Component)
+                .ModifyDependencyBy(x => x.Submodule.Component1, x => x.SubComponent2 = SubComponent)
                 .Inject(x => x.Submodule.Component1)
-                .ModifiedBy(x => x.SubComponent2 = SubComponent)
                 .IntoProperty(x => x.SubComponent1);
         }
 
         public void RegisterInstanceAndModifySubModulePropertyOnPropertyInjection()
         {
             RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.Component, new MainComponent1())
+                .ModifyDependencyBy(x => x.Submodule.Component1, x => x.SubComponent2 = SubComponent)
                 .Inject(x => x.Submodule.Component1)
-                .ModifiedBy(x => x.SubComponent2 = SubComponent)
                 .IntoProperty(x => x.SubComponent1);
+        }
+
+        public void RegisterComponentAndModifySubModulePropertyOnConstructorInjection()
+        {
+            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.Component)
+                .ModifyDependencyBy(x => x.Component2, x => x.IntProperty = IntValue)
+                .CallConstructor(mod => new MainComponent1(mod.Component2));
+        }
+
+        public void RegisterComponentAndModifySubModulePropertyOnMethodInjection()
+        {
+            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.Component)
+                .ModifyDependencyBy(x => x.Component2, x => x.IntProperty = IntValue)
+                .CallMethod((x, mod) => x.Initialize(mod.Component2));
         }
     }
 }

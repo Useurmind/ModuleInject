@@ -15,8 +15,25 @@ namespace ModuleInject.Fluent
 
     public static class InstanceRegistrationContextExtensions
     {
-        public static IInstanceDependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>
-            Inject<IComponent, TComponent, IModule, TModule, TDependency>(
+        public static IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
+            ModifyDependencyBy<IComponent, TComponent, IModule, TModule, TDependency>(
+            this IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
+            Expression<Func<TModule, TDependency>> dependencySourceExpression,
+            Action<TDependency> modifyAction)
+            where TComponent : IComponent
+            where TModule : IModule
+            where IModule : IInjectionModule
+        {
+            CommonFunctions.CheckNullArgument("instance", instance);
+
+            var contextImpl = GetContextImplementation(instance);
+
+            contextImpl.Context.ComponentRegistrationContext.ModifyDependencyBy(dependencySourceExpression, obj => modifyAction((TDependency)obj));
+
+            return instance;
+        }
+
+        public static IInstanceDependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency> Inject<IComponent, TComponent, IModule, TModule, TDependency>(
             this IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
             Expression<Func<TModule, TDependency>> dependencySourceExpression
             )
@@ -24,9 +41,9 @@ namespace ModuleInject.Fluent
             where TModule : IModule
             where IModule : IInjectionModule
         {
-            string dependencyName =null;
+            string dependencyName = null;
             Type dependencyType = null;
-            
+
             LinqHelper.GetMemberPathAndType(dependencySourceExpression, out dependencyName, out dependencyType);
 
             var contextImpl = GetContextImplementation(instance);
@@ -34,8 +51,7 @@ namespace ModuleInject.Fluent
             return new InstanceDependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>(contextImpl, dependencyName, dependencyType);
         }
 
-        public static IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
-            InitializeWith<IComponent, TComponent, IModule, TModule, TDependency1>(
+        public static IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule> InitializeWith<IComponent, TComponent, IModule, TModule, TDependency1>(
            this IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
            Expression<Func<TModule, TDependency1>> dependency1SourceExpression)
             where TComponent : IComponent, IInitializable<TDependency1>
@@ -51,8 +67,7 @@ namespace ModuleInject.Fluent
             return instance;
         }
 
-        public static IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
-            InitializeWith<IComponent, TComponent, IModule, TModule, TDependency1, TDependency2>(
+        public static IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule> InitializeWith<IComponent, TComponent, IModule, TModule, TDependency1, TDependency2>(
             this IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
             Expression<Func<TModule, TDependency1>> dependency1SourceExpression,
             Expression<Func<TModule, TDependency2>> dependency2SourceExpression)
@@ -69,8 +84,7 @@ namespace ModuleInject.Fluent
             return instance;
         }
 
-        public static IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
-            InitializeWith<IComponent, TComponent, IModule, TModule, TDependency1, TDependency2, TDependency3>(
+        public static IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule> InitializeWith<IComponent, TComponent, IModule, TModule, TDependency1, TDependency2, TDependency3>(
            this IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
            Expression<Func<TModule, TDependency1>> dependency1SourceExpression,
            Expression<Func<TModule, TDependency2>> dependency2SourceExpression,
@@ -88,8 +102,7 @@ namespace ModuleInject.Fluent
             return instance;
         }
 
-        public static IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
-            CallMethod<IComponent, TComponent, IModule, TModule>(
+        public static IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule> CallMethod<IComponent, TComponent, IModule, TModule>(
             this IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
             Expression<Action<TComponent, TModule>> methodCallExpression)
             where TComponent : IComponent
@@ -105,8 +118,7 @@ namespace ModuleInject.Fluent
             return instance;
         }
 
-        public static IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
-            AddInjector<IComponent, TComponent, IModule, TModule>(
+        public static IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule> AddInjector<IComponent, TComponent, IModule, TModule>(
             this IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
             IInterfaceInjector<IComponent, IModule, TModule> injector)
             where TComponent : IComponent
@@ -123,8 +135,7 @@ namespace ModuleInject.Fluent
             return instance;
         }
 
-        public static IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
-            AddInjector<IComponent, TComponent, IModule, TModule, IComponentBase, IModuleBase>(
+        public static IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule> AddInjector<IComponent, TComponent, IModule, TModule, IComponentBase, IModuleBase>(
             this IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
             IInterfaceInjector<IComponentBase, IModuleBase> injector)
             where TComponent : IComponent, IComponentBase
@@ -141,8 +152,7 @@ namespace ModuleInject.Fluent
             return instance;
         }
 
-        public static IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
-            AddInterfaceInjection<IComponent, TComponent, IModule, TModule>(
+        public static IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule> AddInterfaceInjection<IComponent, TComponent, IModule, TModule>(
             this IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
             Action<IInterfaceRegistrationContext<IComponent, IModule, TModule>> injectInto)
             where TComponent : IComponent
@@ -158,8 +168,7 @@ namespace ModuleInject.Fluent
             return instance;
         }
 
-        public static IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
-            AddInterfaceInjection<IComponent, TComponent, IModule, TModule, IComponentBase, IModuleBase>(
+        public static IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule> AddInterfaceInjection<IComponent, TComponent, IModule, TModule, IComponentBase, IModuleBase>(
             this IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
             Action<IInterfaceRegistrationContext<IComponentBase, IModuleBase>> injectInto)
             where TComponent : IComponent, IComponentBase
@@ -182,6 +191,5 @@ namespace ModuleInject.Fluent
         {
             return (InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>)instance;
         }
-
     }
 }

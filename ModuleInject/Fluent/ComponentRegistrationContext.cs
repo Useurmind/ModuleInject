@@ -26,6 +26,8 @@ namespace ModuleInject.Fluent
 
     internal class ComponentRegistrationContext
     {
+        private Dictionary<string, ModifiedDependency> modifiedDependencies; 
+
         public ComponentRegistrationTypes Types { get; private set; }
         public bool IsInterceptorAlreadyAdded { get; private set; }
         public bool IsInterceptionActive { get; private set; }
@@ -44,15 +46,46 @@ namespace ModuleInject.Fluent
             Module = module;
             Container = container;
             Types = types;
+            modifiedDependencies = new Dictionary<string, ModifiedDependency>();
         }
 
         private static readonly string _initialize1MethodName = ExtractMethodName<IInitializable<object>>(x => x.Initialize(null));
         private static readonly string _initialize2MethodName = ExtractMethodName<IInitializable<object, object>>(x => x.Initialize(null, null));
         private static readonly string _initialize3MethodName = ExtractMethodName<IInitializable<object, object, object>>(x => x.Initialize(null, null, null));
 
+        private ModifiedDependency GetModifiedDependency(string dependencyPath)
+        {
+            ModifiedDependency modification = null;
+
+            this.modifiedDependencies.TryGetValue(dependencyPath, out modification);
+
+            return modification;
+        }
+
         public ValueInjectionContext Inject(object value, Type valueType)
         {
             return new ValueInjectionContext(this, value, valueType);
+        }
+
+        public ComponentRegistrationContext ModifyDependencyBy(Expression dependencySourceExpression, Action<object> modifyAction)
+        {
+            string memberPath;
+            Type memberType;
+
+            LinqHelper.GetMemberPathAndType(dependencySourceExpression, out memberPath, out memberType);
+
+            ModifiedDependency modification = null;
+            if (!this.modifiedDependencies.TryGetValue(memberPath, out modification))
+            {
+                modification = new ModifiedDependency(memberPath, memberType, modifyAction);
+                this.modifiedDependencies.Add(memberPath, modification);
+            }
+            else
+            {
+                modification.AddModifyAction(modifyAction);
+            }
+
+            return this;
         }
 
         public DependencyInjectionContext Inject(Expression dependencySourceExpression)
@@ -143,11 +176,9 @@ namespace ModuleInject.Fluent
             return this;
         }
 
-        public ComponentRegistrationContext AddBehaviour<TBehaviour>()
-            where TBehaviour : Unity.IInterceptionBehavior, new()
+        public ComponentRegistrationContext AddBehaviour<TBehaviour>(TBehaviour behaviour)
+            where TBehaviour : Unity.IInterceptionBehavior
         {
-            var behaviour = new TBehaviour();
-
             this.Container.AddBehaviour(this.ComponentName, this.Types.IComponent, behaviour);
 
             return this;
@@ -174,7 +205,8 @@ namespace ModuleInject.Fluent
             {
                 if (argumentItem.ResolvePath != null)
                 {
-                    argumentParams[i] = LinqHelper.GetContainerReference(Module, argumentItem.ResolvePath, argumentItem.ArgumentType);
+                    var modifyActions = this.GetModifyActions(argumentItem.ResolvePath);
+                    argumentParams[i] = LinqHelper.GetContainerReference(Module, argumentItem.ResolvePath, argumentItem.ArgumentType, modifyActions);
                 }
                 else
                 {
@@ -190,8 +222,16 @@ namespace ModuleInject.Fluent
             string memberPath;
             Type memberType;
             LinqHelper.GetMemberPathAndType(dependencyExpression, out memberPath, out memberType);
+            var modifyActions = this.GetModifyActions(memberPath);
 
-            return LinqHelper.GetContainerReference(Module, memberPath, memberType);
+            return LinqHelper.GetContainerReference(Module, memberPath, memberType, modifyActions);
+        }
+
+        public IList<Action<object>> GetModifyActions(string memberPath)
+        {
+            ModifiedDependency modifiedDependency = this.GetModifiedDependency(memberPath);
+            var modifyActions = modifiedDependency == null ? null : modifiedDependency.ModifyActions;
+            return modifyActions;
         }
 
         private static string ExtractMethodName<TObject>(Expression<Action<TObject>> methodExpression)

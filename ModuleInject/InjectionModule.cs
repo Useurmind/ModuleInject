@@ -21,6 +21,7 @@ namespace ModuleInject
     using ModuleInject.Container.Lifetime;
     using ModuleInject.Decoration;
     using ModuleInject.Interfaces;
+    using ModuleInject.Interfaces.Fluent;
     using ModuleInject.Registry;
 
     public abstract class InjectionModule : IInjectionModule, IDisposable
@@ -277,7 +278,7 @@ namespace ModuleInject
         /// <typeparam name="TComponent">The class that should be instantiated for the component that is registered.</typeparam>
         /// <param name="moduleProperty">Expression that describes the module property where the component should be stored.</param>
         /// <returns>A context for fluent injection into the component.</returns>
-        protected ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
+        protected IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterPrivateComponent<IComponent, TComponent>(Expression<Func<TModule, IComponent>> moduleProperty)
             where TComponent : IComponent
         {
@@ -301,7 +302,7 @@ namespace ModuleInject
         /// <typeparam name="TComponent">The class that should be instantiated for the component that is registered.</typeparam>
         /// <param name="moduleProperty">Expression that describes the module property where the component should be stored.</param>
         /// <returns>A context for fluent injection into the component.</returns>
-        protected ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
+        protected IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterPublicComponent<IComponent, TComponent>(Expression<Func<IModule, IComponent>> moduleProperty)
             where TComponent : IComponent
         {
@@ -324,7 +325,7 @@ namespace ModuleInject
         /// <param name="moduleProperty">Expression that describes the module property where the component should be stored.</param>
         /// <param name="instance">The instance that should be registered.</param>
         /// <returns>A context for fluent injection into the component.</returns>
-        protected InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
+        protected IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterPrivateComponent<IComponent, TComponent>(Expression<Func<TModule, IComponent>> moduleProperty,
             TComponent instance)
             where TComponent : IComponent
@@ -350,7 +351,7 @@ namespace ModuleInject
         /// <param name="moduleProperty">Expression that describes the module property where the component should be stored.</param>
         /// <param name="instance">The instance that should be registered.</param>
         /// <returns>A context for fluent injection into the component.</returns>
-        protected InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
+        protected IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterPublicComponent<IComponent, TComponent>(Expression<Func<IModule, IComponent>> moduleProperty,
             TComponent instance)
             where TComponent : IComponent
@@ -373,7 +374,7 @@ namespace ModuleInject
         /// <typeparam name="TComponent">The class that should be instantiated for the component that is registered.</typeparam>
         /// <param name="moduleProperty">Expression that describes the module method that should produce the components.</param>
         /// <returns>A context for fluent injection into the component factory method.</returns>
-        protected ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
+        protected IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterPublicComponentFactory<IComponent, TComponent>(Expression<Func<IModule, IComponent>> moduleMethod)
             where TComponent : IComponent, new()
         {
@@ -394,7 +395,7 @@ namespace ModuleInject
         /// <typeparam name="TComponent">The class that should be instantiated for the component that is registered.</typeparam>
         /// <param name="moduleProperty">Expression that describes the module method that should produce the components.</param>
         /// <returns>A context for fluent injection into the component factory method.</returns>
-        protected ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
+        protected IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             RegisterPrivateComponentFactory<IComponent, TComponent>(Expression<Func<TModule, IComponent>> moduleMethod)
             where TComponent : IComponent, new()
         {

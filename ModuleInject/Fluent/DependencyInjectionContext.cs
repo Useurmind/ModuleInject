@@ -14,23 +14,14 @@ namespace ModuleInject.Fluent
     internal class DependencyInjectionContext
     {
         public ComponentRegistrationContext ComponentContext { get; private set; }
-        public string DependencyName { get; private set; }
+        public string DependencyPath { get; private set; }
         public Type DependencyType { get; private set; }
-        public IList<Action<object>> ModifyActions { get; private set; } 
 
-        public DependencyInjectionContext(ComponentRegistrationContext componentContext, string dependencyName, Type dependencyType)
+        public DependencyInjectionContext(ComponentRegistrationContext componentContext, string dependencyPath, Type dependencyType)
         {
             ComponentContext = componentContext;
-            DependencyName = dependencyName;
+            this.DependencyPath = dependencyPath;
             DependencyType = dependencyType;
-            ModifyActions = new List<Action<object>>();
-        }
-
-        public DependencyInjectionContext ModifiedBy(Action<object> modifyAction)
-        {
-            ModifyActions.Add(modifyAction);
-
-            return this;
         }
 
         public ComponentRegistrationContext IntoProperty(Expression dependencyTargetExpression)
@@ -38,10 +29,11 @@ namespace ModuleInject.Fluent
             ComponentRegistrationContext component = this.ComponentContext;
             ComponentRegistrationTypes types = component.Types;
 
-            string sourceName = DependencyName;
+            string sourceName = this.DependencyPath;
             string targetName = Property.Get(dependencyTargetExpression);
+            var modifyActions = this.ComponentContext.GetModifyActions(this.DependencyPath);
 
-            var containerReference = LinqHelper.GetContainerReference(component.Module, sourceName, DependencyType, ModifyActions);
+            var containerReference = LinqHelper.GetContainerReference(component.Module, sourceName, DependencyType, modifyActions);
 
             component.Container.InjectProperty(component.ComponentName,types.IComponent, targetName, containerReference);
 

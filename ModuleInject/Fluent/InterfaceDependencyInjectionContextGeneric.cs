@@ -14,7 +14,7 @@ namespace ModuleInject.Fluent
     {
         internal DependencyInjectionContext Context { get; private set; }
         public InterfaceRegistrationContext<IComponent, IModule, TModule> ComponentContext { get; private set; }
-        public string DependencyName { get { return Context.DependencyName; } }
+        public string DependencyName { get { return Context.DependencyPath; } }
 
         internal InterfaceDependencyInjectionContext(InterfaceRegistrationContext<IComponent, IModule, TModule> componentContext, 
             DependencyInjectionContext context)
@@ -28,7 +28,7 @@ namespace ModuleInject.Fluent
     {
         internal DependencyInjectionContext Context { get; private set; }
         public InterfaceRegistrationContext<IComponentBase, IModuleBase> ComponentContext { get; private set; }
-        public string DependencyName { get { return Context.DependencyName; } }
+        public string DependencyName { get { return Context.DependencyPath; } }
 
         internal InterfaceDependencyInjectionContext(InterfaceRegistrationContext<IComponentBase, IModuleBase> componentContext,
             DependencyInjectionContext context)
