@@ -83,6 +83,7 @@
       <DependentUpon>Errors.resx</DependentUpon>
     </Compile>
     <Compile Include="Fluent\InstanceRegistrationContext.cs" />
+    <Compile Include="Fluent\InstanceValueInjectionContext.cs" />
     <Compile Include="Fluent\InterfaceInjector.cs" />
     <Compile Include="Fluent\RegistrationContext.cs" />
     <Compile Include="Fluent\ComponentRegistrationContextExtensions.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Fluent\InterfaceValueInjectionContextExtensions.cs" />
     <Compile Include="Fluent\ModifiedDependency.cs" />
     <Compile Include="Fluent\RegistrationContextBase.cs" />
+    <Compile Include="Fluent\InstanceValueInjectionContextExtensions.cs" />
     <Compile Include="Fluent\ValueInjectionContextExtensions.cs" />
     <Compile Include="Fluent\ValueInjectionContext.cs" />
     <Compile Include="Fluent\InterfaceValueInjectionContext.cs" />
@@ -118,6 +120,7 @@
     <Compile Include="Registry\RegistrationEntry.cs" />
     <Compile Include="Registry\StandardRegistry.cs" />
     <Compile Include="Registry\IRegistryExtensions.cs" />
+    <Compile Include="ServiceLocator\ModuleServiceLocator.cs" />
     <Compile Include="Utility\LinqHelper.cs" />
     <Compile Include="Utility\MemberChainEvaluator.cs" />
     <Compile Include="Utility\MethodCallArgument.cs" />

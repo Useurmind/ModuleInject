@@ -18,7 +18,7 @@ namespace ModuleInject.Fluent
         public ModifiedDependency(string memberPath, Type memberType, Action<object> modifyAction)
         {
             this.MemberPath = memberPath;
-            this.MemberType = MemberType;
+            this.MemberType = memberType;
             this.ModifyActions = new List<Action<object>>();
             AddModifyAction(modifyAction);
         }

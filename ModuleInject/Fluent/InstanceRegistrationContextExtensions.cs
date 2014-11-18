@@ -33,6 +33,22 @@ namespace ModuleInject.Fluent
             return instance;
         }
 
+        public static IInstanceValueInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>
+            Inject<IComponent, TComponent, IModule, TModule, TDependency>(
+            this IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
+            TDependency value)
+            where TComponent : IComponent
+            where TModule : IModule
+            where IModule : IInjectionModule
+        {
+            CommonFunctions.CheckNullArgument("instance", instance);
+
+            var contextImpl = GetContextImplementation(instance);
+
+            var valueContext = contextImpl.Context.Inject(value, typeof(TDependency));
+            return new InstanceValueInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>(contextImpl, valueContext);
+        }
+
         public static IInstanceDependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency> Inject<IComponent, TComponent, IModule, TModule, TDependency>(
             this IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
             Expression<Func<TModule, TDependency>> dependencySourceExpression

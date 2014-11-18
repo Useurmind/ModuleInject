@@ -215,6 +215,15 @@ namespace ModuleInject {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The constructor of component &apos;{0}&apos; in module of type &apos;{1}&apos; was already injected before..
+        /// </summary>
+        internal static string RegistrationContext_ConstructorAlreadyCalled {
+            get {
+                return ResourceManager.GetString("RegistrationContext_ConstructorAlreadyCalled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The registry is already composed, you can not add further catalogs to it..
         /// </summary>
         internal static string Registry_AlreadyComposedNoFurtherCatalogs {
@@ -229,6 +238,24 @@ namespace ModuleInject {
         internal static string RegistryModule_TypeNotRegistered {
             get {
                 return ResourceManager.GetString("RegistryModule_TypeNotRegistered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The instance with key &apos;{0}&apos; of type &apos;{1}&apos; could no be found by the service locator..
+        /// </summary>
+        internal static string ServiceLocator_CouldNotFindInstanceRegistration {
+            get {
+                return ResourceManager.GetString("ServiceLocator_CouldNotFindInstanceRegistration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are multiple registrations of type &apos;{1}&apos; in the service locator..
+        /// </summary>
+        internal static string ServiceLocator_MultipleRegistrationsFound {
+            get {
+                return ResourceManager.GetString("ServiceLocator_MultipleRegistrationsFound", resourceCulture);
             }
         }
         

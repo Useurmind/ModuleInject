@@ -7,6 +7,8 @@ using Test.ModuleInject.TestModules;
 
 namespace Test.ModuleInject
 {
+    using global::ModuleInject.Common.Exceptions;
+
     [TestFixture]
     public class ConstructorInjectionModuleTest
     {
@@ -38,6 +40,13 @@ namespace Test.ModuleInject
             Assert.IsNotNull(_module.MainComponent1);
             Assert.IsNotNull(_module.MainComponent2);
             Assert.AreSame(_module.MainComponent2, _module.MainComponent1.MainComponent2);
+        }
+
+        [TestCase]
+        [ExpectedException(typeof(ModuleInjectException))]
+        public void Resolved_RegisterWithArgumentsInConstructorTwice_ExceptionThrown()
+        {
+            _module.RegisterWithArgumentsInConstructorTwice();
         }
     }
 }

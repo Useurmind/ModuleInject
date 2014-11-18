@@ -55,6 +55,7 @@
     <Compile Include="Fluent\IDependencyInjectionContext.cs" />
     <Compile Include="Fluent\IInstanceDependencyInjectionContext.cs" />
     <Compile Include="Fluent\IInstanceRegistrationContext.cs" />
+    <Compile Include="Fluent\IInstanceValueInjectionContext.cs" />
     <Compile Include="Fluent\IInterfaceDependencyInjectionContext.cs" />
     <Compile Include="Fluent\IInterfaceRegistrationContext.cs" />
     <Compile Include="Fluent\IInterfaceValueInjectionContext.cs" />

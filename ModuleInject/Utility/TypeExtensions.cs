@@ -71,6 +71,8 @@ namespace ModuleInject.Utility
 
         public static void SetPropertyRecursive(this Type type, object instance, string name, object value)
         {
+            CommonFunctions.CheckNullArgument("type", type);
+
             var propertySetter = type.GetPropertySetterRecursive(name, BindingFlags.NonPublic | BindingFlags.Public);
             if (propertySetter == null)
             {

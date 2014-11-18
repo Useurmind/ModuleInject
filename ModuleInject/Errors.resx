@@ -169,11 +169,20 @@ The properties are: '{1}'</value>
   <data name="ModuleResolver_PropertyWithoutExternalAttribute" xml:space="preserve">
     <value>The property '{0}' of module with type '{1}' is already set before resolving it despite not being marked with ExternalComponentAttribute. Please set the ExternalComponentAttribute if the property is set outside the resolution process of the module itself.</value>
   </data>
+  <data name="RegistrationContext_ConstructorAlreadyCalled" xml:space="preserve">
+    <value>The constructor of component '{0}' in module of type '{1}' was already injected before.</value>
+  </data>
   <data name="RegistryModule_TypeNotRegistered" xml:space="preserve">
     <value>The registry does not contain a registration for the type '{0}'.</value>
   </data>
   <data name="Registry_AlreadyComposedNoFurtherCatalogs" xml:space="preserve">
     <value>The registry is already composed, you can not add further catalogs to it.</value>
+  </data>
+  <data name="ServiceLocator_CouldNotFindInstanceRegistration" xml:space="preserve">
+    <value>The instance with key '{0}' of type '{1}' could no be found by the service locator.</value>
+  </data>
+  <data name="ServiceLocator_MultipleRegistrationsFound" xml:space="preserve">
+    <value>There are multiple registrations of type '{1}' in the service locator.</value>
   </data>
   <data name="TypeExtensions_NoPropertySetterFound" xml:space="preserve">
     <value>The property '{0}' of type  '{1}' does not have a setter anywhere in the module inheritance chain.</value>

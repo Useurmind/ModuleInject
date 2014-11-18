@@ -93,6 +93,7 @@
     <Compile Include="Fluent\ComponentRegistrationContextTest.cs" />
     <Compile Include="Fluent\DependencyInjectionContextTest.cs" />
     <Compile Include="FactoryModuleTest.cs" />
+    <Compile Include="PropertyInjectionModuleTest.cs" />
     <Compile Include="PropertyModuleTest.cs" />
     <Compile Include="Module\ModuleResolverTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="TestModules\ModuleWithRegistrationErrors.cs" />
     <Compile Include="TestModules\NoAutoWiringModule.cs" />
     <Compile Include="TestModules\NoInterfaceModule.cs" />
+    <Compile Include="TestModules\PropertyInjectionModule.cs" />
     <Compile Include="TestModules\PureInterfaceInjectionModule.cs" />
     <Compile Include="TestModules\RegistryUsingModule.cs" />
     <Compile Include="TestModules\RuleBreakingModule.cs" />

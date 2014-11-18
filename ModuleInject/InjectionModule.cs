@@ -71,7 +71,6 @@ namespace ModuleInject
         private IDependencyContainer _container;
 
         private IRegistry _registry;
-        private bool _isInterceptionActive;
 
         private bool _isResolved;
 
@@ -137,7 +136,6 @@ namespace ModuleInject
         /// </summary>
         protected InjectionModule()
         {
-            _isInterceptionActive = false;
             _isResolved = false;
             _container = new DependencyContainer();
             _registry = new Registry.EmptyRegistry();
@@ -472,7 +470,7 @@ namespace ModuleInject
         {
             RegistrationContext context;
             RegistrationTypes types = CreateTypes<IComponent, TComponent>();
-            context = new RegistrationContext(componentName, this, _container, types, _isInterceptionActive);
+            context = new RegistrationContext(componentName, this, _container, types);
             return context;
         }
 

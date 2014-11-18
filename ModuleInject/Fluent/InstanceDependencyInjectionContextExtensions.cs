@@ -17,10 +17,11 @@ namespace ModuleInject.Fluent
     public static class InstanceDependencyInjectionContextExtensions
     {
         public static IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
-            IntoProperty<IComponent, TComponent, IModule, TModule, TProperty>(
-            this IInstanceDependencyInjectionContext<IComponent, TComponent, IModule, TModule, TProperty> instanceDependencyInject,
+            IntoProperty<IComponent, TComponent, IModule, TModule, TDependency, TProperty>(
+            this IInstanceDependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency> instanceDependencyInject,
             Expression<Func<TComponent, TProperty>> dependencyTargetExpression
             )
+            where TDependency : TProperty
             where TComponent : IComponent
             where TModule : IModule
             where IModule : IInjectionModule
@@ -28,7 +29,7 @@ namespace ModuleInject.Fluent
             CommonFunctions.CheckNullArgument("instanceDependencyInject", instanceDependencyInject);
 
             var contextImpl =
-                (InstanceDependencyInjectionContext<IComponent, TComponent, IModule, TModule, TProperty>)
+                (InstanceDependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>)
                 instanceDependencyInject;
 
             contextImpl.DependencyInjectionContext.IntoProperty(dependencyTargetExpression);

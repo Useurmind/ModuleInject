@@ -32,18 +32,14 @@ namespace ModuleInject.Fluent
         public IRegistrationTypes RegistrationTypes { get; private set; }
         public string RegistrationName { get; private set; }
 
-        public bool IsInterceptorAlreadyAdded { get; private set; }
-        public bool IsInterceptionActive { get; private set; }
-        public bool WasConstructorWithArgumentsCalled { get; private set; }
+        public bool WasConstructorCalled { get; private set; }
 
         public IDependencyContainer Container { get; private set; }
         public InjectionModule Module { get; private set; }
 
-        public RegistrationContext(string name, InjectionModule module, IDependencyContainer container, RegistrationTypes registrationTypes, bool interceptionActive)
+        public RegistrationContext(string name, InjectionModule module, IDependencyContainer container, RegistrationTypes registrationTypes, bool wasConstructorCalled=false)
         {
-            IsInterceptionActive = interceptionActive;
-            IsInterceptorAlreadyAdded = false;
-            WasConstructorWithArgumentsCalled = false;
+            this.WasConstructorCalled = wasConstructorCalled;
             Module = module;
             Container = container;
             this.RegistrationTypes = registrationTypes;
@@ -147,6 +143,10 @@ namespace ModuleInject.Fluent
         public RegistrationContext CallConstructor(LambdaExpression constructorCallExpression)
         {
             IList<MethodCallArgument> arguments;
+            if (this.WasConstructorCalled)
+            {
+                ExceptionHelper.ThrowFormatException(Errors.RegistrationContext_ConstructorAlreadyCalled, this.RegistrationName, this.RegistrationTypes.TModule.Name);
+            }
 
             arguments = LinqHelper.GetConstructorArguments(constructorCallExpression);
 
@@ -155,7 +155,7 @@ namespace ModuleInject.Fluent
             Container.InjectConstructor(this.RegistrationName, this.RegistrationTypes.IComponent,
                 argumentParams);
 
-            WasConstructorWithArgumentsCalled = true;
+            this.WasConstructorCalled = true;
 
             return this;
         }

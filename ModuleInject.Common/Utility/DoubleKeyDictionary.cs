@@ -78,7 +78,13 @@ namespace ModuleInject.Common.Utility
             }
 
             return values;
-        } 
+        }
+
+        public IEnumerable<TValue> GetAll(TKey1 key1)
+        {
+            var dict2 = GetSecondLevel(key1);
+            return dict2.Select(x => x.Value);
+        }
 
         public IEnumerator<DoubleKeyDictionaryItem<TKey1, TKey2, TValue>> GetEnumerator()
         {

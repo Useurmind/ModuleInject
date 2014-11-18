@@ -38,5 +38,12 @@ namespace Test.ModuleInject.TestModules
             RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
                 .CallConstructor(module => new MainComponent1(module.MainComponent2));
         }
+
+        public void RegisterWithArgumentsInConstructorTwice()
+        {
+            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
+                .CallConstructor(module => new MainComponent1(module.MainComponent2))
+                .CallConstructor(module => new MainComponent1(module.MainComponent2));
+        }
     }
 }
