@@ -38,7 +38,7 @@ namespace ModuleInject.Utility
             else if (pathParths.Count() == 2)
             {
                 string submoduleName = pathParths[0];
-                var submoduleMemberInfo = TypeExtensions.GetModuleProperties(module.ModuleInterface, module.ModuleType, true).First(p => p.Name == submoduleName);
+                var submoduleMemberInfo = ModuleTypeExtensions.GetModuleProperties(module.ModuleInterface, module.ModuleType, true).First(p => p.Name == submoduleName);
                 getContainer = () => (IDependencyContainer)((InjectionModule)submoduleMemberInfo.GetValue(module, null)).Container;
                 dependencyName = pathParths[1];
             }

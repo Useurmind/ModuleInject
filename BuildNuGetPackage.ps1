@@ -52,8 +52,8 @@ nuget.exe Pack $packageName\$packageName.csproj -Prop Configuration='NuGet Packa
 Write-Host "Pushing NuGet packages"
 
 ForEach( $pushCommand in $pushCommands ) { 
-	Write-Host "Pushing NuGet package $packageName"
-	Invoke-Expression -Command:$pushCommand
+	#Write-Host "Pushing NuGet package $packageName"
+	#Invoke-Expression -Command:$pushCommand
 }
 
 Write-Host "Done."

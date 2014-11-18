@@ -14,7 +14,7 @@ namespace ModuleInject.Utility
     using ModuleInject.Decoration;
     using ModuleInject.Interfaces;
 
-    public static class TypeExtensions
+    public static class ModuleTypeExtensions
     {
         /// <summary>
         /// Gets the properties of the all types in the _module chain.
@@ -26,7 +26,7 @@ namespace ModuleInject.Utility
         public static IEnumerable<PropertyInfo> GetModuleProperties<IModule, TModule>(bool thatAreModules)
             where TModule : IModule
         {
-            return TypeExtensions.GetModuleProperties(typeof(IModule), typeof(TModule), thatAreModules);
+            return ModuleTypeExtensions.GetModuleProperties(typeof(IModule), typeof(TModule), thatAreModules);
         }
 
         /// <summary>
@@ -68,89 +68,8 @@ namespace ModuleInject.Utility
             bool isModule = searchedInterface != null;
             return isModule;
         }
-
-        public static void SetPropertyRecursive(this Type type, object instance, string name, object value)
-        {
-            CommonFunctions.CheckNullArgument("type", type);
-
-            var propertySetter = type.GetPropertySetterRecursive(name, BindingFlags.NonPublic | BindingFlags.Public);
-            if (propertySetter == null)
-            {
-                ExceptionHelper.ThrowFormatException(Errors.TypeExtensions_NoPropertySetterFound, name, type.Name);
-            }
-            propertySetter.Invoke(
-                instance,
-                BindingFlags.NonPublic | BindingFlags.Public,
-                null,
-                new object[] { value },
-                CultureInfo.InvariantCulture);
-        }
-
-        public static MethodInfo GetPropertySetterRecursive(this Type type, string name, BindingFlags? bindingOptions = null)
-        {
-            CommonFunctions.CheckNullArgument("type", type);
-
-            if (type.ShouldStopModuleTypeRecursion())
-            {
-                return null;
-            }
-
-            var propertyInfo = GetPropertyInfo(type, name, bindingOptions);
-            var setMethod = propertyInfo == null ? null : propertyInfo.GetSetMethod(true);
-            if (setMethod == null)
-            {
-                type.ForEachBaseTypeInModuleHierarchy(
-                    subType =>
-                    {
-                        setMethod = subType.GetPropertySetterRecursive(name, bindingOptions);
-                        if (setMethod != null)
-                        {
-                            return true;
-                        }
-                        return false;
-                    });
-            }
-
-            return setMethod;
-        }
-
-        public static PropertyInfo GetPropertyRecursive(this Type type, string name, BindingFlags? bindingOptions = null)
-        {
-            CommonFunctions.CheckNullArgument("type", type);
-
-            if (type.ShouldStopModuleTypeRecursion())
-            {
-                return null;
-            }
-
-            var propertyInfo = GetPropertyInfo(type, name, bindingOptions);
-
-            if (propertyInfo == null)
-            {
-                type.ForEachBaseTypeInModuleHierarchy(
-                    subType =>
-                    {
-                        propertyInfo = GetPropertyRecursive(subType, name, bindingOptions);
-                        if (propertyInfo != null)
-                        {
-                            return true;
-                        }
-                        return false;
-                    });
-            }
-
-            return propertyInfo;
-        }
-
-        private static PropertyInfo GetPropertyInfo(Type type, string name, BindingFlags? bindingOptions)
-        {
-            PropertyInfo propertyInfo = bindingOptions.HasValue
-                                            ? type.GetProperty(name, BindingFlags.Instance | bindingOptions.Value)
-                                            : type.GetProperty(name);
-            return propertyInfo;
-        }
-
-        private static bool ShouldStopModuleTypeRecursion(this Type type)
+        
+        public static bool ShouldStopModuleTypeRecursion(this Type type)
         {
             return type == typeof(object) || type == typeof(IInjectionModule) || type.Name.StartsWith("InjectionModule", StringComparison.Ordinal);
         }

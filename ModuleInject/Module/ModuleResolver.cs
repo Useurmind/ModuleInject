@@ -43,7 +43,7 @@ namespace ModuleInject.Module
                 throw new ModuleInjectException("Modules must always have an Interface");
             }
 
-            var submodulePropertyInfos = TypeExtensions.GetModuleProperties<IModule, TModule>(true);
+            var submodulePropertyInfos = ModuleTypeExtensions.GetModuleProperties<IModule, TModule>(true);
             foreach (var submodulePropInfo in submodulePropertyInfos)
             {
                 TryResolveComponent(submodulePropInfo);
@@ -51,7 +51,7 @@ namespace ModuleInject.Module
                 TryResolveSubmodule(submodulePropInfo);
             }
 
-            foreach (var propInfo in TypeExtensions.GetModuleProperties<IModule, TModule>(false))
+            foreach (var propInfo in ModuleTypeExtensions.GetModuleProperties<IModule, TModule>(false))
             {
                 //if (!propInfo.PropertyType.IsInterface)
                 //{
