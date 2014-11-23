@@ -18,6 +18,8 @@ namespace ModuleInject.Container.Interface
 
         void SetLifetime(string name, Type type, ILifetime lifetime);
 
+        void Inject(string name, Type type, IDependencyInjection dependencyInjection);
+
         void InjectProperty(string name, Type type, string propertyName, IResolvedValue value);
 
         void InjectMethod(string name, Type type, string methodName, IEnumerable<IResolvedValue> resolvedValues);

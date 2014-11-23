@@ -7,6 +7,7 @@ namespace ModuleInject.Container.Dependencies
 
     using ModuleInject.Container.Interface;
     using ModuleInject.Container.Resolving;
+    using ModuleInject.Container.Interface;
 
     public class MethodDependencyInjection : IDependencyInjection
     {

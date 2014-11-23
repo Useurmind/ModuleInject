@@ -64,18 +64,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DebuggerShim.cs" />
+    <Compile Include="DependencyContainerTest\and_defining_prerequisites.cs" />
+    <Compile Include="DependencyContainerTest\and_factory_inject_via_lambda.cs" />
     <Compile Include="DependencyContainerTest\and_injecting_into_a_property.cs" />
+    <Compile Include="DependencyContainerTest\and_injecting_through_a_lambda_constructor.cs" />
     <Compile Include="DependencyContainerTest\and_injecting_through_a_constructor.cs" />
+    <Compile Include="DependencyContainerTest\and_injecting_through_a_lambda.cs" />
     <Compile Include="DependencyContainerTest\and_injecting_through_a_method.cs" />
     <Compile Include="DependencyContainerTest\and_factory_inject_a_property.cs" />
     <Compile Include="DependencyContainerTest\and_post_inject_a_property.cs" />
     <Compile Include="DependencyContainerTest\and_factory_inject_via_method.cs" />
+    <Compile Include="DependencyContainerTest\and_post_inject_via_lambda.cs" />
     <Compile Include="DependencyContainerTest\and_post_inject_via_method.cs" />
     <Compile Include="DependencyContainerTest\and_registering_an_instance.cs" />
     <Compile Include="DependencyContainerTest\and_registering_a_factory.cs" />
     <Compile Include="DependencyContainerTest\and_registering_an_interface.cs" />
     <Compile Include="DependencyContainerTest\and_registering_a_type.cs" />
     <Compile Include="DependencyContainerTest\IInjectionTestSpec.cs" />
+    <Compile Include="DependencyContainerTest\LambdaInjectionTests.cs" />
     <Compile Include="DependencyContainerTest\MethodInjectionTests.cs" />
     <Compile Include="DependencyContainerTest\PropertyInjectionTests.cs" />
     <Compile Include="DependencyContainerTest\TestClass.cs" />

@@ -3,6 +3,9 @@ using System.Reflection;
 using NSpec;
 using NSpec.Domain;
 using NSpec.Domain.Formatters;
+using Test.ModuleInject.Container.DependencyContainerTest;
+using System;
+using NUnit.Framework;
 
 /*
  * Howdy,
@@ -20,17 +23,17 @@ using NSpec.Domain.Formatters;
  * Visual Studio will detect this and will give you a window which you can use to attach a debugger.
  */
 
-//[TestFixture]
+[TestFixture]
 public class DebuggerShim
 {
-    //[Test]
+    [Test]
     public void debug()
     {
-        var tagOrClassName = "class_or_tag_you_want_to_debug";
+        var tagOrClassName = "when_using_the_DependencyContainer";
 
         var types = GetType().Assembly.GetTypes(); 
         // OR
-        // var types = new Type[]{typeof(Some_Type_Containg_some_Specs)};
+        //var types = new Type[]{typeof(and_defining_prerequisites)};
         var finder = new SpecFinder(types, "");
         var builder = new ContextBuilder(finder, new Tags().Parse(tagOrClassName), new DefaultConventions());
         var runner = new ContextRunner(builder, new ConsoleFormatter(), false);

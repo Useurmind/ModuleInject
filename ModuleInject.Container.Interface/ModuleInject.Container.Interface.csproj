@@ -66,6 +66,8 @@
     <Compile Include="DependencyContainerExtensions.cs" />
     <Compile Include="IContainerRegistration.cs" />
     <Compile Include="IDependencyContainer.cs" />
+    <Compile Include="IDependencyInjection.cs" />
+    <Compile Include="IInstanceCreation.cs" />
     <Compile Include="ILifetime.cs" />
     <Compile Include="IResolvedValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -13,6 +13,19 @@ namespace ModuleInject.Container
     using ModuleInject.Container.Lifetime;
     using ModuleInject.Container.Resolving;
     using Microsoft.Practices.Unity.InterceptionExtension;
+    using ModuleInject.Container.Interface;
+
+    public class ComponentResolvedEventArgs : EventArgs
+    {
+        public ComponentResolvedEventArgs(Type type, string name)
+        {
+            Type = type;
+            Name = name;
+        }
+
+        public Type Type { get; private set; }
+        public string Name { get; private set; }
+    }
 
     public class DependencyContainer : IDependencyContainer
     {
@@ -25,6 +38,8 @@ namespace ModuleInject.Container
                 return this.registrations.GetAll();
             }
         }
+
+        public event EventHandler<ComponentResolvedEventArgs> ComponentResolved;
 
         public DependencyContainer()
         {
@@ -55,6 +70,12 @@ namespace ModuleInject.Container
             registration.InstanceCreation = new FactoryInstanceCreation(this, createInstance);
         }
 
+        public void DefinePrerequisite(string name, Type registeredType, IResolvedValue prerequisite)
+        {
+            ContainerRegistration registration = this.GetOrCreateRegistration(name, registeredType);
+            registration.AddPrerequisite(prerequisite);
+        }
+
         public void SetLifetime(string name, Type type, ILifetime lifetime)
         {
             ContainerRegistration registration = this.GetOrCreateRegistration(name, type);
@@ -64,11 +85,12 @@ namespace ModuleInject.Container
         public void InjectProperty(string name, Type type, string propertyName, IResolvedValue value)
         {
             ContainerRegistration registration = this.GetOrCreateRegistration(name, type);
-            registration.AddDependencyInjection(new PropertyDependencyInjection()
-                                                    {
-                                                        PropertyName = propertyName,
-                                                        ResolvedValue = value
-                                                    });
+
+            this.Inject(name, type, new PropertyDependencyInjection()
+            {
+                PropertyName = propertyName,
+                ResolvedValue = value
+            });
         }
 
         private ContainerRegistration GetOrCreateRegistration(string name, Type registeredType)
@@ -104,12 +126,23 @@ namespace ModuleInject.Container
             {
                 ExceptionHelper.ThrowFormatException(Errors.DependencyContainer_RegistrationNotFound, type.Name, name);
             }
-            return registration.Resolve();
+            object result = registration.Resolve();
+
+            FireComponentResolved(name, type);
+
+            return result;
+        }
+
+        private void FireComponentResolved(string name, Type type)
+        {
+            if (ComponentResolved != null)
+            {
+                ComponentResolved(this, new ComponentResolvedEventArgs(type, name));
+            }
         }
 
         public void InjectMethod(string name, Type type, string methodName, IEnumerable<IResolvedValue> resolvedValues)
         {
-            ContainerRegistration registration = this.GetOrCreateRegistration(name, type);
             var methodDependencyInjection = new MethodDependencyInjection()
                                                 {
                                                     MethodName = methodName
@@ -120,18 +153,18 @@ namespace ModuleInject.Container
                 methodDependencyInjection.AddParameterValue(resolvedValue);
             }
 
-            registration.AddDependencyInjection(methodDependencyInjection);
+            this.Inject(name, type, methodDependencyInjection);
+        }
+
+        public void Inject(string name, Type type, IDependencyInjection dependencyInjection)
+        {
+            ContainerRegistration registration = this.GetOrCreateRegistration(name, type);
+
+            registration.AddDependencyInjection(dependencyInjection);
         }
 
         public void InjectConstructor(string name, Type type, IEnumerable<IResolvedValue> resolvedValue)
         {
-            ContainerRegistration registration = this.GetOrCreateRegistration(name, type);
-            if (registration.InstanceCreation as ExistingInstance != null)
-            {
-                ThrowRegistrationError(registration, Errors.DependencyContainer_ConstructorCannotBeConfiguredForExistingInstance);
-            }
-
-
             var constructorDependencyInjection = new ConstructorDependencyInjection();
 
             foreach (var resolvedParameter in resolvedValue)
@@ -139,7 +172,18 @@ namespace ModuleInject.Container
                 constructorDependencyInjection.AddParameter(resolvedParameter);
             }
 
-            registration.InstanceCreation=constructorDependencyInjection;
+            SetInstanceCreation(name, type, constructorDependencyInjection);
+        }
+
+        public void SetInstanceCreation(string name, Type type, IInstanceCreation instanceCreation)
+        {
+            ContainerRegistration registration = this.GetOrCreateRegistration(name, type);
+            if (registration.InstanceCreation as ExistingInstance != null)
+            {
+                ThrowRegistrationError(registration, Errors.DependencyContainer_ConstructorCannotBeConfiguredForExistingInstance);
+            }
+
+            registration.InstanceCreation = instanceCreation;
         }
 
         private static void ThrowRegistrationError(IContainerRegistration registration, string errorMsgFormat)

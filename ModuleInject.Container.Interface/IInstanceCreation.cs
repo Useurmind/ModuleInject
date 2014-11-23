@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace ModuleInject.Container.InstanceCreation
+namespace ModuleInject.Container.Interface
 {
     using System;
 

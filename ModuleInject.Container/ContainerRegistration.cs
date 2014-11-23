@@ -10,12 +10,14 @@ namespace ModuleInject.Container
     using ModuleInject.Container.Interface;
     using System.Collections.Generic;
     using Microsoft.Practices.Unity.InterceptionExtension;
+    using ModuleInject.Container.Interface;
 
     public class ContainerRegistration : IContainerRegistration
     {
         private IList<IDependencyInjection> dependencyInjections;
 
-        private IList<IInterceptionBehavior> behaviours; 
+        private IList<IInterceptionBehavior> behaviours;
+        private IList<IResolvedValue> dependencies; 
 
         public Type ActualType { get; set; }
 
@@ -25,6 +27,14 @@ namespace ModuleInject.Container
 
         public ILifetime Lifetime { get; set; }
 
+        public IEnumerable<IResolvedValue> Prerequisite
+        {
+            get
+            {
+                return dependencies;
+            }
+        }
+
         public IEnumerable<IDependencyInjection> DependencyInjections
         {
             get
@@ -33,10 +43,13 @@ namespace ModuleInject.Container
             }
         }
 
+        public IInstanceCreation InstanceCreation { get; set; }
+
         public ContainerRegistration()
         {
             dependencyInjections = new List<IDependencyInjection>();
             behaviours = new List<IInterceptionBehavior>();
+            dependencies = new List<IResolvedValue>();
         }
 
         public void AddDependencyInjection(IDependencyInjection dependencyInjection)
@@ -44,13 +57,27 @@ namespace ModuleInject.Container
             dependencyInjections.Add(dependencyInjection);
         }
 
+        public void AddPrerequisite(IResolvedValue dependency)
+        {
+            dependencies.Add(dependency);
+        }
+
+        public void AddBehaviour(IInterceptionBehavior behaviour)
+        {
+            behaviours.Add(behaviour);
+        }
+
         public object Resolve()
         {
             object instance = null;
             if (Lifetime.OnObjectResolving())
             {
+                // resolve dependencies used in lambda expressions
+                ResolvePrerequisite();
+
                 instance = this.InstanceCreation.Resolve(ActualType);
-                ResolveDependencies(instance);
+
+                InjectDependencies(instance);
 
                 instance = ApplyBehaviours(instance);
 
@@ -85,18 +112,20 @@ namespace ModuleInject.Container
             return proxy;
         }
 
-        private void ResolveDependencies(object instance)
+        private void ResolvePrerequisite()
+        {
+            foreach (var prerequisite in Prerequisite)
+            {
+                prerequisite.Resolve();
+            }
+        }
+
+        private void InjectDependencies(object instance)
         {
             foreach (var dependencyInjection in dependencyInjections)
             {
                 dependencyInjection.Resolve(instance);
             }
-        }
-        public IInstanceCreation InstanceCreation { get; set; }
-
-        public void AddBehaviour(IInterceptionBehavior behaviour)
-        {
-            behaviours.Add(behaviour);
         }
     }
 }
