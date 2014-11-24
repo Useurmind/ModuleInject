@@ -48,5 +48,16 @@ namespace Test.ModuleInject
         {
             _module.RegisterWithArgumentsInConstructorTwice();
         }
+
+        [TestCase]
+        public void Resolved_RegisterWithArgumentsInConstructorAndArgumentResolvedAfterThis_MainComponent2Set()
+        {
+            _module.RegisterWithArgumentsInConstructorAndArgumentResolvedAfterThis();
+            _module.Resolve();
+
+            Assert.IsNotNull(_module.MainComponent1);
+            Assert.IsNotNull(_module.MainComponent3);
+            Assert.AreSame(_module.MainComponent3, _module.MainComponent1.MainComponent2);
+        }
     }
 }

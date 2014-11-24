@@ -16,6 +16,7 @@ namespace ModuleInject.Fluent
     using ModuleInject.Container.Resolving;
     using ModuleInject.Interfaces;
     using ModuleInject.Interfaces.Fluent;
+    using ModuleInject.Container.InstanceCreation;
 
     internal class RegistrationTypes : IRegistrationTypes
     {
@@ -148,12 +149,19 @@ namespace ModuleInject.Fluent
                 ExceptionHelper.ThrowFormatException(Errors.RegistrationContext_ConstructorAlreadyCalled, this.RegistrationName, this.RegistrationTypes.TModule.Name);
             }
 
-            arguments = LinqHelper.GetConstructorArguments(constructorCallExpression);
+            //arguments = LinqHelper.GetConstructorArguments(constructorCallExpression);
 
-            IResolvedValue[] argumentParams = GetContainerInjectionArguments(arguments);
+            //IResolvedValue[] argumentParams = GetContainerInjectionArguments(arguments);
 
-            Container.InjectConstructor(this.RegistrationName, this.RegistrationTypes.IComponent,
-                argumentParams);
+            Delegate compiledConstructorExpression = constructorCallExpression.Compile();
+
+            Func<IDependencyContainer, object> constructorFunc = new Func<IDependencyContainer, object>(cont =>
+            {
+                return compiledConstructorExpression.DynamicInvoke(this.Module);
+            });
+
+            Container.SetInstanceCreation(this.RegistrationName, this.RegistrationTypes.IComponent,
+                new FactoryInstanceCreation(Container, constructorFunc));
 
             this.WasConstructorCalled = true;
 

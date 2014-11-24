@@ -90,6 +90,21 @@ namespace ModuleInject.Utility
             }
         }
 
+        /// <summary>
+        /// Gets the member path depth.
+        /// e.g. on x.Property1.Property2 it gives 2.
+        /// </summary>
+        /// <value>
+        /// The member path depth.
+        /// </value>
+        public int MemberPathDepth
+        {
+            get
+            {
+                return _memberExpressions.Count;
+            }
+        }
+
         public MemberChainEvaluator()
         {
             _memberExpressions = new List<Expression>();
