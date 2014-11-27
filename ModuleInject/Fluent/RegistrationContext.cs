@@ -67,26 +67,26 @@ namespace ModuleInject.Fluent
             return new ValueInjectionContext(this, value, valueType);
         }
 
-        public RegistrationContext ModifyDependencyBy(Expression dependencySourceExpression, Action<object> modifyAction)
-        {
-            string memberPath;
-            Type memberType;
+        //public RegistrationContext ModifyDependencyBy(Expression dependencySourceExpression, Action<object> modifyAction)
+        //{
+        //    string memberPath;
+        //    Type memberType;
 
-            LinqHelper.GetMemberPathAndType(dependencySourceExpression, out memberPath, out memberType);
+        //    LinqHelper.GetMemberPathAndType(dependencySourceExpression, out memberPath, out memberType);
 
-            ModifiedDependency modification = null;
-            if (!this.modifiedDependencies.TryGetValue(memberPath, out modification))
-            {
-                modification = new ModifiedDependency(memberPath, memberType, modifyAction);
-                this.modifiedDependencies.Add(memberPath, modification);
-            }
-            else
-            {
-                modification.AddModifyAction(modifyAction);
-            }
+        //    ModifiedDependency modification = null;
+        //    if (!this.modifiedDependencies.TryGetValue(memberPath, out modification))
+        //    {
+        //        modification = new ModifiedDependency(memberPath, memberType, modifyAction);
+        //        this.modifiedDependencies.Add(memberPath, modification);
+        //    }
+        //    else
+        //    {
+        //        modification.AddModifyAction(modifyAction);
+        //    }
 
-            return this;
-        }
+        //    return this;
+        //}
 
         public DependencyInjectionContext Inject(Expression dependencySourceExpression)
         {

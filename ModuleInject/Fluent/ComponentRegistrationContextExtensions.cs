@@ -18,22 +18,22 @@ namespace ModuleInject.Fluent
 
     public static class ComponentRegistrationContextExtensions
     {
-        public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
-            ModifyDependencyBy<IComponent, TComponent, IModule, TModule, TDependency>(
-            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
-            Expression<Func<TModule, TDependency>> dependencySourceExpression,
-            Action<TDependency> modifyAction)
-            where TComponent : IComponent
-            where TModule : IModule
-            where IModule : IInjectionModule
-        {
-            CommonFunctions.CheckNullArgument("component", component);
+        //public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
+        //    ModifyDependencyBy<IComponent, TComponent, IModule, TModule, TDependency>(
+        //    this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+        //    Expression<Func<TModule, TDependency>> dependencySourceExpression,
+        //    Action<TDependency> modifyAction)
+        //    where TComponent : IComponent
+        //    where TModule : IModule
+        //    where IModule : IInjectionModule
+        //{
+        //    CommonFunctions.CheckNullArgument("component", component);
 
-            var contextImpl = GetContextImplementation(component);
+        //    var contextImpl = GetContextImplementation(component);
 
-            contextImpl.Context.ModifyDependencyBy(dependencySourceExpression, obj => modifyAction((TDependency)obj));
-            return component;
-        }
+        //    contextImpl.Context.ModifyDependencyBy(dependencySourceExpression, obj => modifyAction((TDependency)obj));
+        //    return component;
+        //}
 
         public static IValueInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>
             Inject<IComponent, TComponent, IModule, TModule, TDependency>(
