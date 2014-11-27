@@ -73,7 +73,7 @@ namespace ModuleInject
         private IRegistry _registry;
 
         private bool _isResolved;
-
+        private bool isResolving;
 
         internal override Type ModuleInterface
         {
@@ -136,6 +136,7 @@ namespace ModuleInject
         /// </summary>
         protected InjectionModule()
         {
+            isResolving = false;
             _isResolved = false;
             _container = new DependencyContainer();
             _registry = new Registry.EmptyRegistry();
@@ -181,15 +182,24 @@ namespace ModuleInject
 
             BeforeResolving();
 
-            var usedRegistry = this.GetUsedRegistry(registry);
+            try
+            {
+                isResolving = true;
 
-            ModuleResolver<IModule, TModule> resolver = new ModuleResolver<IModule, TModule>((TModule)(object)this, _container, usedRegistry);
+                var usedRegistry = this.GetUsedRegistry(registry);
 
-            resolver.Resolve();
+                ModuleResolver<IModule, TModule> resolver = new ModuleResolver<IModule, TModule>((TModule)(object)this, _container, usedRegistry);
 
-            _isResolved = true;
+                resolver.Resolve();
 
-            BeforePostResolveAssembly();
+                _isResolved = true;
+
+                BeforePostResolveAssembly();
+            }
+            finally
+            {
+                isResolving = false;
+            }
 
             AfterResolved();
         }
@@ -423,7 +433,8 @@ namespace ModuleInject
             MethodInfo methodInfo = method.Method;
             string functionName = methodInfo.Name;
 
-            if (!IsResolved)
+            // this must be available during resolution now, because of lambda expression
+            if (!isResolving && !IsResolved)
             {
                 ExceptionHelper.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_CreateInstanceBeforeResolve, functionName);
             }

@@ -17,6 +17,7 @@ namespace ModuleInject.Fluent
     using ModuleInject.Interfaces;
     using ModuleInject.Interfaces.Fluent;
     using ModuleInject.Container.InstanceCreation;
+    using ModuleInject.Container.Dependencies;
 
     internal class RegistrationTypes : IRegistrationTypes
     {
@@ -143,15 +144,13 @@ namespace ModuleInject.Fluent
         /// <returns></returns>
         public RegistrationContext CallConstructor(LambdaExpression constructorCallExpression)
         {
-            IList<MethodCallArgument> arguments;
             if (this.WasConstructorCalled)
             {
                 ExceptionHelper.ThrowFormatException(Errors.RegistrationContext_ConstructorAlreadyCalled, this.RegistrationName, this.RegistrationTypes.TModule.Name);
             }
 
-            //arguments = LinqHelper.GetConstructorArguments(constructorCallExpression);
-
-            //IResolvedValue[] argumentParams = GetContainerInjectionArguments(arguments);
+            var dependencyEvaluator = new ParameterMemberAccessEvaluator(constructorCallExpression, 0);
+            AddPrerequisites(dependencyEvaluator);
 
             Delegate compiledConstructorExpression = constructorCallExpression.Compile();
 
@@ -168,6 +167,20 @@ namespace ModuleInject.Fluent
             return this;
         }
 
+        private void AddPrerequisites(ParameterMemberAccessEvaluator dependencyEvaluator)
+        {
+            dependencyEvaluator.Evaluate();
+
+            // Only set dependencies in current module as prerequisites, submodules are resolved before this module
+            var moduleOnlyDependencies = dependencyEvaluator.MemberPaths.Where(x => x.Depth == 1);
+            foreach (var memberPathInformation in moduleOnlyDependencies)
+            {
+                var containerReference = new ContainerReference(Container, memberPathInformation.Path, memberPathInformation.ReturnType);
+                Container.DefinePrerequisite(this.RegistrationName, this.RegistrationTypes.IComponent, containerReference);
+            }
+        }
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -175,13 +188,26 @@ namespace ModuleInject.Fluent
         /// <returns></returns>
         public RegistrationContext CallMethod(LambdaExpression methodCallExpression)
         {
-            IList<MethodCallArgument> arguments;  // type and path in the module or value for constants etc.
-            string methodName;
-            LinqHelper.GetMethodNameAndArguments(methodCallExpression, out methodName, out arguments);
+            ParameterMemberAccessEvaluator dependencyEvaluator = new ParameterMemberAccessEvaluator(methodCallExpression, 1);
+            AddPrerequisites(dependencyEvaluator);
 
-            IResolvedValue[] argumentParams = GetContainerInjectionArguments(arguments);
+            Delegate compiledMethodCallExpression = methodCallExpression.Compile();
 
-            Container.InjectMethod(this.RegistrationName,this.RegistrationTypes.IComponent, methodName, argumentParams);
+            var lambdaInjection = new LambdaDependencyInjection(Container, (c, obj) =>
+            {
+                var component = Convert.ChangeType(obj, this.RegistrationTypes.TComponent);
+                compiledMethodCallExpression.DynamicInvoke(component, this.Module);
+            });
+
+            Container.Inject(this.RegistrationName, this.RegistrationTypes.IComponent, lambdaInjection);
+
+            //IList<MethodCallArgument> arguments;  // type and path in the module or value for constants etc.
+            //string methodName;
+            //LinqHelper.GetMethodNameAndArguments(methodCallExpression, out methodName, out arguments);
+
+            //IResolvedValue[] argumentParams = GetContainerInjectionArguments(arguments);
+
+            //Container.InjectMethod(this.RegistrationName,this.RegistrationTypes.IComponent, methodName, argumentParams);
 
             return this;
         }

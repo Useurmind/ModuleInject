@@ -11,5 +11,7 @@ namespace ModuleInject.Utility
         public Type ReturnType { get; set; }
         public string Path { get; set; }
         public Type RootType { get; set; }
+        public bool ContainsPropertyAccess { get; set; }
+        public bool ContainsMethodCall { get; set; }
     }
 }

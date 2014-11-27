@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 
 namespace ModuleInject.Utility
@@ -10,10 +11,10 @@ namespace ModuleInject.Utility
     /// <summary>
     /// Evaluates a lambda expression for access to members of a specified parameter of the expression.
     /// </summary>
-    public class ParameterMemberAccessEvaluator : ExpressionVisitor
+    public class ParameterMemberAccessEvaluator : InterceptingExpressionVisitor
     {
         private LambdaExpression expression;
-        private int parameterIndex;
+        private ParameterExpression evaluatedParameter;
 
         private Stack<Expression> expressionStack;
 
@@ -27,17 +28,99 @@ namespace ModuleInject.Utility
         public ParameterMemberAccessEvaluator(LambdaExpression expression, int parameterIndex)
         {
             this.expression = expression;
-            this.parameterIndex = parameterIndex;
+            this.evaluatedParameter = expression.Parameters[parameterIndex];
 
             expressionStack = new Stack<Expression>();
             memberPaths = new List<MemberPathInformation>();
         }
 
-        override OnV
+        public IEnumerable<MemberPathInformation> MemberPaths {  get { return memberPaths; } }
 
-        protected override Expression VisitParameter(ParameterExpression node)
+        public void Evaluate()
         {
-            return base.VisitParameter(node);
+            this.Visit(this.expression);
+        }
+
+        protected override void OnVisiting(Expression expression)
+        {
+            switch (expression.NodeType)
+            {
+                case ExpressionType.MemberAccess:
+                case ExpressionType.Call:
+                    expressionStack.Push(expression);
+                    break;
+                case ExpressionType.Parameter:
+                    EvaluateParameterMemberAccess((ParameterExpression)expression);
+                    break;
+                default:
+                    // chain of member access broken, so clear the stack
+                    expressionStack.Clear();
+                    break;
+            }
+
+            base.OnVisiting(expression);
+        }
+
+        private void EvaluateParameterMemberAccess(ParameterExpression parameterExpression)
+        {
+            if (parameterExpression != evaluatedParameter)
+            {
+                expressionStack.Clear();
+                return;
+            }
+
+            if(expressionStack.Count == 0)
+            {
+                return;
+            }
+
+            var names = new string[expressionStack.Count];
+            int index = 0;
+            Type returnType = null;
+            bool containsPropertyAccess = false;
+            bool containsMethodCall = false;
+
+            while(expressionStack.Any())
+            {
+                var expression = expressionStack.Pop();
+
+                MemberExpression memberExpression = expression as MemberExpression;
+                if(memberExpression != null)
+                {
+                    names[index] = memberExpression.Member.Name;
+                    if(!expressionStack.Any())
+                    {
+                        returnType = ((PropertyInfo)memberExpression.Member).PropertyType;
+                    }
+                    containsPropertyAccess = true;
+                }
+
+                MethodCallExpression methodCallExpression = expression as MethodCallExpression;
+                if(methodCallExpression  != null)
+                {
+                    names[index] = methodCallExpression.Method.Name;
+                    if (!expressionStack.Any())
+                    {
+                        returnType = methodCallExpression.Method.ReturnType;
+                    }
+
+                    containsMethodCall = true;
+                }
+
+                index++;
+            }
+
+            var pathInfo = new MemberPathInformation()
+            {
+                RootType = evaluatedParameter.Type,
+                ReturnType = returnType,
+                Depth = names.Count(),
+                Path = String.Join(".", names),
+                ContainsMethodCall = containsMethodCall,
+                ContainsPropertyAccess = containsPropertyAccess
+            };
+
+            memberPaths.Add(pathInfo);
         }
     }
 }
