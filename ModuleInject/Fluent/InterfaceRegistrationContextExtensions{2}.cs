@@ -110,6 +110,20 @@ namespace ModuleInject.Fluent
             return component;
         }
 
+        public static IInterfaceRegistrationContext<IComponent, IModule> AddCustomAction<IComponent, IModule>(
+            this IInterfaceRegistrationContext<IComponent, IModule> component,
+            Action<IComponent> customAction)
+            where IModule : IInjectionModule
+        {
+            CommonFunctions.CheckNullArgument("component", component);
+
+            var contextImpl = GetContextImplementation(component);
+
+            contextImpl.Context.AddCustomAction(customAction);
+
+            return component;
+        }
+
         private static InterfaceRegistrationContext<IComponent, IModule> GetContextImplementation<IComponent, IModule>(IInterfaceRegistrationContext<IComponent, IModule> component)
         {
             return (InterfaceRegistrationContext<IComponent, IModule>)component;

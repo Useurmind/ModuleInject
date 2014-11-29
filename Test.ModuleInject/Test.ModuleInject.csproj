@@ -103,6 +103,7 @@
     <Compile Include="BehaviourModuleTest.cs" />
     <Compile Include="AfterResolveModuleTest.cs" />
     <Compile Include="ConstructorInjectionModuleTest.cs" />
+    <Compile Include="CustomActionModuleTest.cs" />
     <Compile Include="DerivedModuleTest.cs" />
     <Compile Include="MethodCallModuleTest.cs" />
     <Compile Include="ModifyInstancesModuleTest.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="SuperModuleTest.cs" />
     <Compile Include="TestModules\BehaviourModule.cs" />
     <Compile Include="TestModules\ChangeReturnValueBehaviour.cs" />
+    <Compile Include="TestModules\CustomActionModule.cs" />
     <Compile Include="TestModules\ModifyInstancesModule.cs" />
     <Compile Include="TestModules\ConstructorInjectionModule.cs" />
     <Compile Include="TestModules\DerivedModule.cs" />

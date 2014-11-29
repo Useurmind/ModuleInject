@@ -223,6 +223,13 @@ namespace ModuleInject.Fluent
             return this;
         }
 
+        public RegistrationContext AddCustomAction<T>(Action<T> customAction)
+        {
+            var dependencyInjection = new LambdaDependencyInjection<T>(this.Container, (cont, comp) => customAction(comp));
+            this.Container.Inject(this.RegistrationName, this.RegistrationTypes.IComponent, dependencyInjection);
+            return this;
+        }
+
         private IResolvedValue[] GetContainerInjectionArguments(IList<MethodCallArgument> arguments)
         {
             IResolvedValue[] argumentParams = new IResolvedValue[arguments.Count];
