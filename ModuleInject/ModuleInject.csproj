@@ -83,16 +83,17 @@
       <DependentUpon>Errors.resx</DependentUpon>
     </Compile>
     <Compile Include="Fluent\InterfaceInjector.cs" />
+    <Compile Include="Fluent\InterfaceRegistrationContextExtensions{3}.cs" />
     <Compile Include="Fluent\RegistrationContext.cs" />
     <Compile Include="Fluent\ComponentRegistrationContextExtensions.cs" />
     <Compile Include="Fluent\InterfaceDependencyInjectionContextExtensions.cs" />
-    <Compile Include="Fluent\InterfaceDependencyInjectionContext.cs" />
-    <Compile Include="Fluent\InterfaceRegistrationContext.cs" />
+    <Compile Include="Fluent\InterfaceDependencyInjectionContext{4}.cs" />
+    <Compile Include="Fluent\InterfaceRegistrationContext{2}.cs" />
     <Compile Include="Fluent\DependencyInjectionContext.cs" />
-    <Compile Include="Fluent\ComponentRegistrationContext.cs" />
-    <Compile Include="Fluent\InterfaceRegistrationContextExtensions.cs" />
+    <Compile Include="Fluent\ComponentRegistrationContext{4}.cs" />
+    <Compile Include="Fluent\InterfaceRegistrationContextExtensions{2}.cs" />
     <Compile Include="Fluent\DependencyInjectionContextExtensions.cs" />
-    <Compile Include="Fluent\DependencyInjectionContextGeneric.cs" />
+    <Compile Include="Fluent\DependencyInjectionContext{5}.cs" />
     <Compile Include="Fluent\ClassInjector.cs" />
     <Compile Include="Fluent\InterfaceValueInjectionContextExtensions.cs" />
     <Compile Include="Fluent\ModifiedDependency.cs" />
@@ -101,10 +102,11 @@
     <Compile Include="Fluent\RegistrationContext{3}.cs" />
     <Compile Include="Fluent\ValueInjectionContextExtensions.cs" />
     <Compile Include="Fluent\ValueInjectionContext.cs" />
-    <Compile Include="Fluent\InterfaceValueInjectionContext.cs" />
-    <Compile Include="Fluent\ValueInjectionContextGeneric.cs" />
+    <Compile Include="Fluent\InterfaceValueInjectionContext{4}.cs" />
+    <Compile Include="Fluent\ValueInjectionContext{5}.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="InjectionModule.cs" />
+    <Compile Include="InjectionModule{2}.cs" />
     <Compile Include="Module\ComponentLifetime.cs" />
     <Compile Include="Module\FactoryLifetime.cs" />
     <Compile Include="Module\ModuleResolver.cs" />
@@ -125,6 +127,7 @@
     <Compile Include="Utility\TypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Fluent\InterfaceRegistrationContext{3}.cs" />
     <None Include="ModuleInject.snk" />
     <None Include="packages.config" />
   </ItemGroup>
