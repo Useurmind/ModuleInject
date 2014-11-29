@@ -5,18 +5,18 @@ In the tutorial you learned how property injection works. But there are other ki
 
 There are two ways to implement method injection.
 
-* The `CallMethod` function.
+* The `Inject` function.
 * The `IInitializable` interface.
 
-Personally, I prefer the `CallMethod` function because you don't need to implement some interface on your component classes that is not concerned with what your classes will do.
+Personally, I prefer the `Inject` function because you don't need to implement some interface on your component classes that is not concerned with what your classes will do.
 When using the approach with `IInitializable` interface you need to implement this interface on each component that you want to initialize in that way.
 
 
-###CallMethod
-So the first method to implement method injection is the function `CallMethod` which can be used like in the following example:
+###Inject function
+So the first method to implement method injection is the function `Inject` which can be used like in the following example:
 
     RegisterPublicComponent<IInitializableComponent, InitializableComponent>(x => x.Component)
-        .CallMethod((comp, module) => comp.Initialize(module.ComponentToInject));
+        .Inject((comp, module) => comp.Initialize(module.ComponentToInject));
 
 This is a very flexible approach because you can call any method on the component.
 You can even call a method repeatedly to e.g. fill a list via the add method.

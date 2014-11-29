@@ -41,20 +41,20 @@ namespace Test.ModuleInject.TestModules
         public void RegisterWithArgumentsInConstructor()
         {
             RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
-                .CallConstructor(module => new MainComponent1(module.MainComponent2));
+                .Construct(module => new MainComponent1(module.MainComponent2));
         }
 
         public void RegisterWithArgumentsInConstructorTwice()
         {
             RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
-                .CallConstructor(module => new MainComponent1(module.MainComponent2))
-                .CallConstructor(module => new MainComponent1(module.MainComponent2));
+                .Construct(module => new MainComponent1(module.MainComponent2))
+                .Construct(module => new MainComponent1(module.MainComponent2));
         }
 
         public void RegisterWithArgumentsInConstructorAndArgumentResolvedAfterThis()
         {
             RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
-                .CallConstructor(module => new MainComponent1(module.MainComponent3));
+                .Construct(module => new MainComponent1(module.MainComponent3));
         }
     }
 }

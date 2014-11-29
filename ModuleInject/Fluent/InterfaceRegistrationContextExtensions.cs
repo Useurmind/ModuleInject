@@ -63,7 +63,7 @@ namespace ModuleInject.Fluent
 
             var contextImpl = GetContextImplementation(component);
 
-            var dependencyContext = contextImpl.Context.Inject(dependencySourceExpression);
+            var dependencyContext = contextImpl.Context.Inject((Expression)dependencySourceExpression);
 
             return new InterfaceDependencyInjectionContext<IComponent, IModule, TModule, TDependency>(
                 contextImpl, dependencyContext);
@@ -209,7 +209,7 @@ namespace ModuleInject.Fluent
 
             var contextImpl = GetContextImplementation(component);
 
-            var dependencyContext = contextImpl.Context.Inject(dependencySourceExpression);
+            var dependencyContext = contextImpl.Context.Inject((Expression)dependencySourceExpression);
 
             return new InterfaceDependencyInjectionContext<IComponent, IModule, TDependency>(
                 contextImpl, dependencyContext);

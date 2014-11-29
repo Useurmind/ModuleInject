@@ -63,7 +63,7 @@ namespace ModuleInject.Fluent
 
             var contextImpl = GetContextImplementation(component);
 
-            var dependencyContext = contextImpl.Context.Inject(dependencySourceExpression);
+            var dependencyContext = contextImpl.Context.Inject((Expression)dependencySourceExpression);
 
             return new DependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>(
                 contextImpl, dependencyContext);
@@ -124,7 +124,7 @@ namespace ModuleInject.Fluent
         }
 
         public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
-            CallConstructor<IComponent, TComponent, IModule, TModule>(
+            Construct<IComponent, TComponent, IModule, TModule>(
             this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
             Expression<Func<TModule, IComponent>> constructorCallExpression)
             where TComponent : IComponent
@@ -135,13 +135,13 @@ namespace ModuleInject.Fluent
 
             var contextImpl = GetContextImplementation(component);
 
-            contextImpl.Context.CallConstructor(constructorCallExpression);
+            contextImpl.Context.Construct(constructorCallExpression);
 
             return component;
         }
 
         public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
-            CallMethod<IComponent, TComponent, IModule, TModule>(
+            Inject<IComponent, TComponent, IModule, TModule>(
             this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
             Expression<Action<TComponent, TModule>> methodCallExpression)
             where TComponent : IComponent
@@ -152,7 +152,7 @@ namespace ModuleInject.Fluent
 
             var contextImpl = GetContextImplementation(component);
 
-            contextImpl.Context.CallMethod(methodCallExpression);
+            contextImpl.Context.Inject(methodCallExpression);
 
             return component;
         }

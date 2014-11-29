@@ -46,15 +46,15 @@ namespace Test.ModuleInject.TestModules
             RegisterPrivateComponent<IMainComponent2, MainComponent2>(x => x.MainComponent2);
 
             RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainInstance1, new MainComponent1())
-                .CallMethod((comp, module) => comp.Initialize(module.MainComponent2));
+                .Inject((comp, module) => comp.Initialize(module.MainComponent2));
 
             RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
-                .CallMethod((comp, module) => comp.Initialize(module.MainComponent2));
+                .Inject((comp, module) => comp.Initialize(module.MainComponent2));
 
             RegisterPublicComponent<IList<IMainComponent1>, List<IMainComponent1>>(x => x.MainComponent1List)
-                .CallMethod((comp, module) => comp.Add(module.MainComponent1))
-                .CallMethod((comp, module) => comp.Add(module.CreateMainComponent1()))
-                .CallMethod((comp, module) => comp.Add(module.CreateMainComponent1()));
+                .Inject((comp, module) => comp.Add(module.MainComponent1))
+                .Inject((comp, module) => comp.Add(module.CreateMainComponent1()))
+                .Inject((comp, module) => comp.Add(module.CreateMainComponent1()));
         }
     }
 }

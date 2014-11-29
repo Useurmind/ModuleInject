@@ -142,7 +142,7 @@ namespace ModuleInject.Fluent
         /// </summary>
         /// <param name="constructorCallExpression">Expects an expression of the form module => new SomeConstructor(module.SomeComponent, ..).</param>
         /// <returns></returns>
-        public RegistrationContext CallConstructor(LambdaExpression constructorCallExpression)
+        public RegistrationContext Construct(LambdaExpression constructorCallExpression)
         {
             if (this.WasConstructorCalled)
             {
@@ -186,7 +186,7 @@ namespace ModuleInject.Fluent
         /// </summary>
         /// <param name="methodCallExpression">Expects an expression of the form (component, module) => component.Method(module.SomeComponent, ..).</param>
         /// <returns></returns>
-        public RegistrationContext CallMethod(LambdaExpression methodCallExpression)
+        public RegistrationContext Inject(LambdaExpression methodCallExpression)
         {
             ParameterMemberAccessEvaluator dependencyEvaluator = new ParameterMemberAccessEvaluator(methodCallExpression, 1);
             AddPrerequisites(dependencyEvaluator);

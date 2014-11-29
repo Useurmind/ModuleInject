@@ -59,14 +59,14 @@ namespace Test.ModuleInject.TestModules
         //{
         //    RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.Component)
         //        .ModifyDependencyBy(x => x.Component2, x => x.IntProperty = IntValue)
-        //        .CallConstructor(mod => new MainComponent1(mod.Component2));
+        //        .Construct(mod => new MainComponent1(mod.Component2));
         //}
 
         //public void RegisterComponentAndModifySubModulePropertyOnMethodInjection()
         //{
         //    RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.Component)
         //        .ModifyDependencyBy(x => x.Component2, x => x.IntProperty = IntValue)
-        //        .CallMethod((x, mod) => x.Initialize(mod.Component2));
+        //        .Inject((x, mod) => x.Initialize(mod.Component2));
         //}
 
         //public void RegisterComponentAndModifySubModulePropertyOnStrongInterfaceInjectorInjection()

@@ -3,7 +3,7 @@
 
 In the tutorial you learned how property injection works. But there are other kinds of injection that ModuleInject provides. One is called constructor injection.
 
-Constructor injection is rather simple. You can define a constructor on your component that takes some arguments which should be injected by your IoC container. Then you use the CallConstructor method when registering the component to tell the module that it should not use the default constructor.
+Constructor injection is rather simple. You can define a constructor on your component that takes some arguments which should be injected by your IoC container. Then you use the Construct method when registering the component to tell the module that it should not use the default constructor.
 
     public interface IConstructorComponent {
         ISomeUndefinedComponent InjectedComponent { get; }
@@ -29,7 +29,7 @@ So here we defined a component with a dependency that is injected via the constr
         RegisterPrivateComponent<ISomeUndefinedComponent, SomeUndefinedComponent>(x => x.ComponentToInject);
 
         RegisterPublicComponent<IConstructorComponent, ConstructorComponent>(x => x.Component)
-            .CallConstructor(module => new ConstructorComponent(module.ComponentToInject));
+            .Construct(module => new ConstructorComponent(module.ComponentToInject));
     }
 
-In this example you first register a private component which should be injected. After that the public component is registered which requires the private component as a dependency. By calling CallConstructor the module is told to not use the default constructor but instead look for the given constructor. The arguments of the constructor are given as member expressions describing other components of the module (which is the only parameter to the lambda expression).
+In this example you first register a private component which should be injected. After that the public component is registered which requires the private component as a dependency. By calling Construct the module is told to not use the default constructor but instead look for the given constructor. The arguments of the constructor are given as member expressions describing other components of the module (which is the only parameter to the lambda expression).

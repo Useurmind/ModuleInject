@@ -118,7 +118,7 @@ namespace ModuleInject.Fluent
             return instance;
         }
 
-        public static IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule> CallMethod<IComponent, TComponent, IModule, TModule>(
+        public static IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule> Inject<IComponent, TComponent, IModule, TModule>(
             this IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instance,
             Expression<Action<TComponent, TModule>> methodCallExpression)
             where TComponent : IComponent
@@ -129,7 +129,7 @@ namespace ModuleInject.Fluent
 
             var contextImpl = GetContextImplementation(instance);
 
-            contextImpl.Context.CallMethod(methodCallExpression);
+            contextImpl.Context.Inject(methodCallExpression);
 
             return instance;
         }
