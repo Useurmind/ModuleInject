@@ -43,13 +43,6 @@ namespace Test.ModuleInject
         }
 
         [TestCase]
-        [ExpectedException(typeof(ModuleInjectException))]
-        public void Resolved_RegisterWithArgumentsInConstructorTwice_ExceptionThrown()
-        {
-            _module.RegisterWithArgumentsInConstructorTwice();
-        }
-
-        [TestCase]
         public void Resolved_RegisterWithArgumentsInConstructorAndArgumentResolvedAfterThis_MainComponent2Set()
         {
             _module.RegisterWithArgumentsInConstructorAndArgumentResolvedAfterThis();

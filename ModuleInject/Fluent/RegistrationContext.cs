@@ -29,9 +29,11 @@ namespace ModuleInject.Fluent
 
     internal class RegistrationContext : IRegistrationContext
     {
+        private RegistrationTypes registrationTypes;
+
         private Dictionary<string, ModifiedDependency> modifiedDependencies; 
 
-        public IRegistrationTypes RegistrationTypes { get; private set; }
+        public IRegistrationTypes RegistrationTypes { get { return registrationTypes; } }
         public string RegistrationName { get; private set; }
 
         public bool WasConstructorCalled { get; private set; }
@@ -44,7 +46,7 @@ namespace ModuleInject.Fluent
             this.WasConstructorCalled = wasConstructorCalled;
             Module = module;
             Container = container;
-            this.RegistrationTypes = registrationTypes;
+            this.registrationTypes = registrationTypes;
             this.RegistrationName = name;
             modifiedDependencies = new Dictionary<string, ModifiedDependency>();
         }
@@ -60,6 +62,67 @@ namespace ModuleInject.Fluent
             this.modifiedDependencies.TryGetValue(dependencyPath, out modification);
 
             return modification;
+        }
+
+        public RegistrationContext Construct(object instance)
+        {
+            if (this.WasConstructorCalled)
+            {
+                ExceptionHelper.ThrowFormatException(Errors.RegistrationContext_ConstructorAlreadyCalled, this.RegistrationName, this.RegistrationTypes.TModule.Name);
+            }
+
+            this.registrationTypes.TComponent = instance.GetType();
+            Container.Register(this.RegistrationName, this.RegistrationTypes.IComponent, instance);
+            
+            this.WasConstructorCalled = true;
+
+            return this;
+        }
+
+        public RegistrationContext Construct(Type componentType)
+        {
+            if (this.WasConstructorCalled)
+            {
+                ExceptionHelper.ThrowFormatException(Errors.RegistrationContext_ConstructorAlreadyCalled, this.RegistrationName, this.RegistrationTypes.TModule.Name);
+            }
+
+            this.registrationTypes.TComponent = componentType;
+            Container.Register(this.RegistrationName, this.RegistrationTypes.IComponent, componentType);
+
+            this.WasConstructorCalled = true;
+
+            return this;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="constructorCallExpression">Expects an expression of the form module => new SomeConstructor(module.SomeComponent, ..).</param>
+        /// <returns></returns>
+        public RegistrationContext Construct(LambdaExpression constructorCallExpression)
+        {
+            if (this.WasConstructorCalled)
+            {
+                ExceptionHelper.ThrowFormatException(Errors.RegistrationContext_ConstructorAlreadyCalled, this.RegistrationName, this.RegistrationTypes.TModule.Name);
+            }
+
+            var dependencyEvaluator = new ParameterMemberAccessEvaluator(constructorCallExpression, 0);
+            AddPrerequisites(dependencyEvaluator);
+
+            Delegate compiledConstructorExpression = constructorCallExpression.Compile();
+
+            Func<IDependencyContainer, object> constructorFunc = new Func<IDependencyContainer, object>(cont =>
+            {
+                return compiledConstructorExpression.DynamicInvoke(this.Module);
+            });
+
+            this.Construct(constructorCallExpression.Body.Type);
+            Container.SetInstanceCreation(this.RegistrationName, this.RegistrationTypes.IComponent,
+                new FactoryInstanceCreation(Container, constructorFunc));
+
+            this.WasConstructorCalled = true;
+
+            return this;
         }
 
         public ValueInjectionContext Inject(object value, Type valueType)
@@ -137,36 +200,7 @@ namespace ModuleInject.Fluent
             return this;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="constructorCallExpression">Expects an expression of the form module => new SomeConstructor(module.SomeComponent, ..).</param>
-        /// <returns></returns>
-        public RegistrationContext Construct(LambdaExpression constructorCallExpression)
-        {
-            if (this.WasConstructorCalled)
-            {
-                ExceptionHelper.ThrowFormatException(Errors.RegistrationContext_ConstructorAlreadyCalled, this.RegistrationName, this.RegistrationTypes.TModule.Name);
-            }
-
-            var dependencyEvaluator = new ParameterMemberAccessEvaluator(constructorCallExpression, 0);
-            AddPrerequisites(dependencyEvaluator);
-
-            Delegate compiledConstructorExpression = constructorCallExpression.Compile();
-
-            Func<IDependencyContainer, object> constructorFunc = new Func<IDependencyContainer, object>(cont =>
-            {
-                return compiledConstructorExpression.DynamicInvoke(this.Module);
-            });
-
-            Container.SetInstanceCreation(this.RegistrationName, this.RegistrationTypes.IComponent,
-                new FactoryInstanceCreation(Container, constructorFunc));
-
-            this.WasConstructorCalled = true;
-
-            return this;
-        }
-
+       
         private void AddPrerequisites(ParameterMemberAccessEvaluator dependencyEvaluator)
         {
             dependencyEvaluator.Evaluate();

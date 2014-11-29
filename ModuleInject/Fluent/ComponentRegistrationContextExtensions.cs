@@ -124,23 +124,6 @@ namespace ModuleInject.Fluent
         }
 
         public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
-            Construct<IComponent, TComponent, IModule, TModule>(
-            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
-            Expression<Func<TModule, IComponent>> constructorCallExpression)
-            where TComponent : IComponent
-            where TModule : IModule
-            where IModule : IInjectionModule
-        {
-            CommonFunctions.CheckNullArgument("component", component);
-
-            var contextImpl = GetContextImplementation(component);
-
-            contextImpl.Context.Construct(constructorCallExpression);
-
-            return component;
-        }
-
-        public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             Inject<IComponent, TComponent, IModule, TModule>(
             this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
             Expression<Action<TComponent, TModule>> methodCallExpression)

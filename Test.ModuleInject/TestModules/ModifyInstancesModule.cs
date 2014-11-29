@@ -35,8 +35,8 @@ namespace Test.ModuleInject.TestModules
         {
             IntValue = 134563456;
             SubComponent = new SubComponent2();
-            RegisterPrivateComponent<ISubModule, Submodule>(x => x.Submodule);
-            RegisterPrivateComponent<IMainComponent2, MainComponent2>(x => x.Component2);
+            RegisterPrivateComponent(x => x.Submodule).Construct<Submodule>();
+            RegisterPrivateComponent(x => x.Component2).Construct<MainComponent2>();
         }
 
         //public void RegisterComponentAndModifySubModulePropertyOnPropertyInjection()

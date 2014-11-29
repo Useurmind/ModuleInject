@@ -25,10 +25,11 @@ namespace Test.ModuleInject.TestModules
 
         public void SetupSubComponent2OfMainComponent2IsInjectedIntoSubComponent1()
         {
-            RegisterPublicComponent<ISubComponent2, SubComponent2>(x => x.SubComponent2);
-            RegisterPublicComponent<IMainComponent2, MainComponent2>(x => x.MainComponent2)
+            RegisterPublicComponent(x => x.SubComponent2).Construct<SubComponent2>();
+            RegisterPublicComponent(x => x.MainComponent2).Construct<MainComponent2>()
                 .Inject(x => x.SubComponent2).IntoProperty(x => x.SubComponent2);
-            RegisterPublicComponent<ISubComponent1, SubComponent1>(x => x.SubComponent1)
+            RegisterPublicComponent(x => x.SubComponent1)
+                .Construct<SubComponent1>()
                 .Inject(x => x.MainComponent2.SubComponent2).IntoProperty(x => x.SubComponent2);
         }
     }

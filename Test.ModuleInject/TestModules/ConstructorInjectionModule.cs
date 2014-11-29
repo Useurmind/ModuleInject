@@ -29,31 +29,24 @@ namespace Test.ModuleInject.TestModules
 
         public ConstructorInjectionModule()
         {
-            RegisterPublicComponent<IMainComponent2, MainComponent2>(x => x.MainComponent3);
-            RegisterPrivateComponent<IMainComponent2, MainComponent2>(x => x.MainComponent2);
+            RegisterPublicComponent(x => x.MainComponent3).Construct<MainComponent2>();
+            RegisterPrivateComponent(x => x.MainComponent2).Construct<MainComponent2>();
         }
 
         public void RegisterWithDefaultConstructor()
         {
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1);
+            RegisterPublicComponent(x => x.MainComponent1).Construct<MainComponent1>();
         }
 
         public void RegisterWithArgumentsInConstructor()
         {
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
-                .Construct(module => new MainComponent1(module.MainComponent2));
-        }
-
-        public void RegisterWithArgumentsInConstructorTwice()
-        {
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
-                .Construct(module => new MainComponent1(module.MainComponent2))
+            RegisterPublicComponent(x => x.MainComponent1)
                 .Construct(module => new MainComponent1(module.MainComponent2));
         }
 
         public void RegisterWithArgumentsInConstructorAndArgumentResolvedAfterThis()
         {
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
+            RegisterPublicComponent(x => x.MainComponent1)
                 .Construct(module => new MainComponent1(module.MainComponent3));
         }
     }

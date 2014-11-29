@@ -65,13 +65,15 @@ namespace Test.ModuleInject.TestModules
             FixedInstance = new MainComponent1();
             InjectedValue = 8;
 
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.InstanceRegistrationComponent, FixedInstance)
+            RegisterPublicComponent(x => x.InstanceRegistrationComponent)
+                .Construct(FixedInstance)
                 .Inject(x => x.Component22).IntoProperty(x => x.MainComponent22)
                 .Inject(x => x.PrivateComponent).IntoProperty(x => x.MainComponent23)
                 .Inject(x => x.SubModule.Component1).IntoProperty(x => x.SubComponent1)
                 .InitializeWith(x => x.Component2);
 
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.InitWithPropertiesComponent)
+            RegisterPublicComponent(x => x.InitWithPropertiesComponent)
+                .Construct<MainComponent1>()
                 .Inject(x => x.Component2).IntoProperty(x => x.MainComponent2)
                 .Inject(x => x.SubModule.Component1).IntoProperty(x => x.SubComponent1)
                 .Inject(x => x.PrivateComponent).IntoProperty(x => x.MainComponent22)
@@ -79,20 +81,25 @@ namespace Test.ModuleInject.TestModules
                 .Inject(x => x.Component2).IntoProperty(x => x.ComponentViaSubinterface)
                 .Inject(InjectedValue).IntoProperty(x => x.InjectedValue);
 
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.InitWithInitialize1Component)
+            RegisterPublicComponent(x => x.InitWithInitialize1Component)
+                .Construct<MainComponent1>()
                 .InitializeWith(x => x.Component2)
                 .AlsoRegisterFor(x => x.AlsoRegisterForComponent);
 
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.InitWithInitialize1FromSubComponent)
+            RegisterPublicComponent(x => x.InitWithInitialize1FromSubComponent)
+                .Construct<MainComponent1>()
                 .InitializeWith(x => x.SubModule.Component1);
 
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.InitWithInitialize2Component)
+            RegisterPublicComponent(x => x.InitWithInitialize2Component)
+                .Construct<MainComponent1>()
                 .InitializeWith(x => x.Component2, x => x.SubModule.Component1);
 
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.InitWithInitialize3Component)
+            RegisterPublicComponent(x => x.InitWithInitialize3Component)
+                .Construct<MainComponent1>()
                 .InitializeWith(x => x.Component2, x => x.Component22, x => x.SubModule.Component1);
 
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.InitWithInjectorComponent)
+            RegisterPublicComponent(x => x.InitWithInjectorComponent)
+                .Construct<MainComponent1>()
                 .AddInjector(new ClassInjector<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule>(context =>
                 {
                     context.Inject(InjectedValue).IntoProperty(x => x.InjectedValue);
@@ -107,13 +114,17 @@ namespace Test.ModuleInject.TestModules
                     context.Inject(x => x.SubModule.Component1).IntoProperty(x => x.SubComponent1);
                 }));
 
-            RegisterPublicComponent<IMainComponent2, MainComponent2>(x => x.Component2);
-            RegisterPublicComponent<IMainComponent2, MainComponent2>(x => x.Component22)
+            RegisterPublicComponent(x => x.Component2).Construct<MainComponent2>();
+            RegisterPublicComponent(x => x.Component22)
+                .Construct<MainComponent2>()
                 .InitializeWith(x => (IMainComponent2SubInterface)x.Component2);
-            RegisterPrivateComponent<IMainComponent2, MainComponent2>(x => x.PrivateComponent);
-            RegisterPrivateComponent<IMainComponent2, MainComponent2>(x => x.PrivateInstanceComponent, new MainComponent2());
+            RegisterPrivateComponent(x => x.PrivateComponent)
+            .Construct<MainComponent2>();
+            RegisterPrivateComponent(x => x.PrivateInstanceComponent)
+                .Construct(new MainComponent2());
 
-            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.PrivateComponentInjectedProperties)
+            RegisterPrivateComponent(x => x.PrivateComponentInjectedProperties)
+                .Construct<MainComponent1>()
                 .Inject(x => x.PrivateComponent).IntoProperty(x => x.MainComponent2)
                 .Inject(x => x.PrivateInstanceComponent).IntoProperty(x => x.MainComponent22)
                 .Inject(x => x.Component2).IntoProperty(x => x.MainComponent23);
@@ -130,22 +141,22 @@ namespace Test.ModuleInject.TestModules
 
         public void RegisterUnattributedPrivateProperty()
         {
-            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.FixedInstance);
+            RegisterPrivateComponent(x => x.FixedInstance).Construct<MainComponent1>();
         }
 
         public void RegisterInterfacePropertyAsPrivate()
         {
-            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.InitWithPropertiesComponent);
+            RegisterPrivateComponent(x => x.InitWithPropertiesComponent).Construct<MainComponent1>();
         }
 
         public void RegisterUnattributedPrivatePropertyWithInstance()
         {
-            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.FixedInstance, new MainComponent1());
+            RegisterPrivateComponent(x => x.FixedInstance).Construct(new MainComponent1());
         }
 
         public void RegisterInterfacePropertyAsPrivateWithInstance()
         {
-            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.InitWithPropertiesComponent, new MainComponent1());
+            RegisterPrivateComponent(x => x.InitWithPropertiesComponent).Construct(new MainComponent1());
         }
 
         #endregion

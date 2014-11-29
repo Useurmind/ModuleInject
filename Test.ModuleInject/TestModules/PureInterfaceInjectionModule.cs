@@ -49,20 +49,22 @@ namespace Test.ModuleInject.TestModules
 
         public PureInterfaceInjectionModule()
         {
-            RegisterPrivateComponent<IMainComponent2, MainComponent2>(x => x.MainComponent2);
+            RegisterPrivateComponent(x => x.MainComponent2).Construct<MainComponent2>();
 
             RegisterComponentWithInjector();
         }
 
         public void RegisterComponentWithInjector()
         {
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
+            RegisterPublicComponent(x => x.MainComponent1)
+                .Construct<MainComponent1>()
                 .AddInjector(new PureInterfaceInjector());
         }
 
         public void RegisterInstanceWithInjector()
         {
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1, new MainComponent1())
+            RegisterPublicComponent(x => x.MainComponent1)
+                .Construct(new MainComponent1())
                 .AddInjector(new PureInterfaceInjector());
         }
 

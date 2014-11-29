@@ -35,22 +35,24 @@ namespace Test.ModuleInject.TestModules
 
         public void RegisterPublicComponentsProperty()
         {
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.PublicComponent.RecursiveComponent1);
+            RegisterPublicComponent(x => x.PublicComponent.RecursiveComponent1).Construct<MainComponent1>();
         }
 
         public void RegisterPublicComponentInstanceProperty()
         {
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.PublicComponent.RecursiveComponent1, new MainComponent1());
+            RegisterPublicComponent(x => x.PublicComponent.RecursiveComponent1)
+                .Construct(new MainComponent1());
         }
 
         public void RegisterPrivateComponentsProperty()
         {
-            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.PrivateComponent.RecursiveComponent1);
+            RegisterPrivateComponent(x => x.PrivateComponent.RecursiveComponent1).Construct<MainComponent1>();
         }
 
         public void RegisterPrivateComponentsInstanceProperty()
         {
-            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.PrivateComponent.RecursiveComponent1, new MainComponent1());
+            RegisterPrivateComponent(x => x.PrivateComponent.RecursiveComponent1)
+                .Construct(new MainComponent1());
         }
 
         public void RegisterPublicFactoryOfComponent()
@@ -65,7 +67,7 @@ namespace Test.ModuleInject.TestModules
 
         public void RegisterPublicComponentAsPrivateComponent()
         {
-            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.PublicComponent);
+            RegisterPrivateComponent(x => x.PublicComponent).Construct<MainComponent1>();
         }
 
         public void RegisterPublicFactoryAsPrivateFactory()
@@ -75,7 +77,7 @@ namespace Test.ModuleInject.TestModules
 
         public void RegisterPrivateComponentWithoutAttribute()
         {
-            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.PrivateComponentWithoutAttribute);
+            RegisterPrivateComponent(x => x.PrivateComponentWithoutAttribute).Construct<MainComponent1>();
         }
 
         public void RegisterPrivateFactoryWithoutAttribute()
@@ -85,12 +87,14 @@ namespace Test.ModuleInject.TestModules
 
         public void RegisterWithFancyExpression1()
         {
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => new ModuleWithRegistrationErrors().PublicComponent);
+            RegisterPublicComponent(x => new ModuleWithRegistrationErrors().PublicComponent)
+                .Construct<MainComponent1>();
         }
 
         public void RegisterWithCastToNonImplementedInterface()
         {
-            RegisterPublicComponent<IMainComponent2, MainComponent2>(x => x.PublicComponent2)
+            RegisterPublicComponent(x => x.PublicComponent2)
+                .Construct<MainComponent2>()
                 .InitializeWith(x => (IMainComponent2SubInterface)x.PublicComponent);
         }
     }

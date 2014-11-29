@@ -29,14 +29,15 @@ namespace Test.ModuleInject.TestModules
 
         public InjectorModule()
         {
-            RegisterPublicComponent<IMainComponent2, MainComponent2>(x => x.Component2);
-            RegisterPublicComponent<IMainComponent2, MainComponent2>(x => x.Component22);
-            RegisterPublicComponent<IMainComponent2, MainComponent2>(x => x.Component23);
+            RegisterPublicComponent(x => x.Component2).Construct<MainComponent2>();
+            RegisterPublicComponent(x => x.Component22).Construct<MainComponent2>();
+            RegisterPublicComponent(x => x.Component23).Construct<MainComponent2>();
         }
 
         public void RegisterClassInjectorWithPropertyValueAndInitialize1()
         {
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.Component1)
+            RegisterPublicComponent(x => x.Component1)
+                .Construct<MainComponent1>()
                 .AddTypeInjection(component =>
                 {
                     component.InitializeWith(x => x.Component2);
@@ -53,7 +54,8 @@ namespace Test.ModuleInject.TestModules
 
         public void RegisterInterfaceInjectorWithPropertyValueAndInitialize1()
         {
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.Component1)
+            RegisterPublicComponent(x => x.Component1)
+                .Construct<MainComponent1>()
                 .AddInterfaceInjection(component =>
                 {
                     component.InitializeWith(x => x.Component2);

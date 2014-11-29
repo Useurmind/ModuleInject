@@ -24,33 +24,37 @@ namespace Test.ModuleInject.TestModules
 
         public PropertyInjectionModule()
         {
-            RegisterPrivateComponent<MainComponent2, MainComponent2>(x => x.MainComponent2);
+            RegisterPrivateComponent(x => x.MainComponent2).Construct<MainComponent2>();
         }
         
         public void RegisterPublicComponentAndInjectNewInstanceInProperty()
         {
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.PublicMainComponent1)
+            RegisterPublicComponent(x => x.PublicMainComponent1)
+                .Construct<MainComponent1>()
                 .Inject(new MainComponent2())
                 .IntoProperty(x => x.MainComponent2);
         }
 
         public void RegisterPublicComponentAndInjectRegisteredComponentWithoutInterfaceInProperty()
         {
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.PublicMainComponent1)
+            RegisterPublicComponent(x => x.PublicMainComponent1)
+                .Construct<MainComponent1>()
                 .Inject(x => x.MainComponent2)
                 .IntoProperty(x => x.MainComponent2);
         }
 
         public void RegisterPublicInstanceAndInjectNewInstanceInProperty()
         {
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.PublicMainComponent1, new MainComponent1())
+            RegisterPublicComponent(x => x.PublicMainComponent1)
+                .Construct(new MainComponent1())
                 .Inject(new MainComponent2())
                 .IntoProperty(x => x.MainComponent2);
         }
 
         public void RegisterPublicInstanceAndInjectRegisteredComponentWithoutInterfaceInProperty()
         {
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.PublicMainComponent1, new MainComponent1())
+            RegisterPublicComponent(x => x.PublicMainComponent1)
+                .Construct(new MainComponent1())
                 .Inject(x => x.MainComponent2)
                 .IntoProperty(x => x.MainComponent2);
         }

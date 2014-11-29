@@ -103,6 +103,8 @@
     <Compile Include="Fluent\ModifiedDependency.cs" />
     <Compile Include="Fluent\RegistrationContextBase.cs" />
     <Compile Include="Fluent\InstanceValueInjectionContextExtensions.cs" />
+    <Compile Include="Fluent\RegistrationContextExtensions.cs" />
+    <Compile Include="Fluent\RegistrationContext{3}.cs" />
     <Compile Include="Fluent\ValueInjectionContextExtensions.cs" />
     <Compile Include="Fluent\ValueInjectionContext.cs" />
     <Compile Include="Fluent\InterfaceValueInjectionContext.cs" />

@@ -24,19 +24,21 @@ namespace Test.ModuleInject.TestModules
 
         public UseSubmoduleModule()
         {
-            RegisterPrivateComponent<ISubModule, Submodule>(x => x.SubModule);
+            RegisterPrivateComponent(x => x.SubModule).Construct<Submodule>();
         }
 
         public void RegisterMainComponent_Injecting_SubmoduleProperty()
         {
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent)
+            RegisterPublicComponent(x => x.MainComponent)
+                .Construct<MainComponent1>()
                 .Inject(x => x.SubModule.Component1)
                 .IntoProperty(x => x.SubComponent1);
         }
 
         public void RegisterMainComponent_Injecting_SubmoduleFactory()
         {
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent)
+            RegisterPublicComponent(x => x.MainComponent)
+                .Construct<MainComponent1>()
                 .Inject(x => x.SubModule.CreateComponent1())
                 .IntoProperty(x => x.SubComponent1);
         }
