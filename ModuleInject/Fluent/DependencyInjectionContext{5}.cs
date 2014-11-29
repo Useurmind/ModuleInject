@@ -15,7 +15,6 @@ namespace ModuleInject.Fluent
     {
         internal DependencyInjectionContext Context { get; private set; }
         public ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> ComponentContext { get; private set; }
-        public string DependencyName { get { return Context.DependencyPath; } }
 
         internal DependencyInjectionContext(ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> componentContext, 
             DependencyInjectionContext context)

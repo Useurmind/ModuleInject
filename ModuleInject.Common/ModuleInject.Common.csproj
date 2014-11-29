@@ -55,6 +55,7 @@
     <Compile Include="Linq\CommonLinq.cs" />
     <Compile Include="Linq\InterceptingExpressionVisitor.cs" />
     <Compile Include="Linq\Method.cs" />
+    <Compile Include="Linq\ParameterExpressionReplacementVisitor.cs" />
     <Compile Include="Linq\Property.cs" />
     <Compile Include="Linq\ReflectionExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

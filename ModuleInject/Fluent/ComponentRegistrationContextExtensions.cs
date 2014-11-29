@@ -18,22 +18,6 @@ namespace ModuleInject.Fluent
 
     public static class ComponentRegistrationContextExtensions
     {
-        //public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
-        //    ModifyDependencyBy<IComponent, TComponent, IModule, TModule, TDependency>(
-        //    this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
-        //    Expression<Func<TModule, TDependency>> dependencySourceExpression,
-        //    Action<TDependency> modifyAction)
-        //    where TComponent : IComponent
-        //    where TModule : IModule
-        //    where IModule : IInjectionModule
-        //{
-        //    CommonFunctions.CheckNullArgument("component", component);
-
-        //    var contextImpl = GetContextImplementation(component);
-
-        //    contextImpl.Context.ModifyDependencyBy(dependencySourceExpression, obj => modifyAction((TDependency)obj));
-        //    return component;
-        //}
 
         public static IValueInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>
             Inject<IComponent, TComponent, IModule, TModule, TDependency>(
@@ -63,7 +47,7 @@ namespace ModuleInject.Fluent
 
             var contextImpl = GetContextImplementation(component);
 
-            var dependencyContext = contextImpl.Context.Inject((Expression)dependencySourceExpression);
+            var dependencyContext = contextImpl.Context.InjectSource((LambdaExpression)dependencySourceExpression);
 
             return new DependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>(
                 contextImpl, dependencyContext);
@@ -228,6 +212,19 @@ namespace ModuleInject.Fluent
             return component;
         }
 
+        /// <summary>
+        /// Register a custom action that will run when the component is resolved.
+        /// Inside the action only the created instance of the component is available.
+        /// The module is not, because it can not be guaranteed that all properties of the 
+        /// module are already resolved.
+        /// </summary>
+        /// <typeparam name="IComponent">The interface of the component.</typeparam>
+        /// <typeparam name="TComponent">The type of the component.</typeparam>
+        /// <typeparam name="IModule">The interface of the module.</typeparam>
+        /// <typeparam name="TModule">The type of the module.</typeparam>
+        /// <param name="component">The fluent context in which a custom action is registered.</param>
+        /// <param name="customAction">The action that should be executed.</param>
+        /// <returns></returns>
         public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> AddCustomAction<IComponent, TComponent, IModule, TModule>(
             this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
             Action<TComponent> customAction)

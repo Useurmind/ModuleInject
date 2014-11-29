@@ -14,12 +14,12 @@ namespace Test.ModuleInject.Fluent
 {
     using global::ModuleInject.Common.Linq;
     using global::ModuleInject.Container.Interface;
+    using System.Linq.Expressions;
 
     [TestFixture]
     public class DependencyInjectionContextTest
     {
         string _propertyName;
-        string _depPropertyName;
         Mock<IDependencyContainer> _containerMock;
         ComponentRegistrationContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule> _componentContext;
         DependencyInjectionContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule, IMainComponent2> _depContext;
@@ -37,13 +37,15 @@ namespace Test.ModuleInject.Fluent
                 IModule = typeof(IPropertyModule),
                 TModule = typeof(PropertyModule)
             };
+
+            Expression<Func<PropertyModule, IMainComponent2>> _depSourceExpression = m => m.Component2;
+
             _propertyName = Property.Get((IPropertyModule x) => x.InitWithPropertiesComponent);
-            _depPropertyName = Property.Get((IPropertyModule x) => x.Component2);
             _containerMock = new Mock<IDependencyContainer>();
             this.registraitonContextUntyped = new RegistrationContext(_propertyName, null, _containerMock.Object, _types, false);
             _componentContext = new ComponentRegistrationContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule>(
                 this.registraitonContextUntyped);
-            _depContextUntyped = new DependencyInjectionContext(this.registraitonContextUntyped, _depPropertyName, typeof(IMainComponent2));
+            _depContextUntyped = new DependencyInjectionContext(this.registraitonContextUntyped, _depSourceExpression);
             _depContext = new DependencyInjectionContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule, IMainComponent2>(
                 _componentContext, _depContextUntyped);
         }
@@ -52,7 +54,6 @@ namespace Test.ModuleInject.Fluent
         public void Constructor_FieldsSetCorrectly()
         {
             Assert.AreSame(_componentContext, _depContext.ComponentContext);
-            Assert.AreEqual(_depPropertyName, _depContext.DependencyName);
         }
 
         [TestCase]

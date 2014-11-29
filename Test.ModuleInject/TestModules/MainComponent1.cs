@@ -15,7 +15,7 @@ namespace Test.ModuleInject.TestModules
     public interface IMainComponent1 : IMainComponent1Sub
     {
         int InjectedValue { get;  }
-        IMainComponent2 MainComponent22 { get; }
+        IMainComponent2 MainComponent22 { get; set;  }
         IMainComponent2 MainComponent23 { get; }
         ISubComponent1 SubComponent1 { get; }
 

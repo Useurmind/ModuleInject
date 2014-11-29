@@ -126,38 +126,12 @@ namespace ModuleInject.Fluent
             return new ValueInjectionContext(this, value, valueType);
         }
 
-        //public RegistrationContext ModifyDependencyBy(Expression dependencySourceExpression, Action<object> modifyAction)
-        //{
-        //    string memberPath;
-        //    Type memberType;
-
-        //    LinqHelper.GetMemberPathAndType(dependencySourceExpression, out memberPath, out memberType);
-
-        //    ModifiedDependency modification = null;
-        //    if (!this.modifiedDependencies.TryGetValue(memberPath, out modification))
-        //    {
-        //        modification = new ModifiedDependency(memberPath, memberType, modifyAction);
-        //        this.modifiedDependencies.Add(memberPath, modification);
-        //    }
-        //    else
-        //    {
-        //        modification.AddModifyAction(modifyAction);
-        //    }
-
-        //    return this;
-        //}
-
-        public DependencyInjectionContext Inject(Expression dependencySourceExpression)
+        public DependencyInjectionContext InjectSource(LambdaExpression dependencySourceExpression)
         {
-            string memberPath;
-            Type memberType;
-
-            LinqHelper.GetMemberPathAndType(dependencySourceExpression, out memberPath, out memberType);
-
-            return new DependencyInjectionContext(this, memberPath, memberType);
+            return new DependencyInjectionContext(this, dependencySourceExpression);
         }
        
-        private void AddPrerequisites(ParameterMemberAccessEvaluator dependencyEvaluator)
+        public void AddPrerequisites(ParameterMemberAccessEvaluator dependencyEvaluator)
         {
             dependencyEvaluator.Evaluate();
 
@@ -228,36 +202,6 @@ namespace ModuleInject.Fluent
             var dependencyInjection = new LambdaDependencyInjection<T>(this.Container, (cont, comp) => customAction(comp));
             this.Container.Inject(this.RegistrationName, this.RegistrationTypes.IComponent, dependencyInjection);
             return this;
-        }
-
-        private IResolvedValue[] GetContainerInjectionArguments(IList<MethodCallArgument> arguments)
-        {
-            IResolvedValue[] argumentParams = new IResolvedValue[arguments.Count];
-            int i = 0;
-            foreach (var argumentItem in arguments)
-            {
-                if (argumentItem.ResolvePath != null)
-                {
-                    var modifyActions = this.GetModifyActions(argumentItem.ResolvePath);
-                    argumentParams[i] = LinqHelper.GetContainerReference(Module, argumentItem.ResolvePath, argumentItem.ArgumentType, modifyActions);
-                }
-                else
-                {
-                    argumentParams[i] = new ConstantValue(argumentItem.Value, argumentItem.ArgumentType);
-                }
-                i++;
-            }
-            return argumentParams;
-        }
-
-        private IResolvedValue NewResolvedParameter(Expression dependencyExpression)
-        {
-            string memberPath;
-            Type memberType;
-            LinqHelper.GetMemberPathAndType(dependencyExpression, out memberPath, out memberType);
-            var modifyActions = this.GetModifyActions(memberPath);
-
-            return LinqHelper.GetContainerReference(Module, memberPath, memberType, modifyActions);
         }
 
         public IList<Action<object>> GetModifyActions(string memberPath)

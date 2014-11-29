@@ -19,24 +19,7 @@ namespace ModuleInject.Fluent
     public static class ComponentInterfaceRegistrationContextExtensions
     {
         #region component interface
-
-        //public static IInterfaceRegistrationContext<IComponent, IModule, TModule>
-        //    ModifyDependencyBy<IComponent, IModule, TModule, TDependency>(
-        //    this IInterfaceRegistrationContext<IComponent, IModule, TModule> component,
-        //    Expression<Func<TModule, TDependency>> dependencySourceExpression,
-        //    Action<TDependency> modifyAction)
-        //    where TModule : IModule
-        //    where IModule : IInjectionModule
-        //{
-        //    CommonFunctions.CheckNullArgument("component", component);
-
-        //    var contextImpl = GetContextImplementation(component);
-
-        //    contextImpl.Context.ModifyDependencyBy(dependencySourceExpression, obj => modifyAction((TDependency)obj));
-
-        //    return component;
-        //}
-
+        
         public static IInterfaceRegistrationContext<IComponent, IModule, TModule>
              Inject<IComponent, IModule, TModule>(
              this IInterfaceRegistrationContext<IComponent, IModule, TModule> component,
@@ -79,7 +62,7 @@ namespace ModuleInject.Fluent
 
             var contextImpl = GetContextImplementation(component);
 
-            var dependencyContext = contextImpl.Context.Inject((Expression)dependencySourceExpression);
+            var dependencyContext = contextImpl.Context.InjectSource((LambdaExpression)dependencySourceExpression);
 
             return new InterfaceDependencyInjectionContext<IComponent, IModule, TModule, TDependency>(
                 contextImpl, dependencyContext);
