@@ -51,10 +51,6 @@ namespace ModuleInject.Fluent
             modifiedDependencies = new Dictionary<string, ModifiedDependency>();
         }
 
-        private static readonly string _initialize1MethodName = ExtractMethodName<IInitializable<object>>(x => x.Initialize(null));
-        private static readonly string _initialize2MethodName = ExtractMethodName<IInitializable<object, object>>(x => x.Initialize(null, null));
-        private static readonly string _initialize3MethodName = ExtractMethodName<IInitializable<object, object, object>>(x => x.Initialize(null, null, null));
-
         private ModifiedDependency GetModifiedDependency(string dependencyPath)
         {
             ModifiedDependency modification = null;
@@ -160,46 +156,6 @@ namespace ModuleInject.Fluent
 
             return new DependencyInjectionContext(this, memberPath, memberType);
         }
-
-        public RegistrationContext InitializeWith(Expression dependency1SourceExpression)
-        {
-            Container.InjectMethod(
-                this.RegistrationName,
-                this.RegistrationTypes.IComponent,
-                _initialize1MethodName,
-                NewResolvedParameter(dependency1SourceExpression));
-
-            return this;
-        }
-
-        public RegistrationContext InitializeWith(
-            Expression dependency1SourceExpression,
-            Expression dependency2SourceExpression)
-        {
-            Container.InjectMethod(this.RegistrationName, this.RegistrationTypes.IComponent,
-                _initialize2MethodName,
-                    NewResolvedParameter(dependency1SourceExpression),
-                    NewResolvedParameter(dependency2SourceExpression)
-                    );
-
-            return this;
-        }
-
-        public RegistrationContext InitializeWith(
-            Expression dependency1SourceExpression,
-            Expression dependency2SourceExpression,
-            Expression dependency3SourceExpression)
-        {
-            Container.InjectMethod(this.RegistrationName, this.RegistrationTypes.IComponent,
-                _initialize3MethodName,
-                    NewResolvedParameter(dependency1SourceExpression),
-                    NewResolvedParameter(dependency2SourceExpression),
-                    NewResolvedParameter(dependency3SourceExpression)
-                    );
-
-            return this;
-        }
-
        
         private void AddPrerequisites(ParameterMemberAccessEvaluator dependencyEvaluator)
         {

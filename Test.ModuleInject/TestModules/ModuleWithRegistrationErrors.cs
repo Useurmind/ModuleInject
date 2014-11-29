@@ -95,7 +95,7 @@ namespace Test.ModuleInject.TestModules
         {
             RegisterPublicComponent(x => x.PublicComponent2)
                 .Construct<MainComponent2>()
-                .InitializeWith(x => (IMainComponent2SubInterface)x.PublicComponent);
+                .Inject((c, m) => c.Initialize((IMainComponent2SubInterface)m.PublicComponent));
         }
     }
 }

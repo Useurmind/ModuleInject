@@ -40,7 +40,7 @@ namespace Test.ModuleInject.TestModules
                 .Construct<MainComponent1>()
                 .AddTypeInjection(component =>
                 {
-                    component.InitializeWith(x => x.Component2);
+                    component.Inject((c, m) => c.Initialize(m.Component2));
                 })
                 .AddTypeInjection(component =>
                 {
@@ -58,7 +58,7 @@ namespace Test.ModuleInject.TestModules
                 .Construct<MainComponent1>()
                 .AddInterfaceInjection(component =>
                 {
-                    component.InitializeWith(x => x.Component2);
+                    component.Inject((c, m) => c.Initialize(m.Component2));
                 })
                 .AddInterfaceInjection(component =>
                 {

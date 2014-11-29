@@ -39,26 +39,26 @@ namespace Test.ModuleInject.TestModules
                 .Construct(new MainComponent1())
                 .Inject(x => x.CreateComponent2()).IntoProperty(x => x.MainComponent22)
                 .Inject(x => x.CreateComponent2()).IntoProperty(x => x.MainComponent23)
-                .InitializeWith(x => CreateComponent2());
+                .Inject((c, m) => c.Initialize(m.CreateComponent2()));
 
             RegisterPrivateComponent(x => x.Component1)
                 .Construct(m => new MainComponent1() {
                     MainComponent22 = m.CreateComponent2()
                 })
                 .Inject(x => x.CreateComponent2()).IntoProperty(x => x.MainComponent23)
-                .InitializeWith(x => x.CreateComponent2());
+                .Inject((c, m) => c.Initialize(m.CreateComponent2()));
 
             RegisterPublicComponentFactory(x => x.CreateComponent1())
                 .Construct<MainComponent1>()
                 .Inject(x => x.CreateComponent2()).IntoProperty(x => x.MainComponent22)
                 .Inject(x => x.Component2).IntoProperty(x => x.MainComponent23)
-                .InitializeWith(x => x.CreateComponent2());
+                .Inject((c, m) => c.Initialize(m.CreateComponent2()));
             RegisterPublicComponentFactory(x => x.CreateComponent2()).Construct<MainComponent2>();
 
 
             RegisterPrivateComponentFactory(x => x.CreatePrivateComponent1())
                 .Construct<MainComponent1>()
-                .InitializeWith(x => x.CreateComponent2())
+                .Inject((c, m) => c.Initialize(m.CreateComponent2()))
                 .Inject(x => x.Component2).IntoProperty(x => x.MainComponent22)
                 .Inject(x => x.CreatePrivateComponent2()).IntoProperty(x => x.MainComponent23);
             RegisterPrivateComponentFactory(x => x.CreatePrivateComponent2()).Construct<MainComponent2>();
@@ -66,7 +66,7 @@ namespace Test.ModuleInject.TestModules
             RegisterPublicComponent(x => x.ComponentWithPrivateComponents)
                 .Construct<MainComponent1>()
                 .Inject(x => x.CreatePrivateComponent2()).IntoProperty(x => x.MainComponent22)
-                .InitializeWith(x => x.CreatePrivateComponent2());
+                .Inject((c, m) => c.Initialize(m.CreatePrivateComponent2()));
                 
         }
 

@@ -19,7 +19,7 @@ namespace Test.ModuleInject.TestModules
         string StringProperty { get; set; }
     }
 
-    public class MainComponent2 : IMainComponent2, IInitializable<IMainComponent2SubInterface>
+    public class MainComponent2 : IMainComponent2
     {
         public int IntProperty { get; set; }
         public string StringProperty { get; set; }

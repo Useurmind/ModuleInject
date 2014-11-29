@@ -61,11 +61,6 @@
     <Compile Include="Fluent\IRegistrationTypes.cs" />
     <Compile Include="Fluent\IValueInjectionContext.cs" />
     <Compile Include="IClassInjector.cs" />
-    <Compile Include="IInitializable1.cs" />
-    <Compile Include="IInitializable2.cs" />
-    <Compile Include="IInitializable3.cs" />
-    <Compile Include="IInitializable4.cs" />
-    <Compile Include="IInitializable5.cs" />
     <Compile Include="IInjectionModule.cs" />
     <Compile Include="IInterfaceInjector.cs" />
     <Compile Include="IPostResolveAssembler.cs" />
