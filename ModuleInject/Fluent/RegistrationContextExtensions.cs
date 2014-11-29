@@ -18,7 +18,7 @@ namespace ModuleInject.Fluent
         /// <typeparam name="TComponent">The class that should be instantiated for the component that is registered.</typeparam>
         /// <param name="instance">The instance that should be registered.</param>
         /// <returns>A context for fluent injection into the component.</returns>
-        public static IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
+        public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             Construct<IComponent, TComponent, IModule, TModule>(
             this IRegistrationContext<IComponent, IModule, TModule> registrationContext,
             TComponent instance)
@@ -32,7 +32,7 @@ namespace ModuleInject.Fluent
 
             contextImplementation.Context.Construct(instance);
 
-            return new InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>(contextImplementation.Context);
+            return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(contextImplementation.Context);
         }
 
         public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
