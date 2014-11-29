@@ -129,7 +129,7 @@ namespace Test.ModuleInject.TestModules
                 .Inject(x => x.PrivateInstanceComponent).IntoProperty(x => x.MainComponent22)
                 .Inject(x => x.Component2).IntoProperty(x => x.MainComponent23);
 
-            RegisterPublicComponentFactory<IMainComponent2, MainComponent2>(x => x.CreateComponent2());
+            RegisterPublicComponentFactory(x => x.CreateComponent2()).Construct<MainComponent2>();
         }
 
         public IMainComponent2 CreateComponent2()

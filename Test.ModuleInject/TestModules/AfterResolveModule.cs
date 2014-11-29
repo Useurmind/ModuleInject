@@ -41,7 +41,7 @@ namespace Test.ModuleInject.TestModules
 
         public void RegisterComponentsByInitializeWithOtherComponent()
         {
-            RegisterPrivateComponentFactory<IMainComponent1, MainComponent1>(x => x.CreateMainComponent1());
+            RegisterPrivateComponentFactory(x => x.CreateMainComponent1()).Construct<MainComponent1>();
 
             RegisterPrivateComponent(x => x.MainComponent2).Construct<MainComponent2>();
 

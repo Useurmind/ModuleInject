@@ -279,78 +279,6 @@ namespace ModuleInject
             return _container.Resolve<IComponent>(componentName);
         }
 
-        ///// <summary>
-        ///// Register a private component of the module.
-        ///// </summary>
-        ///// <typeparam name="IComponent">The interface of the component that is registered.</typeparam>
-        ///// <typeparam name="TComponent">The class that should be instantiated for the component that is registered.</typeparam>
-        ///// <param name="moduleProperty">Expression that describes the module property where the component should be stored.</param>
-        ///// <returns>A context for fluent injection into the component.</returns>
-        //protected IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
-        //    RegisterPrivateComponent<IComponent, TComponent>(Expression<Func<TModule, IComponent>> moduleProperty)
-        //    where TComponent : IComponent
-        //{
-        //    CommonFunctions.CheckNullArgument("moduleProperty", moduleProperty);
-
-        //    CheckExpressionDescribesDirectMember(moduleProperty);
-
-        //    MemberExpression member = (MemberExpression)moduleProperty.Body;
-        //    MemberInfo propInfo = member.Member;
-        //    string propName = propInfo.Name;
-
-        //    CheckPropertyQualifiesForPrivateRegistration(propInfo);
-
-        //    return RegisterContainerComponent<IComponent, TComponent>(propName);
-        //}
-
-        ///// <summary>
-        ///// Register a public component of the module.
-        ///// </summary>
-        ///// <typeparam name="IComponent">The interface of the component that is registered.</typeparam>
-        ///// <typeparam name="TComponent">The class that should be instantiated for the component that is registered.</typeparam>
-        ///// <param name="moduleProperty">Expression that describes the module property where the component should be stored.</param>
-        ///// <returns>A context for fluent injection into the component.</returns>
-        //protected IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
-        //    RegisterPublicComponent<IComponent, TComponent>(Expression<Func<IModule, IComponent>> moduleProperty)
-        //    where TComponent : IComponent
-        //{
-        //    CommonFunctions.CheckNullArgument("moduleProperty", moduleProperty);
-
-        //    CheckExpressionDescribesDirectMember(moduleProperty);
-
-        //    MemberExpression member = (MemberExpression)moduleProperty.Body;
-        //    MemberInfo propInfo = member.Member;
-        //    string propName = propInfo.Name;
-
-        //    return RegisterContainerComponent<IComponent, TComponent>(propName);
-        //}
-
-        ///// <summary>
-        ///// Register an instance as a private component of the module.
-        ///// </summary>
-        ///// <typeparam name="IComponent">The interface of the component that is registered.</typeparam>
-        ///// <typeparam name="TComponent">The class that should be instantiated for the component that is registered.</typeparam>
-        ///// <param name="moduleProperty">Expression that describes the module property where the component should be stored.</param>
-        ///// <param name="instance">The instance that should be registered.</param>
-        ///// <returns>A context for fluent injection into the component.</returns>
-        //protected IInstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
-        //    RegisterPrivateComponent<IComponent, TComponent>(Expression<Func<TModule, IComponent>> moduleProperty,
-        //    TComponent instance)
-        //    where TComponent : IComponent
-        //{
-        //    CommonFunctions.CheckNullArgument("moduleProperty", moduleProperty);
-
-        //    CheckExpressionDescribesDirectMember(moduleProperty);
-
-        //    MemberExpression member = (MemberExpression)moduleProperty.Body;
-        //    MemberInfo propInfo = member.Member;
-        //    string componentName = propInfo.Name;
-
-        //    CheckPropertyQualifiesForPrivateRegistration(propInfo);
-
-        //    return RegisterContainerInstance<IComponent, TComponent>(instance, componentName);
-        //}
-
         /// <summary>
         /// Register a private component of the module.
         /// </summary>
@@ -394,27 +322,14 @@ namespace ModuleInject
             return RegisterComponentInContainer<IComponent>(componentName);
         }
 
-        private RegistrationContext<IComponent, IModule, TModule> RegisterComponentInContainer<IComponent>(string componentName)
-        {
-            RegistrationContext<IComponent, IModule, TModule> registrationContext;
-            _container.SetLifetime<IComponent>(componentName, new ComponentLifetime(this));
-
-            RegistrationTypes types = CreateTypes<IComponent>();
-            RegistrationContext context = new RegistrationContext(componentName, this, _container, types, false);
-            registrationContext = new RegistrationContext<IComponent, IModule, TModule>(context);
-            return registrationContext;
-        }
-
         /// <summary>
         /// Register a factory method that produces public components of the module.
         /// </summary>
         /// <typeparam name="IComponent">The interface of the component that is registered.</typeparam>
-        /// <typeparam name="TComponent">The class that should be instantiated for the component that is registered.</typeparam>
         /// <param name="moduleProperty">Expression that describes the module method that should produce the components.</param>
         /// <returns>A context for fluent injection into the component factory method.</returns>
-        protected IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
-            RegisterPublicComponentFactory<IComponent, TComponent>(Expression<Func<IModule, IComponent>> moduleMethod)
-            where TComponent : IComponent, new()
+        protected IRegistrationContext<IComponent, IModule, TModule>
+            RegisterPublicComponentFactory<IComponent>(Expression<Func<IModule, IComponent>> moduleMethod)
         {
             CommonFunctions.CheckNullArgument("moduleMethod", moduleMethod);
 
@@ -423,19 +338,17 @@ namespace ModuleInject
             MethodCallExpression method = (MethodCallExpression)moduleMethod.Body;
             MethodInfo methodInfo = method.Method;
 
-            return RegisterContainerFactory<IComponent, TComponent>(methodInfo);
+            return RegisterFactoryInContainer<IComponent>(methodInfo);
         }
 
         /// <summary>
-        /// Register a factory method that produces private components of the module.
+        /// Register a factory method that produces public components of the module.
         /// </summary>
         /// <typeparam name="IComponent">The interface of the component that is registered.</typeparam>
-        /// <typeparam name="TComponent">The class that should be instantiated for the component that is registered.</typeparam>
         /// <param name="moduleProperty">Expression that describes the module method that should produce the components.</param>
         /// <returns>A context for fluent injection into the component factory method.</returns>
-        protected IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
-            RegisterPrivateComponentFactory<IComponent, TComponent>(Expression<Func<TModule, IComponent>> moduleMethod)
-            where TComponent : IComponent, new()
+        protected IRegistrationContext<IComponent, IModule, TModule>
+            RegisterPrivateComponentFactory<IComponent>(Expression<Func<TModule, IComponent>> moduleMethod)
         {
             CommonFunctions.CheckNullArgument("moduleMethod", moduleMethod);
 
@@ -446,7 +359,7 @@ namespace ModuleInject
 
             CheckMethodQualifiesForPrivateRegistration(methodInfo);
 
-            return RegisterContainerFactory<IComponent, TComponent>(methodInfo);
+            return RegisterFactoryInContainer<IComponent>(methodInfo);
         }
 
         /// <summary>
@@ -476,10 +389,18 @@ namespace ModuleInject
 
             return _container.Resolve<IComponent>(functionName);
         }
+        private RegistrationContext<IComponent, IModule, TModule> RegisterComponentInContainer<IComponent>(string componentName)
+        {
+            RegistrationContext<IComponent, IModule, TModule> registrationContext;
+            _container.SetLifetime<IComponent>(componentName, new ComponentLifetime(this));
 
-        private ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
-            RegisterContainerFactory<IComponent, TComponent>(MethodInfo methodInfo)
-            where TComponent : IComponent, new()
+            RegistrationTypes types = CreateTypes<IComponent>();
+            RegistrationContext context = new RegistrationContext(componentName, this, _container, types, false);
+            registrationContext = new RegistrationContext<IComponent, IModule, TModule>(context);
+            return registrationContext;
+        }
+
+        private IRegistrationContext<IComponent, IModule, TModule> RegisterFactoryInContainer<IComponent>(MethodInfo methodInfo)
         {
             string functionName = methodInfo.Name;
             if (methodInfo.GetParameters().Length > 0)
@@ -487,49 +408,14 @@ namespace ModuleInject
                 ExceptionHelper.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_FactoryMethodsWithParametersNotSupportedYet, functionName);
             }
 
-            _container.Register<IComponent, TComponent>(functionName);
             _container.SetLifetime<IComponent>(functionName, new FactoryLifetime(this));
 
-            RegistrationContext context = GetOrCreateComponentRegistrationContext<IComponent, TComponent>(functionName);
-            return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(context);
+            var types = CreateTypes<IComponent>();
+
+            RegistrationContext context = new RegistrationContext(functionName, this, this.Container, types, false);
+            return new RegistrationContext<IComponent, IModule, TModule>(context);
         }
-
-        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Should be ok that way.")]
-        private ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
-            RegisterContainerComponent<IComponent, TComponent>(string propName)
-            where TComponent : IComponent
-        {
-            _container.Register<IComponent, TComponent>(propName);
-            _container.SetLifetime<IComponent>(propName, new ComponentLifetime(this));
-
-            RegistrationContext context = GetOrCreateComponentRegistrationContext<IComponent, TComponent>(propName);
-            return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(context);
-        }
-
-        private RegistrationContext GetOrCreateComponentRegistrationContext<IComponent, TComponent>(string componentName)
-            where TComponent : IComponent
-        {
-            RegistrationContext context;
-            RegistrationTypes types = CreateTypes<IComponent, TComponent>();
-            context = new RegistrationContext(componentName, this, _container, types);
-            return context;
-        }
-
-        private InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>
-            RegisterContainerInstance<IComponent, TComponent>(TComponent instance, string componentName)
-            where TComponent : IComponent
-        {
-            InstanceRegistrationContext<IComponent, TComponent, IModule, TModule> instanceContext;
-            _container.Register<IComponent>(componentName, instance);
-            _container.SetLifetime<IComponent>(componentName, new ComponentLifetime(this));
-
-            RegistrationTypes types = CreateTypes<IComponent, TComponent>();
-            RegistrationContext context = new RegistrationContext(componentName, this, _container, types, true);
-            instanceContext = new InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>(context);
-
-            return (InstanceRegistrationContext<IComponent, TComponent, IModule, TModule>)instanceContext;
-        }
-
+        
         private static void CheckExpressionDescribesDirectMember<TObject, IComponent>(Expression<Func<TObject, IComponent>> moduleProperty)
         {
             int depth;
@@ -610,17 +496,6 @@ namespace ModuleInject
             return new RegistrationTypes()
             {
                 IComponent = typeof(IComponent),
-                IModule = typeof(IModule),
-                TModule = typeof(TModule)
-            };
-        }
-
-        private static RegistrationTypes CreateTypes<IComponent, TComponent>()
-        {
-            return new RegistrationTypes()
-            {
-                IComponent = typeof(IComponent),
-                TComponent = typeof(TComponent),
                 IModule = typeof(IModule),
                 TModule = typeof(TModule)
             };

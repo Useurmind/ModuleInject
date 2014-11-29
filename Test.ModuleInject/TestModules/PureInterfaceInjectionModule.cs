@@ -70,7 +70,8 @@ namespace Test.ModuleInject.TestModules
 
         public void RegisterFactoryWithInjector()
         {
-            RegisterPublicComponentFactory<IMainComponent1, MainComponent1>(x => x.CreateMainComponent1())
+            RegisterPublicComponentFactory(x => x.CreateMainComponent1())
+                .Construct<MainComponent1>()
                 .AddInjector(new PureInterfaceInjector());
         }
     }

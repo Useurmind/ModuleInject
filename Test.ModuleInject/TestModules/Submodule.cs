@@ -15,7 +15,7 @@ namespace Test.ModuleInject.TestModules
         {
             RegisterPublicComponent(x => x.Component1).Construct<SubComponent1>();
             RegisterPublicComponent(x => x.Component2).Construct<SubComponent2>();
-            RegisterPublicComponentFactory<ISubComponent1, SubComponent1>(x => x.CreateComponent1());
+            RegisterPublicComponentFactory(x => x.CreateComponent1()).Construct<SubComponent1>();
         }
 
         public ISubComponent1 CreateComponent1()

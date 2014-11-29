@@ -57,12 +57,12 @@ namespace Test.ModuleInject.TestModules
 
         public void RegisterPublicFactoryOfComponent()
         {
-            RegisterPublicComponentFactory<IMainComponent1, MainComponent1>(x => x.PublicFactory().RecursiveFactory1());
+            RegisterPublicComponentFactory(x => x.PublicFactory().RecursiveFactory1()).Construct<MainComponent1>();
         }
 
         public void RegisterPrivateFactoryOfComponent()
         {
-            RegisterPrivateComponentFactory<IMainComponent1, MainComponent1>(x => x.PrivateFactory().RecursiveFactory1());
+            RegisterPrivateComponentFactory(x => x.PrivateFactory().RecursiveFactory1()).Construct<MainComponent1>();
         }
 
         public void RegisterPublicComponentAsPrivateComponent()
@@ -72,7 +72,7 @@ namespace Test.ModuleInject.TestModules
 
         public void RegisterPublicFactoryAsPrivateFactory()
         {
-            RegisterPrivateComponentFactory<IMainComponent1, MainComponent1>(x => x.PublicFactory());
+            RegisterPrivateComponentFactory(x => x.PublicFactory()).Construct<MainComponent1>();
         }
 
         public void RegisterPrivateComponentWithoutAttribute()
@@ -82,7 +82,7 @@ namespace Test.ModuleInject.TestModules
 
         public void RegisterPrivateFactoryWithoutAttribute()
         {
-            RegisterPrivateComponentFactory<IMainComponent1, MainComponent1>(x => x.PrivateFactoryWithoutAttribute());
+            RegisterPrivateComponentFactory(x => x.PrivateFactoryWithoutAttribute()).Construct<MainComponent1>();
         }
 
         public void RegisterWithFancyExpression1()
