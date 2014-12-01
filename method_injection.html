@@ -1,0 +1,17 @@
+﻿<h2>Method injection</h2>
+
+<p>In the tutorial you learned how property injection works. But there are other kinds of injection that ModuleInject provides. One is the method injection.</p>
+
+<p>It is performed by using the <code>Inject</code> function.</p>
+
+<h3>Inject function</h3>
+
+<p>So to implement method injection you call an overload of the function <code>Inject</code> which can be used like in the following example:</p>
+
+<pre><code>RegisterPublicComponent(x =&gt; x.Component)
+    .Construct&lt;InitializableComponent&gt;()
+    .Inject((comp, module) =&gt; comp.Initialize(module.ComponentToInject));
+</code></pre>
+
+<p>This is a very flexible approach because you can define any valid lambda EXPRESSION that uses either the module and the component to do something.
+You can even call a method repeatedly to e.g. fill a list via the add method.</p>
