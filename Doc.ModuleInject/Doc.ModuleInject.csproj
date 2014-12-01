@@ -146,6 +146,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="constructor_injection.md" />
+    <Content Include="fluent_language.html">
+      <DependentUpon>fluent_language.md</DependentUpon>
+    </Content>
     <Content Include="images\CenterBoxEmpty.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -231,6 +234,7 @@
     <Content Include="method_injection.md" />
     <Content Include="injectors.md" />
     <Content Include="module_trees.md" />
+    <Content Include="fluent_language.md" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

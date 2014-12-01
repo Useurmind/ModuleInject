@@ -20,7 +20,8 @@ registered in your modules.
 
     public void RegisterBehaviour()
     {
-        RegisterPublicComponent<IComponent, Component>(x => x.Component)
+        RegisterPublicComponent(x => x.Component)
+            .Construct<Component>()
             .AddBehaviour<LoggingBehaviour>();
     }
 

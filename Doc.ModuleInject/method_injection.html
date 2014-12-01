@@ -1,78 +1,17 @@
 ﻿<h2>Method injection</h2>
 
-<p>In the tutorial you learned how property injection works. But there are other kinds of injection that ModuleInject provides. One is called method injection.</p>
+<p>In the tutorial you learned how property injection works. But there are other kinds of injection that ModuleInject provides. One is the method injection.</p>
 
-<p>There are two ways to implement method injection.</p>
+<p>It is performed by using the <code>Inject</code> function.</p>
 
-<ul>
-<li>The <code>CallMethod</code> function.</li>
-<li>The <code>IInitializable</code> interface.</li>
-</ul>
+<h3>Inject function</h3>
 
-<p>Personally, I prefer the <code>CallMethod</code> function because you don't need to implement some interface on your component classes that is not concerned with what your classes will do.
-When using the approach with <code>IInitializable</code> interface you need to implement this interface on each component that you want to initialize in that way.</p>
+<p>So to implement method injection you call an overload of the function <code>Inject</code> which can be used like in the following example:</p>
 
-<h3>CallMethod</h3>
-
-<p>So the first method to implement method injection is the function <code>CallMethod</code> which can be used like in the following example:</p>
-
-<pre><code>RegisterPublicComponent&lt;IInitializableComponent, InitializableComponent&gt;(x =&gt; x.Component)
-    .CallMethod((comp, module) =&gt; comp.Initialize(module.ComponentToInject));
+<pre><code>RegisterPublicComponent(x =&gt; x.Component)
+    .Construct&lt;InitializableComponent&gt;()
+    .Inject((comp, module) =&gt; comp.Initialize(module.ComponentToInject));
 </code></pre>
 
-<p>This is a very flexible approach because you can call any method on the component.
+<p>This is a very flexible approach because you can define any valid lambda EXPRESSION that uses either the module and the component to do something.
 You can even call a method repeatedly to e.g. fill a list via the add method.</p>
-
-<h3>IInitializable</h3>
-
-<p>The second way requires you to implement a special interface of the component that you want to inject into through method injection. </p>
-
-<p>This interface is called <code>IInitializable</code>. It is generic  and it's type parameters are the types of the parameters that go into the function that is used for method injection. Here is the version with one parameter:</p>
-
-<pre><code>public interface IInitializable&lt;TArgument&gt;
-{
-    void Initialize(TArgument dependency1);
-}
-</code></pre>
-
-<p>It is available with a range of numbers of arguments. But keep in mind that in a "good" class design only a limited number of dependencies are required per class.</p>
-
-<p>So, let's dive into implementing and using the <code>IInitializable</code> interface. First we define our components interface and implementation:</p>
-
-<pre><code>public interface IInitializableComponent {
-    ISomeUndefinedComponent InjectedComponent { get; }
-}
-
-public class InitializableComponent : 
-    IInitializableComponent, IInitializable&lt;ISomeUndefinedComponent&gt; {
-
-    public ISomeUndefinedComponent InjectedComponent { get; private set; }
-
-    public void Initialize(ISomeUndefinedComponent injectedComponent) {
-        InjectedComponent = injectedComponent;
-    }
-}
-</code></pre>
-
-<p>Pretty simple functionality which only servers to show what you need to do and what you are able to do with ModuleInject. There is only one thing I want to mention here. As you can see, the IInitializable interface is only used in the component implementation itself. That is because the initialization process is not necessarily stuff that belongs into the behavior contract of the component. After the instance is initialized by the IoC framework which knows the exact implementation, the initialization functionality normally isn't interesting anymore. Therefore, I left it out of the interface here.</p>
-
-<p>Finally, lets use the method injection to inject something into our class. I will only show the registration here and leave the rest of the module out:</p>
-
-<pre><code>public IInitializableComponent Component { get; set; }
-
-[PrivateComponent]
-private ISomeUndefinedComponent ComponentToInject { get; set; }
-
-public ModuleWithMethodInjectionComponent() {
-    RegisterPrivateComponent&lt;ISomeUndefinedComponent, SomeUndefinedComponent&gt;(x =&gt; x.ComponentToInject);
-
-    RegisterPublicComponent&lt;IInitializableComponent, InitializableComponent&gt;(x =&gt; x.Component)
-        .InitializeWith(x =&gt; x.ComponentToInject);
-}
-</code></pre>
-
-<p>So we just register the initializable component and its dependency. Afterwards, we use the dependency in the <code>InitializeWith</code> call. This results in the components Initialize method being called after construction with the injected component as an argument.</p>
-
-<h3>Current limitations</h3>
-
-<p>Their are currently only <code>InitializeWith</code> calls for up to 3 arguments and no overloads for using constant values. Can be easily fixed by creating the overloads. But time is so scarce.</p>

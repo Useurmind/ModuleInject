@@ -29,11 +29,15 @@ module:</p>
     }
 
     public FactoryModule() {
-        RegisterPrivateComponentFactory&lt;IComponent1, Component1&gt;(x =&gt; x.CreateComponent1());
+        RegisterPrivateComponentFactory(x =&gt; x.CreateComponent1())
+            .Construct&lt;Component1&gt;();
 
-        RegisterPublicComponent&lt;IComponent2, Component2&gt;(x =&gt; x.Component2No1)
+        RegisterPublicComponent(x =&gt; x.Component2No1)
+            .Construct&lt;Component2&gt;()
             .Inject(x =&gt; x.CreateComponent1()).IntoProperty(x =&gt; x.Comp1);
-        RegisterPublicComponent&lt;IComponent2, Component2&gt;(x =&gt; x.Component2No2)
+
+        RegisterPublicComponent(x =&gt; x.Component2No2)
+            .Construct&lt;Component2&gt;()
             .Inject(x =&gt; x.CreateComponent1()).IntoProperty(x =&gt; x.Comp1);
     }
 }

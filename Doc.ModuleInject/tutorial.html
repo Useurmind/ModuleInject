@@ -70,7 +70,8 @@ clearly through these contracts. This also allows to exchange modules relatively
 <p>Finally, we have a component to print a Hello World greeting for us. But how do we employ it in the module? First we need to register the component, for example in the constructor of our module:</p>
 
 <pre><code>public MainModule() {
-    RegisterPublicComponent&lt;IPrintComponent, PrintComponent&gt;(x =&gt; x.PrintComponent);
+    RegisterPublicComponent(x =&gt; x.PrintComponent)
+        .Construct&lt;PrintComponent&gt;();
 }
 </code></pre>
 
@@ -128,10 +129,12 @@ public class PrintComponent : IPrintComponent {
     private INameComponent NameComponent { get; set; }
 
     public MainModule() {
-        RegisterPrivateComponent&lt;INameComponent, NameComponent&gt;(x =&gt; x.NameComponent)
+        RegisterPrivateComponent(x =&gt; x.NameComponent)
+            .Construct&lt;NameComponent&gt;()
             .Inject("ModuleInject").IntoProperty(x =&gt; x.NameToGreet);
 
-        RegisterPublicComponent&lt;IPrintComponent, PrintComponent&gt;(x =&gt; x.PrintComponent)
+        RegisterPublicComponent(x =&gt; x.PrintComponent)
+            .Construct&lt;PrintComponent&gt;()
             .Inject(x =&gt; x.NameComponent).IntoProperty(x =&gt; x.NameProvider);
     }
 }
@@ -165,7 +168,8 @@ public class LogModule : InjectionModule&lt;ILogModule, LogModule&gt;, ILogModul
     public ILog Log { get; private set; }
 
     public LogModule() {
-        RegisterPublicComponent&lt;ILog, DebugLog&gt;(x =&gt; x.Log);
+        RegisterPublicComponent(x =&gt; x.Log)
+            .Construct&lt;DebugLog&gt;();
     }
 }
 </code></pre>
@@ -211,9 +215,11 @@ private ILogModule LogModule { get; set; }
 public MainModule() {
         ...
 
-    RegisterPrivateComponent&lt;ILogModule, LogModule&gt;(x =&gt; x.LogModule);
+    RegisterPrivateComponent(x =&gt; x.LogModule)
+        .Construct&lt;LogModule&gt;();
 
-    RegisterPublicComponent&lt;IPrintComponent, PrintComponent&gt;(x =&gt; x.PrintComponent)
+    RegisterPublicComponent(x =&gt; x.PrintComponent)
+        .Construct&lt;PrintComponent&gt;()
         .Inject(x =&gt; x.NameComponent).IntoProperty(x =&gt; x.NameProvider)
         .Inject(x =&gt; x.LogModule.Log).IntoProperty(x =&gt; x.Log);
 }
