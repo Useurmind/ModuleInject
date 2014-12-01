@@ -148,6 +148,7 @@
     <Content Include="constructor_injection.md" />
     <Content Include="fluent_language.html">
       <DependentUpon>fluent_language.md</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="images\CenterBoxEmpty.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
