@@ -131,6 +131,7 @@
     <Compile Include="TestModules\SubPropertyInjectionModule.cs" />
     <Compile Include="TestModules\TestSuperModule.cs" />
     <Compile Include="TestModules\UseSubmoduleModule.cs" />
+    <Compile Include="UnitTesting\UnitTestedModule.cs" />
     <Compile Include="UseSubmoduleModuleTest.cs" />
     <Compile Include="Utility\LinqHelperTest.cs" />
     <Compile Include="Utility\MemberChainEvaluatorTest.cs" />

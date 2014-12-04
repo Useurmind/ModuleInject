@@ -5,13 +5,15 @@ using System.Text;
 
 namespace ModuleInject.Registry
 {
-    public class AggregateRegistry : IRegistry
+    using ModuleInject.Interfaces;
+
+    public class AggregateRegistry : RegistryBase
     {
         private IList<IRegistry> aggregatedRegistries;
 
         public AggregateRegistry()
         {
-            aggregatedRegistries= new List<IRegistry>();
+            aggregatedRegistries = new List<IRegistry>();
         }
 
         internal void AddRegistry(IRegistry registry)
@@ -19,7 +21,7 @@ namespace ModuleInject.Registry
             aggregatedRegistries.Add(registry);
         }
 
-        internal override bool IsRegistered(Type type)
+        public override bool IsRegistered(Type type)
         {
             bool result = false;
             foreach (var registry in aggregatedRegistries)
@@ -33,7 +35,7 @@ namespace ModuleInject.Registry
             return result;
         }
 
-        internal override object GetComponent(Type type)
+        public override object GetComponent(Type type)
         {
             object result = null;
             foreach (var registry in aggregatedRegistries)

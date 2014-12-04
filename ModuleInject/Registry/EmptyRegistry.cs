@@ -5,14 +5,14 @@ using System.Text;
 
 namespace ModuleInject.Registry
 {
-    public class EmptyRegistry : IRegistry
+    public class EmptyRegistry : RegistryBase
     {
-        internal override bool IsRegistered(Type type)
+        public override bool IsRegistered(Type type)
         {
             return false;
         }
 
-        internal override object GetComponent(Type type)
+        public override object GetComponent(Type type)
         {
             return null;
         }

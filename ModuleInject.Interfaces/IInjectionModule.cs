@@ -19,6 +19,12 @@ namespace ModuleInject.Interfaces
         /// </summary>
         void Resolve();
 
+
+        /// <summary>
+        /// Resolve the module and all its submodules using the given registry.
+        /// </summary>
+        void Resolve(IRegistry registry);
+
         /// <summary>
         /// Get a component of the specified type with the specified name.
         /// </summary>

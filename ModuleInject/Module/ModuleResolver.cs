@@ -149,7 +149,7 @@ namespace ModuleInject.Module
 
         private void TryResolveSubmodule(PropertyInfo subModulePropInfo)
         {
-            InjectionModule submodule = (InjectionModule)subModulePropInfo.GetValue(_module, null);
+            IInjectionModule submodule = (IInjectionModule)subModulePropInfo.GetValue(_module, null);
 
             if (!submodule.IsResolved)
             {

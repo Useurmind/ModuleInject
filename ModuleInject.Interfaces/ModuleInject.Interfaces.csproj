@@ -71,6 +71,7 @@
     <Compile Include="IInjectionModule.cs" />
     <Compile Include="IInterfaceInjector.cs" />
     <Compile Include="IPostResolveAssembler.cs" />
+    <Compile Include="IRegistry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

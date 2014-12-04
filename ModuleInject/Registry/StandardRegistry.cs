@@ -15,7 +15,7 @@ namespace ModuleInject.Registry
     /// <summary>
     /// A simple registry module that implements type based resolution of entries.
     /// </summary>
-    public class StandardRegistry : IRegistry
+    public class StandardRegistry : RegistryBase
     {
         private const string componentName = "a";
 
@@ -26,12 +26,12 @@ namespace ModuleInject.Registry
             this.Container = new DependencyContainer();
         }
 
-        internal override  bool IsRegistered(Type type)
+        public override bool IsRegistered(Type type)
         {
             return this.Container.IsRegistered(componentName, type);
         }
 
-        internal override object GetComponent(Type type)
+        public override object GetComponent(Type type)
         {
             return this.Container.Resolve(componentName, type);
         }

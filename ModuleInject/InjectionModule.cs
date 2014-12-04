@@ -31,7 +31,7 @@ namespace ModuleInject
 
         internal abstract IDependencyContainer Container { get; }
 
-        internal abstract void Resolve(IRegistry registry);
+        public abstract void Resolve(IRegistry registry);
 
         public abstract bool IsResolved { get; }
 
@@ -170,7 +170,7 @@ namespace ModuleInject
             this.Resolve(null);
         }
 
-        internal override void Resolve(IRegistry registry)
+        public override void Resolve(IRegistry registry)
         {
             if (IsResolved)
             {

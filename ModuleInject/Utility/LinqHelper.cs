@@ -39,7 +39,13 @@ namespace ModuleInject.Utility
             {
                 string submoduleName = pathParths[0];
                 var submoduleMemberInfo = ModuleTypeExtensions.GetModuleProperties(module.ModuleInterface, module.ModuleType, true).First(p => p.Name == submoduleName);
-                getContainer = () => (IDependencyContainer)((InjectionModule)submoduleMemberInfo.GetValue(module, null)).Container;
+                var submoduleContainerPropertyInfo = typeof(InjectionModule).GetProperty("Container", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                getContainer = () =>
+                    {
+                        object submodule = submoduleMemberInfo.GetValue(module, null);
+                        object container = submoduleContainerPropertyInfo.GetValue(submodule, null);
+                        return (IDependencyContainer)container;
+                    };
                 dependencyName = pathParths[1];
             }
             else

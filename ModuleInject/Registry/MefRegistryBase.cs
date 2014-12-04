@@ -31,13 +31,13 @@ namespace ModuleInject.Registry
             isComposed = false;
         }
 
-        internal override bool IsRegistered(Type type)
+        public override bool IsRegistered(Type type)
         {
             this.Compose();
             return base.IsRegistered(type);
         }
 
-        internal override object GetComponent(Type type)
+        public override object GetComponent(Type type)
         {
             this.Compose();
             return base.GetComponent(type);

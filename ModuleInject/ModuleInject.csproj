@@ -115,7 +115,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Registry\AggregateRegistry.cs" />
     <Compile Include="Registry\EmptyRegistry.cs" />
-    <Compile Include="Registry\IRegistry.cs" />
+    <Compile Include="Registry\RegistryBase.cs" />
     <Compile Include="Registry\MefRegistryBase.cs" />
     <Compile Include="Registry\RegistrationEntry.cs" />
     <Compile Include="Registry\StandardRegistry.cs" />
