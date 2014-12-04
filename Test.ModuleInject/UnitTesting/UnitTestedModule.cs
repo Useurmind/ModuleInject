@@ -28,7 +28,7 @@ namespace Test.ModuleInject.UnitTesting
 
         public UnitTestedModule2()
         {
-            RegisterPublicComponent<IMainComponent2, MainComponent2>(x => x.MainComponent2);
+            RegisterPublicComponent(x => x.MainComponent2).Construct<MainComponent2>();
         }
     }
 
@@ -47,7 +47,8 @@ namespace Test.ModuleInject.UnitTesting
 
         public UnitTestedModule()
         {
-            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
+            RegisterPrivateComponent(x => x.MainComponent1)
+                .Construct<MainComponent1>()
                 .Inject(x => x.RegistryModule.MainComponent2).IntoProperty(x => x.MainComponent2);
         }
     }

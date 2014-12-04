@@ -136,7 +136,7 @@ namespace ModuleInject
             this.Resolve(null);
         }
 
-        internal override void Resolve(IRegistry registry)
+        public override void Resolve(IRegistry registry)
         {
             if (IsResolved)
             {

@@ -123,8 +123,8 @@
     <Compile Include="Utility\MemberChainEvaluator.cs" />
     <Compile Include="Utility\MemberPathInformation.cs" />
     <Compile Include="Utility\MethodCallArgument.cs" />
+    <Compile Include="Utility\ModuleTypeExtensions.cs" />
     <Compile Include="Utility\ParameterMemberAccessEvaluator.cs" />
-    <Compile Include="Utility\TypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Fluent\InterfaceRegistrationContext{3}.cs" />

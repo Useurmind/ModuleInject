@@ -31,7 +31,7 @@ namespace ModuleInject
 
         internal abstract IDependencyContainer Container { get; }
 
-        internal abstract void Resolve(IRegistry registry);
+        public abstract void Resolve(IRegistry registry);
 
         public abstract bool IsResolved { get; }
 
