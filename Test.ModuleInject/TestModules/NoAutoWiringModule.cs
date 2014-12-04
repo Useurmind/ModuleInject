@@ -49,8 +49,8 @@ namespace Test.ModuleInject.TestModules
 
         public NoAutoWiringModule()
         {
-            RegisterPrivateComponent<IAutoWiringClass, AutoWiringClass>(x => x.PrivateAutoWiringComponent);
-            RegisterPrivateComponent<IMainComponent2, MainComponent2>(x => x.PrivateComponent);
+            RegisterPrivateComponent(x => x.PrivateAutoWiringComponent).Construct<AutoWiringClass>();
+            RegisterPrivateComponent(x => x.PrivateComponent).Construct<MainComponent2>();
         }
     }
 }

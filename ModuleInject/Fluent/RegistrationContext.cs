@@ -16,6 +16,8 @@ namespace ModuleInject.Fluent
     using ModuleInject.Container.Resolving;
     using ModuleInject.Interfaces;
     using ModuleInject.Interfaces.Fluent;
+    using ModuleInject.Container.InstanceCreation;
+    using ModuleInject.Container.Dependencies;
 
     internal class RegistrationTypes : IRegistrationTypes
     {
@@ -27,9 +29,11 @@ namespace ModuleInject.Fluent
 
     internal class RegistrationContext : IRegistrationContext
     {
+        private RegistrationTypes registrationTypes;
+
         private Dictionary<string, ModifiedDependency> modifiedDependencies; 
 
-        public IRegistrationTypes RegistrationTypes { get; private set; }
+        public IRegistrationTypes RegistrationTypes { get { return registrationTypes; } }
         public string RegistrationName { get; private set; }
 
         public bool WasConstructorCalled { get; private set; }
@@ -42,14 +46,10 @@ namespace ModuleInject.Fluent
             this.WasConstructorCalled = wasConstructorCalled;
             Module = module;
             Container = container;
-            this.RegistrationTypes = registrationTypes;
+            this.registrationTypes = registrationTypes;
             this.RegistrationName = name;
             modifiedDependencies = new Dictionary<string, ModifiedDependency>();
         }
-
-        private static readonly string _initialize1MethodName = ExtractMethodName<IInitializable<object>>(x => x.Initialize(null));
-        private static readonly string _initialize2MethodName = ExtractMethodName<IInitializable<object, object>>(x => x.Initialize(null, null));
-        private static readonly string _initialize3MethodName = ExtractMethodName<IInitializable<object, object, object>>(x => x.Initialize(null, null, null));
 
         private ModifiedDependency GetModifiedDependency(string dependencyPath)
         {
@@ -60,100 +60,30 @@ namespace ModuleInject.Fluent
             return modification;
         }
 
-        public ValueInjectionContext Inject(object value, Type valueType)
+        public RegistrationContext Construct(object instance)
         {
-            return new ValueInjectionContext(this, value, valueType);
-        }
-
-        public RegistrationContext ModifyDependencyBy(Expression dependencySourceExpression, Action<object> modifyAction)
-        {
-            string memberPath;
-            Type memberType;
-
-            LinqHelper.GetMemberPathAndType(dependencySourceExpression, out memberPath, out memberType);
-
-            ModifiedDependency modification = null;
-            if (!this.modifiedDependencies.TryGetValue(memberPath, out modification))
-            {
-                modification = new ModifiedDependency(memberPath, memberType, modifyAction);
-                this.modifiedDependencies.Add(memberPath, modification);
-            }
-            else
-            {
-                modification.AddModifyAction(modifyAction);
-            }
-
-            return this;
-        }
-
-        public DependencyInjectionContext Inject(Expression dependencySourceExpression)
-        {
-            string memberPath;
-            Type memberType;
-
-            LinqHelper.GetMemberPathAndType(dependencySourceExpression, out memberPath, out memberType);
-
-            return new DependencyInjectionContext(this, memberPath, memberType);
-        }
-
-        public RegistrationContext InitializeWith(Expression dependency1SourceExpression)
-        {
-            Container.InjectMethod(
-                this.RegistrationName,
-                this.RegistrationTypes.IComponent,
-                _initialize1MethodName,
-                NewResolvedParameter(dependency1SourceExpression));
-
-            return this;
-        }
-
-        public RegistrationContext InitializeWith(
-            Expression dependency1SourceExpression,
-            Expression dependency2SourceExpression)
-        {
-            Container.InjectMethod(this.RegistrationName, this.RegistrationTypes.IComponent,
-                _initialize2MethodName,
-                    NewResolvedParameter(dependency1SourceExpression),
-                    NewResolvedParameter(dependency2SourceExpression)
-                    );
-
-            return this;
-        }
-
-        public RegistrationContext InitializeWith(
-            Expression dependency1SourceExpression,
-            Expression dependency2SourceExpression,
-            Expression dependency3SourceExpression)
-        {
-            Container.InjectMethod(this.RegistrationName, this.RegistrationTypes.IComponent,
-                _initialize3MethodName,
-                    NewResolvedParameter(dependency1SourceExpression),
-                    NewResolvedParameter(dependency2SourceExpression),
-                    NewResolvedParameter(dependency3SourceExpression)
-                    );
-
-            return this;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="constructorCallExpression">Expects an expression of the form module => new SomeConstructor(module.SomeComponent, ..).</param>
-        /// <returns></returns>
-        public RegistrationContext CallConstructor(LambdaExpression constructorCallExpression)
-        {
-            IList<MethodCallArgument> arguments;
             if (this.WasConstructorCalled)
             {
                 ExceptionHelper.ThrowFormatException(Errors.RegistrationContext_ConstructorAlreadyCalled, this.RegistrationName, this.RegistrationTypes.TModule.Name);
             }
 
-            arguments = LinqHelper.GetConstructorArguments(constructorCallExpression);
+            this.registrationTypes.TComponent = instance.GetType();
+            Container.Register(this.RegistrationName, this.RegistrationTypes.IComponent, instance);
+            
+            this.WasConstructorCalled = true;
 
-            IResolvedValue[] argumentParams = GetContainerInjectionArguments(arguments);
+            return this;
+        }
 
-            Container.InjectConstructor(this.RegistrationName, this.RegistrationTypes.IComponent,
-                argumentParams);
+        public RegistrationContext Construct(Type componentType)
+        {
+            if (this.WasConstructorCalled)
+            {
+                ExceptionHelper.ThrowFormatException(Errors.RegistrationContext_ConstructorAlreadyCalled, this.RegistrationName, this.RegistrationTypes.TModule.Name);
+            }
+
+            this.registrationTypes.TComponent = componentType;
+            Container.Register(this.RegistrationName, this.RegistrationTypes.IComponent, componentType);
 
             this.WasConstructorCalled = true;
 
@@ -163,17 +93,85 @@ namespace ModuleInject.Fluent
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="constructorCallExpression">Expects an expression of the form module => new SomeConstructor(module.SomeComponent, ..).</param>
+        /// <returns></returns>
+        public RegistrationContext Construct(LambdaExpression constructorCallExpression)
+        {
+            if (this.WasConstructorCalled)
+            {
+                ExceptionHelper.ThrowFormatException(Errors.RegistrationContext_ConstructorAlreadyCalled, this.RegistrationName, this.RegistrationTypes.TModule.Name);
+            }
+
+            var dependencyEvaluator = new ParameterMemberAccessEvaluator(constructorCallExpression, 0);
+            AddPrerequisites(dependencyEvaluator);
+
+            Delegate compiledConstructorExpression = constructorCallExpression.Compile();
+
+            Func<IDependencyContainer, object> constructorFunc = new Func<IDependencyContainer, object>(cont =>
+            {
+                return compiledConstructorExpression.DynamicInvoke(this.Module);
+            });
+
+            this.Construct(constructorCallExpression.Body.Type);
+            Container.SetInstanceCreation(this.RegistrationName, this.RegistrationTypes.IComponent,
+                new FactoryInstanceCreation(Container, constructorFunc));
+
+            this.WasConstructorCalled = true;
+
+            return this;
+        }
+
+        public ValueInjectionContext Inject(object value, Type valueType)
+        {
+            return new ValueInjectionContext(this, value, valueType);
+        }
+
+        public DependencyInjectionContext InjectSource(LambdaExpression dependencySourceExpression)
+        {
+            return new DependencyInjectionContext(this, dependencySourceExpression);
+        }
+       
+        public void AddPrerequisites(ParameterMemberAccessEvaluator dependencyEvaluator)
+        {
+            dependencyEvaluator.Evaluate();
+
+            // Only set dependencies in current module as prerequisites, submodules are resolved before this module
+            var moduleOnlyDependencies = dependencyEvaluator.MemberPaths.Where(x => x.Depth == 1);
+            foreach (var memberPathInformation in moduleOnlyDependencies)
+            {
+                var containerReference = new ContainerReference(Container, memberPathInformation.Path, memberPathInformation.ReturnType);
+                Container.DefinePrerequisite(this.RegistrationName, this.RegistrationTypes.IComponent, containerReference);
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="methodCallExpression">Expects an expression of the form (component, module) => component.Method(module.SomeComponent, ..).</param>
         /// <returns></returns>
-        public RegistrationContext CallMethod(LambdaExpression methodCallExpression)
+        public RegistrationContext Inject(LambdaExpression methodCallExpression)
         {
-            IList<MethodCallArgument> arguments;  // type and path in the module or value for constants etc.
-            string methodName;
-            LinqHelper.GetMethodNameAndArguments(methodCallExpression, out methodName, out arguments);
+            ParameterMemberAccessEvaluator dependencyEvaluator = new ParameterMemberAccessEvaluator(methodCallExpression, 1);
+            AddPrerequisites(dependencyEvaluator);
 
-            IResolvedValue[] argumentParams = GetContainerInjectionArguments(arguments);
+            Delegate compiledMethodCallExpression = methodCallExpression.Compile();
 
-            Container.InjectMethod(this.RegistrationName,this.RegistrationTypes.IComponent, methodName, argumentParams);
+            var lambdaInjection = new LambdaDependencyInjection(Container, (c, obj) =>
+            {
+                var component = Convert.ChangeType(obj, this.RegistrationTypes.TComponent);
+                compiledMethodCallExpression.DynamicInvoke(component, this.Module);
+            });
+
+            Container.Inject(this.RegistrationName, this.RegistrationTypes.IComponent, lambdaInjection);
+
+            //IList<MethodCallArgument> arguments;  // type and path in the module or value for constants etc.
+            //string methodName;
+            //LinqHelper.GetMethodNameAndArguments(methodCallExpression, out methodName, out arguments);
+
+            //IResolvedValue[] argumentParams = GetContainerInjectionArguments(arguments);
+
+            //Container.InjectMethod(this.RegistrationName,this.RegistrationTypes.IComponent, methodName, argumentParams);
 
             return this;
         }
@@ -199,34 +197,11 @@ namespace ModuleInject.Fluent
             return this;
         }
 
-        private IResolvedValue[] GetContainerInjectionArguments(IList<MethodCallArgument> arguments)
+        public RegistrationContext AddCustomAction<T>(Action<T> customAction)
         {
-            IResolvedValue[] argumentParams = new IResolvedValue[arguments.Count];
-            int i = 0;
-            foreach (var argumentItem in arguments)
-            {
-                if (argumentItem.ResolvePath != null)
-                {
-                    var modifyActions = this.GetModifyActions(argumentItem.ResolvePath);
-                    argumentParams[i] = LinqHelper.GetContainerReference(Module, argumentItem.ResolvePath, argumentItem.ArgumentType, modifyActions);
-                }
-                else
-                {
-                    argumentParams[i] = new ConstantValue(argumentItem.Value, argumentItem.ArgumentType);
-                }
-                i++;
-            }
-            return argumentParams;
-        }
-
-        private IResolvedValue NewResolvedParameter(Expression dependencyExpression)
-        {
-            string memberPath;
-            Type memberType;
-            LinqHelper.GetMemberPathAndType(dependencyExpression, out memberPath, out memberType);
-            var modifyActions = this.GetModifyActions(memberPath);
-
-            return LinqHelper.GetContainerReference(Module, memberPath, memberType, modifyActions);
+            var dependencyInjection = new LambdaDependencyInjection<T>(this.Container, (cont, comp) => customAction(comp));
+            this.Container.Inject(this.RegistrationName, this.RegistrationTypes.IComponent, dependencyInjection);
+            return this;
         }
 
         public IList<Action<object>> GetModifyActions(string memberPath)

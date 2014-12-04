@@ -51,8 +51,25 @@
     <Reference Include="NSpec">
       <HintPath>..\packages\nspec.0.9.68\lib\NSpec.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.core">
+      <HintPath>..\packages\NUnitTestAdapter.WithFramework.1.2\lib\nunit.core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="nunit.core.interfaces">
+      <HintPath>..\packages\NUnitTestAdapter.WithFramework.1.2\lib\nunit.core.interfaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NUnitTestAdapter.WithFramework.1.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.util">
+      <HintPath>..\packages\NUnitTestAdapter.WithFramework.1.2\lib\nunit.util.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NUnit.VisualStudio.TestAdapter">
+      <HintPath>..\packages\NUnitTestAdapter.WithFramework.1.2\lib\NUnit.VisualStudio.TestAdapter.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -64,18 +81,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DebuggerShim.cs" />
+    <Compile Include="DependencyContainerTest\and_defining_prerequisites.cs" />
+    <Compile Include="DependencyContainerTest\and_factory_inject_via_lambda.cs" />
     <Compile Include="DependencyContainerTest\and_injecting_into_a_property.cs" />
+    <Compile Include="DependencyContainerTest\and_injecting_through_a_lambda_constructor.cs" />
     <Compile Include="DependencyContainerTest\and_injecting_through_a_constructor.cs" />
+    <Compile Include="DependencyContainerTest\and_injecting_through_a_lambda.cs" />
     <Compile Include="DependencyContainerTest\and_injecting_through_a_method.cs" />
     <Compile Include="DependencyContainerTest\and_factory_inject_a_property.cs" />
     <Compile Include="DependencyContainerTest\and_post_inject_a_property.cs" />
     <Compile Include="DependencyContainerTest\and_factory_inject_via_method.cs" />
+    <Compile Include="DependencyContainerTest\and_post_inject_via_lambda.cs" />
     <Compile Include="DependencyContainerTest\and_post_inject_via_method.cs" />
     <Compile Include="DependencyContainerTest\and_registering_an_instance.cs" />
     <Compile Include="DependencyContainerTest\and_registering_a_factory.cs" />
     <Compile Include="DependencyContainerTest\and_registering_an_interface.cs" />
     <Compile Include="DependencyContainerTest\and_registering_a_type.cs" />
     <Compile Include="DependencyContainerTest\IInjectionTestSpec.cs" />
+    <Compile Include="DependencyContainerTest\LambdaInjectionTests.cs" />
     <Compile Include="DependencyContainerTest\MethodInjectionTests.cs" />
     <Compile Include="DependencyContainerTest\PropertyInjectionTests.cs" />
     <Compile Include="DependencyContainerTest\TestClass.cs" />

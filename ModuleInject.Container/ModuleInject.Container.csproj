@@ -63,7 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dependencies\IDependencyInjection.cs" />
+    <Compile Include="Dependencies\LambdaDependencyInjection.cs" />
     <Compile Include="Dependencies\MethodDependencyInjection.cs" />
     <Compile Include="Dependencies\PropertyDependencyInjection.cs" />
     <Compile Include="DependencyContainer.cs" />
@@ -75,7 +75,6 @@
     <Compile Include="InstanceCreation\ConstructorDependencyInjection.cs" />
     <Compile Include="InstanceCreation\ExistingInstance.cs" />
     <Compile Include="InstanceCreation\FactoryInstanceCreation.cs" />
-    <Compile Include="InstanceCreation\IInstanceCreation.cs" />
     <Compile Include="Interception\InterfaceInterceptorBuilder.cs" />
     <Compile Include="Lifetime\DynamicLifetime.cs" />
     <Compile Include="Lifetime\SingletonLifetime.cs" />

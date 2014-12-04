@@ -19,7 +19,8 @@ registered in your modules.</p>
 
 public void RegisterBehaviour()
 {
-    RegisterPublicComponent&lt;IComponent, Component&gt;(x =&gt; x.Component)
+    RegisterPublicComponent(x =&gt; x.Component)
+        .Construct&lt;Component&gt;()
         .AddBehaviour&lt;LoggingBehaviour&gt;();
 }
 </code></pre>

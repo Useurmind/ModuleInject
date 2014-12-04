@@ -35,64 +35,64 @@ namespace Test.ModuleInject.TestModules
         {
             IntValue = 134563456;
             SubComponent = new SubComponent2();
-            RegisterPrivateComponent<ISubModule, Submodule>(x => x.Submodule);
-            RegisterPrivateComponent<IMainComponent2, MainComponent2>(x => x.Component2);
+            RegisterPrivateComponent(x => x.Submodule).Construct<Submodule>();
+            RegisterPrivateComponent(x => x.Component2).Construct<MainComponent2>();
         }
 
-        public void RegisterComponentAndModifySubModulePropertyOnPropertyInjection()
-        {
-            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.Component)
-                .ModifyDependencyBy(x => x.Submodule.Component1, x => x.SubComponent2 = SubComponent)
-                .Inject(x => x.Submodule.Component1)
-                .IntoProperty(x => x.SubComponent1);
-        }
+        //public void RegisterComponentAndModifySubModulePropertyOnPropertyInjection()
+        //{
+        //    RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.Component)
+        //        .ModifyDependencyBy(x => x.Submodule.Component1, x => x.SubComponent2 = SubComponent)
+        //        .Inject(x => x.Submodule.Component1)
+        //        .IntoProperty(x => x.SubComponent1);
+        //}
 
-        public void RegisterInstanceAndModifySubModulePropertyOnPropertyInjection()
-        {
-            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.Component, new MainComponent1())
-                .ModifyDependencyBy(x => x.Submodule.Component1, x => x.SubComponent2 = SubComponent)
-                .Inject(x => x.Submodule.Component1)
-                .IntoProperty(x => x.SubComponent1);
-        }
+        //public void RegisterInstanceAndModifySubModulePropertyOnPropertyInjection()
+        //{
+        //    RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.Component, new MainComponent1())
+        //        .ModifyDependencyBy(x => x.Submodule.Component1, x => x.SubComponent2 = SubComponent)
+        //        .Inject(x => x.Submodule.Component1)
+        //        .IntoProperty(x => x.SubComponent1);
+        //}
 
-        public void RegisterComponentAndModifySubModulePropertyOnConstructorInjection()
-        {
-            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.Component)
-                .ModifyDependencyBy(x => x.Component2, x => x.IntProperty = IntValue)
-                .CallConstructor(mod => new MainComponent1(mod.Component2));
-        }
+        //public void RegisterComponentAndModifySubModulePropertyOnConstructorInjection()
+        //{
+        //    RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.Component)
+        //        .ModifyDependencyBy(x => x.Component2, x => x.IntProperty = IntValue)
+        //        .Construct(mod => new MainComponent1(mod.Component2));
+        //}
 
-        public void RegisterComponentAndModifySubModulePropertyOnMethodInjection()
-        {
-            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.Component)
-                .ModifyDependencyBy(x => x.Component2, x => x.IntProperty = IntValue)
-                .CallMethod((x, mod) => x.Initialize(mod.Component2));
-        }
+        //public void RegisterComponentAndModifySubModulePropertyOnMethodInjection()
+        //{
+        //    RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.Component)
+        //        .ModifyDependencyBy(x => x.Component2, x => x.IntProperty = IntValue)
+        //        .Inject((x, mod) => x.Initialize(mod.Component2));
+        //}
 
-        public void RegisterComponentAndModifySubModulePropertyOnStrongInterfaceInjectorInjection()
-        {
-            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.Component)
-                .ModifyDependencyBy(x => x.Component2, x => x.IntProperty = IntValue)
-                .AddInterfaceInjection(
-                    context =>
-                    {
-                        context.ModifyDependencyBy(x => x.Submodule.Component1, x => x.SubComponent2 = SubComponent)
-                            .Inject(x => x.Submodule.Component1)
-                            .IntoProperty(x => x.SubComponent1);
-                    });
-        }
+        //public void RegisterComponentAndModifySubModulePropertyOnStrongInterfaceInjectorInjection()
+        //{
+        //    RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.Component)
+        //        .ModifyDependencyBy(x => x.Component2, x => x.IntProperty = IntValue)
+        //        .AddInterfaceInjection(
+        //            context =>
+        //            {
+        //                context.ModifyDependencyBy(x => x.Submodule.Component1, x => x.SubComponent2 = SubComponent)
+        //                    .Inject(x => x.Submodule.Component1)
+        //                    .IntoProperty(x => x.SubComponent1);
+        //            });
+        //}
 
-        public void RegisterComponentAndModifySubModulePropertyOnWeakInterfaceInjectorInjection()
-        {
-            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.Component)
-                .ModifyDependencyBy(x => x.Component2, x => x.IntProperty = IntValue)
-                .AddInterfaceInjection<IMainComponent1, MainComponent1, IEmptyModule, ModifyInstancesModule, IMainComponent1, IModifyInstancesModule>(
-                    context =>
-                    {
-                        context.ModifyDependencyBy(x => x.Submodule.Component1, x => x.SubComponent2 = SubComponent)
-                            .Inject(x => x.Submodule.Component1)
-                            .IntoProperty(x => x.SubComponent1);
-                    });
-        }
+        //public void RegisterComponentAndModifySubModulePropertyOnWeakInterfaceInjectorInjection()
+        //{
+        //    RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.Component)
+        //        .ModifyDependencyBy(x => x.Component2, x => x.IntProperty = IntValue)
+        //        .AddInterfaceInjection<IMainComponent1, MainComponent1, IEmptyModule, ModifyInstancesModule, IMainComponent1, IModifyInstancesModule>(
+        //            context =>
+        //            {
+        //                context.ModifyDependencyBy(x => x.Submodule.Component1, x => x.SubComponent2 = SubComponent)
+        //                    .Inject(x => x.Submodule.Component1)
+        //                    .IntoProperty(x => x.SubComponent1);
+        //            });
+        //}
     }
 }

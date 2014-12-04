@@ -55,7 +55,6 @@ namespace Test.ModuleInject.Fluent
             var depContext = (DependencyInjectionContext<IMainComponent1, MainComponent1, IPropertyModule, PropertyModule, IMainComponent2>)_context.Inject(x => x.Component2);
 
             Assert.AreSame(_context, depContext.ComponentContext);
-            Assert.AreEqual(depPropName, depContext.DependencyName);
         }
     }
 }

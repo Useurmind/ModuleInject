@@ -40,8 +40,11 @@ First, we will have a look at how to do this without injectors.
         public IInjectorComponent InjectorComponent { get; private set; }
 
         public InjectorModule() {
-            RegisterPublicComponent<ILog, DebugLog>(x => x.LogComponent);
-            RegisterPublicComponent<IInjectorComponent, InjectorComponent>(x => x.InjectorComponent)
+            RegisterPublicComponent(x => x.LogComponent)
+                .Construct<DebugLog>();
+
+            RegisterPublicComponent(x => x.InjectorComponent)
+                .Construct<InjectorComponent>()
                 .Injcet(x => x.LogComponent).IntoProperty(x.Log);
         }
     }
@@ -56,12 +59,19 @@ That is how to do it. Pretty straight forward. But now let's assume we have seve
         public IInjectorComponent InjectorComponent3 { get; private set; }
 
         public InjectorModule() {
-            RegisterPublicComponent<ILog, DebugLog>(x => x.LogComponent);
-            RegisterPublicComponent<IInjectorComponent, InjectorComponent>(x => x.InjectorComponent1)
+            RegisterPublicComponent(x => x.LogComponent)
+                .Construct<DebugLog>();
+
+            RegisterPublicComponent(x => x.InjectorComponent1)
+                .Construct<InjectorComponent>()
                 .Inject(x => x.LogComponent).IntoProperty(x.Log);
-            RegisterPublicComponent<IInjectorComponent, InjectorComponent>(x => x.InjectorComponent2)
+
+            RegisterPublicComponent(x => x.InjectorComponent2)
+                .Construct<InjectorComponent>()
                 .Inject(x => x.LogComponent).IntoProperty(x.Log);
-            RegisterPublicComponent<IInjectorComponent, InjectorComponent>(x => x.InjectorComponent3)
+
+            RegisterPublicComponent(x => x.InjectorComponent3)
+                .Construct<InjectorComponent>()
                 .Inject(x => x.LogComponent).IntoProperty(x.Log);
         }
     }
@@ -93,11 +103,16 @@ You can then apply it by writing the following.
 
         public InjectorModule() {
             ...
-            RegisterPublicComponent<IInjectorComponent, InjectorComponent>(x => x.InjectorComponent1)
+            RegisterPublicComponent(x => x.InjectorComponent1)
+                .Construct<InjectorComponent>()
                 .AddInjector(new DebugLogInjector());
-            RegisterPublicComponent<IInjectorComponent, InjectorComponent>(x => x.InjectorComponent2)
+
+            RegisterPublicComponent(x => x.InjectorComponent2)
+                .Construct<InjectorComponent>()
                 .AddInjector(new DebugLogInjector());
-            RegisterPublicComponent<IInjectorComponent, InjectorComponent>(x => x.InjectorComponent3)
+
+            RegisterPublicComponent(x => x.InjectorComponent3)
+                .Construct<InjectorComponent>()
                 .AddInjector(new DebugLogInjector());
         }
     }
@@ -105,12 +120,10 @@ You can then apply it by writing the following.
 What we just did is that we defined an injector. An injector encapsulates an injection pattern for a certain range of types.
 When defining such injection patterns inside an injector it works exactly the same as registering injections the usual way.
 
-In this case we used the most abstract injector that is available, an `InterfaceInjector`. It works on any interfaces for 
-a component and a module.
+In this case we used the most abstract injector that is available, an `InterfaceInjector`. It works on any interfaces for a component and a module.
 In that way you can use it in a lot of places, given you reuse the interfaces for modules and components.
 
 ### Other types of injectors
 One additional hint. There are other types of injectors which limit the range of types even further. 
 
-A `ClassInjector` for example requires the exaxt interfaces and types of component and module. Therefore it is only usable
-for a specific combination of module and component types.
+A `ClassInjector` for example requires the exact interfaces and types of component and module. Therefore it is only usable for a specific combination of module and component types.

@@ -12,10 +12,10 @@ namespace Test.ModuleInject.TestModules
         IMainComponent2 MainComponent2 { get; set; }
     }
 
-    public interface IMainComponent1 : IInitializable<IMainComponent2>, IMainComponent1Sub
+    public interface IMainComponent1 : IMainComponent1Sub
     {
         int InjectedValue { get;  }
-        IMainComponent2 MainComponent22 { get; }
+        IMainComponent2 MainComponent22 { get; set;  }
         IMainComponent2 MainComponent23 { get; }
         ISubComponent1 SubComponent1 { get; }
 
@@ -24,14 +24,12 @@ namespace Test.ModuleInject.TestModules
 
         IMainComponent2SubInterface ComponentViaSubinterface { get; }
 
+        void Initialize(IMainComponent2 dependency1);
+
         int FunctionReturns5();
     }
 
-    public class MainComponent1 : IMainComponent1, 
-        IInitializable<IMainComponent2>,
-        IInitializable<ISubComponent1>,
-        IInitializable<IMainComponent2, ISubComponent1>,
-        IInitializable<IMainComponent2, IMainComponent2, ISubComponent1>
+    public class MainComponent1 : IMainComponent1
     {
         public int InjectedValue { get; set; }
         public IMainComponent2 MainComponent2 { get; set; }

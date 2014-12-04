@@ -24,8 +24,9 @@ namespace Test.ModuleInject.TestModules
 
         public TestSuperModule()
         {
-            RegisterPublicComponent<ISubModule, Submodule>(x => x.SubModule);
-            RegisterPublicComponent<IPropertyModule, PropertyModule>(x => x.MainModule)
+            RegisterPublicComponent(x => x.SubModule).Construct<Submodule>();
+            RegisterPublicComponent(x => x.MainModule)
+                .Construct<PropertyModule>()
                 .Inject(x => x.SubModule).IntoProperty(x => x.SubModule);
         }
     }

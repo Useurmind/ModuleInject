@@ -26,8 +26,8 @@ namespace Test.ModuleInject.TestModules
 
         public BaseModule()
         {
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1);
-            RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1Private);
+            RegisterPublicComponent(x => x.MainComponent1).Construct<MainComponent1>();
+            RegisterPrivateComponent(x => x.MainComponent1Private).Construct<MainComponent1>();
         }
     }
 
@@ -45,8 +45,8 @@ namespace Test.ModuleInject.TestModules
 
         public DerivedModule()
         {
-            RegisterPublicComponent<IMainComponent2, MainComponent2>(x => x.MainComponent2);
-            RegisterPrivateComponent<IMainComponent2, MainComponent2>(x => x.MainComponent2Private);
+            RegisterPublicComponent(x => x.MainComponent2).Construct<MainComponent2>();
+            RegisterPrivateComponent(x => x.MainComponent2Private).Construct<MainComponent2>();
         }
     }
 }

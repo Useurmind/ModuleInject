@@ -25,7 +25,8 @@ namespace Test.ModuleInject.TestModules
 
         public void RegisterBehaviour()
         {
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.InterceptedWithChangeReturnValueComponent)
+            RegisterPublicComponent(x => x.InterceptedWithChangeReturnValueComponent)
+                .Construct<MainComponent1>()
                 .AddBehaviour(new ChangeReturnValueBehaviour());
         }
     }

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace ModuleInject.Container.Dependencies
+namespace ModuleInject.Container.Interface
 {
     public interface IDependencyInjection
     {

@@ -34,26 +34,28 @@ namespace Test.ModuleInject.TestModules
 
         public RegistryUsingModule()
         {
-            RegisterPublicComponent<IPropertyModule, PropertyModule>(x => x.PropertyModule);
+            RegisterPublicComponent(x => x.PropertyModule).Construct <PropertyModule>();
         }
 
         public void RegisterComponentFromPublicSubmodule()
         {
-            this.RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
+            this.RegisterPrivateComponent(x => x.MainComponent1)
+                .Construct<MainComponent1>()
                 .Inject(x => x.PrivatePropertyModule.Component2)
                 .IntoProperty(x => x.MainComponent2);
         }
 
         public void RegisterComponentFromPrivateSubmodule()
         {
-            this.RegisterPrivateComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
+            this.RegisterPrivateComponent(x => x.MainComponent1)
+                .Construct<MainComponent1>()
                 .Inject(x => x.PrivatePrivatePropertyModule.Component2)
                 .IntoProperty(x => x.MainComponent2);
         }
 
         public void RegisterPrivateWithRegistryComponentOverlap()
         {
-            RegisterPrivateComponent<IPropertyModule, PropertyModule>(x => x.PrivatePropertyModule);
+            RegisterPrivateComponent(x => x.PrivatePropertyModule).Construct<PropertyModule>();
         }
 
         public void ApplyRegistry()

@@ -65,7 +65,8 @@ Can you imagine what it will do? So lets see how the first draft of our componen
 Finally, we have a component to print a Hello World greeting for us. But how do we employ it in the module? First we need to register the component, for example in the constructor of our module:
 
     public MainModule() {
-        RegisterPublicComponent<IPrintComponent, PrintComponent>(x => x.PrintComponent);
+        RegisterPublicComponent(x => x.PrintComponent)
+            .Construct<PrintComponent>();
     }
 
 This registers the PrintComponent property of the MainModule to be a PrintComponent instance. 
@@ -118,10 +119,12 @@ Basically, we make the greeting string configurable via dependency injection. Wi
         private INameComponent NameComponent { get; set; }
         
         public MainModule() {
-            RegisterPrivateComponent<INameComponent, NameComponent>(x => x.NameComponent)
+            RegisterPrivateComponent(x => x.NameComponent)
+                .Construct<NameComponent>()
                 .Inject("ModuleInject").IntoProperty(x => x.NameToGreet);
         
-            RegisterPublicComponent<IPrintComponent, PrintComponent>(x => x.PrintComponent)
+            RegisterPublicComponent(x => x.PrintComponent)
+                .Construct<PrintComponent>()
                 .Inject(x => x.NameComponent).IntoProperty(x => x.NameProvider);
         }
     }
@@ -152,7 +155,8 @@ Let's try and create a submodule for our current MainModule:
         public ILog Log { get; private set; }
 
         public LogModule() {
-            RegisterPublicComponent<ILog, DebugLog>(x => x.Log);
+            RegisterPublicComponent(x => x.Log)
+                .Construct<DebugLog>();
         }
     }
 
@@ -195,9 +199,11 @@ This module can now be used in our MainModule like this:
     public MainModule() {
             ...
         
-        RegisterPrivateComponent<ILogModule, LogModule>(x => x.LogModule);
+        RegisterPrivateComponent(x => x.LogModule)
+            .Construct<LogModule>();
 
-        RegisterPublicComponent<IPrintComponent, PrintComponent>(x => x.PrintComponent)
+        RegisterPublicComponent(x => x.PrintComponent)
+            .Construct<PrintComponent>()
             .Inject(x => x.NameComponent).IntoProperty(x => x.NameProvider)
             .Inject(x => x.LogModule.Log).IntoProperty(x => x.Log);
     }

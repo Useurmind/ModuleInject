@@ -41,20 +41,23 @@ namespace Test.ModuleInject.TestModules
 
         public void RegisterComponentsByInitializeWithOtherComponent()
         {
-            RegisterPrivateComponentFactory<IMainComponent1, MainComponent1>(x => x.CreateMainComponent1());
+            RegisterPrivateComponentFactory(x => x.CreateMainComponent1()).Construct<MainComponent1>();
 
-            RegisterPrivateComponent<IMainComponent2, MainComponent2>(x => x.MainComponent2);
+            RegisterPrivateComponent(x => x.MainComponent2).Construct<MainComponent2>();
 
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainInstance1, new MainComponent1())
-                .CallMethod((comp, module) => comp.Initialize(module.MainComponent2));
+            RegisterPublicComponent(x => x.MainInstance1)
+                .Construct(new MainComponent1())
+                .Inject((comp, module) => comp.Initialize(module.MainComponent2));
 
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
-                .CallMethod((comp, module) => comp.Initialize(module.MainComponent2));
+            RegisterPublicComponent(x => x.MainComponent1)
+                .Construct<MainComponent1>()
+                .Inject((comp, module) => comp.Initialize(module.MainComponent2));
 
-            RegisterPublicComponent<IList<IMainComponent1>, List<IMainComponent1>>(x => x.MainComponent1List)
-                .CallMethod((comp, module) => comp.Add(module.MainComponent1))
-                .CallMethod((comp, module) => comp.Add(module.CreateMainComponent1()))
-                .CallMethod((comp, module) => comp.Add(module.CreateMainComponent1()));
+            RegisterPublicComponent(x => x.MainComponent1List)
+                .Construct<List<IMainComponent1>>()
+                .Inject((comp, module) => comp.Add(module.MainComponent1))
+                .Inject((comp, module) => comp.Add(module.CreateMainComponent1()))
+                .Inject((comp, module) => comp.Add(module.CreateMainComponent1()));
         }
     }
 }

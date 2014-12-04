@@ -17,57 +17,6 @@ namespace ModuleInject.Utility
 
     public static class LinqHelper
     {
-        public static IResolvedValue GetContainerReference(
-            InjectionModule module,
-            string memberPath,
-            Type memberType,
-            IList<Action<object>> modifyActions=null)
-        {
-            CommonFunctions.CheckNullArgument("memberPath", memberPath);
-
-            Func<IDependencyContainer> getContainer = null;
-            string dependencyName = string.Empty;
-
-            var pathParths = memberPath.Split('.');
-
-            if (pathParths.Count() == 1)
-            {
-                getContainer = () => module.Container;
-                dependencyName = memberPath;
-            }
-            else if (pathParths.Count() == 2)
-            {
-                string submoduleName = pathParths[0];
-                var submoduleMemberInfo = ModuleTypeExtensions.GetModuleProperties(module.ModuleInterface, module.ModuleType, true).First(p => p.Name == submoduleName);
-                var submoduleContainerPropertyInfo = typeof(InjectionModule).GetProperty("Container", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                getContainer = () =>
-                    {
-                        object submodule = submoduleMemberInfo.GetValue(module, null);
-                        object container = submoduleContainerPropertyInfo.GetValue(submodule, null);
-                        return (IDependencyContainer)container;
-                    };
-                dependencyName = pathParths[1];
-            }
-            else
-            {
-                ExceptionHelper.ThrowFormatException("");
-            }
-
-            IResolvedValue resolvedValue = new ContainerReference(getContainer, dependencyName, memberType);
-
-            if (modifyActions != null && modifyActions.Any())
-            {
-                var modifiedValue = new ModifiedResolvedValue(resolvedValue);
-                foreach (var modificationAction in modifyActions)
-                {
-                    modifiedValue.AddModification(modificationAction);
-                }
-                resolvedValue = modifiedValue;
-            }
-
-            return resolvedValue;
-        }
-
         /// <summary>
         /// Calculates the path of the member and its type for an lambda expression that gives an component/subcomponent
         /// or method/submethod of a module.

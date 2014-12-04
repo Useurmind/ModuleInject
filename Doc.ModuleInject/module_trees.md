@@ -29,11 +29,13 @@ No problem and no headache at all.
         public ParentModule() 
         {
             // this results in the submodule being created when the module is resolved
-            RegisterPrivateComponent<ISubModule, SubModule>(x => x.SubModule);
+            RegisterPrivateComponent(x => x.SubModule)
+                .Construct<SubModule>();
 
             // this injects the SubComponent property of the submodule into the SomeSubComponent
             // property of the PublicComponent
-            RegisterPublicComponent<IComponent, Component>(x => x.PublicComponent)
+            RegisterPublicComponent(x => x.PublicComponent)
+                .Construct<Component>()
                 .Inject(x => x.SubModule.SubComponent).IntoProperty(x => x.SomeSubComponent);
         }
     }
@@ -64,7 +66,8 @@ With this registry you could resolve the submodule in aboves `ParentModule` as f
         {
             // you can inject the submodule without further fuss
             // the module will automatically take the submodule from the registry
-            RegisterPublicComponent<IComponent, Component>(x => x.PublicComponent)
+            RegisterPublicComponent(x => x.PublicComponent)
+                .Construct<Component>()
                 .Inject(x => x.SubModule.SubComponent).IntoProperty(x => x.SomeSubComponent);
         }
     }

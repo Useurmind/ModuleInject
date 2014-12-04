@@ -120,6 +120,12 @@
   <data name="ComponentRegistrationContext_InterceptionNotActivated" xml:space="preserve">
     <value>Interception was not activated on the module with type '{0}'. Activate interception in the module before adding a behaviour to components.</value>
   </data>
+  <data name="DependencyInjectionContext_IntoPropertyExpressionNotWritable" xml:space="preserve">
+    <value>The property '{0}' of type '{1}' has no setter defined.</value>
+  </data>
+  <data name="DependencyInjectionContext_NoMemberAccessInTargetExpression" xml:space="preserve">
+    <value>The target given to the IntoProperty method does not describe a property.</value>
+  </data>
   <data name="InjectionModule_AlreadyResolved" xml:space="preserve">
     <value>The module with type '{0}' was already resolved. Please avoid multiple resolutions of the same module.</value>
   </data>

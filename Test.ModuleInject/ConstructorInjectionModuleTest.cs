@@ -43,10 +43,14 @@ namespace Test.ModuleInject
         }
 
         [TestCase]
-        [ExpectedException(typeof(ModuleInjectException))]
-        public void Resolved_RegisterWithArgumentsInConstructorTwice_ExceptionThrown()
+        public void Resolved_RegisterWithArgumentsInConstructorAndArgumentResolvedAfterThis_MainComponent2Set()
         {
-            _module.RegisterWithArgumentsInConstructorTwice();
+            _module.RegisterWithArgumentsInConstructorAndArgumentResolvedAfterThis();
+            _module.Resolve();
+
+            Assert.IsNotNull(_module.MainComponent1);
+            Assert.IsNotNull(_module.MainComponent3);
+            Assert.AreSame(_module.MainComponent3, _module.MainComponent1.MainComponent2);
         }
     }
 }

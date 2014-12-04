@@ -40,8 +40,11 @@ the ILogging interface and needs to be injected with a proper log component.</p>
     public IInjectorComponent InjectorComponent { get; private set; }
 
     public InjectorModule() {
-        RegisterPublicComponent&lt;ILog, DebugLog&gt;(x =&gt; x.LogComponent);
-        RegisterPublicComponent&lt;IInjectorComponent, InjectorComponent&gt;(x =&gt; x.InjectorComponent)
+        RegisterPublicComponent(x =&gt; x.LogComponent)
+            .Construct&lt;DebugLog&gt;();
+
+        RegisterPublicComponent(x =&gt; x.InjectorComponent)
+            .Construct&lt;InjectorComponent&gt;()
             .Injcet(x =&gt; x.LogComponent).IntoProperty(x.Log);
     }
 }
@@ -57,12 +60,19 @@ the ILogging interface and needs to be injected with a proper log component.</p>
     public IInjectorComponent InjectorComponent3 { get; private set; }
 
     public InjectorModule() {
-        RegisterPublicComponent&lt;ILog, DebugLog&gt;(x =&gt; x.LogComponent);
-        RegisterPublicComponent&lt;IInjectorComponent, InjectorComponent&gt;(x =&gt; x.InjectorComponent1)
+        RegisterPublicComponent(x =&gt; x.LogComponent)
+            .Construct&lt;DebugLog&gt;();
+
+        RegisterPublicComponent(x =&gt; x.InjectorComponent1)
+            .Construct&lt;InjectorComponent&gt;()
             .Inject(x =&gt; x.LogComponent).IntoProperty(x.Log);
-        RegisterPublicComponent&lt;IInjectorComponent, InjectorComponent&gt;(x =&gt; x.InjectorComponent2)
+
+        RegisterPublicComponent(x =&gt; x.InjectorComponent2)
+            .Construct&lt;InjectorComponent&gt;()
             .Inject(x =&gt; x.LogComponent).IntoProperty(x.Log);
-        RegisterPublicComponent&lt;IInjectorComponent, InjectorComponent&gt;(x =&gt; x.InjectorComponent3)
+
+        RegisterPublicComponent(x =&gt; x.InjectorComponent3)
+            .Construct&lt;InjectorComponent&gt;()
             .Inject(x =&gt; x.LogComponent).IntoProperty(x.Log);
     }
 }
@@ -96,11 +106,16 @@ public class InjectorModule : ..., IHaveLogComponent
 
     public InjectorModule() {
         ...
-        RegisterPublicComponent&lt;IInjectorComponent, InjectorComponent&gt;(x =&gt; x.InjectorComponent1)
+        RegisterPublicComponent(x =&gt; x.InjectorComponent1)
+            .Construct&lt;InjectorComponent&gt;()
             .AddInjector(new DebugLogInjector());
-        RegisterPublicComponent&lt;IInjectorComponent, InjectorComponent&gt;(x =&gt; x.InjectorComponent2)
+
+        RegisterPublicComponent(x =&gt; x.InjectorComponent2)
+            .Construct&lt;InjectorComponent&gt;()
             .AddInjector(new DebugLogInjector());
-        RegisterPublicComponent&lt;IInjectorComponent, InjectorComponent&gt;(x =&gt; x.InjectorComponent3)
+
+        RegisterPublicComponent(x =&gt; x.InjectorComponent3)
+            .Construct&lt;InjectorComponent&gt;()
             .AddInjector(new DebugLogInjector());
     }
 }
@@ -109,13 +124,11 @@ public class InjectorModule : ..., IHaveLogComponent
 <p>What we just did is that we defined an injector. An injector encapsulates an injection pattern for a certain range of types.
 When defining such injection patterns inside an injector it works exactly the same as registering injections the usual way.</p>
 
-<p>In this case we used the most abstract injector that is available, an <code>InterfaceInjector</code>. It works on any interfaces for 
-a component and a module.
+<p>In this case we used the most abstract injector that is available, an <code>InterfaceInjector</code>. It works on any interfaces for a component and a module.
 In that way you can use it in a lot of places, given you reuse the interfaces for modules and components.</p>
 
 <h3>Other types of injectors</h3>
 
 <p>One additional hint. There are other types of injectors which limit the range of types even further. </p>
 
-<p>A <code>ClassInjector</code> for example requires the exaxt interfaces and types of component and module. Therefore it is only usable
-for a specific combination of module and component types.</p>
+<p>A <code>ClassInjector</code> for example requires the exact interfaces and types of component and module. Therefore it is only usable for a specific combination of module and component types.</p>

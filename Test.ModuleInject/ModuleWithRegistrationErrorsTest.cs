@@ -99,9 +99,10 @@ namespace Test.ModuleInject
 
         [TestCase]
         [ExpectedException(typeof(ModuleInjectException))]
-        public void RegisterWithCastToNonImplementedInterface_ThrowsException()
+        public void Resolve_RegisterWithCastToNonImplementedInterface_ThrowsException()
         {
             _module.RegisterWithCastToNonImplementedInterface();
+            _module.Resolve();
         }
     }
 }

@@ -31,55 +31,62 @@ namespace Test.ModuleInject.TestModules
         public MethodCallModule()
         {
             SubModule = new Submodule();
-            RegisterPrivateComponent<IMainComponent2, MainComponent2>(x => x.MainComponent2);
+            RegisterPrivateComponent(x => x.MainComponent2).Construct<MainComponent2>();
         }
 
         public void RegisterPublicComponentWithPrivateComponentByMethodCall()
         {
 
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
-                .CallMethod((comp, module) => comp.Initialize(module.MainComponent2));
+            RegisterPublicComponent(x => x.MainComponent1)
+                .Construct<MainComponent1>()
+                .Inject((comp, module) => comp.Initialize(module.MainComponent2));
         }
 
         public void RegisterPublicComponentWithPrivateComponentAndConstantValueByMethodCall()
         {
 
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
-                .CallMethod((comp, module) => comp.CallWithConstant(module.MainComponent2, 5));
+            RegisterPublicComponent(x => x.MainComponent1)
+                .Construct<MainComponent1>()
+                .Inject((comp, module) => comp.CallWithConstant(module.MainComponent2, 5));
         }
 
         public void RegisterPublicComponentWithPrivateComponentAndConstantAndCastValueByMethodCall()
         {
 
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
-                .CallMethod((comp, module) => comp.CallWithConstant((IMainComponent2)module.MainComponent2, (int)5.0));
+            RegisterPublicComponent(x => x.MainComponent1)
+                .Construct<MainComponent1>()
+                .Inject((comp, module) => comp.CallWithConstant((IMainComponent2)module.MainComponent2, (int)5.0));
         }
 
         public void RegisterPublicComponentWithSubmoduleComponentByMethodCall()
         {
 
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
-                .CallMethod((comp, module) => comp.Initialize(module.SubModule.Component1));
+            RegisterPublicComponent(x => x.MainComponent1)
+                .Construct<MainComponent1>()
+                .Inject((comp, module) => comp.Initialize(module.SubModule.Component1));
         }
 
         public void RegisterPublicComponentWithPropertyOfThis()
         {
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
-                .CallMethod((comp, module) => comp.CallWithConstant(this.MainComponent2, 5));
+            RegisterPublicComponent(x => x.MainComponent1)
+                .Construct<MainComponent1>()
+                .Inject((comp, module) => comp.CallWithConstant(this.MainComponent2, 5));
         }
 
         public void RegisterPublicComponentWithStackVariable()
         {
             MainComponent2 mainComponent2 = new MainComponent2();
 
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
-                .CallMethod((comp, module) => comp.CallWithConstant(mainComponent2, 5));
+            RegisterPublicComponent(x => x.MainComponent1)
+                .Construct<MainComponent1>()
+                .Inject((comp, module) => comp.CallWithConstant(mainComponent2, 5));
         }
 
         public void RegisterPublicComponentWithInlineNew()
         {
-            RegisterPublicComponent<IMainComponent1, MainComponent1>(x => x.MainComponent1)
-                .CallMethod((comp, module) => comp.CallWithConstant(new MainComponent2(), 5));
+            RegisterPublicComponent(x => x.MainComponent1)
+                .Construct<MainComponent1>()
+                .Inject((comp, module) => comp.CallWithConstant(new MainComponent2(), 5));
         }
     }
 }

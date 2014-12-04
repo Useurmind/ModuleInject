@@ -16,6 +16,8 @@ namespace ModuleInject.Common.Linq
         {
         }
 
+        protected virtual void OnVisiting(Expression expression) { }
+
         protected virtual Expression Visit(Expression expression)
         {
             if (expression == null)
@@ -112,6 +114,8 @@ namespace ModuleInject.Common.Linq
 
         protected virtual Expression VisitUnary(UnaryExpression unaryExpression)
         {
+            OnVisiting(unaryExpression);
+
             Expression operand = this.Visit(unaryExpression.Operand);
             if (operand != unaryExpression.Operand)
             {
@@ -122,6 +126,8 @@ namespace ModuleInject.Common.Linq
 
         protected virtual Expression VisitBinary(BinaryExpression binaryExpression)
         {
+            OnVisiting(binaryExpression);
+
             Expression left = this.Visit(binaryExpression.Left);
             Expression right = this.Visit(binaryExpression.Right);
             Expression conversion = this.Visit(binaryExpression.Conversion);
@@ -137,6 +143,8 @@ namespace ModuleInject.Common.Linq
 
         protected virtual Expression VisitTypeIs(TypeBinaryExpression typeBinaryExpression)
         {
+            OnVisiting(typeBinaryExpression);
+
             Expression expr = this.Visit(typeBinaryExpression.Expression);
             if (expr != typeBinaryExpression.Expression)
             {
@@ -147,11 +155,15 @@ namespace ModuleInject.Common.Linq
 
         protected virtual Expression VisitConstant(ConstantExpression constantExpression)
         {
+            OnVisiting(constantExpression);
+
             return constantExpression;
         }
 
         protected virtual Expression VisitConditional(ConditionalExpression conditionalExpression)
         {
+            OnVisiting(conditionalExpression);
+
             Expression test = this.Visit(conditionalExpression.Test);
             Expression ifTrue = this.Visit(conditionalExpression.IfTrue);
             Expression ifFalse = this.Visit(conditionalExpression.IfFalse);
@@ -164,11 +176,15 @@ namespace ModuleInject.Common.Linq
 
         protected virtual Expression VisitParameter(ParameterExpression parameterExpression)
         {
+            OnVisiting(parameterExpression);
+
             return parameterExpression;
         }
 
         protected virtual Expression VisitMemberAccess(MemberExpression memberExpression)
         {
+            OnVisiting(memberExpression);
+
             Expression exp = this.Visit(memberExpression.Expression);
             if (exp != memberExpression.Expression)
             {
@@ -179,6 +195,8 @@ namespace ModuleInject.Common.Linq
 
         protected virtual Expression VisitMethodCall(MethodCallExpression methodCallExpression)
         {
+            OnVisiting(methodCallExpression);
+
             Expression obj = this.Visit(methodCallExpression.Object);
             IEnumerable<Expression> args = this.VisitExpressionList(methodCallExpression.Arguments);
             if (obj != methodCallExpression.Object || args != methodCallExpression.Arguments)
@@ -297,6 +315,8 @@ namespace ModuleInject.Common.Linq
 
         protected virtual Expression VisitLambda(LambdaExpression lambda)
         {
+            OnVisiting(lambda);
+
             Expression body = this.Visit(lambda.Body);
             if (body != lambda.Body)
             {
@@ -307,6 +327,8 @@ namespace ModuleInject.Common.Linq
 
         protected virtual NewExpression VisitNew(NewExpression nex)
         {
+            OnVisiting(nex);
+
             IEnumerable<Expression> args = this.VisitExpressionList(nex.Arguments);
             if (args != nex.Arguments)
             {
@@ -320,6 +342,8 @@ namespace ModuleInject.Common.Linq
 
         protected virtual Expression VisitMemberInit(MemberInitExpression init)
         {
+            OnVisiting(init);
+
             NewExpression n = this.VisitNew(init.NewExpression);
             IEnumerable<MemberBinding> bindings = this.VisitBindingList(init.Bindings);
             if (n != init.NewExpression || bindings != init.Bindings)
@@ -331,6 +355,8 @@ namespace ModuleInject.Common.Linq
 
         protected virtual Expression VisitListInit(ListInitExpression init)
         {
+            OnVisiting(init);
+
             NewExpression n = this.VisitNew(init.NewExpression);
             IEnumerable<ElementInit> initializers = this.VisitElementInitializerList(init.Initializers);
             if (n != init.NewExpression || initializers != init.Initializers)
@@ -342,6 +368,8 @@ namespace ModuleInject.Common.Linq
 
         protected virtual Expression VisitNewArray(NewArrayExpression newArrayExpression)
         {
+            OnVisiting(newArrayExpression);
+
             IEnumerable<Expression> exprs = this.VisitExpressionList(newArrayExpression.Expressions);
             if (exprs != newArrayExpression.Expressions)
             {
@@ -359,6 +387,8 @@ namespace ModuleInject.Common.Linq
 
         protected virtual Expression VisitInvocation(InvocationExpression invocationExpression)
         {
+            OnVisiting(invocationExpression);
+
             IEnumerable<Expression> args = this.VisitExpressionList(invocationExpression.Arguments);
             Expression expr = this.Visit(invocationExpression.Expression);
             if (args != invocationExpression.Arguments || expr != invocationExpression.Expression)

@@ -18,22 +18,6 @@ namespace ModuleInject.Fluent
 
     public static class ComponentRegistrationContextExtensions
     {
-        public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
-            ModifyDependencyBy<IComponent, TComponent, IModule, TModule, TDependency>(
-            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
-            Expression<Func<TModule, TDependency>> dependencySourceExpression,
-            Action<TDependency> modifyAction)
-            where TComponent : IComponent
-            where TModule : IModule
-            where IModule : IInjectionModule
-        {
-            CommonFunctions.CheckNullArgument("component", component);
-
-            var contextImpl = GetContextImplementation(component);
-
-            contextImpl.Context.ModifyDependencyBy(dependencySourceExpression, obj => modifyAction((TDependency)obj));
-            return component;
-        }
 
         public static IValueInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>
             Inject<IComponent, TComponent, IModule, TModule, TDependency>(
@@ -51,7 +35,7 @@ namespace ModuleInject.Fluent
             return new ValueInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>(contextImpl, valueContext);
         }
 
-        public static IDependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency> 
+        public static IDependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>
             Inject<IComponent, TComponent, IModule, TModule, TDependency>(
             this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
             Expression<Func<TModule, TDependency>> dependencySourceExpression)
@@ -63,96 +47,25 @@ namespace ModuleInject.Fluent
 
             var contextImpl = GetContextImplementation(component);
 
-            var dependencyContext = contextImpl.Context.Inject(dependencySourceExpression);
+            var dependencyContext = contextImpl.Context.InjectSource((LambdaExpression)dependencySourceExpression);
 
             return new DependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>(
                 contextImpl, dependencyContext);
         }
 
         public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
-            InitializeWith<IComponent, TComponent, IModule, TModule, TDependency1>(
-            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
-            Expression<Func<TModule, TDependency1>> dependency1SourceExpression)
-            where TComponent : IComponent, IInitializable<TDependency1>
-            where TModule : IModule
-            where IModule : IInjectionModule
+             Inject<IComponent, TComponent, IModule, TModule>(
+             this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+             Expression<Action<TComponent, TModule>> methodCallExpression)
+             where TComponent : IComponent
+             where TModule : IModule
+             where IModule : IInjectionModule
         {
             CommonFunctions.CheckNullArgument("component", component);
 
             var contextImpl = GetContextImplementation(component);
 
-            contextImpl.Context.InitializeWith(dependency1SourceExpression);
-
-            return component;
-        }
-
-        public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
-            InitializeWith<IComponent, TComponent, IModule, TModule, TDependency1, TDependency2>(
-            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
-            Expression<Func<TModule, TDependency1>> dependency1SourceExpression,
-            Expression<Func<TModule, TDependency2>> dependency2SourceExpression)
-            where TComponent : IComponent, IInitializable<TDependency1, TDependency2>
-            where TModule : IModule
-            where IModule : IInjectionModule
-        {
-            CommonFunctions.CheckNullArgument("component", component);
-
-            var contextImpl = GetContextImplementation(component);
-
-            contextImpl.Context.InitializeWith(dependency1SourceExpression, dependency2SourceExpression);
-
-            return component;
-        }
-
-        public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> 
-            InitializeWith<IComponent, TComponent, IModule, TModule, TDependency1, TDependency2, TDependency3>(
-            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
-            Expression<Func<TModule, TDependency1>> dependency1SourceExpression,
-            Expression<Func<TModule, TDependency2>> dependency2SourceExpression,
-            Expression<Func<TModule, TDependency3>> dependency3SourceExpression)
-            where TComponent : IComponent, IInitializable<TDependency1, TDependency2, TDependency3>
-            where TModule : IModule
-            where IModule : IInjectionModule
-        {
-            CommonFunctions.CheckNullArgument("component", component);
-
-            var contextImpl = GetContextImplementation(component);
-
-            contextImpl.Context.InitializeWith(dependency1SourceExpression, dependency2SourceExpression, dependency3SourceExpression);
-
-            return component;
-        }
-
-        public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
-            CallConstructor<IComponent, TComponent, IModule, TModule>(
-            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
-            Expression<Func<TModule, IComponent>> constructorCallExpression)
-            where TComponent : IComponent
-            where TModule : IModule
-            where IModule : IInjectionModule
-        {
-            CommonFunctions.CheckNullArgument("component", component);
-
-            var contextImpl = GetContextImplementation(component);
-
-            contextImpl.Context.CallConstructor(constructorCallExpression);
-
-            return component;
-        }
-
-        public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
-            CallMethod<IComponent, TComponent, IModule, TModule>(
-            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
-            Expression<Action<TComponent, TModule>> methodCallExpression)
-            where TComponent : IComponent
-            where TModule : IModule
-            where IModule : IInjectionModule
-        {
-            CommonFunctions.CheckNullArgument("component", component);
-
-            var contextImpl = GetContextImplementation(component);
-
-            contextImpl.Context.CallMethod(methodCallExpression);
+            contextImpl.Context.Inject(methodCallExpression);
 
             return component;
         }
@@ -295,6 +208,35 @@ namespace ModuleInject.Fluent
             var contextImpl = GetContextImplementation(component);
 
             contextImpl.Context.AddBehaviour(behaviour);
+
+            return component;
+        }
+
+        /// <summary>
+        /// Register a custom action that will run when the component is resolved.
+        /// Inside the action only the created instance of the component is available.
+        /// The module is not, because it can not be guaranteed that all properties of the 
+        /// module are already resolved.
+        /// </summary>
+        /// <typeparam name="IComponent">The interface of the component.</typeparam>
+        /// <typeparam name="TComponent">The type of the component.</typeparam>
+        /// <typeparam name="IModule">The interface of the module.</typeparam>
+        /// <typeparam name="TModule">The type of the module.</typeparam>
+        /// <param name="component">The fluent context in which a custom action is registered.</param>
+        /// <param name="customAction">The action that should be executed.</param>
+        /// <returns></returns>
+        public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> AddCustomAction<IComponent, TComponent, IModule, TModule>(
+            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+            Action<TComponent> customAction)
+            where TComponent : IComponent
+            where TModule : IModule
+            where IModule : IInjectionModule
+        {
+            CommonFunctions.CheckNullArgument("component", component);
+
+            var contextImpl = GetContextImplementation(component);
+
+            contextImpl.Context.AddCustomAction(customAction);
 
             return component;
         }

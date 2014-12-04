@@ -1,4 +1,5 @@
 ﻿using ModuleInject.Container.Interface;
+using ModuleInject.Container.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
