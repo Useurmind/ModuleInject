@@ -114,8 +114,8 @@ namespace Test.ModuleInject.UnitTesting
             realRegistry.RegisterModule<IUnitTestedModule2, UnitTestedModule2>();
 
             var module2Mock = new Mock<IUnitTestedModule2>();
-            module2Mock.SetupGet(x => x.MainComponent2).Returns(new MainComponent2());
-            module2Mock.Setup(x => x.CreateMainComponent2()).Returns(new MainComponent2());
+            module2Mock.SetupGet(x => x.MainComponent2).Returns(Mock.Of<IMainComponent2>());
+            module2Mock.Setup(x => x.CreateMainComponent2()).Returns(Mock.Of<IMainComponent2>());
 
             mockRegistry = new StandardRegistry();
             mockRegistry.Register<IUnitTestedModule2>(() => module2Mock.Object);

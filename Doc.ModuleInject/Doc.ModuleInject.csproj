@@ -236,6 +236,7 @@
     <Content Include="injectors.md" />
     <Content Include="module_trees.md" />
     <Content Include="fluent_language.md" />
+    <Content Include="unit_testing.md" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

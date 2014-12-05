@@ -5,7 +5,13 @@ namespace ModuleInject.Interfaces
     using System;
 
     /// <summary>
-    /// Interface for an module which is part of the injection process.
+    /// Interface for a module which is part of the injection process.
+    /// 
+    /// Invariants:
+    /// - If <see cref="IsResolved"/> is true, all component properties of the public interface are filled.
+    /// - Calling <see cref="Resolve"/> leads to <see cref="IsResolved"/> being true.
+    /// - Component factories of the public interface, <see cref="GetComponent"/> and <see cref="GetComponent{T}"/>
+    ///   always return instances according to the registrations in the module.
     /// </summary>
     public interface IInjectionModule
     {
