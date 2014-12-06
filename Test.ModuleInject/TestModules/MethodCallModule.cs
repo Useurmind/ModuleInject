@@ -25,7 +25,7 @@ namespace Test.ModuleInject.TestModules
         [PrivateComponent]
         public IMainComponent2 MainComponent2 { get; private set; }
 
-        [ExternalComponent]
+        [NonModuleProperty]
         public ISubModule SubModule { get; set; }
 
         public MethodCallModule()

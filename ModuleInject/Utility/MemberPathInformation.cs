@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace ModuleInject.Utility
@@ -13,5 +14,6 @@ namespace ModuleInject.Utility
         public Type RootType { get; set; }
         public bool ContainsPropertyAccess { get; set; }
         public bool ContainsMethodCall { get; set; }
+        public IEnumerable<MemberInfo> MemberInfos { get; set; }
     }
 }

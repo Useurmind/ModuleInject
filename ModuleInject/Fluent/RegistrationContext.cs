@@ -18,6 +18,8 @@ namespace ModuleInject.Fluent
     using ModuleInject.Interfaces.Fluent;
     using ModuleInject.Container.InstanceCreation;
     using ModuleInject.Container.Dependencies;
+    using ModuleInject.Decoration;
+    using ModuleInject.Common.Linq;
 
     internal class RegistrationTypes : IRegistrationTypes
     {
@@ -139,8 +141,15 @@ namespace ModuleInject.Fluent
             var moduleOnlyDependencies = dependencyEvaluator.MemberPaths.Where(x => x.Depth == 1);
             foreach (var memberPathInformation in moduleOnlyDependencies)
             {
-                var containerReference = new ContainerReference(Container, memberPathInformation.Path, memberPathInformation.ReturnType);
-                Container.DefinePrerequisite(this.RegistrationName, this.RegistrationTypes.IComponent, containerReference);
+                var memberInfo = memberPathInformation.MemberInfos.ElementAt(0);
+                if (!memberInfo.HasCustomAttribute<NonModulePropertyAttribute>())
+                {
+                    // no module properties should not be marked as prerequisites 
+                    // because they are not part of the container
+
+                    var containerReference = new ContainerReference(Container, memberPathInformation.Path, memberPathInformation.ReturnType);
+                    Container.DefinePrerequisite(this.RegistrationName, this.RegistrationTypes.IComponent, containerReference);
+                }
             }
         }
 

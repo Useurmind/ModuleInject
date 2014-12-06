@@ -75,6 +75,7 @@ namespace ModuleInject.Utility
             }
 
             var names = new string[expressionStack.Count];
+            var memberInfos = new MemberInfo[expressionStack.Count];
             int index = 0;
             Type returnType = null;
             bool containsPropertyAccess = false;
@@ -88,7 +89,8 @@ namespace ModuleInject.Utility
                 if(memberExpression != null)
                 {
                     names[index] = memberExpression.Member.Name;
-                    if(!expressionStack.Any())
+                    memberInfos[index] = memberExpression.Member;
+                    if (!expressionStack.Any())
                     {
                         returnType = ((PropertyInfo)memberExpression.Member).PropertyType;
                     }
@@ -99,6 +101,7 @@ namespace ModuleInject.Utility
                 if(methodCallExpression  != null)
                 {
                     names[index] = methodCallExpression.Method.Name;
+                    memberInfos[index] = methodCallExpression.Method;
                     if (!expressionStack.Any())
                     {
                         returnType = methodCallExpression.Method.ReturnType;
@@ -117,7 +120,8 @@ namespace ModuleInject.Utility
                 Depth = names.Count(),
                 Path = String.Join(".", names),
                 ContainsMethodCall = containsMethodCall,
-                ContainsPropertyAccess = containsPropertyAccess
+                ContainsPropertyAccess = containsPropertyAccess,
+                MemberInfos = memberInfos
             };
 
             memberPaths.Add(pathInfo);

@@ -201,10 +201,9 @@ namespace ModuleInject
                 {
                     bool isPrivate = p.HasCustomAttribute<PrivateComponentAttribute>();
                     bool isRegistry = p.HasCustomAttribute<RegistryComponentAttribute>();
-                    bool isExternal = p.HasCustomAttribute<ExternalComponentAttribute>();
                     bool isNonModule = p.HasCustomAttribute<NonModulePropertyAttribute>();
 
-                    return !isPrivate && !isRegistry && !isExternal && !isNonModule;
+                    return !isPrivate && !isRegistry && !isNonModule;
                 });
 
             var publicPropertyNames = publicProperties.Select(x => x.Name);

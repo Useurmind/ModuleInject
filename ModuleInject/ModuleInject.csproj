@@ -72,7 +72,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Decoration\ExternalComponentAttribute.cs" />
     <Compile Include="Decoration\NonModulePropertyAttribute.cs" />
     <Compile Include="Decoration\PrivateComponentAttribute.cs" />
     <Compile Include="Decoration\PrivateFactoryAttribute.cs" />

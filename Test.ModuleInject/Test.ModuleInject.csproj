@@ -108,6 +108,7 @@
     <Compile Include="MethodCallModuleTest.cs" />
     <Compile Include="ModifyInstancesModuleTest.cs" />
     <Compile Include="ModulesWithAttributeErrosTest.cs" />
+    <Compile Include="ModuleWithNonModulePropertyInjectTest.cs" />
     <Compile Include="ModuleWithRegistrationErrorsTest.cs" />
     <Compile Include="NoAutoWiringModuleTest.cs" />
     <Compile Include="InjectorModuleTest.cs" />
