@@ -116,6 +116,7 @@
     <Compile Include="Fluent\ComponentRegistrationContextTest.cs" />
     <Compile Include="Fluent\DependencyInjectionContextTest.cs" />
     <Compile Include="FactoryModuleTest.cs" />
+    <Compile Include="PrerequisiteTest.cs" />
     <Compile Include="PropertyInjectionModuleTest.cs" />
     <Compile Include="PropertyModuleTest.cs" />
     <Compile Include="Module\ModuleResolverTest.cs" />

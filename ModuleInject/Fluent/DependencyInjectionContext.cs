@@ -65,7 +65,7 @@ namespace ModuleInject.Fluent
             });
 
 
-            var dependencyEvaluator = new ParameterMemberAccessEvaluator(SourceExpression, 0);
+            var dependencyEvaluator = new ParameterMemberAccessEvaluator(SourceExpression, 0, this.RegistrationContext.Module);
 
             component.AddPrerequisites(dependencyEvaluator);
             component.Container.Inject(component.RegistrationName, types.IComponent, lambdaInjection);

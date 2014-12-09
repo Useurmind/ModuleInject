@@ -104,7 +104,7 @@ namespace ModuleInject.Fluent
                 ExceptionHelper.ThrowFormatException(Errors.RegistrationContext_ConstructorAlreadyCalled, this.RegistrationName, this.RegistrationTypes.TModule.Name);
             }
 
-            var dependencyEvaluator = new ParameterMemberAccessEvaluator(constructorCallExpression, 0);
+            var dependencyEvaluator = new ParameterMemberAccessEvaluator(constructorCallExpression, 0, this.Module);
             AddPrerequisites(dependencyEvaluator);
 
             Delegate compiledConstructorExpression = constructorCallExpression.Compile();
@@ -161,7 +161,7 @@ namespace ModuleInject.Fluent
         /// <returns></returns>
         public RegistrationContext Inject(LambdaExpression methodCallExpression)
         {
-            ParameterMemberAccessEvaluator dependencyEvaluator = new ParameterMemberAccessEvaluator(methodCallExpression, 1);
+            ParameterMemberAccessEvaluator dependencyEvaluator = new ParameterMemberAccessEvaluator(methodCallExpression, 1, this.Module);
             AddPrerequisites(dependencyEvaluator);
 
             Delegate compiledMethodCallExpression = methodCallExpression.Compile();
