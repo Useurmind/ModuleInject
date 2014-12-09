@@ -469,7 +469,7 @@ namespace ModuleInject
         {
             Type moduleType = typeof(TModule);
 
-            moduleType.SetPropertyRecursive(this, context.Name, context.Instance);
+            moduleType.SetPropertyRecursive(this, context.Name, context.Instance, true);
         }
 
         #region IDisposable

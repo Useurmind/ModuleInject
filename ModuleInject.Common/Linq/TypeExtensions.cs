@@ -11,7 +11,7 @@ namespace ModuleInject.Common.Linq
 {
     public static class TypeExtensions
     {
-        public static void SetPropertyRecursive(this Type type, object instance, string name, object value)
+        public static void SetPropertyRecursive(this Type type, object instance, string name, object value, bool onlyWhenNotNull=false)
         {
             CommonFunctions.CheckNullArgument("type", type);
 
@@ -20,6 +20,15 @@ namespace ModuleInject.Common.Linq
             {
                 ExceptionHelper.ThrowFormatException(Errors.TypeExtensions_NoPropertySetterFound, name, type.Name);
             }
+
+            if(onlyWhenNotNull)
+            {
+                if(propertyWithSetterRecursive.GetValue(instance, null) != null)
+                {
+                    return;
+                }
+            }
+
             propertyWithSetterRecursive.SetValue(
                 instance,
                 value,

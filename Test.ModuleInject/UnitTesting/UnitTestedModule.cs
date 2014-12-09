@@ -50,11 +50,15 @@ namespace Test.ModuleInject.UnitTesting
         [PrivateComponent]
         public IMainComponent1 MainComponent1 { get; set; }
 
+        [PrivateComponent]
+        public IMainComponent2 ZMainComponent2 { get; set; }
+
         [RegistryComponent]
         public IUnitTestedModule2 RegistryModule { get; set; }
 
         public UnitTestedModule()
         {
+            RegisterPrivateComponent(x => x.ZMainComponent2).Construct<MainComponent2>();
         }
 
         public void PerformPropertyInjectionWithComponent()
@@ -95,6 +99,12 @@ namespace Test.ModuleInject.UnitTesting
         {
             RegisterPrivateComponent(x => x.MainComponent1)
                 .Construct(m => new MainComponent1(m.RegistryModule.CreateMainComponent2()));
+        }
+
+        public void SimpleConstructWithoutInjection()
+        {
+            RegisterPrivateComponent(x => x.MainComponent1).Construct<MainComponent1>()
+                .Inject(m => m.ZMainComponent2).IntoProperty(c => c.MainComponent2);
         }
     }
 
@@ -266,6 +276,35 @@ namespace Test.ModuleInject.UnitTesting
             testedModule.Resolve();
 
             AssertInjectionsCorrect(false);
+        }
+
+        [Test]
+        public void Resolve_SimpleConstructAfterSettingInstanceFromExternal_ExternalSetWins()
+        {
+            var externalComponent = new MainComponent1();
+
+            testedModule.Registry = mockRegistry;
+            testedModule.MainComponent1 = externalComponent;
+
+            testedModule.SimpleConstructWithoutInjection();
+            testedModule.Resolve();
+
+            Assert.AreSame(externalComponent, testedModule.MainComponent1);
+        }
+
+        [Test]
+        public void Resolve_SimpleConstructAfterSettingPrerequisiteFromExternal_ExternalSetWins()
+        {
+            var externalComponent = new MainComponent2();
+
+            testedModule.Registry = mockRegistry;
+            testedModule.ZMainComponent2 = externalComponent;
+
+            testedModule.SimpleConstructWithoutInjection();
+            testedModule.Resolve();
+
+            Assert.AreSame(externalComponent, testedModule.ZMainComponent2);
+            Assert.AreSame(externalComponent, testedModule.MainComponent1.MainComponent2);
         }
 
         private void AssertInjectionsCorrect(bool sameInstance = true)
