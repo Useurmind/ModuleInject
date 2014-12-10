@@ -53,7 +53,7 @@ Write-Host "Pushing NuGet packages"
 
 ForEach( $pushCommand in $pushCommands ) { 
 	#Write-Host "Pushing NuGet package $packageName"
-	#Invoke-Expression -Command:$pushCommand
+	Invoke-Expression -Command:$pushCommand
 }
 
 Write-Host "Done."
