@@ -1,0 +1,115 @@
+﻿<h2>Dependency Resolution</h2>
+
+<h3>Automatic Dependency Injection</h3>
+
+<p>Many DI containers out there support one or all of the following features:</p>
+
+<ul>
+<li>Automatic constructor injection: Automatic resolution of constructor arguments based on the type of the argument.</li>
+<li>Semiautomatic attribute based injection: one or several attributes which enable you to specify which dependencies to inject.</li>
+</ul>
+
+<p>As of now, ModuleInject does not support any of these features. In my opinion these features disperse the dependency injection code. </p>
+
+<p>The automatic constructor injection hides the DI structure completely. It may be nice to have some automatic support for small to medium applications but in large applications this can become problematic when many developers need to understand the structure when working with the code.</p>
+
+<p>The attribute based injection is just to focused on a special use case of a class. Only because many classes are used in a single scenario does not mean that it should be bound to that scenario (unit tests are always a second one). And usually you want the flexibility to use classes in several circumstances where you inject different dependencies to alter their behavior. Attribute based injection can limit your flexibility because you can only define one set of attributes on a given class.</p>
+
+<h3>Explicit Dependency Injection</h3>
+
+<p>Many of the containers that are in common use today are just to fat for their purpose. In most cases you want to statically inject some dependencies into some class instance. For example:</p>
+
+<pre><code>ServiceClass service = new ServiceClass();
+instance1.Repository = new RepositoryClass();
+</code></pre>
+
+<p>So why the hell do we need a DI container which hides this nice code that is completely clear to everyone and does not obstruct the meaning from the developer by some hocus-pocus API.</p>
+
+<p>The first rather marginal problem occurs when you have chains of resolutions.</p>
+
+<pre><code>ServiceClass1 service1 = new ServiceClass1(service2);
+
+ServiceClass2 service2 = new ServiceClass2();
+</code></pre>
+
+<p>Oh wait this code does not work because <code>service2</code> is not known when used as dependency of <code>service1</code>. Well, that is the problem when using plain code to define dependencies. You have to pay attention to the resolution order.</p>
+
+<p>That is why most DI containers hide your instances behind names and types, e.g.:</p>
+
+<pre><code>RegisterType&lt;ServiceClass1&gt;("service1",
+    new ConstructorInjection&lt;ServiceClass2&gt;("service2"));
+RegisterType&lt;ServiceClass2&gt;("service2");
+</code></pre>
+
+<p>Completely equivalent code that abstracts the order in the resolution process away from the order in the registration process (I ignored interface and IoC on purpose to make it simpler). Only problem now is that you have to deal with the strings.</p>
+
+<p>Interestingly, the next step most container implementers take here is to make everything automatic as explained above. By doing that you take away most of the string handling which can be very cumbersome. For example:</p>
+
+<pre><code>// ServiceClass1 has only a constructor with an argument 
+// of type ServiceClass2
+RegisterType&lt;ServiceClass1&gt;("service1");
+RegisterType&lt;ServiceClass2&gt;("service2");
+</code></pre>
+
+<p>You can now see what is hidden in the comment I inserted. The constructor of <code>ServiceClass1</code> fulfills the invariant that its signature matches the types of the registrations in the container. You could also say that the invariant is fulfilled by the container registrations. </p>
+
+<p>However it is, you just gave up some of your flexibility just to get rid of some strings that weren't there when you started implementing your container. And you wanted to implement your container to gain some flexibility. Weird...</p>
+
+<h4>Being explicit in ModuleInject</h4>
+
+<p>So where does ModuleInject come into play here. In the end you don't gain anything for free. You always have to pay a price. With the standard DI container you get automatic features that will reduce your implemented code but will hide some of your logic and reduce your flexibility compared to plain old C# code (POCC).</p>
+
+<p>So to be honest ModuleInject will increase the amount of code you write to perform a very simple injection. You need a module, you need a module interface, you need a properties and factory methods that are connected to the registrations. If you have all of this you can finally register and connect the components of your application.</p>
+
+<p>The following code is the same as in the example above:</p>
+
+<pre><code>RegisterPublicProperty(x =&gt; x.Service1)
+    .Construct(m =&gt; new ServiceClass1(m.Service2));
+
+RegisterPublicProperty(x =&gt; x.Service2)
+    .Construct&lt;ServiceClass2&gt;();
+</code></pre>
+
+<p>Some things to notice:</p>
+
+<pre><code>- Everything is explicitely stated, no hidden assumptions.
+- No strings anywhere that need to be managed.
+</code></pre>
+
+<p>The strings are replaced by properties and methods which provide a completely different amount of integrated support by the compiler and refactoring tools (renaming, types, usages, etc.).</p>
+
+<h4>Expressions vs. Actions</h4>
+
+<p>Look at the code from the example above:</p>
+
+<pre><code>RegisterPublicProperty(x =&gt; x.Service1)
+    .Construct(m =&gt; new ServiceClass1(m.Service2));
+</code></pre>
+
+<p>The construct call has an signature with the following argument type.</p>
+
+<pre><code>Expression&lt;Func&lt;TModule, TComponent&gt;&gt;
+</code></pre>
+
+<p>In that expression <code>TModule</code> is the type of your module and <code>TComponent</code> is the type of the registered component.</p>
+
+<p>So why is this an expression and not a simple <code>Func</code> that just returns the correct component? The answer is simple: you cannot analyze the content of a <code>Func</code>. In the expression you have access to the module in which the component is registered (here via the argument <code>m</code>). ModuleInject will look at the expression and find all references to members of the module you register the property on and be sure to resolve them beforehand (here <code>m.Service2</code>).</p>
+
+<p>Truth be told, there are alternative possibilities for the syntax. E.g.:</p>
+
+<pre><code>// ModuleInject
+.Construct(m =&gt; new ServiceClass1(m.Service2));
+
+// plain func with ugly strings
+.Construct(m =&gt;  new ServiceClass1(m.Resolve&lt;ServiceClass2&gt;("Service2")));
+
+// automatic without strings, non explicit, less flexible
+.Construct(m =&gt;  new ServiceClass1(m.Resolve&lt;ServiceClass2&gt;()));
+
+// we just moved the expression into 
+// the resolve call
+// task: find an even longer syntax...
+.Construct(m =&gt;  new ServiceClass1(m.Resolve&lt;ServiceClass2&gt;(m2 =&gt; m2.Service2)));
+</code></pre>
+
+<p>To summarize, expressions seem like a good compromise.</p>
