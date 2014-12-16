@@ -32,7 +32,7 @@ instance1.Repository = new RepositoryClass();
 ServiceClass2 service2 = new ServiceClass2();
 </code></pre>
 
-<p>Oh wait this code does not work because <code>service2</code> is not known when used as dependency of <code>service1</code>. Well, that is the problem when using plain code to define dependencies. You have to pay attention to the resolution order.</p>
+<p>Oh wait this code does not work because <code>service2</code> is not known when used as dependency of <code>service1</code>. Well, that is the problem when using plain code to define dependencies. You have to pay attention to the resolution order. Keeping resolution order valid however is a very cumbersome task, especially if you want to modularize your code.</p>
 
 <p>That is why most DI containers hide your instances behind names and types, e.g.:</p>
 
@@ -59,9 +59,9 @@ RegisterType&lt;ServiceClass2&gt;("service2");
 
 <p>So where does ModuleInject come into play here. In the end you don't gain anything for free. You always have to pay a price. With the standard DI container you get automatic features that will reduce your implemented code but will hide some of your logic and reduce your flexibility compared to plain old C# code (POCC).</p>
 
-<p>So to be honest ModuleInject will increase the amount of code you write to perform a very simple injection. You need a module, you need a module interface, you need a properties and factory methods that are connected to the registrations. If you have all of this you can finally register and connect the components of your application.</p>
+<p>So to be honest ModuleInject will increase the amount of code you write to perform a very simple injection. You need a module, you need a module interface, you need properties and factory methods that will be connected to the registrations. In most cases just a few more line. But only if you have all of this you can finally register and connect the components of your application.</p>
 
-<p>The following code is the same as in the example above:</p>
+<p>The following code could then be written, which does the same as the code in the examples above:</p>
 
 <pre><code>RegisterPublicProperty(x =&gt; x.Service1)
     .Construct(m =&gt; new ServiceClass1(m.Service2));
@@ -72,11 +72,15 @@ RegisterPublicProperty(x =&gt; x.Service2)
 
 <p>Some things to notice:</p>
 
-<pre><code>- Everything is explicitely stated, no hidden assumptions.
-- No strings anywhere that need to be managed.
-</code></pre>
+<ul>
+<li>Everything is explicitly stated, no hidden assumptions.</li>
+<li>No strings anywhere that need to be managed.</li>
+<li>All registrations look similar/same.</li>
+</ul>
 
 <p>The strings are replaced by properties and methods which provide a completely different amount of integrated support by the compiler and refactoring tools (renaming, types, usages, etc.).</p>
+
+<p>Because all registrations look similar by using the same keywords. Developers know exactly what happens in the code once they are accustomed to ModuleInject. The limited and explicit registration syntax provides a structure which can be searched for and understood very fast, once you understand ModuleInject. At the same time the syntax tries to give you all the freedom and flexibility you need.</p>
 
 <h4>Expressions vs. Actions</h4>
 
@@ -86,16 +90,18 @@ RegisterPublicProperty(x =&gt; x.Service2)
     .Construct(m =&gt; new ServiceClass1(m.Service2));
 </code></pre>
 
-<p>The construct call has an signature with the following argument type.</p>
+<p>The construct call has a signature with the following argument type.</p>
 
 <pre><code>Expression&lt;Func&lt;TModule, TComponent&gt;&gt;
 </code></pre>
 
 <p>In that expression <code>TModule</code> is the type of your module and <code>TComponent</code> is the type of the registered component.</p>
 
-<p>So why is this an expression and not a simple <code>Func</code> that just returns the correct component? The answer is simple: you cannot analyze the content of a <code>Func</code>. In the expression you have access to the module in which the component is registered (here via the argument <code>m</code>). ModuleInject will look at the expression and find all references to members of the module you register the property on and be sure to resolve them beforehand (here <code>m.Service2</code>).</p>
+<p>So why is this an expression and not a simple <code>Func</code> that just returns the correct component? The answer is simple: you cannot analyze the content of a <code>Func</code>. </p>
 
-<p>Truth be told, there are alternative possibilities for the syntax. E.g.:</p>
+<p>In the expression you have access to the module in which the component is registered (here via the argument <code>m</code>). ModuleInject will look at the expression and find all members of the module that are used in it. These members will be marked as prerequisites of the registered component. All prerequisites of a component are resolved before the component is resolved. (here <code>m.Service2</code> is the only prerequisite).</p>
+
+<p>Truth be told, there are alternative possibilities for the syntax, e.g.:</p>
 
 <pre><code>// ModuleInject
 .Construct(m =&gt; new ServiceClass1(m.Service2));
@@ -113,3 +119,48 @@ RegisterPublicProperty(x =&gt; x.Service2)
 </code></pre>
 
 <p>To summarize, expressions seem like a good compromise.</p>
+
+<h4>Module Resolution Process</h4>
+
+<p>In ModuleInject a module is always resolved as a whole. You call the method <code>Resolve</code> on a module and it will automatically resolve all its components and all submodules (modules used inside the module).</p>
+
+<p>The steps are as follows:</p>
+
+<ul>
+<li>Create and resolve instances of submodules with the <code>PrivateComponentAttribute</code> or the <code>PublicComponentAttribute</code>.</li>
+<li>Get from the registry and resolve instances of submodules with the <code>RegistryComponentAttribute</code>.</li>
+<li>Resolve all components of the module.</li>
+</ul>
+
+<p>Resolving a component looks as follows:</p>
+
+<ul>
+<li>Cancel if component is already resolved.</li>
+<li>Resolve all prerequisites of the component.</li>
+<li>Resolve the component itself.</li>
+</ul>
+
+<p>This process assures that all dependencies from submodules and the module itself are fully resolved when they are used inside an expression for injection into a component.</p>
+
+<h4>Summary</h4>
+
+<p>So what does ModuleInject provide?</p>
+
+<ul>
+<li>Decouple registration and resolution.</li>
+<li>Modularize the registration code.</li>
+<li>Structure the registration code.</li>
+<li>Keep the registration code flexible.</li>
+<li>Keep the registration code very explicit.</li>
+<li>Order dependencies in the resolution process.</li>
+</ul>
+
+<p>And it does NOT offer:</p>
+
+<ul>
+<li>(Semi)Automatic resolution of dependencies.</li>
+<li>Hiding the structure of your application components in not-so-default rules.</li>
+<li>Limiting your flexibility so that you don't need to manage a lot of strings that you normally do not need to manage.</li>
+</ul>
+
+<p>Note: This text was written very offensive with the purpose of bringing out the differences between ModuleInject and other containers. Please do not take it personally, if you just implemented one of these containers. :)</p>
