@@ -1,10 +1,12 @@
 ﻿using ModuleInject;
-using ModuleInject.Fluent;
 using ModuleInject.Decoration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
+using ModuleInject.Modules;
+using ModuleInject.Modules.Fluent;
 
 namespace Test.ModuleInject.TestModules
 {

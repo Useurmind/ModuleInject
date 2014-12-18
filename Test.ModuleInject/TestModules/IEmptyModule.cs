@@ -4,7 +4,7 @@ namespace Test.ModuleInject.TestModules
 {
     using global::ModuleInject.Interfaces;
 
-    interface IEmptyModule : IInjectionModule
+    interface IEmptyModule : IModule
     {
          
     }

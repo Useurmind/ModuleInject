@@ -1,17 +1,19 @@
 ﻿using ModuleInject;
-using ModuleInject.Fluent;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using ModuleInject.Modules;
+using ModuleInject.Modules.Fluent;
+
 namespace Test.ModuleInject.TestModules
 {
     using global::ModuleInject.Decoration;
     using global::ModuleInject.Interfaces;
 
-    public interface IPropertyModule : IInjectionModule
+    public interface IPropertyModule : IModule
     {
         IMainComponent1 InstanceRegistrationComponent { get; }
         IMainComponent1 InitWithPropertiesComponent { get; }

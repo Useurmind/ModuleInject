@@ -13,7 +13,6 @@ namespace ModuleInject.Utility
     using ModuleInject.Common.Utility;
     using ModuleInject.Container.Interface;
     using ModuleInject.Container.Resolving;
-    using ModuleInject.Fluent;
 
     public static class LinqHelper
     {

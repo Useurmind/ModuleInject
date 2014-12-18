@@ -1,6 +1,6 @@
 ﻿using Microsoft.Practices.Unity;
 using ModuleInject;
-using ModuleInject.Module;
+using ModuleInject.Modules;
 using ModuleInject.Utility;
 using NUnit.Framework;
 using System;

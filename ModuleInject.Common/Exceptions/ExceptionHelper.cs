@@ -8,7 +8,13 @@ namespace ModuleInject.Common.Exceptions
     {
         public static void ThrowPropertyAndTypeException<TModule>(string errorMessage, string propName)
         {
-            ThrowFormatException(errorMessage, propName, typeof(TModule).FullName);
+            ThrowPropertyAndTypeException(typeof(TModule), errorMessage, propName);
+        }
+
+
+        public static void ThrowPropertyAndTypeException(Type moduleType, string errorMessage, string propName)
+        {
+            ThrowFormatException(errorMessage, propName, moduleType.FullName);
         }
 
         public static void ThrowTypeException<TModule>(string errorMessage, params object[] param)

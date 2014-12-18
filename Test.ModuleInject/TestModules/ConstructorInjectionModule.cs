@@ -1,17 +1,19 @@
 ﻿using ModuleInject;
-using ModuleInject.Fluent;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using ModuleInject.Modules;
+using ModuleInject.Modules.Fluent;
+
 namespace Test.ModuleInject.TestModules
 {
     using global::ModuleInject.Decoration;
     using global::ModuleInject.Interfaces;
 
-    public interface IConstructorInjectionModule : IInjectionModule
+    public interface IConstructorInjectionModule : IModule
     {
         // don't change the order, important for test
         IMainComponent1 MainComponent1 { get; }

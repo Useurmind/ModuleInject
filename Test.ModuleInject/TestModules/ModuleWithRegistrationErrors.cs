@@ -1,17 +1,19 @@
 ﻿using ModuleInject;
-using ModuleInject.Fluent;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using ModuleInject.Modules;
+using ModuleInject.Modules.Fluent;
+
 namespace Test.ModuleInject.TestModules
 {
     using global::ModuleInject.Decoration;
     using global::ModuleInject.Interfaces;
 
-    public interface IModuleWithRegistrationErrors : IInjectionModule
+    public interface IModuleWithRegistrationErrors : IModule
     {
         IMainComponent1 PublicComponent { get; }
 

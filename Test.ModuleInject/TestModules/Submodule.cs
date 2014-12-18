@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using ModuleInject.Modules;
+
 namespace Test.ModuleInject.TestModules
 {
     internal class Submodule : InjectionModule<ISubModule, Submodule>, ISubModule

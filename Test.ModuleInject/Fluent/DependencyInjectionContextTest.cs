@@ -1,6 +1,6 @@
 ﻿using Microsoft.Practices.Unity;
 using ModuleInject;
-using ModuleInject.Fluent;
+using ModuleInject.Modules.Fluent;
 using ModuleInject.Utility;
 using Moq;
 using NUnit.Framework;

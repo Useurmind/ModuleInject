@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using ModuleInject.Modularity.Registry;
+using ModuleInject.Modules;
+using ModuleInject.Modules.Fluent;
+
 namespace Test.ModuleInject.UnitTesting
 {
     using global::ModuleInject;
     using global::ModuleInject.Decoration;
-    using global::ModuleInject.Fluent;
     using global::ModuleInject.Interfaces;
-    using global::ModuleInject.Registry;
 
     using Moq;
 
@@ -17,7 +19,7 @@ namespace Test.ModuleInject.UnitTesting
 
     using Test.ModuleInject.TestModules;
 
-    public interface IUnitTestedModule2 : IInjectionModule
+    public interface IUnitTestedModule2 : IModule
     {
         IMainComponent2 MainComponent2 { get; set; }
 
@@ -40,7 +42,7 @@ namespace Test.ModuleInject.UnitTesting
         }
     }
 
-    public interface IUnitTestedModule : IInjectionModule
+    public interface IUnitTestedModule : IModule
     {
 
     }

@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using ModuleInject.Modularity.Registry;
+
 namespace Test.ModuleInject
 {
-    using global::ModuleInject.Registry;
     using NUnit.Framework;
 
     [TestFixture]
     public class RegistryModuleTest
     {
-        private global::ModuleInject.Registry.StandardRegistry _registry;
+        private global::ModuleInject.Modularity.Registry.StandardRegistry _registry;
 
         [SetUp]
         public void Setup()
         {
-            _registry = new global::ModuleInject.Registry.StandardRegistry();
+            _registry = new global::ModuleInject.Modularity.Registry.StandardRegistry();
         }
 
         [TestCase]
@@ -49,8 +50,8 @@ namespace Test.ModuleInject
         [TestCase]
         public void Merge_TwoRegistries_ContainsAllRegistrations()
         {
-            var registry1 = new global::ModuleInject.Registry.StandardRegistry();
-            var registry2 = new global::ModuleInject.Registry.StandardRegistry();
+            var registry1 = new global::ModuleInject.Modularity.Registry.StandardRegistry();
+            var registry2 = new global::ModuleInject.Modularity.Registry.StandardRegistry();
 
             registry1.Register(() => new object());
             registry2.Register(() => 1);
@@ -64,8 +65,8 @@ namespace Test.ModuleInject
         [TestCase]
         public void Merge_TwoRegistries_OtherRegistryDoesNotOverrideFirstRegistry()
         {
-            var registry1 = new global::ModuleInject.Registry.StandardRegistry();
-            var registry2 = new global::ModuleInject.Registry.StandardRegistry();
+            var registry1 = new global::ModuleInject.Modularity.Registry.StandardRegistry();
+            var registry2 = new global::ModuleInject.Modularity.Registry.StandardRegistry();
 
             registry1.Register(() => new object());
             registry2.Register(() => new object());

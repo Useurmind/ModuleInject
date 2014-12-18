@@ -7,7 +7,7 @@ namespace Test.ModuleInject.TestModules
 {
     using global::ModuleInject.Interfaces;
 
-    public interface ISubModule : IInjectionModule
+    public interface ISubModule : IModule
     {
         ISubComponent1 Component1 { get; }
         ISubComponent2 Component2 { get; }

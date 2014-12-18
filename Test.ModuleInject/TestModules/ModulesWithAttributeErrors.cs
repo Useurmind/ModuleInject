@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using ModuleInject.Modularity.Registry;
+using ModuleInject.Modules;
+
 namespace Test.ModuleInject.TestModules
 {
     using global::ModuleInject;
-    using global::ModuleInject.Registry;
 
     class ModuleWithNonMarkedPrivateComponent : InjectionModule<IEmptyModule, ModuleWithNonMarkedPrivateComponent>, IEmptyModule
     {

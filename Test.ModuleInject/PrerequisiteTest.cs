@@ -1,6 +1,8 @@
 ﻿using ModuleInject;
 using ModuleInject.Decoration;
-using ModuleInject.Fluent;
+using ModuleInject.Modules;
+using ModuleInject.Modules.Fluent;
+
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;

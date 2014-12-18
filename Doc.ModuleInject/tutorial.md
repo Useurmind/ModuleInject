@@ -19,7 +19,7 @@ The following image shows an example of these two trees.
 other modules can rely on and initialize the components that are managed by them. The interface of a module is standard 
 C# interface with properties representing the components that the module should provide to other modules.
 
-    public interface IMainModule : IInjectionModule
+    public interface IMainModule : IModule
     {
         IPrintComponent PrintComponent { get; }
     }
@@ -145,7 +145,7 @@ Until now we only used one module. But with ModuleInject it is possible to creat
 
 Let's try and create a submodule for our current MainModule:
 
-    public interface ILogModule : IInjectionModule
+    public interface ILogModule : IModule
     {
         ILog Log { get; }
     }

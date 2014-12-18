@@ -5,11 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using ModuleInject.Modules;
+
 namespace Test.ModuleInject.TestModules
 {
     using global::ModuleInject.Interfaces;
 
-    public interface IRuleBreakingModule : IInjectionModule
+    public interface IRuleBreakingModule : IModule
     {
 
     }

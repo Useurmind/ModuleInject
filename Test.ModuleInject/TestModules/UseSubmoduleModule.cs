@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using ModuleInject.Modules;
+using ModuleInject.Modules.Fluent;
+
 namespace Test.ModuleInject.TestModules
 {
     using global::ModuleInject;
     using global::ModuleInject.Decoration;
-    using global::ModuleInject.Fluent;
     using global::ModuleInject.Interfaces;
 
-    public interface IUseSubmoduleModule : IInjectionModule
+    public interface IUseSubmoduleModule : IModule
     {
         IMainComponent1 MainComponent { get; }
     }

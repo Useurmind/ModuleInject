@@ -1,11 +1,13 @@
 ﻿using ModuleInject;
 using ModuleInject.Decoration;
-using ModuleInject.Fluent;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
+using ModuleInject.Modules;
+using ModuleInject.Modules.Fluent;
 
 namespace Test.ModuleInject.TestModules
 {
@@ -28,7 +30,7 @@ namespace Test.ModuleInject.TestModules
         IMainComponent2 MainComponent2 { get; }
     }
 
-    public interface IPureInterfaceInjectionModule : IInjectionModule
+    public interface IPureInterfaceInjectionModule : IModule
     {
         IMainComponent1 MainComponent1 { get; }
 

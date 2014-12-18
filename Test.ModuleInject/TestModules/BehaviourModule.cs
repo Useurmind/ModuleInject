@@ -1,16 +1,18 @@
 ﻿using ModuleInject;
-using ModuleInject.Fluent;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using ModuleInject.Modules;
+using ModuleInject.Modules.Fluent;
+
 namespace Test.ModuleInject.TestModules
 {
     using global::ModuleInject.Interfaces;
 
-    public interface IBehaviourModule : IInjectionModule
+    public interface IBehaviourModule : IModule
     {
         IMainComponent1 InterceptedWithChangeReturnValueComponent { get; }
     }

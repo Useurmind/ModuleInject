@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using ModuleInject.Modularity.Registry;
+using ModuleInject.Modules;
+using ModuleInject.Modules.Fluent;
+
 namespace Test.ModuleInject.TestModules
 {
     using System.Runtime.Remoting.Messaging;
 
     using global::ModuleInject;
     using global::ModuleInject.Decoration;
-    using global::ModuleInject.Fluent;
     using global::ModuleInject.Interfaces;
-    using global::ModuleInject.Registry;
 
-    public interface IRegistryUsingModule : IInjectionModule
+    public interface IRegistryUsingModule : IModule
     {
         IPropertyModule PropertyModule { get; }
     }

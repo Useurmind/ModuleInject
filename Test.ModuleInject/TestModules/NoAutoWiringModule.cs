@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using Microsoft.Practices.Unity;
 
+using ModuleInject.Modules;
+
 namespace Test.ModuleInject.TestModules
 {
     using global::ModuleInject.Decoration;
@@ -34,7 +36,7 @@ namespace Test.ModuleInject.TestModules
         }
     }
 
-    public interface INoAutoWiringModule : IInjectionModule
+    public interface INoAutoWiringModule : IModule
     {
 
     }

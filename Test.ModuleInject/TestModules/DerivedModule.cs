@@ -5,12 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using ModuleInject.Modules;
+
 namespace Test.ModuleInject.TestModules
 {
     using global::ModuleInject.Decoration;
     using global::ModuleInject.Interfaces;
 
-    public interface IBaseModule : IInjectionModule
+    public interface IBaseModule : IModule
     {
         IMainComponent1 MainComponent1 { get; }
     }

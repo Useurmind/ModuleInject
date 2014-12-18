@@ -12,7 +12,7 @@ namespace ModuleInject.Interfaces
     /// <typeparam name="TModule">The class of the module from which components can be selected.</typeparam>
     public interface IInterfaceInjector<IComponent, IModule, TModule>
         where TModule : IModule
-        where IModule : IInjectionModule
+        where IModule : Interfaces.IModule
     {
         /// <summary>
         /// This function is executed to perform the injection into the component.
