@@ -156,6 +156,7 @@
     <Content Include="images\direct_vs_registry_resolution.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="images\ModuleInjectLogo.svg" />
     <Content Include="images\module_basics.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
