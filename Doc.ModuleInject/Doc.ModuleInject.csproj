@@ -38,10 +38,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="constructor_injection.html">
-      <DependentUpon>constructor_injection.md</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="css\humanity\images\animated-overlay.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -146,14 +142,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="constructor_injection.md" />
-    <Content Include="dependency_resolution.html">
-      <DependentUpon>dependency_resolution.md</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="fluent_language.html">
-      <DependentUpon>fluent_language.md</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="images\CenterBoxEmpty.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -183,27 +171,8 @@
     <Content Include="images\TitleBoxFull.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="interceptors.html">
-      <DependentUpon>interceptors.md</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="interceptors.md" />
     <Content Include="factory_methods.md" />
-    <Content Include="factory_methods.html">
-      <DependentUpon>factory_methods.md</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="home.html">
-      <DependentUpon>home.md</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="index.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="injectors.html">
-      <DependentUpon>injectors.md</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="js\highlight.pack.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -219,29 +188,12 @@
     <Content Include="js\main.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="method_injection.html">
-      <DependentUpon>method_injection.md</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="module_trees.html">
-      <DependentUpon>module_trees.md</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="nocontainer_injection.html">
-      <DependentUpon>nocontainer_injection.md</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="tutorial.html">
-      <DependentUpon>tutorial.md</DependentUpon>
+    <Content Include="index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="tutorial.md" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="unit_testing.html">
-      <DependentUpon>unit_testing.md</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="web.config" />
     <Content Include="home.md" />
     <Content Include="method_injection.md" />
@@ -251,6 +203,12 @@
     <Content Include="unit_testing.md" />
     <Content Include="dependency_resolution.md" />
     <Content Include="nocontainer_injection.md" />
+    <Content Include="navigation.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="index.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
