@@ -5,20 +5,18 @@ In the tutorial you learned how property injection works. But there are other ki
 
 Constructor injection is part of the construction phase and rather simple. You can define a constructor on your component that takes some arguments which should be injected by your IoC container. Then you use the Construct method when registering the component to tell the module that it should not use the default constructor.
 
-```csharp
-public interface IConstructorComponent {
-    ISomeUndefinedComponent InjectedComponent { get; }
-}
-
-public class ConstructorComponent : IConstructorComponent
-{
-    public ISomeUndefinedComponent InjectedComponent { get; private set; }
-
-    public ConstructorComponent(ISomeUndefinedComponent injectedComponent) {
-        InjectedComponent = injectedComponent;
+    public interface IConstructorComponent {
+        ISomeUndefinedComponent InjectedComponent { get; }
     }
-}
-```
+
+    public class ConstructorComponent : IConstructorComponent
+    {
+        public ISomeUndefinedComponent InjectedComponent { get; private set; }
+
+        public ConstructorComponent(ISomeUndefinedComponent injectedComponent) {
+            InjectedComponent = injectedComponent;
+        }
+    }
 
 So here we defined a component with a dependency that is injected via the constructor of the component. Now that we have this component we can register it in a module like so:
 
