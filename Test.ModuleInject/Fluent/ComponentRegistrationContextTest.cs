@@ -1,13 +1,14 @@
 ﻿using Microsoft.Practices.Unity;
 using ModuleInject;
-using ModuleInject.Fluent;
+using ModuleInject.Modules.Fluent;
 using ModuleInject.Utility;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Test.ModuleInject.TestModules;
+
+using Test.ModuleInject.Modules.TestModules;
 
 namespace Test.ModuleInject.Fluent
 {

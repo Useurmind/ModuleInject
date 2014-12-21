@@ -1,9 +1,9 @@
 ﻿Unit Testing
 ------------
 
-In ModuleInject every class that fullfills the `IInjectionModule` interface can be used as a submodule of other modules.
+In ModuleInject every class that fullfills the `IModule` interface can be used as a submodule of other modules.
 
-This also leads to the fact that you can mock submodules if you keep the invariants of the `IInjectionModule` interface in mind:
+This also leads to the fact that you can mock submodules if you keep the invariants of the `IModule` interface in mind:
 
  - If `IsResolved` is true, all component properties of the public interface are filled.
  - Calling `Resolve` leads to `IsResolved` being true.
@@ -11,7 +11,7 @@ This also leads to the fact that you can mock submodules if you keep the invaria
 
  You can for example use Moq to create a mock for the following module interface:
 
-	 public interface IMockedModule : IInjectionModule
+	 public interface IMockedModule : IModule
      {
          IMockedComponent MockedComponent { get; set; }
 

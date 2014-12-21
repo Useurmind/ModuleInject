@@ -8,7 +8,7 @@ namespace ModuleInject.Interfaces.Fluent
     public interface IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> : IRegistrationContextT
         where TModule : IModule
         where TComponent : IComponent
-        where IModule : IInjectionModule
+        where IModule : Interfaces.IModule
     {
     }
 }
