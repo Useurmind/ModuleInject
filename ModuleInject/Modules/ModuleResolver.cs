@@ -33,7 +33,7 @@ namespace ModuleInject.Modules
             this.registry = registry;
         }
 
-        public void Resolve()
+        public void CheckBeforeResolve()
         {
             Type moduleInterfaceType = typeof(IModule);
 
@@ -41,15 +41,10 @@ namespace ModuleInject.Modules
             {
                 throw new ModuleInjectException("Modules must always have an Interface");
             }
+        }
 
-            var submodulePropertyInfos = ModuleTypeExtensions.GetModuleProperties<IModule, TModule>(true);
-            foreach (var submodulePropInfo in submodulePropertyInfos)
-            {
-                TryResolveComponent(submodulePropInfo);
-
-                ResolverUtility.TryResolveSubmodule(submodulePropInfo, this.registry, this.module);
-            }
-
+        public void ResolveComponents()
+        {
             foreach (var propInfo in ModuleTypeExtensions.GetModuleProperties<IModule, TModule>(false))
             {
                 //if (!propInfo.PropertyType.IsInterface)
@@ -57,7 +52,18 @@ namespace ModuleInject.Modules
                 //    CommonFunctions.ThrowPropertyAndTypeException<TModule>(Errors.ModuleResolver_PropertyIsNoInterface, propInfo.Name);
                 //}
 
-                TryResolveComponent(propInfo);
+                this.TryResolveComponent(propInfo);
+            }
+        }
+
+        public void ResolveSubmodules()
+        {
+            var submodulePropertyInfos = ModuleTypeExtensions.GetModuleProperties<IModule, TModule>(true);
+            foreach (var submodulePropInfo in submodulePropertyInfos)
+            {
+                this.TryResolveComponent(submodulePropInfo);
+
+                ResolverUtility.TryResolveSubmodule(submodulePropInfo, this.registry, this.module);
             }
         }
 

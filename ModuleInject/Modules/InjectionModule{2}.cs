@@ -28,8 +28,6 @@ namespace ModuleInject.Modules
     {
         private IDependencyContainer container;
 
-        private bool isResolving;
-
         internal override Type ModuleInterface
         {
             get
@@ -59,7 +57,6 @@ namespace ModuleInject.Modules
         /// </summary>
         protected InjectionModule()
         {
-            this.isResolving = false;
             this.container = new DependencyContainer();
 
             if (!typeof(IModule).IsInterface)
@@ -71,20 +68,16 @@ namespace ModuleInject.Modules
         /// <inheritdoc />
         protected override void OnRegistryResolved(IRegistry usedRegistry)
         {
+
             CheckAllPropertiesAreValid();
 
-            try
-            {
-                this.isResolving = true;
+            var resolver = new ModuleResolver<IModule, TModule>((TModule)(object)this, this.container, usedRegistry);
 
-                ModuleResolver<IModule, TModule> resolver = new ModuleResolver<IModule, TModule>((TModule)(object)this, this.container, usedRegistry);
+            resolver.CheckBeforeResolve();
 
-                resolver.Resolve();
-            }
-            finally
-            {
-                this.isResolving = false;
-            }
+            resolver.ResolveSubmodules();
+
+            resolver.ResolveComponents();
         }
 
         /// <summary>
@@ -249,7 +242,7 @@ namespace ModuleInject.Modules
             string functionName = methodInfo.Name;
 
             // this must be available during resolution now, because of lambda expression
-            if (!this.isResolving && !this.IsResolved)
+            if (!this.IsResolving && !this.IsResolved)
             {
                 ExceptionHelper.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_CreateInstanceBeforeResolve, functionName);
             }

@@ -7,6 +7,8 @@ using ModuleInject.Modularity.Registry;
 using ModuleInject.Modules;
 using ModuleInject.Modules.Fluent;
 
+using Test.ModuleInject.Modules.TestModules;
+
 namespace Test.ModuleInject.UnitTesting
 {
     using global::ModuleInject;
@@ -16,8 +18,6 @@ namespace Test.ModuleInject.UnitTesting
     using Moq;
 
     using NUnit.Framework;
-
-    using Test.ModuleInject.TestModules;
 
     public interface IUnitTestedModule2 : IModule
     {

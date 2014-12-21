@@ -84,7 +84,7 @@ namespace ModuleInject.Utility
         /// <param name="type">The type.</param>
         /// <param name="bindingOptions">The binding flags.</param>
         /// <returns></returns>
-        public static IEnumerable<PropertyInfo> GetModuleComponentPropertiesRecursive(this Type type, BindingFlags? bindingOptions = null)
+        public static IEnumerable<PropertyInfo> GetModuleComponentPropertiesRecursive(this Type type, BindingFlags? bindingOptions = null, bool excludeNonModuleProperties=true)
         {
             CommonFunctions.CheckNullArgument("type", type);
 
@@ -95,8 +95,11 @@ namespace ModuleInject.Utility
 
             IEnumerable<PropertyInfo> properties = bindingOptions == null ? type.GetProperties() : type.GetProperties(BindingFlags.DeclaredOnly | bindingOptions.Value);
 
-            properties =
-                properties.Where(p => p.GetCustomAttributes(typeof(NonModulePropertyAttribute), false).Count() == 0);
+            if (excludeNonModuleProperties)
+            {
+                properties =
+                    properties.Where(p => p.GetCustomAttributes(typeof(NonModulePropertyAttribute), false).Count() == 0);
+            }
 
             type.ForEachBaseTypeInModuleHierarchy(
                 subType =>

@@ -18,6 +18,21 @@ namespace ModuleInject.Modularity
         private IRegistry registry;
 
         private bool isResolved;
+        private bool isResolving;
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is currently resolving.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is resolving; otherwise, <c>false</c>.
+        /// </value>
+        protected bool IsResolving
+        {
+            get
+            {
+                return this.isResolving;
+            }
+        }
 
         /// <inheritdoc />
         public bool IsResolved
@@ -61,6 +76,8 @@ namespace ModuleInject.Modularity
         public Module()
         {
             this.registry = new EmptyRegistry();
+            this.isResolving = false;
+            this.isResolved = false;
         }
 
         /// <inheritdoc />
@@ -77,20 +94,37 @@ namespace ModuleInject.Modularity
                 ExceptionHelper.ThrowTypeException(this.GetType(), Errors.InjectionModule_AlreadyResolved);
             }
 
-            this.OnResolving();
+            try
+            {
+                this.isResolving = true;
 
-            var usedRegistry = this.GetUsedRegistry(parentRegistry);
+                this.OnResolving();
 
-            RegistryResolver resolver = new RegistryResolver(this, usedRegistry);
+                var usedRegistry = this.GetUsedRegistry(parentRegistry);
 
-            resolver.Resolve();
+                this.OnRegistryResolving(usedRegistry);
 
-            this.OnRegistryResolved(usedRegistry);
+                RegistryResolver resolver = new RegistryResolver(this, usedRegistry);
 
-            this.isResolved = true;
+                resolver.Resolve();
+
+                this.OnRegistryResolved(usedRegistry);
+
+                this.isResolved = true;
+            }
+            finally
+            {
+                this.isResolving = false;
+            }
 
             this.OnResolved();
         }
+
+        /// <summary>
+        /// Called before the registry components are resolved.
+        /// </summary>
+        /// <param name="usedRegistry">The used registry.</param>
+        protected virtual void OnRegistryResolving(IRegistry usedRegistry) { }
 
         /// <summary>
         /// Called when all registry components are resolved and in place.

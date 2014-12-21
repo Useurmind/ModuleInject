@@ -37,7 +37,7 @@ namespace ModuleInject.Modularity
         public void Resolve()
         {
             var submodulePropertyInfos =
-                this.moduleType.GetModuleComponentPropertiesRecursive(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                this.moduleType.GetModuleComponentPropertiesRecursive(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, false)
                                .Where(
                                     p =>
                                     {
