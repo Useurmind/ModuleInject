@@ -9,14 +9,14 @@ This also leads to the fact that you can mock submodules if you keep the invaria
  - Calling `Resolve` leads to `IsResolved` being true.
  - Component factories of the public interface, `GetComponent` and `GetComponent<T>` always return instances according to the registrations in the module.
 
- You can for example use Moq to create a mock for the following module interface:
+You can for example use Moq to create a mock for the following module interface:
 
-	 public interface IMockedModule : IModule
-     {
-         IMockedComponent MockedComponent { get; set; }
+    public interface IMockedModule : IModule
+    {
+        IMockedComponent MockedComponent { get; set; }
 
-         IMockedComponent CreateMockedComponent();
-     }
+        IMockedComponent CreateMockedComponent();
+    }
 
 The creation of the mock would look like this:
 
@@ -30,14 +30,15 @@ The creation of the mock would look like this:
     moduleMock.Setup(x => x.CreateMockedComponent()).Returns(Mock.Of<IMockedComponent>());
 
 How you introduce the mock into the tested module can vary depending on the use case.
+
  - If the mocked module comes from a registry, you can set one in the test that contains the mocked module.
  - If the mocked module comes from a (C#-)public property you can set that property in the test.
    (ModuleInject will not Resolve component properties that are already set)
  - Else you have to provide some means to inject it in the tests.
 
- Example code for introduction via a registry:
+Example code for introduction via a registry:
 
-	// create registry containing the mock created above
+    // create registry containing the mock created above
 	mockRegistry = new StandardRegistry();
 	mockRegistry.Register<IMockedModule>(() => moduleMock.Object);
 
