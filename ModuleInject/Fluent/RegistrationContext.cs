@@ -21,6 +21,9 @@ namespace ModuleInject.Fluent
     using ModuleInject.Decoration;
     using ModuleInject.Common.Linq;
 
+    /// <summary>
+    /// <see cref="IRegistrationTypes"/>.
+    /// </summary>
     internal class RegistrationTypes : IRegistrationTypes
     {
         public Type IComponent { get; set; }
@@ -29,21 +32,45 @@ namespace ModuleInject.Fluent
         public Type TModule { get; set; }
     }
 
+    /// <summary>
+    /// The registration context is the central class when registering components in modules.
+    /// When registering a component an instance of this class is created and returned in a generic
+    /// form (<see cref="IRegistrationContext{IComponent, IModule, TModule}"/>).
+    /// This class is the fluent APIs central core and contains all functionality that can be invoked
+    /// on the generic forms of the registration contexts.
+    /// </summary>
     internal class RegistrationContext : IRegistrationContext
     {
         private RegistrationTypes registrationTypes;
 
         private Dictionary<string, ModifiedDependency> modifiedDependencies; 
 
+        /// <summary>
+        /// Gets the types important for the registration represented by this context.
+        /// </summary>
         public IRegistrationTypes RegistrationTypes { get { return registrationTypes; } }
+
+        /// <summary>
+        /// Gets the name part of the key under which the component is registered.
+        /// </summary>
         public string RegistrationName { get; private set; }
 
+        /// <summary>
+        /// Gets if the constructor function top be used to create the component was already registered.
+        /// </summary>
         public bool WasConstructorCalled { get; private set; }
 
-        public IDependencyContainer Container { get; private set; }
-        public InjectionModule Module { get; private set; }
+        /// <summary>
+        /// Gets the module by which the registration context was created.
+        /// </summary>
+        public IInjectionModule Module { get; private set; }
 
-        public RegistrationContext(string name, InjectionModule module, IDependencyContainer container, RegistrationTypes registrationTypes, bool wasConstructorCalled=false)
+        /// <summary>
+        /// The dependency container that backs the module in which this registration was performed.
+        /// </summary>
+        internal IDependencyContainer Container { get; private set; }
+
+        internal RegistrationContext(string name, IInjectionModule module, IDependencyContainer container, RegistrationTypes registrationTypes, bool wasConstructorCalled=false)
         {
             this.WasConstructorCalled = wasConstructorCalled;
             Module = module;
@@ -62,7 +89,7 @@ namespace ModuleInject.Fluent
             return modification;
         }
 
-        public RegistrationContext Construct(object instance)
+        public IRegistrationContext Construct(object instance)
         {
             if (this.WasConstructorCalled)
             {
@@ -77,7 +104,7 @@ namespace ModuleInject.Fluent
             return this;
         }
 
-        public RegistrationContext Construct(Type componentType)
+        public IRegistrationContext Construct(Type componentType)
         {
             if (this.WasConstructorCalled)
             {
@@ -97,7 +124,7 @@ namespace ModuleInject.Fluent
         /// </summary>
         /// <param name="constructorCallExpression">Expects an expression of the form module => new SomeConstructor(module.SomeComponent, ..).</param>
         /// <returns></returns>
-        public RegistrationContext Construct(LambdaExpression constructorCallExpression)
+        public IRegistrationContext Construct(LambdaExpression constructorCallExpression)
         {
             if (this.WasConstructorCalled)
             {
@@ -159,7 +186,7 @@ namespace ModuleInject.Fluent
         /// </summary>
         /// <param name="methodCallExpression">Expects an expression of the form (component, module) => component.Method(module.SomeComponent, ..).</param>
         /// <returns></returns>
-        public RegistrationContext Inject(LambdaExpression methodCallExpression)
+        public IRegistrationContext Inject(LambdaExpression methodCallExpression)
         {
             ParameterMemberAccessEvaluator dependencyEvaluator = new ParameterMemberAccessEvaluator(methodCallExpression, 1, this.Module);
             AddPrerequisites(dependencyEvaluator);
@@ -185,7 +212,7 @@ namespace ModuleInject.Fluent
             return this;
         }
 
-        public RegistrationContext AddBehaviour<TBehaviour>(TBehaviour behaviour)
+        public IRegistrationContext AddBehaviour<TBehaviour>(TBehaviour behaviour)
             where TBehaviour : Unity.IInterceptionBehavior
         {
             this.Container.AddBehaviour(this.RegistrationName, this.RegistrationTypes.IComponent, behaviour);
@@ -193,7 +220,7 @@ namespace ModuleInject.Fluent
             return this;
         }
 
-        public RegistrationContext AlsoRegisterFor(Expression moduleProperty)
+        public IRegistrationContext AlsoRegisterFor(Expression moduleProperty)
         {
             string memberPath;
             Type memberType;
@@ -206,18 +233,11 @@ namespace ModuleInject.Fluent
             return this;
         }
 
-        public RegistrationContext AddCustomAction<T>(Action<T> customAction)
+        public IRegistrationContext AddCustomAction<T>(Action<T> customAction)
         {
             var dependencyInjection = new LambdaDependencyInjection<T>(this.Container, (cont, comp) => customAction(comp));
             this.Container.Inject(this.RegistrationName, this.RegistrationTypes.IComponent, dependencyInjection);
             return this;
-        }
-
-        public IList<Action<object>> GetModifyActions(string memberPath)
-        {
-            ModifiedDependency modifiedDependency = this.GetModifiedDependency(memberPath);
-            var modifyActions = modifiedDependency == null ? null : modifiedDependency.ModifyActions;
-            return modifyActions;
         }
 
         private static string ExtractMethodName<TObject>(Expression<Action<TObject>> methodExpression)
