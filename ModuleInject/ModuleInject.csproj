@@ -82,6 +82,8 @@
       <DependentUpon>Errors.resx</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Hooks\DelegateRegistrationHook.cs" />
+    <Compile Include="Hooks\IRegistrationHook.cs" />
     <Compile Include="Modularity\Module.cs" />
     <Compile Include="Modularity\RegistryResolver.cs" />
     <Compile Include="Modularity\Registry\AggregateRegistry.cs" />
