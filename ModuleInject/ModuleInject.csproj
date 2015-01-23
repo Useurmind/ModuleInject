@@ -81,42 +81,47 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Errors.resx</DependentUpon>
     </Compile>
-    <Compile Include="Fluent\InterfaceInjector.cs" />
-    <Compile Include="Fluent\InterfaceRegistrationContextExtensions{3}.cs" />
-    <Compile Include="Fluent\RegistrationContext.cs" />
-    <Compile Include="Fluent\ComponentRegistrationContextExtensions.cs" />
-    <Compile Include="Fluent\InterfaceDependencyInjectionContextExtensions.cs" />
-    <Compile Include="Fluent\InterfaceDependencyInjectionContext{4}.cs" />
-    <Compile Include="Fluent\InterfaceRegistrationContext{2}.cs" />
-    <Compile Include="Fluent\DependencyInjectionContext.cs" />
-    <Compile Include="Fluent\ComponentRegistrationContext{4}.cs" />
-    <Compile Include="Fluent\InterfaceRegistrationContextExtensions{2}.cs" />
-    <Compile Include="Fluent\DependencyInjectionContextExtensions.cs" />
-    <Compile Include="Fluent\DependencyInjectionContext{5}.cs" />
-    <Compile Include="Fluent\ClassInjector.cs" />
-    <Compile Include="Fluent\InterfaceValueInjectionContextExtensions.cs" />
-    <Compile Include="Fluent\ModifiedDependency.cs" />
-    <Compile Include="Fluent\RegistrationContextBase.cs" />
-    <Compile Include="Fluent\RegistrationContextExtensions.cs" />
-    <Compile Include="Fluent\RegistrationContext{3}.cs" />
-    <Compile Include="Fluent\ValueInjectionContextExtensions.cs" />
-    <Compile Include="Fluent\ValueInjectionContext.cs" />
-    <Compile Include="Fluent\InterfaceValueInjectionContext{4}.cs" />
-    <Compile Include="Fluent\ValueInjectionContext{5}.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="InjectionModule.cs" />
-    <Compile Include="InjectionModule{2}.cs" />
-    <Compile Include="Module\ComponentLifetime.cs" />
-    <Compile Include="Module\FactoryLifetime.cs" />
-    <Compile Include="Module\ModuleResolver.cs" />
+    <Compile Include="Hooks\DelegateRegistrationHook.cs" />
+    <Compile Include="Hooks\IRegistrationHook.cs" />
+    <Compile Include="Modularity\Module.cs" />
+    <Compile Include="Modularity\RegistryResolver.cs" />
+    <Compile Include="Modularity\Registry\AggregateRegistry.cs" />
+    <Compile Include="Modularity\Registry\EmptyRegistry.cs" />
+    <Compile Include="Modularity\Registry\IRegistryExtensions.cs" />
+    <Compile Include="Modularity\Registry\MefRegistryBase.cs" />
+    <Compile Include="Modularity\Registry\RegistrationEntry.cs" />
+    <Compile Include="Modularity\Registry\RegistryBase.cs" />
+    <Compile Include="Modularity\Registry\StandardRegistry.cs" />
+    <Compile Include="Modules\ComponentLifetime.cs" />
+    <Compile Include="Modules\FactoryLifetime.cs" />
+    <Compile Include="Modules\Fluent\ClassInjector.cs" />
+    <Compile Include="Modules\Fluent\ComponentRegistrationContextExtensions.cs" />
+    <Compile Include="Modules\Fluent\ComponentRegistrationContext{4}.cs" />
+    <Compile Include="Modules\Fluent\DependencyInjectionContext.cs" />
+    <Compile Include="Modules\Fluent\DependencyInjectionContextExtensions.cs" />
+    <Compile Include="Modules\Fluent\DependencyInjectionContext{5}.cs" />
+    <Compile Include="Modules\Fluent\InterfaceDependencyInjectionContextExtensions.cs" />
+    <Compile Include="Modules\Fluent\InterfaceDependencyInjectionContext{4}.cs" />
+    <Compile Include="Modules\Fluent\InterfaceInjector.cs" />
+    <Compile Include="Modules\Fluent\InterfaceRegistrationContextExtensions{2}.cs" />
+    <Compile Include="Modules\Fluent\InterfaceRegistrationContextExtensions{3}.cs" />
+    <Compile Include="Modules\Fluent\InterfaceRegistrationContext{2}.cs" />
+    <Compile Include="Modules\Fluent\InterfaceRegistrationContext{3}.cs" />
+    <Compile Include="Modules\Fluent\InterfaceValueInjectionContextExtensions.cs" />
+    <Compile Include="Modules\Fluent\InterfaceValueInjectionContext{4}.cs" />
+    <Compile Include="Modules\Fluent\ModifiedDependency.cs" />
+    <Compile Include="Modules\Fluent\RegistrationContext.cs" />
+    <Compile Include="Modules\Fluent\RegistrationContextBase.cs" />
+    <Compile Include="Modules\Fluent\RegistrationContextExtensions.cs" />
+    <Compile Include="Modules\Fluent\RegistrationContext{3}.cs" />
+    <Compile Include="Modules\Fluent\ValueInjectionContext.cs" />
+    <Compile Include="Modules\Fluent\ValueInjectionContextExtensions.cs" />
+    <Compile Include="Modules\Fluent\ValueInjectionContext{5}.cs" />
+    <Compile Include="Modules\InjectionModule.cs" />
+    <Compile Include="Modules\InjectionModule{2}.cs" />
+    <Compile Include="Modules\ModuleResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Registry\AggregateRegistry.cs" />
-    <Compile Include="Registry\EmptyRegistry.cs" />
-    <Compile Include="Registry\RegistryBase.cs" />
-    <Compile Include="Registry\MefRegistryBase.cs" />
-    <Compile Include="Registry\RegistrationEntry.cs" />
-    <Compile Include="Registry\StandardRegistry.cs" />
-    <Compile Include="Registry\IRegistryExtensions.cs" />
     <Compile Include="ServiceLocator\ModuleServiceLocator.cs" />
     <Compile Include="Utility\LinqHelper.cs" />
     <Compile Include="Utility\MemberChainEvaluator.cs" />
@@ -124,9 +129,9 @@
     <Compile Include="Utility\MethodCallArgument.cs" />
     <Compile Include="Utility\ModuleTypeExtensions.cs" />
     <Compile Include="Utility\ParameterMemberAccessEvaluator.cs" />
+    <Compile Include="Utility\ResolverUtility.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Fluent\InterfaceRegistrationContext{3}.cs" />
     <None Include="ModuleInject.snk" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -134,6 +139,7 @@
     <EmbeddedResource Include="Errors.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Errors.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

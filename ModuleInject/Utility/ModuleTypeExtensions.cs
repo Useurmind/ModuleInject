@@ -50,10 +50,9 @@ namespace ModuleInject.Utility
                                               .Where(p =>
                                               {
                                                   bool isPrivate = p.HasCustomAttribute<PrivateComponentAttribute>();
-                                                  bool isRegistry = p.HasCustomAttribute<RegistryComponentAttribute>();
                                                   bool isModule = p.IsInjectionModuleType();
 
-                                                  return (isRegistry || isPrivate) && (thatAreModules ? isModule : !isModule);
+                                                  return (isPrivate) && (thatAreModules ? isModule : !isModule);
                                               });
 
             return privateProperties.Union(interfaceProperties);
@@ -63,7 +62,7 @@ namespace ModuleInject.Utility
         {
             CommonFunctions.CheckNullArgument("propertyInfo", propertyInfo);
 
-            var injectionModuleType = typeof(IInjectionModule);
+            var injectionModuleType = typeof(IModule);
             var searchedInterface = propertyInfo.PropertyType.GetInterface(injectionModuleType.Name, false);
             bool isModule = searchedInterface != null;
             return isModule;
@@ -71,21 +70,21 @@ namespace ModuleInject.Utility
         
         public static bool ShouldStopModuleTypeRecursion(this Type type)
         {
-            return type == typeof(object) || type == typeof(IInjectionModule) || type.Name.StartsWith("InjectionModule", StringComparison.Ordinal);
+            return type == typeof(object) || type == typeof(IModule) || type.Name.StartsWith("InjectionModule", StringComparison.Ordinal);
         }
 
         /// <summary>
         /// Gets the properties that represent module components of the given type.
         /// </summary>
         /// <remarks>
-        /// Stops property search at Object, <see cref="IInjectionModule"/> and InjectionModule types, so no properties of these types
+        /// Stops property search at Object, <see cref="IModule"/> and InjectionModule types, so no properties of these types
         /// are included.
         /// Also note that properties with the <see cref="NonModulePropertyAttribute"/> are excluded from the search.
         /// </remarks>
         /// <param name="type">The type.</param>
         /// <param name="bindingOptions">The binding flags.</param>
         /// <returns></returns>
-        public static IEnumerable<PropertyInfo> GetModuleComponentPropertiesRecursive(this Type type, BindingFlags? bindingOptions = null)
+        public static IEnumerable<PropertyInfo> GetModuleComponentPropertiesRecursive(this Type type, BindingFlags? bindingOptions = null, bool excludeNonModuleProperties=true)
         {
             CommonFunctions.CheckNullArgument("type", type);
 
@@ -96,8 +95,11 @@ namespace ModuleInject.Utility
 
             IEnumerable<PropertyInfo> properties = bindingOptions == null ? type.GetProperties() : type.GetProperties(BindingFlags.DeclaredOnly | bindingOptions.Value);
 
-            properties =
-                properties.Where(p => p.GetCustomAttributes(typeof(NonModulePropertyAttribute), false).Count() == 0);
+            if (excludeNonModuleProperties)
+            {
+                properties =
+                    properties.Where(p => p.GetCustomAttributes(typeof(NonModulePropertyAttribute), false).Count() == 0);
+            }
 
             type.ForEachBaseTypeInModuleHierarchy(
                 subType =>

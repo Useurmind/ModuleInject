@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using ModuleInject.Modularity.Registry;
+
 namespace Test.ModuleInject.Registry
 {
-    using global::ModuleInject.Registry;
-
     using NUnit.Framework;
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;

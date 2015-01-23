@@ -14,7 +14,7 @@ namespace ModuleInject.Interfaces.Fluent
     /// <typeparam name="TModule">Type of the module.</typeparam>
     public interface IRegistrationContext<IComponent, IModule, TModule> : IRegistrationContextT
         where TModule : IModule
-        where IModule : IInjectionModule
+        where IModule : Interfaces.IModule
     {
         /// <summary>
         /// Construct the component from a given type.

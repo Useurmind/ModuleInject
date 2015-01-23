@@ -22,7 +22,7 @@ No problem and no headache at all.
     {
         private IComponent PublicComponent { get; private set;}
 
-        // this submodule must implement IInjectionModule to be recognized as a submodule
+        // this submodule must implement IModule to be recognized as a submodule
         [PrivateComponent]
         private ISubModule SubModule { get; private set; }
 

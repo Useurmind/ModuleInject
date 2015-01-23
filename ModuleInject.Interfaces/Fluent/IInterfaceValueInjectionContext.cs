@@ -7,7 +7,7 @@ namespace ModuleInject.Interfaces.Fluent
 {
     public interface IInterfaceValueInjectionContext<IComponent, IModule, TModule, TValue>
         where TModule : IModule
-        where IModule : IInjectionModule
+        where IModule : Interfaces.IModule
     {
     }
 

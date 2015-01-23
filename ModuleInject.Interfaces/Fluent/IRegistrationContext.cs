@@ -29,7 +29,7 @@ namespace ModuleInject.Interfaces.Fluent
         /// <summary>
         /// Gets the module by which the registration context was created.
         /// </summary>
-        IInjectionModule Module { get; }
+        IModule Module { get; }
 
         IRegistrationContext Construct(object instance);
 

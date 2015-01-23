@@ -14,7 +14,7 @@ namespace ModuleInject.Interfaces
     public interface IClassInjector<IComponent, TComponent, IModule, TModule>
         where TComponent : IComponent
         where TModule : IModule
-        where IModule : IInjectionModule
+        where IModule : Interfaces.IModule
     {
         /// <summary>
         /// This function is executed to perform the injection into the component.
