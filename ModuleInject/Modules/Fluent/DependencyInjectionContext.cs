@@ -11,21 +11,21 @@ using ModuleInject.Utility;
 
 namespace ModuleInject.Modules.Fluent
 {
-    internal class DependencyInjectionContext
+    internal class DependencyInjectionContext : IDependencyInjectionContext
     {
         public LambdaExpression SourceExpression { get; private set; }
 
-        public RegistrationContext RegistrationContext { get; private set; }
+        public IRegistrationContext RegistrationContext { get; private set; }
 
-        public DependencyInjectionContext(RegistrationContext registrationContext, LambdaExpression sourceExpression)
+        public DependencyInjectionContext(IRegistrationContext registrationContext, LambdaExpression sourceExpression)
         {
             this.RegistrationContext = registrationContext;
             this.SourceExpression = sourceExpression;
         }
 
-        public RegistrationContext IntoProperty(LambdaExpression dependencyTargetExpression)
+        public IRegistrationContext IntoProperty(LambdaExpression dependencyTargetExpression)
         {
-            RegistrationContext component = this.RegistrationContext;
+            IRegistrationContext component = this.RegistrationContext;
             IRegistrationTypes types = component.RegistrationTypes;
 
             ParameterExpression componentParameterExpression = Expression.Parameter(dependencyTargetExpression.Parameters[0].Type, "component");

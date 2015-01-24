@@ -8,22 +8,22 @@ using ModuleInject.Interfaces.Fluent;
 
 namespace ModuleInject.Modules.Fluent
 {
-    internal class ValueInjectionContext
+    internal class ValueInjectionContext : IValueInjectionContext
     {
-        public RegistrationContext registrationContext { get; set; }
+        public IRegistrationContext registrationContext { get; set; }
         public object Value { get; private set; }
         public Type ValueType { get; private set; }
 
-        public ValueInjectionContext(RegistrationContext registrationContext, object value, Type valueType)
+        public ValueInjectionContext(IRegistrationContext registrationContext, object value, Type valueType)
         {
             this.registrationContext = registrationContext;
             this.Value = value;
             this.ValueType = valueType;
         }
 
-        public RegistrationContext IntoProperty(Expression dependencyTargetExpression)
+        public IRegistrationContext IntoProperty(Expression dependencyTargetExpression)
         {
-            RegistrationContext component = this.registrationContext;
+            var component = this.registrationContext;
             IRegistrationTypes types = component.RegistrationTypes;
 
             string targetName = Property.Get(dependencyTargetExpression);

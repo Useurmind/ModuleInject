@@ -6,7 +6,7 @@ namespace ModuleInject.Modules.Fluent
 {
     internal abstract class RegistrationContextBase : IRegistrationContextT
     {
-        internal RegistrationContext Context { get; private set; }
+        internal IRegistrationContext Context { get; private set; }
 
         public IRegistrationContext ReflectionContext
         {
@@ -16,7 +16,7 @@ namespace ModuleInject.Modules.Fluent
             }
         }
 
-        protected RegistrationContextBase(RegistrationContext context)
+        protected RegistrationContextBase(IRegistrationContext context)
         {
             this.Context = context;
         }

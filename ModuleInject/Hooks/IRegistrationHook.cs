@@ -67,7 +67,7 @@ namespace ModuleInject.Hooks
         /// </remarks>
         /// <param name="registrationContext">The registration context of the registration.</param>
         /// <returns>True if the hook should be executed.</returns>
-        bool AppliesToComponent(IRegistrationContext registrationContext);
+        bool AppliesToRegistration(IRegistrationContext registrationContext);
 
         /// <summary>
         /// Executes the hook for the registration of a component/factory.

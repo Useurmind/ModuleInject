@@ -53,6 +53,7 @@
     <Compile Include="Disposing\IDisposableExt.cs" />
     <Compile Include="Fluent\IComponentRegistrationContext.cs" />
     <Compile Include="Fluent\IDependencyInjectionContext.cs" />
+    <Compile Include="Fluent\IDependencyInjectionContext{5}.cs" />
     <Compile Include="Fluent\IInterfaceDependencyInjectionContext.cs" />
     <Compile Include="Fluent\IInterfaceRegistrationContext.cs" />
     <Compile Include="Fluent\IInterfaceValueInjectionContext.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="Fluent\IRegistrationContext{3}.cs" />
     <Compile Include="Fluent\IRegistrationTypes.cs" />
     <Compile Include="Fluent\IValueInjectionContext.cs" />
+    <Compile Include="Fluent\IValueInjectionContext{5}.cs" />
     <Compile Include="IClassInjector.cs" />
     <Compile Include="IModule.cs" />
     <Compile Include="IInterfaceInjector.cs" />

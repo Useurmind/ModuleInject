@@ -13,35 +13,35 @@ namespace ModuleInject.Hooks
     public class DelegateRegistrationHook : IRegistrationHook
     {
         private Func<object, bool> appliesToModule;
-        private Func<IRegistrationContext, bool> appliesToComponent;
+        private Func<IRegistrationContext, bool> appliesToRegistration;
         private Action<IRegistrationContext> execute;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DelegateRegistrationHook"/> class.
         /// </summary>
         /// <param name="appliesToModule">The func that is executed for <see cref="AppliesToModule"/>.</param>
-        /// <param name="appliesToComponent">The func that is executed for <see cref="AppliesToComponent"/>.</param>
+        /// <param name="appliesToRegistration">The func that is executed for <see cref="AppliesToRegistration"/>.</param>
         /// <param name="execute">The action that is executed for <see cref="Execute"/>.</param>
-        public DelegateRegistrationHook(Func<object, bool> appliesToModule, Func<IRegistrationContext, bool> appliesToComponent, Action<IRegistrationContext> execute)
+        public DelegateRegistrationHook(Func<object, bool> appliesToModule, Func<IRegistrationContext, bool> appliesToRegistration, Action<IRegistrationContext> execute)
         {
             this.appliesToModule = appliesToModule;
-            this.appliesToComponent = appliesToComponent;
+            this.appliesToRegistration = appliesToRegistration;
             this.execute = execute;
         }
 
         public bool AppliesToModule(object module)
         {
-            throw new NotImplementedException();
+            return this.appliesToModule(module);
         }
 
-        public bool AppliesToComponent(Interfaces.Fluent.IRegistrationContext registrationContext)
+        public bool AppliesToRegistration(IRegistrationContext registrationContext)
         {
-            throw new NotImplementedException();
+            return this.appliesToRegistration(registrationContext);
         }
 
-        public void Execute(Interfaces.Fluent.IRegistrationContext registrationContext)
+        public void Execute(IRegistrationContext registrationContext)
         {
-            throw new NotImplementedException();
+            this.execute(registrationContext);
         }
     }
 }
