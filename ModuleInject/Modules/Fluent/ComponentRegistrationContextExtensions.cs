@@ -24,7 +24,7 @@ namespace ModuleInject.Modules.Fluent
 
             var contextImpl = GetContextImplementation(component);
 
-            var valueContext = contextImpl.Context.Inject(value, typeof(TDependency));
+            var valueContext = contextImpl.Context.InjectInternal(value, typeof(TDependency));
             return new ValueInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>(contextImpl, valueContext);
         }
 
@@ -40,7 +40,7 @@ namespace ModuleInject.Modules.Fluent
 
             var contextImpl = GetContextImplementation(component);
 
-            var dependencyContext = contextImpl.Context.InjectSource((LambdaExpression)dependencySourceExpression);
+            var dependencyContext = contextImpl.Context.InjectSourceInternal((LambdaExpression)dependencySourceExpression);
 
             return new DependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>(
                 contextImpl, dependencyContext);

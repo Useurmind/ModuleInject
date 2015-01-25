@@ -6,7 +6,7 @@ namespace ModuleInject.Modules.Fluent
 {
     internal class InterfaceRegistrationContext<IComponentBase, IModuleBase> : RegistrationContextBase, IInterfaceRegistrationContext<IComponentBase, IModuleBase>
     {
-        internal InterfaceRegistrationContext(IRegistrationContext context) : base(context)
+        internal InterfaceRegistrationContext(RegistrationContext context) : base(context)
         {
         }
     }

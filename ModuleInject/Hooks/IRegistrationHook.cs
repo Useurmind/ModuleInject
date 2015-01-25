@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using ModuleInject.Interfaces.Fluent;
+using ModuleInject.Modules.Fluent;
 
 namespace ModuleInject.Hooks
 {

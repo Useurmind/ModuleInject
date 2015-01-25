@@ -23,12 +23,12 @@ namespace ModuleInject.Modules.Fluent
 
     internal class InterfaceValueInjectionContext<IComponentBase, IModuleBase, TValue> : IInterfaceValueInjectionContext<IComponentBase, IModuleBase, TValue>
     {
-        internal ValueInjectionContext Context { get; private set; }
+        internal IValueInjectionContext Context { get; private set; }
 
         internal InterfaceRegistrationContext<IComponentBase, IModuleBase> ComponentContext { get; private set; }
         public TValue Value { get { return (TValue)this.Context.Value; } }
 
-        internal InterfaceValueInjectionContext(InterfaceRegistrationContext<IComponentBase, IModuleBase> componentContext, ValueInjectionContext context)
+        internal InterfaceValueInjectionContext(InterfaceRegistrationContext<IComponentBase, IModuleBase> componentContext, IValueInjectionContext context)
         {
             this.ComponentContext = componentContext;
             this.Context = context;

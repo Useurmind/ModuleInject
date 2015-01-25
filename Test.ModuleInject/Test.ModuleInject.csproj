@@ -100,6 +100,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Hooks\InterfaceInjectorRegistrationHookTest.cs" />
     <Compile Include="Modularity\ModuleTest.cs" />
     <Compile Include="Modules\AfterResolveModuleTest.cs" />
     <Compile Include="Modules\BehaviourModuleTest.cs" />

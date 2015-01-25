@@ -86,6 +86,11 @@ namespace ModuleInject.Modules.Fluent
 
         public IRegistrationContext Construct(object instance)
         {
+            return ConstructInternal(instance);
+        }
+
+        internal RegistrationContext ConstructInternal(object instance)
+        {
             if (this.WasConstructorCalled)
             {
                 ExceptionHelper.ThrowFormatException(Errors.RegistrationContext_ConstructorAlreadyCalled, this.RegistrationName, this.RegistrationTypes.TModule.Name);
@@ -93,13 +98,18 @@ namespace ModuleInject.Modules.Fluent
 
             this.registrationTypes.TComponent = instance.GetType();
             this.Container.Register(this.RegistrationName, this.RegistrationTypes.IComponent, instance);
-            
+
             this.WasConstructorCalled = true;
 
             return this;
         }
 
         public IRegistrationContext Construct(Type componentType)
+        {
+            return ConstructInternal(componentType);
+        }
+
+        internal RegistrationContext ConstructInternal(Type componentType)
         {
             if (this.WasConstructorCalled)
             {
@@ -114,12 +124,18 @@ namespace ModuleInject.Modules.Fluent
             return this;
         }
 
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="constructorCallExpression">Expects an expression of the form module => new SomeConstructor(module.SomeComponent, ..).</param>
         /// <returns></returns>
         public IRegistrationContext Construct(LambdaExpression constructorCallExpression)
+        {
+            return ConstructInternal(constructorCallExpression);
+        }
+
+        internal RegistrationContext ConstructInternal(LambdaExpression constructorCallExpression)
         {
             if (this.WasConstructorCalled)
             {
@@ -145,16 +161,26 @@ namespace ModuleInject.Modules.Fluent
             return this;
         }
 
-        public ValueInjectionContext Inject(object value, Type valueType)
+        public IValueInjectionContext Inject(object value, Type valueType)
+        {
+            return InjectInternal(value, valueType);
+        }
+
+        internal ValueInjectionContext InjectInternal(object value, Type valueType)
         {
             return new ValueInjectionContext(this, value, valueType);
         }
 
-        public DependencyInjectionContext InjectSource(LambdaExpression dependencySourceExpression)
+        public IDependencyInjectionContext InjectSource(LambdaExpression dependencySourceExpression)
+        {
+            return InjectSourceInternal(dependencySourceExpression);
+        }
+
+        internal DependencyInjectionContext InjectSourceInternal(LambdaExpression dependencySourceExpression)
         {
             return new DependencyInjectionContext(this, dependencySourceExpression);
         }
-       
+
         public void AddPrerequisites(ParameterMemberAccessEvaluator dependencyEvaluator)
         {
             dependencyEvaluator.Evaluate();
@@ -183,6 +209,11 @@ namespace ModuleInject.Modules.Fluent
         /// <returns></returns>
         public IRegistrationContext Inject(LambdaExpression methodCallExpression)
         {
+            return InjectInternal(methodCallExpression);
+        }
+
+        internal RegistrationContext InjectInternal(LambdaExpression methodCallExpression)
+        {
             ParameterMemberAccessEvaluator dependencyEvaluator = new ParameterMemberAccessEvaluator(methodCallExpression, 1, this.Module);
             this.AddPrerequisites(dependencyEvaluator);
 
@@ -210,12 +241,22 @@ namespace ModuleInject.Modules.Fluent
         public IRegistrationContext AddBehaviour<TBehaviour>(TBehaviour behaviour)
             where TBehaviour : Microsoft.Practices.Unity.InterceptionExtension.IInterceptionBehavior
         {
+            return AddBehaviourInternal(behaviour);
+        }
+
+        internal RegistrationContext AddBehaviourInternal<TBehaviour>(TBehaviour behaviour) where TBehaviour : Microsoft.Practices.Unity.InterceptionExtension.IInterceptionBehavior
+        {
             this.Container.AddBehaviour(this.RegistrationName, this.RegistrationTypes.IComponent, behaviour);
 
             return this;
         }
 
         public IRegistrationContext AlsoRegisterFor(Expression moduleProperty)
+        {
+            return AlsoRegisterForInternal(moduleProperty);
+        }
+
+        internal RegistrationContext AlsoRegisterForInternal(Expression moduleProperty)
         {
             string memberPath;
             Type memberType;
@@ -229,6 +270,11 @@ namespace ModuleInject.Modules.Fluent
         }
 
         public IRegistrationContext AddCustomAction<T>(Action<T> customAction)
+        {
+            return AddCustomActionInternal(customAction);
+        }
+
+        internal RegistrationContext AddCustomActionInternal<T>(Action<T> customAction)
         {
             var dependencyInjection = new LambdaDependencyInjection<T>(this.Container, (cont, comp) => customAction(comp));
             this.Container.Inject(this.RegistrationName, this.RegistrationTypes.IComponent, dependencyInjection);

@@ -8,6 +8,11 @@ using ModuleInject.Interfaces.Fluent;
 
 namespace ModuleInject.Hooks
 {
+    /// <summary>
+    /// A registration hook that applies to all modules and components that implement a given interface.
+    /// </summary>
+    /// <typeparam name="IComponent">The interface that the component should implement.</typeparam>
+    /// <typeparam name="IModule">The interface that the module should implement.</typeparam>
     public class InterfaceInjectorRegistrationHook<IComponent, IModule> : IRegistrationHook
         where IModule : class
         where IComponent : class
@@ -32,7 +37,7 @@ namespace ModuleInject.Hooks
 
         public void Execute(IRegistrationContext registrationContext)
         {
-            var interfaceRegistrationContext = new InterfaceRegistrationContext<IComponent, IModule>(registrationContext);
+            var interfaceRegistrationContext = new InterfaceRegistrationContext<IComponent, IModule>((RegistrationContext)registrationContext);
 
             injector.InjectInto(interfaceRegistrationContext);
         }

@@ -13,19 +13,21 @@ namespace ModuleInject.Modules.Fluent
 {
     internal class DependencyInjectionContext : IDependencyInjectionContext
     {
+        private RegistrationContext registrationContext;
+
         public LambdaExpression SourceExpression { get; private set; }
 
-        public IRegistrationContext RegistrationContext { get; private set; }
+        public IRegistrationContext RegistrationContext { get { return registrationContext; } }
 
-        public DependencyInjectionContext(IRegistrationContext registrationContext, LambdaExpression sourceExpression)
+        public DependencyInjectionContext(RegistrationContext registrationContext, LambdaExpression sourceExpression)
         {
-            this.RegistrationContext = registrationContext;
+            this.registrationContext = registrationContext;
             this.SourceExpression = sourceExpression;
         }
 
         public IRegistrationContext IntoProperty(LambdaExpression dependencyTargetExpression)
         {
-            IRegistrationContext component = this.RegistrationContext;
+            var component = this.registrationContext;
             IRegistrationTypes types = component.RegistrationTypes;
 
             ParameterExpression componentParameterExpression = Expression.Parameter(dependencyTargetExpression.Parameters[0].Type, "component");
@@ -55,9 +57,9 @@ namespace ModuleInject.Modules.Fluent
 
             Delegate assignmentDelegate = assignmentLambdaExpression.Compile();
             
-            var lambdaInjection = new LambdaDependencyInjection(this.RegistrationContext.Container, (cont, comp) =>
+            var lambdaInjection = new LambdaDependencyInjection(this.registrationContext.Container, (cont, comp) =>
             {
-                assignmentDelegate.DynamicInvoke(comp, this.RegistrationContext.Module);
+                assignmentDelegate.DynamicInvoke(comp, this.registrationContext.Module);
             });
 
 

@@ -40,7 +40,7 @@ namespace ModuleInject.Modules.Fluent
 
             var contextImpl = GetContextImplementation(component);
 
-            var valueContext = contextImpl.Context.Inject(value, typeof(TDependency));
+            var valueContext = contextImpl.Context.InjectInternal(value, typeof(TDependency));
             return new InterfaceValueInjectionContext<IComponent, IModule, TModule, TDependency>(contextImpl, valueContext);
         }
 
@@ -91,7 +91,7 @@ namespace ModuleInject.Modules.Fluent
 
             var contextImpl = GetContextImplementation(component);
 
-            contextImpl.Context.AddBehaviour(behaviour);
+            contextImpl.Context.AddBehaviourInternal(behaviour);
 
             return component;
         }

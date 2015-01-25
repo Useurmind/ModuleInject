@@ -10,11 +10,13 @@ namespace ModuleInject.Modules.Fluent
 {
     internal class ValueInjectionContext : IValueInjectionContext
     {
-        public IRegistrationContext registrationContext { get; set; }
+        private RegistrationContext registrationContext;
+
+        public IRegistrationContext RegistrationContext { get { return registrationContext; } }
         public object Value { get; private set; }
         public Type ValueType { get; private set; }
 
-        public ValueInjectionContext(IRegistrationContext registrationContext, object value, Type valueType)
+        public ValueInjectionContext(RegistrationContext registrationContext, object value, Type valueType)
         {
             this.registrationContext = registrationContext;
             this.Value = value;
