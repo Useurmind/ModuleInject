@@ -12,48 +12,32 @@ namespace ModuleInject.Modules.Fluent
     {
         public static IInterfaceRegistrationContext<IComponent, IModule, TModule> 
             IntoProperty<IComponent, IModule, TModule, TDependency, TProperty>(
-            this IInterfaceDependencyInjectionContext<IComponent, IModule, TModule, TDependency> dependency,
+            this IInterfaceDependencyInjectionContext<IComponent, IModule, TModule, TDependency> dependencyContext,
             Expression<Func<IComponent, TProperty>> dependencyTargetExpression
             )
             where TProperty : TDependency
             where TModule : IModule
             where IModule : Interfaces.IModule
         {
-            CommonFunctions.CheckNullArgument("dependency", dependency);
+            CommonFunctions.CheckNullArgument("dependencyContext", dependencyContext);
+            
+            dependencyContext.Context.IntoProperty(dependencyTargetExpression);
 
-            var contextImpl = GetContextImplementation(dependency);
-
-            contextImpl.Context.IntoProperty(dependencyTargetExpression);
-
-            return contextImpl.ComponentContext;
+            return dependencyContext.RegistrationContext;
         }
 
         public static IInterfaceRegistrationContext<IComponent, IModule>
             IntoProperty<IComponent, IModule, TDependency, TProperty>(
-            this IInterfaceDependencyInjectionContext<IComponent, IModule, TDependency> dependency,
+            this IInterfaceDependencyInjectionContext<IComponent, IModule, TDependency> dependencyContext,
             Expression<Func<IComponent, TProperty>> dependencyTargetExpression
             )
             where TProperty : TDependency
         {
-            CommonFunctions.CheckNullArgument("dependency", dependency);
+            CommonFunctions.CheckNullArgument("dependency", dependencyContext);
 
-            var contextImpl = GetContextImplementation(dependency);
+            dependencyContext.Context.IntoProperty(dependencyTargetExpression);
 
-            contextImpl.Context.IntoProperty(dependencyTargetExpression);
-
-            return contextImpl.ComponentContext;
-        }
-
-        private static InterfaceDependencyInjectionContext<IComponent, IModule, TModule, TDependency> GetContextImplementation<IComponent, IModule, TModule, TDependency>(IInterfaceDependencyInjectionContext<IComponent, IModule, TModule, TDependency> dependency)
-            where TModule : IModule
-            where IModule : Interfaces.IModule
-        {
-            return (InterfaceDependencyInjectionContext<IComponent, IModule, TModule, TDependency>)dependency;
-        }
-
-        private static InterfaceDependencyInjectionContext<IComponent, IModule, TDependency> GetContextImplementation<IComponent, IModule, TDependency>(IInterfaceDependencyInjectionContext<IComponent, IModule, TDependency> dependency)
-        {
-            return (InterfaceDependencyInjectionContext<IComponent, IModule, TDependency>)dependency;
+            return dependencyContext.RegistrationContext;
         }
     }
 }

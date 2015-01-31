@@ -27,11 +27,9 @@ namespace ModuleInject.Modules.Fluent
         {
             CommonFunctions.CheckNullArgument("registrationContext", registrationContext);
 
-            var contextImplementation = GetContextImplementation(registrationContext);
+            registrationContext.Context.Construct(instance);
 
-            contextImplementation.Context.Construct(instance);
-
-            return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(contextImplementation.Context);
+            return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(registrationContext.Context);
         }
 
         public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
@@ -44,20 +42,9 @@ namespace ModuleInject.Modules.Fluent
         {
             CommonFunctions.CheckNullArgument("registrationContext", registrationContext);
 
-            var contextImplementation = GetContextImplementation(registrationContext);
+            registrationContext.Context.Construct(constructExpression);
 
-            contextImplementation.Context.Construct(constructExpression);
-
-            return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(contextImplementation.Context);
+            return new ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>(registrationContext.Context);
         }
-
-        private static RegistrationContext<IComponent, IModule, TModule> GetContextImplementation<IComponent, IModule, TModule>(
-            IRegistrationContext<IComponent, IModule, TModule> registrationContext)
-                    where TModule : InjectionModule<IModule, TModule>, IModule
-        where IModule : Interfaces.IModule
-            {
-            return (RegistrationContext<IComponent, IModule, TModule>)registrationContext;
-            }
-
     }
 }

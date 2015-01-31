@@ -14,58 +14,52 @@ namespace ModuleInject.Modules.Fluent
 
         public static IValueInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>
             Inject<IComponent, TComponent, IModule, TModule, TDependency>(
-            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> componentContext,
             TDependency value)
             where TComponent : IComponent
             where TModule : IModule
             where IModule : Interfaces.IModule
         {
-            CommonFunctions.CheckNullArgument("component", component);
+            CommonFunctions.CheckNullArgument("componentContext", componentContext);
 
-            var contextImpl = GetContextImplementation(component);
-
-            var valueContext = contextImpl.Context.InjectInternal(value, typeof(TDependency));
-            return new ValueInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>(contextImpl, valueContext);
+            var valueContext = componentContext.Context.Inject(value, typeof(TDependency));
+            return new ValueInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>(componentContext, valueContext);
         }
 
         public static IDependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>
             Inject<IComponent, TComponent, IModule, TModule, TDependency>(
-            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> componentContext,
             Expression<Func<TModule, TDependency>> dependencySourceExpression)
             where TComponent : IComponent
             where TModule : IModule
             where IModule : Interfaces.IModule
         {
-            CommonFunctions.CheckNullArgument("component", component);
+            CommonFunctions.CheckNullArgument("componentContext", componentContext);
 
-            var contextImpl = GetContextImplementation(component);
-
-            var dependencyContext = contextImpl.Context.InjectSourceInternal((LambdaExpression)dependencySourceExpression);
+            var dependencyContext = componentContext.Context.InjectSource((LambdaExpression)dependencySourceExpression);
 
             return new DependencyInjectionContext<IComponent, TComponent, IModule, TModule, TDependency>(
-                contextImpl, dependencyContext);
+                componentContext, dependencyContext);
         }
 
         public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
              Inject<IComponent, TComponent, IModule, TModule>(
-             this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+             this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> componentContext,
              Expression<Action<TComponent, TModule>> methodCallExpression)
              where TComponent : IComponent
              where TModule : IModule
              where IModule : Interfaces.IModule
         {
-            CommonFunctions.CheckNullArgument("component", component);
+            CommonFunctions.CheckNullArgument("componentContext", componentContext);
 
-            var contextImpl = GetContextImplementation(component);
+            componentContext.Context.Inject(methodCallExpression);
 
-            contextImpl.Context.Inject(methodCallExpression);
-
-            return component;
+            return componentContext;
         }
 
         public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             AddInjector<IComponent, TComponent, IModule, TModule>(
-            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> componentContext,
             IClassInjector<IComponent, TComponent, IModule, TModule> injector)
             where TComponent : IComponent
             where TModule : IModule
@@ -73,49 +67,45 @@ namespace ModuleInject.Modules.Fluent
         {
             CommonFunctions.CheckNullArgument("injector", injector);
 
-            injector.InjectInto(component);
-            return component;
+            injector.InjectInto(componentContext);
+            return componentContext;
         }
 
         public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             AddInjector<IComponent, TComponent, IModule, TModule>(
-            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> componentContext,
             IInterfaceInjector<IComponent, IModule, TModule> injector)
             where TComponent : IComponent
             where TModule : IModule
             where IModule : Interfaces.IModule
         {
-            CommonFunctions.CheckNullArgument("component", component);
+            CommonFunctions.CheckNullArgument("componentContext", componentContext);
             CommonFunctions.CheckNullArgument("injector", injector);
-
-            var contextImpl = GetContextImplementation(component);
-
-            var interfaceContext = new InterfaceRegistrationContext<IComponent, IModule, TModule>(contextImpl.Context);
+            
+            var interfaceContext = new InterfaceRegistrationContext<IComponent, IModule, TModule>(componentContext.Context);
             injector.InjectInto(interfaceContext);
-            return component;
+            return componentContext;
         }
 
         public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             AddInjector<IComponent, TComponent, IModule, TModule, IComponentBase, IModuleBase>(
-            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> componentContext,
             IInterfaceInjector<IComponentBase, IModuleBase> injector)
             where TComponent : IComponent, IComponentBase
             where TModule : IModule, IModuleBase
             where IModule : Interfaces.IModule
         {
-            CommonFunctions.CheckNullArgument("component", component);
+            CommonFunctions.CheckNullArgument("componentContext", componentContext);
             CommonFunctions.CheckNullArgument("injector", injector);
 
-            var contextImpl = GetContextImplementation(component);
-
-            var interfaceContext = new InterfaceRegistrationContext<IComponentBase, IModuleBase>(contextImpl.Context);
+            var interfaceContext = new InterfaceRegistrationContext<IComponentBase, IModuleBase>(componentContext.Context);
             injector.InjectInto(interfaceContext);
-            return component;
+            return componentContext;
         }
 
         public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             AddTypeInjection<IComponent, TComponent, IModule, TModule>(
-            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> componentContext,
             Action<IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>> injectInto)
             where TComponent : IComponent
             where TModule : IModule
@@ -126,13 +116,13 @@ namespace ModuleInject.Modules.Fluent
             ClassInjector<IComponent, TComponent, IModule, TModule> injector =
                 new ClassInjector<IComponent, TComponent, IModule, TModule>(injectInto);
 
-            component.AddInjector(injector);
-            return component;
+            componentContext.AddInjector(injector);
+            return componentContext;
         }
 
         public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             AddInterfaceInjection<IComponent, TComponent, IModule, TModule>(
-            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> componentContext,
             Action<IInterfaceRegistrationContext<IComponent, IModule, TModule>> injectInto)
             where TComponent : IComponent
             where TModule : IModule
@@ -143,13 +133,13 @@ namespace ModuleInject.Modules.Fluent
             InterfaceInjector<IComponent, IModule, TModule> injector =
                 new InterfaceInjector<IComponent, IModule, TModule>(injectInto);
 
-            component.AddInjector(injector);
-            return component;
+            componentContext.AddInjector(injector);
+            return componentContext;
         }
 
         public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             AddInterfaceInjection<IComponent, TComponent, IModule, TModule, IComponentBase, IModuleBase>(
-            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> componentContext,
             Action<IInterfaceRegistrationContext<IComponentBase, IModuleBase>> injectInto)
             where TComponent : IComponent, IComponentBase
             where TModule : IModule, IModuleBase
@@ -160,26 +150,24 @@ namespace ModuleInject.Modules.Fluent
             InterfaceInjector<IComponentBase, IModuleBase> injector =
                 new InterfaceInjector<IComponentBase, IModuleBase>(injectInto);
 
-            component.AddInjector(injector);
-            return component;
+            componentContext.AddInjector(injector);
+            return componentContext;
         }
 
         public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             AlsoRegisterFor<IComponent, TComponent, IModule, TModule, IComponent2>(
-            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> componentContext,
             Expression<Func<TModule, IComponent2>> secondModuleProperty)
             where TComponent : IComponent
             where IComponent : IComponent2
             where TModule : IModule
             where IModule : Interfaces.IModule
         {
-            CommonFunctions.CheckNullArgument("component", component);
+            CommonFunctions.CheckNullArgument("componentContext", componentContext);
 
-            var contextImpl = GetContextImplementation(component);
+            componentContext.Context.AlsoRegisterFor(secondModuleProperty);
 
-            contextImpl.Context.AlsoRegisterFor(secondModuleProperty);
-
-            return component;
+            return componentContext;
         }
 
         /// <summary>
@@ -189,20 +177,19 @@ namespace ModuleInject.Modules.Fluent
         /// <returns>The current context of the fluent API.</returns>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "This API is by design statically typed")]
         public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> AddBehaviour<IComponent, TComponent, IModule, TModule, TBehaviour>(
-            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> componentContext,
             TBehaviour behaviour)
             where TComponent : IComponent
             where TModule : IModule
             where IModule : Interfaces.IModule
             where TBehaviour : Microsoft.Practices.Unity.InterceptionExtension.IInterceptionBehavior
         {
-            CommonFunctions.CheckNullArgument("component", component);
+            CommonFunctions.CheckNullArgument("componentContext", componentContext);
 
-            var contextImpl = GetContextImplementation(component);
+            // TODO: fix this hack
+            ((RegistrationContext)componentContext.Context).AddBehaviour(behaviour);
 
-            contextImpl.Context.AddBehaviour(behaviour);
-
-            return component;
+            return componentContext;
         }
 
         /// <summary>
@@ -215,31 +202,21 @@ namespace ModuleInject.Modules.Fluent
         /// <typeparam name="TComponent">The type of the component.</typeparam>
         /// <typeparam name="IModule">The interface of the module.</typeparam>
         /// <typeparam name="TModule">The type of the module.</typeparam>
-        /// <param name="component">The fluent context in which a custom action is registered.</param>
+        /// <param name="componentContext">The fluent context in which a custom action is registered.</param>
         /// <param name="customAction">The action that should be executed.</param>
         /// <returns></returns>
         public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> AddCustomAction<IComponent, TComponent, IModule, TModule>(
-            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component,
+            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> componentContext,
             Action<TComponent> customAction)
             where TComponent : IComponent
             where TModule : IModule
             where IModule : Interfaces.IModule
         {
-            CommonFunctions.CheckNullArgument("component", component);
+            CommonFunctions.CheckNullArgument("componentContext", componentContext);
 
-            var contextImpl = GetContextImplementation(component);
+            componentContext.Context.AddCustomAction(customAction);
 
-            contextImpl.Context.AddCustomAction(customAction);
-
-            return component;
-        }
-
-        private static ComponentRegistrationContext<IComponent, TComponent, IModule, TModule> GetContextImplementation<IComponent, TComponent, IModule, TModule>(IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> component)
-            where TComponent : IComponent
-            where TModule : IModule
-            where IModule : Interfaces.IModule
-        {
-            return (ComponentRegistrationContext<IComponent, TComponent, IModule, TModule>)component;
+            return componentContext;
         }
     }
 }

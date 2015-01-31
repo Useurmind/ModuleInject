@@ -17,4 +17,9 @@ namespace ModuleInject.Interfaces.Fluent
         /// <returns>The registration context.</returns>
         IRegistrationContext IntoProperty(LambdaExpression dependencyTargetExpression);
     }
+
+    public interface IOuterDependencyInjectionContext
+    {
+        IDependencyInjectionContext Context { get; }
+    }
 }

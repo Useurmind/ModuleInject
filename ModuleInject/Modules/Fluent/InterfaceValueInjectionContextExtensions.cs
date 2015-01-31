@@ -12,48 +12,32 @@ namespace ModuleInject.Modules.Fluent
     {
         public static IInterfaceRegistrationContext<IComponent, IModule, TModule> 
             IntoProperty<IComponent, IModule, TModule, TDependency, TProperty>(
-            this IInterfaceValueInjectionContext<IComponent, IModule, TModule, TDependency> value,
+            this IInterfaceValueInjectionContext<IComponent, IModule, TModule, TDependency> valueContext,
             Expression<Func<IComponent, TProperty>> dependencyTargetExpression
         )
             where TProperty : TDependency
             where TModule : IModule
             where IModule : Interfaces.IModule
         {
-            CommonFunctions.CheckNullArgument("value", value);
+            CommonFunctions.CheckNullArgument("valueContext", valueContext);
 
-            var contextImpl = GetContextImplementation(value);
+            valueContext.Context.IntoProperty(dependencyTargetExpression);
 
-            contextImpl.Context.IntoProperty(dependencyTargetExpression);
-
-            return contextImpl.ComponentContext;
+            return valueContext.RegistrationContext;
         }
 
         public static IInterfaceRegistrationContext<IComponent, IModule>
             IntoProperty<IComponent, IModule, TDependency, TProperty>(
-            this IInterfaceValueInjectionContext<IComponent, IModule, TDependency> value,
+            this IInterfaceValueInjectionContext<IComponent, IModule, TDependency> valueContext,
             Expression<Func<IComponent, TProperty>> dependencyTargetExpression
         )
             where TProperty : TDependency
         {
-            CommonFunctions.CheckNullArgument("value", value);
+            CommonFunctions.CheckNullArgument("valueContext", valueContext);
 
-            var contextImpl = GetContextImplementation(value);
+            valueContext.Context.IntoProperty(dependencyTargetExpression);
 
-            contextImpl.Context.IntoProperty(dependencyTargetExpression);
-
-            return contextImpl.ComponentContext;
-        }
-
-        private static InterfaceValueInjectionContext<IComponent, IModule, TModule, TDependency> GetContextImplementation<IComponent, IModule, TModule, TDependency>(IInterfaceValueInjectionContext<IComponent, IModule, TModule, TDependency> value)
-            where TModule : IModule
-            where IModule : Interfaces.IModule
-        {
-            return (InterfaceValueInjectionContext<IComponent, IModule, TModule, TDependency>)value;
-        }
-
-        private static InterfaceValueInjectionContext<IComponent, IModule, TDependency> GetContextImplementation<IComponent, IModule, TDependency>(IInterfaceValueInjectionContext<IComponent, IModule, TDependency> value)
-        {
-            return (InterfaceValueInjectionContext<IComponent, IModule, TDependency>)value;
+            return valueContext.RegistrationContext;
         }
     }
 }

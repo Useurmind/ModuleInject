@@ -12,7 +12,7 @@ namespace ModuleInject.Interfaces.Fluent
     /// <typeparam name="IComponent">Interface of the component.</typeparam>
     /// <typeparam name="IModule">Interface of the module.</typeparam>
     /// <typeparam name="TModule">Type of the module.</typeparam>
-    public interface IRegistrationContext<IComponent, IModule, TModule> : IRegistrationContextT
+    public interface IRegistrationContext<IComponent, IModule, TModule> : IOuterRegistrationContext
         where TModule : IModule
         where IModule : Interfaces.IModule
     {

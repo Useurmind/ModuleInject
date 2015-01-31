@@ -9,27 +9,27 @@ namespace ModuleInject.Modules.Fluent
         where TModule : IModule
         where IModule : Interfaces.IModule
     {
-        internal IDependencyInjectionContext Context { get; private set; }
-        internal InterfaceRegistrationContext<IComponent, IModule, TModule> ComponentContext { get; private set; }
+        public IDependencyInjectionContext Context { get; private set; }
+        public IInterfaceRegistrationContext<IComponent, IModule, TModule> RegistrationContext { get; private set; }
 
-        internal InterfaceDependencyInjectionContext(InterfaceRegistrationContext<IComponent, IModule, TModule> componentContext, 
+        internal InterfaceDependencyInjectionContext(IInterfaceRegistrationContext<IComponent, IModule, TModule> componentContext, 
             IDependencyInjectionContext context)
         {
             this.Context = context;
-            this.ComponentContext = componentContext;
+            this.RegistrationContext = componentContext;
         }
     }
 
     public class InterfaceDependencyInjectionContext<IComponentBase, IModuleBase, IDependencyComponent> : IInterfaceDependencyInjectionContext<IComponentBase, IModuleBase, IDependencyComponent>
     {
-        internal IDependencyInjectionContext Context { get; private set; }
-        internal InterfaceRegistrationContext<IComponentBase, IModuleBase> ComponentContext { get; private set; }
+        public IDependencyInjectionContext Context { get; private set; }
+        public IInterfaceRegistrationContext<IComponentBase, IModuleBase> RegistrationContext { get; private set; }
 
-        internal InterfaceDependencyInjectionContext(InterfaceRegistrationContext<IComponentBase, IModuleBase> componentContext,
+        internal InterfaceDependencyInjectionContext(IInterfaceRegistrationContext<IComponentBase, IModuleBase> componentContext,
             IDependencyInjectionContext context)
         {
             this.Context = context;
-            this.ComponentContext = componentContext;
+            this.RegistrationContext = componentContext;
         }
     }
 }

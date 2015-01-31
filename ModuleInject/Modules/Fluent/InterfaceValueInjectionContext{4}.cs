@@ -9,28 +9,28 @@ namespace ModuleInject.Modules.Fluent
         where TModule : IModule
         where IModule : Interfaces.IModule
     {
-        internal ValueInjectionContext Context { get; private set; }
+        public IValueInjectionContext Context { get; private set; }
 
-        internal InterfaceRegistrationContext<IComponent, IModule, TModule> ComponentContext { get; private set; }
+        public IInterfaceRegistrationContext<IComponent, IModule, TModule> RegistrationContext { get; private set; }
         public TValue Value { get { return (TValue)this.Context.Value; } }
 
-        internal InterfaceValueInjectionContext(InterfaceRegistrationContext<IComponent, IModule, TModule> componentContext, ValueInjectionContext context)
+        internal InterfaceValueInjectionContext(IInterfaceRegistrationContext<IComponent, IModule, TModule> componentContext, IValueInjectionContext context)
         {
-            this.ComponentContext = componentContext;
+            this.RegistrationContext = componentContext;
             this.Context = context;
         }
     }
 
     internal class InterfaceValueInjectionContext<IComponentBase, IModuleBase, TValue> : IInterfaceValueInjectionContext<IComponentBase, IModuleBase, TValue>
     {
-        internal IValueInjectionContext Context { get; private set; }
+        public IValueInjectionContext Context { get; private set; }
 
-        internal InterfaceRegistrationContext<IComponentBase, IModuleBase> ComponentContext { get; private set; }
+        public IInterfaceRegistrationContext<IComponentBase, IModuleBase> RegistrationContext { get; private set; }
         public TValue Value { get { return (TValue)this.Context.Value; } }
 
-        internal InterfaceValueInjectionContext(InterfaceRegistrationContext<IComponentBase, IModuleBase> componentContext, IValueInjectionContext context)
+        internal InterfaceValueInjectionContext(IInterfaceRegistrationContext<IComponentBase, IModuleBase> componentContext, IValueInjectionContext context)
         {
-            this.ComponentContext = componentContext;
+            this.RegistrationContext = componentContext;
             this.Context = context;
         }
     }

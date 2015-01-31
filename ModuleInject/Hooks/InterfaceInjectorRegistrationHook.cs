@@ -32,12 +32,12 @@ namespace ModuleInject.Hooks
 
         public bool AppliesToRegistration(IRegistrationContext registrationContext)
         {
-            return registrationContext.RegistrationTypes.IComponent.GetInterfaces().Contains(typeof(IComponent));
+            return registrationContext.RegistrationTypes.TComponent.GetInterfaces().Contains(typeof(IComponent));
         }
 
         public void Execute(IRegistrationContext registrationContext)
         {
-            var interfaceRegistrationContext = new InterfaceRegistrationContext<IComponent, IModule>((RegistrationContext)registrationContext);
+            var interfaceRegistrationContext = new InterfaceRegistrationContext<IComponent, IModule>(registrationContext);
 
             injector.InjectInto(interfaceRegistrationContext);
         }

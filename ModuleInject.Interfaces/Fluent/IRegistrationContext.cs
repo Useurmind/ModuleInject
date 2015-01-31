@@ -100,8 +100,8 @@ namespace ModuleInject.Interfaces.Fluent
         IRegistrationContext AddCustomAction<T>(Action<T> customAction);
     }
 
-    public interface IRegistrationContextT
+    public interface IOuterRegistrationContext
     {
-        IRegistrationContext ReflectionContext { get; }
+        IRegistrationContext Context { get; }
     }
 }

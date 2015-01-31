@@ -9,7 +9,7 @@ namespace ModuleInject.Modules.Fluent
         where TModule : IModuleBase
         where IModuleBase : IModule
     {
-        internal InterfaceRegistrationContext(RegistrationContext context) : base(context)
+        internal InterfaceRegistrationContext(IRegistrationContext context) : base(context)
         {
         }
     }

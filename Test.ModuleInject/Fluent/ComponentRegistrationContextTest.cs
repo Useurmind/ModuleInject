@@ -46,7 +46,7 @@ namespace Test.ModuleInject.Fluent
         [TestCase]
         public void Constructor_NameSetCorrectly()
         {
-            Assert.AreEqual(_componentName, _context.ReflectionContext.RegistrationName);
+            Assert.AreEqual(_componentName, _context.Context.RegistrationName);
         }
 
         [TestCase]

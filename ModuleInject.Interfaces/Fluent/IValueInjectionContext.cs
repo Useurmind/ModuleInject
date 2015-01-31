@@ -32,4 +32,9 @@ namespace ModuleInject.Interfaces.Fluent
         /// <returns>The registration context.</returns>
         IRegistrationContext IntoProperty(Expression dependencyTargetExpression);
     }
+
+    public interface IOuterValueInjectionContext
+    {
+        IValueInjectionContext Context { get; }
+    }
 }

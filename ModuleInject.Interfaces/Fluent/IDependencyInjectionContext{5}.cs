@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ModuleInject.Interfaces.Fluent
 {
-    public interface IDependencyInjectionContext<IComponent, TComponent, IModule, TModule, IDependencyComponent>
+    public interface IDependencyInjectionContext<IComponent, TComponent, IModule, TModule, IDependencyComponent> : IOuterDependencyInjectionContext
         where TModule : IModule
         where TComponent : IComponent
         where IModule : Interfaces.IModule

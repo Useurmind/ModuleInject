@@ -15,63 +15,57 @@ namespace ModuleInject.Modules.Fluent
         
         public static IInterfaceRegistrationContext<IComponent, IModule, TModule>
              Inject<IComponent, IModule, TModule>(
-             this IInterfaceRegistrationContext<IComponent, IModule, TModule> component,
+             this IInterfaceRegistrationContext<IComponent, IModule, TModule> interfaceContext,
              Expression<Action<IComponent, TModule>> methodCallExpression)
              where TModule : IModule
              where IModule : Interfaces.IModule
         {
-            CommonFunctions.CheckNullArgument("component", component);
+            CommonFunctions.CheckNullArgument("interfaceContext", interfaceContext);
 
-            var contextImpl = GetContextImplementation(component);
+            interfaceContext.Context.Inject(methodCallExpression);
 
-            contextImpl.Context.Inject(methodCallExpression);
-
-            return component;
+            return interfaceContext;
         }
 
         public static IInterfaceValueInjectionContext<IComponent, IModule, TModule, TDependency>
             Inject<IComponent, IModule, TModule, TDependency>(
-            this IInterfaceRegistrationContext<IComponent, IModule, TModule> component,
+            this IInterfaceRegistrationContext<IComponent, IModule, TModule> interfaceContext,
             TDependency value)
             where TModule : IModule
             where IModule : Interfaces.IModule
         {
-            CommonFunctions.CheckNullArgument("component", component);
+            CommonFunctions.CheckNullArgument("interfaceContext", interfaceContext);
 
-            var contextImpl = GetContextImplementation(component);
-
-            var valueContext = contextImpl.Context.InjectInternal(value, typeof(TDependency));
-            return new InterfaceValueInjectionContext<IComponent, IModule, TModule, TDependency>(contextImpl, valueContext);
+            var valueContext = interfaceContext.Context.Inject(value, typeof(TDependency));
+            return new InterfaceValueInjectionContext<IComponent, IModule, TModule, TDependency>(interfaceContext, valueContext);
         }
 
         public static IInterfaceDependencyInjectionContext<IComponent, IModule, TModule, TDependency>
             Inject<IComponent, IModule, TModule, TDependency>(
-            this IInterfaceRegistrationContext<IComponent, IModule, TModule> component,
+            this IInterfaceRegistrationContext<IComponent, IModule, TModule> interfaceContext,
             Expression<Func<TModule, TDependency>> dependencySourceExpression)
             where TModule : IModule
             where IModule : Interfaces.IModule
         {
-            CommonFunctions.CheckNullArgument("component", component);
-
-            var contextImpl = GetContextImplementation(component);
-
-            var dependencyContext = contextImpl.Context.InjectSource((LambdaExpression)dependencySourceExpression);
+            CommonFunctions.CheckNullArgument("interfaceContext", interfaceContext);
+            
+            var dependencyContext = interfaceContext.Context.InjectSource((LambdaExpression)dependencySourceExpression);
 
             return new InterfaceDependencyInjectionContext<IComponent, IModule, TModule, TDependency>(
-                contextImpl, dependencyContext);
+                interfaceContext, dependencyContext);
         }
 
         public static IInterfaceRegistrationContext<IComponent, IModule, TModule>
             AddInjector<IComponent, IModule, TModule>(
-            this IInterfaceRegistrationContext<IComponent, IModule, TModule> component,
+            this IInterfaceRegistrationContext<IComponent, IModule, TModule> interfaceContext,
             IInterfaceInjector<IComponent, IModule, TModule> injector)
             where TModule : IModule
             where IModule : Interfaces.IModule
         {
             CommonFunctions.CheckNullArgument("injector", injector);
 
-            injector.InjectInto(component);
-            return component;
+            injector.InjectInto(interfaceContext);
+            return interfaceContext;
         }
 
         /// <summary>
@@ -81,41 +75,31 @@ namespace ModuleInject.Modules.Fluent
         /// <returns>The current context of the fluent API.</returns>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "This API is by design statically typed")]
         public static IInterfaceRegistrationContext<IComponent, IModule, TModule> AddBehaviour<IComponent, IModule, TModule, TBehaviour>(
-            this IInterfaceRegistrationContext<IComponent, IModule, TModule> component,
+            this IInterfaceRegistrationContext<IComponent, IModule, TModule> interfaceContext,
             TBehaviour behaviour)
             where TModule : IModule
             where IModule : Interfaces.IModule
             where TBehaviour : Microsoft.Practices.Unity.InterceptionExtension.IInterceptionBehavior
         {
-            CommonFunctions.CheckNullArgument("component", component);
+            CommonFunctions.CheckNullArgument("interfaceContext", interfaceContext);
 
-            var contextImpl = GetContextImplementation(component);
+            // TODO: fix this hack
+            ((RegistrationContext)interfaceContext.Context).AddBehaviourInternal(behaviour);
 
-            contextImpl.Context.AddBehaviourInternal(behaviour);
-
-            return component;
+            return interfaceContext;
         }
 
         public static IInterfaceRegistrationContext<IComponent, IModule, TModule> AddCustomAction<IComponent, IModule, TModule>(
-            this IInterfaceRegistrationContext<IComponent, IModule, TModule> component,
+            this IInterfaceRegistrationContext<IComponent, IModule, TModule> interfaceContext,
             Action<IComponent> customAction)
             where TModule : IModule
             where IModule : Interfaces.IModule
         {
-            CommonFunctions.CheckNullArgument("component", component);
+            CommonFunctions.CheckNullArgument("interfaceContext", interfaceContext);
 
-            var contextImpl = GetContextImplementation(component);
+            interfaceContext.Context.AddCustomAction(customAction);
 
-            contextImpl.Context.AddCustomAction(customAction);
-
-            return component;
-        }
-
-        private static InterfaceRegistrationContext<IComponent, IModule, TModule> GetContextImplementation<IComponent, IModule, TModule>(IInterfaceRegistrationContext<IComponent, IModule, TModule> component)
-            where TModule : IModule
-            where IModule : Interfaces.IModule
-        {
-            return (InterfaceRegistrationContext<IComponent, IModule, TModule>)component;
+            return interfaceContext;
         }
 
         #endregion
