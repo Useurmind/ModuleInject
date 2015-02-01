@@ -5,6 +5,10 @@ namespace ModuleInject.Interfaces
     using System;
 
     using ModuleInject.Interfaces.Disposing;
+    using System.Collections.Generic;
+    using ModuleInject.Interfaces.Hooks;
+
+
 
     /// <summary>
     /// Interface for a registry that is used to distribute components over
@@ -25,5 +29,11 @@ namespace ModuleInject.Interfaces
         /// <param name="type">The type of the component.</param>
         /// <returns>The component.</returns>
         object GetComponent(Type type);
+
+        /// <summary>
+        /// Gets all registration hooks that are present in this registry.
+        /// </summary>
+        /// <returns>The registration hooks.</returns>
+        IEnumerable<IRegistrationHook> GetRegistrationHooks();
     }
 }

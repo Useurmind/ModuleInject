@@ -30,8 +30,7 @@ namespace Test.ModuleInject.Registry
         public ICanBeRegistered RegisteredPart { get; set; }
 
         public RegistryBaseDerivate()
-        {
-            
+        {            
             var catalog = new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly());
             this.AddCatalog(catalog);
 

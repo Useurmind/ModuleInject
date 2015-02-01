@@ -3,6 +3,9 @@ using System.Linq;
 
 using ModuleInject.Common.Disposing;
 using ModuleInject.Interfaces;
+using System.Collections.Generic;
+using ModuleInject.Hooks;
+using ModuleInject.Interfaces.Hooks;
 
 namespace ModuleInject.Modularity.Registry
 {
@@ -15,7 +18,6 @@ namespace ModuleInject.Modularity.Registry
     /// </remarks>
     public abstract class RegistryBase : DisposableExtBase, IRegistry
     {
-
         /// <summary>
         /// Determines whether the specified type is registered.
         /// </summary>
@@ -29,5 +31,11 @@ namespace ModuleInject.Modularity.Registry
         /// <param name="type">The type.</param>
         /// <returns>The component for the type</returns>
         public abstract object GetComponent(Type type);
+
+        /// <summary>
+        /// Gets all registration hooks that are present in this registry.
+        /// </summary>
+        /// <returns>The registration hooks.</returns>
+        public abstract IEnumerable<IRegistrationHook> GetRegistrationHooks();
     }
 }

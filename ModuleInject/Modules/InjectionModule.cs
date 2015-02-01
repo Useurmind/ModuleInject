@@ -3,6 +3,8 @@ using System.Linq;
 
 using ModuleInject.Container.Interface;
 using ModuleInject.Interfaces;
+using System.Collections.Generic;
+using ModuleInject.Modules.Fluent;
 
 namespace ModuleInject.Modules
 {
@@ -14,5 +16,7 @@ namespace ModuleInject.Modules
         internal abstract IDependencyContainer Container { get; }
 
         internal abstract void OnComponentResolved(ObjectResolvedContext context);
+
+        internal abstract IEnumerable<RegistrationContext> GetRegistrationContexts();
     }
 }

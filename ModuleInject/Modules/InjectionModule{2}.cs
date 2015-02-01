@@ -14,6 +14,7 @@ using ModuleInject.Interfaces.Fluent;
 using ModuleInject.Modularity.Registry;
 using ModuleInject.Modules.Fluent;
 using ModuleInject.Utility;
+using System.Collections.Generic;
 
 namespace ModuleInject.Modules
 {
@@ -26,6 +27,7 @@ namespace ModuleInject.Modules
         where TModule : InjectionModule<IModule, TModule>, IModule
         where IModule : Interfaces.IModule
     {
+        private IList<RegistrationContext> registrationContexts;
         private IDependencyContainer container;
 
         internal override Type ModuleInterface
@@ -57,6 +59,7 @@ namespace ModuleInject.Modules
         /// </summary>
         protected InjectionModule()
         {
+            this.registrationContexts = new List<RegistrationContext>();
             this.container = new DependencyContainer();
 
             if (!typeof(IModule).IsInterface)
@@ -74,6 +77,8 @@ namespace ModuleInject.Modules
             var resolver = new ModuleResolver<IModule, TModule>((TModule)(object)this, this.container, usedRegistry);
 
             resolver.CheckBeforeResolve();
+
+            resolver.TryAddRegistrationHooks();
 
             resolver.ResolveSubmodules();
 
@@ -261,7 +266,7 @@ namespace ModuleInject.Modules
             this.container.SetLifetime<IComponent>(componentName, new ComponentLifetime(this));
 
             RegistrationTypes types = CreateTypes<IComponent>();
-            RegistrationContext context = new RegistrationContext(componentName, this, this.container, types, false);
+            RegistrationContext context = this.CreateRegistrationContext(componentName, types);
             registrationContext = new RegistrationContext<IComponent, IModule, TModule>(context);
             return registrationContext;
         }
@@ -278,8 +283,20 @@ namespace ModuleInject.Modules
 
             var types = CreateTypes<IComponent>();
 
-            RegistrationContext context = new RegistrationContext(functionName, this, this.Container, types, false);
+            RegistrationContext context = CreateRegistrationContext(functionName, types);
             return new RegistrationContext<IComponent, IModule, TModule>(context);
+        }
+
+        private RegistrationContext CreateRegistrationContext(string componentName, RegistrationTypes types)
+        {
+            var registrationContext = new RegistrationContext(componentName, this, this.Container, types, false);
+            this.registrationContexts.Add(registrationContext);
+            return registrationContext;
+        }
+
+        internal override IEnumerable<RegistrationContext> GetRegistrationContexts()
+        {
+            return this.registrationContexts;
         }
 
         private static void CheckExpressionDescribesDirectMember<TObject, IComponent>(Expression<Func<TObject, IComponent>> moduleProperty)

@@ -78,4 +78,12 @@ namespace ModuleInject.Common.Linq
             return this._methodInfo.Name;
         }
     }
+
+    public static class MethodExtensions
+    {
+        public static Method GetMethod<TObject, TMethodReturn>(this TObject instance, Expression<Func<TObject, TMethodReturn>> methodExpression)
+        {
+            return Method.Get(methodExpression);
+        }
+    }
 }

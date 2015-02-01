@@ -23,7 +23,7 @@ namespace ModuleInject.Utility
         /// <typeparam name="TModule">The type of the _module.</typeparam>
         /// <param name="thatAreModules">if set to <c>true</c> only properties that are modules themselves are returned, else all other properties.</param>
         /// <returns></returns>
-        public static IEnumerable<PropertyInfo> GetModuleProperties<IModule, TModule>(bool thatAreModules)
+        public static IEnumerable<PropertyInfo> GetModuleProperties<IModule, TModule>(bool? thatAreModules)
             where TModule : IModule
         {
             return ModuleTypeExtensions.GetModuleProperties(typeof(IModule), typeof(TModule), thatAreModules);
@@ -36,23 +36,32 @@ namespace ModuleInject.Utility
         /// <param name="moduleType">The type of the module.</param>
         /// <param name="thatAreModules">if set to <c>true</c> only properties that are modules themselves are returned, else all other properties.</param>
         /// <returns></returns>
-        public static IEnumerable<PropertyInfo> GetModuleProperties(Type moduleInterface, Type moduleType, bool thatAreModules)
+        private static IEnumerable<PropertyInfo> GetModuleProperties(Type moduleInterface, Type moduleType, bool? thatAreModules)
         {
-            var interfaceProperties = moduleInterface.GetModuleComponentPropertiesRecursive()
-                                                     .Where(p =>
-                                                     {
-                                                         bool isModule = p.IsInjectionModuleType();
-                                                         return thatAreModules ? isModule : !isModule;
-                                                     })
-                                                     .Select(p => moduleType.GetProperty(p.Name));
+            var interfaceProperties = moduleInterface.GetModuleComponentPropertiesRecursive();
+            if (thatAreModules.HasValue)
+            {
+                interfaceProperties = interfaceProperties.Where(p =>
+                                                         {
+                                                             bool isModule = p.IsInjectionModuleType();
+                                                             return thatAreModules == true ? isModule : !isModule;
+                                                         });
+            }
+            interfaceProperties = interfaceProperties.Select(p => moduleType.GetProperty(p.Name));
 
             var privateProperties = moduleType.GetModuleComponentPropertiesRecursive(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                                               .Where(p =>
                                               {
-                                                  bool isPrivate = p.HasCustomAttribute<PrivateComponentAttribute>();
-                                                  bool isModule = p.IsInjectionModuleType();
+                                                  bool shouldBeReturned = p.HasCustomAttribute<PrivateComponentAttribute>();
 
-                                                  return (isPrivate) && (thatAreModules ? isModule : !isModule);
+                                                  if (thatAreModules.HasValue)
+                                                  {
+                                                      bool isModule = p.IsInjectionModuleType();
+
+                                                      shouldBeReturned = shouldBeReturned && (thatAreModules == true ? isModule : !isModule);
+                                                  }
+
+                                                  return shouldBeReturned;
                                               });
 
             return privateProperties.Union(interfaceProperties);
@@ -67,7 +76,7 @@ namespace ModuleInject.Utility
             bool isModule = searchedInterface != null;
             return isModule;
         }
-        
+
         public static bool ShouldStopModuleTypeRecursion(this Type type)
         {
             return type == typeof(object) || type == typeof(IModule) || type.Name.StartsWith("InjectionModule", StringComparison.Ordinal);
@@ -84,7 +93,7 @@ namespace ModuleInject.Utility
         /// <param name="type">The type.</param>
         /// <param name="bindingOptions">The binding flags.</param>
         /// <returns></returns>
-        public static IEnumerable<PropertyInfo> GetModuleComponentPropertiesRecursive(this Type type, BindingFlags? bindingOptions = null, bool excludeNonModuleProperties=true)
+        public static IEnumerable<PropertyInfo> GetModuleComponentPropertiesRecursive(this Type type, BindingFlags? bindingOptions = null, bool excludeNonModuleProperties = true)
         {
             CommonFunctions.CheckNullArgument("type", type);
 

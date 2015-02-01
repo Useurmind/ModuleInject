@@ -62,6 +62,7 @@
     <Compile Include="Fluent\IRegistrationTypes.cs" />
     <Compile Include="Fluent\IValueInjectionContext.cs" />
     <Compile Include="Fluent\IValueInjectionContext{5}.cs" />
+    <Compile Include="Hooks\IRegistrationHook.cs" />
     <Compile Include="IClassInjector.cs" />
     <Compile Include="IModule.cs" />
     <Compile Include="IInterfaceInjector.cs" />

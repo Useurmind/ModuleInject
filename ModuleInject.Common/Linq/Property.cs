@@ -71,7 +71,7 @@ namespace ModuleInject.Common.Linq
             }
         }
 
-        public static implicit operator string(Property property)
+        public static implicit operator string (Property property)
         {
             CommonFunctions.CheckNullArgument("property", property);
 
@@ -81,6 +81,13 @@ namespace ModuleInject.Common.Linq
         public override string ToString()
         {
             return this._propertyInfo.Name;
+        }
+    }
+
+    public static class PropertyExtensions {
+        public static Property GetProperty<TObject, TProperty>(this TObject instance, Expression<Func<TObject, TProperty>> propertyExpression)
+        {
+            return Property.Get(propertyExpression);
         }
     }
 }

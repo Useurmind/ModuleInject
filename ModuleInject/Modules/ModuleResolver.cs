@@ -19,13 +19,22 @@ namespace ModuleInject.Modules
     using ModuleInject.Interfaces;
 
     internal class ModuleResolver<IModule, TModule>
-        where TModule : IModule
+        where TModule : InjectionModule, IModule
         where IModule : Interfaces.IModule
     {
         private TModule module;
         private IDependencyContainer _container;
         private IRegistry registry;
 
+        /// <summary>
+        /// Works in 3 steps:
+        /// - Try to apply any registration hooks before resolving.
+        /// - Resolve any submodules.
+        /// - Resolve all components.
+        /// </summary>
+        /// <param name="module"></param>
+        /// <param name="container"></param>
+        /// <param name="registry"></param>
         public ModuleResolver(TModule module, IDependencyContainer container, IRegistry registry)
         {
             this.module = module;
@@ -33,6 +42,9 @@ namespace ModuleInject.Modules
             this.registry = registry;
         }
 
+        /// <summary>
+        /// Contains all checks that should be executed before the module is resolved.
+        /// </summary>
         public void CheckBeforeResolve()
         {
             Type moduleInterfaceType = typeof(IModule);
@@ -40,6 +52,26 @@ namespace ModuleInject.Modules
             if (!moduleInterfaceType.IsInterface)
             {
                 throw new ModuleInjectException("Modules must always have an Interface");
+            }
+        }
+
+        public void TryAddRegistrationHooks()
+        {
+            var registrationHooks = this.registry.GetRegistrationHooks().Where(h => h.AppliesToModule(this.module));
+            if (!registrationHooks.Any())
+            {
+                return;
+            }
+
+            foreach (var registrationContext in this.module.GetRegistrationContexts()) 
+            {
+                foreach (var registrationHook in registrationHooks)
+                {
+                    if(registrationHook.AppliesToRegistration(registrationContext))
+                    {
+                        registrationHook.Execute(registrationContext);
+                    }
+                }
             }
         }
 

@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 
 using ModuleInject.Interfaces.Fluent;
-using ModuleInject.Modules.Fluent;
 
-namespace ModuleInject.Hooks
+namespace ModuleInject.Interfaces.Hooks
 {
     /// <summary>
     /// Flags to desribe to which components a <see cref="IRegistrationHook" /> should apply.
