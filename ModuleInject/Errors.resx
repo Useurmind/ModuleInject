@@ -175,6 +175,9 @@ The properties are: '{1}'</value>
   <data name="ModuleResolver_PropertyWithoutExternalAttribute" xml:space="preserve">
     <value>The property '{0}' of module with type '{1}' is already set before resolving it despite not being marked with ExternalComponentAttribute. Please set the ExternalComponentAttribute if the property is set outside the resolution process of the module itself.</value>
   </data>
+  <data name="Module_RegistrationHookDoesNotApply" xml:space="preserve">
+    <value>The registration hook of type '{1}' can not be added to the module of type '{0}' because it does not apply to it.</value>
+  </data>
   <data name="RegistrationContext_ConstructorAlreadyCalled" xml:space="preserve">
     <value>The constructor of component '{0}' in module of type '{1}' was already injected before.</value>
   </data>

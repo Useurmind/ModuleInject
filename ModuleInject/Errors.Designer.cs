@@ -206,6 +206,15 @@ namespace ModuleInject {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The registration hook of type &apos;{1}&apos; can not be added to the module of type &apos;{0}&apos; because it does not apply to it..
+        /// </summary>
+        internal static string Module_RegistrationHookDoesNotApply {
+            get {
+                return ResourceManager.GetString("Module_RegistrationHookDoesNotApply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The property &apos;{0}&apos; of module with type &apos;{1}&apos; could not be resolved. Neither the module nor the registry of the module contained the component. Did you inject a property that was neither a member of the modules interface nor marked with the PrivateComponentAttribute? Did you forget to put the component into the registry or setting the registry of the module?.
         /// </summary>
         internal static string ModuleResolver_MissingPropertyRegistration {

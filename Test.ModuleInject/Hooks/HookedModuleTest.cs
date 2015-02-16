@@ -4,6 +4,7 @@ using ModuleInject.Interfaces;
 using ModuleInject.Interfaces.Fluent;
 using ModuleInject.Modularity.Registry;
 using ModuleInject.Modules;
+using ModuleInject.Hooks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,8 @@ namespace Test.ModuleInject.Hooks
     {
         private TestModule module;
         private StandardRegistry registry;
-        private List<IRegistrationContext> hookedRegistrations;
+        private List<IRegistrationContext> registrationsHookedFromRegistry;
+        private List<IRegistrationContext> registrationsHookedFromModule;
 
         private interface IHookedComponent { }
         private interface ITestComponent1 { }
@@ -118,8 +120,15 @@ namespace Test.ModuleInject.Hooks
         [SetUp]
         public void Init()
         {
-            this.hookedRegistrations = new List<IRegistrationContext>();
+            this.registrationsHookedFromModule = new List<IRegistrationContext>();
+            this.registrationsHookedFromRegistry = new List<IRegistrationContext>();
             this.module = new TestModule();
+            this.module.AddRegistrationHook<IHookedComponent, IHookedModule>(ctx =>
+            {
+                Assert.AreEqual(0, this.module.ResolvedComponents);
+                this.registrationsHookedFromModule.Add(ctx.Context);
+            });
+
             this.registry = new StandardRegistry();
             this.registry.AddRegistrationHook<IHookedComponent, IHookedModule>(ctx =>
             {
@@ -127,7 +136,7 @@ namespace Test.ModuleInject.Hooks
                 {
                     Assert.AreEqual(0, this.module.ResolvedComponents);
                 }
-                this.hookedRegistrations.Add(ctx.Context);
+                this.registrationsHookedFromRegistry.Add(ctx.Context);
             });
             this.module.Registry = this.registry;
         }
@@ -136,36 +145,44 @@ namespace Test.ModuleInject.Hooks
         public void Resolve_PrivateHookedComponent_WasHooked()
         {
             this.module.Resolve();
-            var results = GetHookedRegistration<TestComponent1, TestModule>(this.module.GetProperty(x => x.PrivateHookedComponent));
+            var resultsFromRegistry = GetRegistrationsFromRegistry<TestComponent1, TestModule>(this.module.GetProperty(x => x.PrivateHookedComponent));
+            var resultsFromModule = GetRegistrationsFromModule<TestComponent1, TestModule>(this.module.GetProperty(x => x.PrivateHookedComponent));
 
-            Assert.AreEqual(1, results.Count());
+            Assert.AreEqual(1, resultsFromRegistry.Count());
+            Assert.AreEqual(1, resultsFromModule.Count());
         }
 
         [Test]
         public void Resolve_GetHookedComponentPrivate_WasHooked()
         {
             this.module.Resolve();
-            var results = GetHookedRegistration<TestComponent1, TestModule>(this.module.GetMethod(x => x.GetHookedComponentPrivate()));
+            var resultsFromRegistry = GetRegistrationsFromRegistry<TestComponent1, TestModule>(this.module.GetMethod(x => x.GetHookedComponentPrivate()));
+            var resultsFromModule = GetRegistrationsFromModule<TestComponent1, TestModule>(this.module.GetMethod(x => x.GetHookedComponentPrivate()));
 
-            Assert.AreEqual(1, results.Count());
+            Assert.AreEqual(1, resultsFromRegistry.Count());
+            Assert.AreEqual(1, resultsFromModule.Count());
         }
 
         [Test]
         public void Resolve_GetNonHookedComponentPrivate_WasNotHooked()
         {
             this.module.Resolve();
-            var results = GetHookedRegistration<TestComponent2, TestModule>(this.module.GetMethod(x => x.GetNonHookedComponentPrivate()));
+            var resultsFromRegistry = GetRegistrationsFromRegistry<TestComponent2, TestModule>(this.module.GetMethod(x => x.GetNonHookedComponentPrivate()));
+            var resultsFromModule = GetRegistrationsFromModule<TestComponent2, TestModule>(this.module.GetMethod(x => x.GetNonHookedComponentPrivate()));
 
-            Assert.AreEqual(0, results.Count());
+            Assert.AreEqual(0, resultsFromRegistry.Count());
+            Assert.AreEqual(0, resultsFromModule.Count());
         }
 
         [Test]
         public void Resolve_GetHookedComponentPublic_WasHooked()
         {
             this.module.Resolve();
-            var results = GetHookedRegistration<TestComponent1, TestModule>(this.module.GetMethod(x => x.GetHookedComponentPublic()));
+            var resultsFromRegistry = GetRegistrationsFromRegistry<TestComponent1, TestModule>(this.module.GetMethod(x => x.GetHookedComponentPublic()));
+            var resultsFromModule = GetRegistrationsFromModule<TestComponent1, TestModule>(this.module.GetMethod(x => x.GetHookedComponentPublic()));
 
-            Assert.AreEqual(1, results.Count());
+            Assert.AreEqual(1, resultsFromRegistry.Count());
+            Assert.AreEqual(1, resultsFromModule.Count());
         }
 
 
@@ -173,59 +190,81 @@ namespace Test.ModuleInject.Hooks
         public void Resolve_PrivateNonHookedComponent_WasNotHooked()
         {
             this.module.Resolve();
-            var results = GetHookedRegistration<TestComponent2, TestModule>(this.module.GetProperty(x => x.PrivateNonHookedComponent));
+            var resultsFromRegistry = GetRegistrationsFromRegistry<TestComponent2, TestModule>(this.module.GetProperty(x => x.PrivateNonHookedComponent));
+            var resultsFromModule = GetRegistrationsFromModule<TestComponent2, TestModule>(this.module.GetProperty(x => x.PrivateNonHookedComponent));
 
-            Assert.AreEqual(0, results.Count());
+            Assert.AreEqual(0, resultsFromRegistry.Count());
+            Assert.AreEqual(0, resultsFromModule.Count());
         }
 
         [Test]
         public void Resolve_PublicHookedComponent_WasHooked()
         {
             this.module.Resolve();
-            var results = GetHookedRegistration<TestComponent1, TestModule>(this.module.GetProperty(x => x.PublicHookedComponent));
+            var resultsFromRegistry = GetRegistrationsFromRegistry<TestComponent1, TestModule>(this.module.GetProperty(x => x.PublicHookedComponent));
+            var resultsFromModule = GetRegistrationsFromModule<TestComponent1, TestModule>(this.module.GetProperty(x => x.PublicHookedComponent));
 
-            Assert.AreEqual(1, results.Count());
+            Assert.AreEqual(1, resultsFromRegistry.Count());
+            Assert.AreEqual(1, resultsFromModule.Count());
         }
 
         [Test]
         public void Resolve_HookedSubModule_WasNotHooked()
         {
             this.module.Resolve();
-            var results = GetHookedRegistration<SubTestModule1, TestModule>(this.module.GetProperty(x => x.HookedSubModule));
+            var resultsFromRegistry = GetRegistrationsFromRegistry<SubTestModule1, TestModule>(this.module.GetProperty(x => x.HookedSubModule));
+            var resultsFromModule = GetRegistrationsFromModule<SubTestModule1, TestModule>(this.module.GetProperty(x => x.HookedSubModule));
 
-            Assert.AreEqual(0, results.Count());
+            Assert.AreEqual(0, resultsFromRegistry.Count());
+            Assert.AreEqual(0, resultsFromModule.Count());
         }
 
         [Test]
         public void Resolve_NonHookedSubModule_WasNotHooked()
         {
             this.module.Resolve();
-            var results = GetHookedRegistration<SubTestModule2, TestModule>(this.module.GetProperty(x => x.NonHookedSubModule));
+            var resultsFromRegistry = GetRegistrationsFromRegistry<SubTestModule2, TestModule>(this.module.GetProperty(x => x.NonHookedSubModule));
+            var resultsFromModule = GetRegistrationsFromModule<SubTestModule2, TestModule>(this.module.GetProperty(x => x.NonHookedSubModule));
 
-            Assert.AreEqual(0, results.Count());
+            Assert.AreEqual(0, resultsFromRegistry.Count());
+            Assert.AreEqual(0, resultsFromModule.Count());
         }
 
         [Test]
         public void Resolve_HookedComponentInHookedSubmodule_WasHooked()
         {
             this.module.Resolve();
-            var results = GetHookedRegistration<TestComponent1, SubTestModule1>(this.module.HookedSubModule.GetProperty(x => x.HookedComponent));
+            var resultsFromRegistry = GetRegistrationsFromRegistry<TestComponent1, SubTestModule1>(this.module.HookedSubModule.GetProperty(x => x.HookedComponent));
+            var resultsFromModule = GetRegistrationsFromModule<TestComponent1, SubTestModule1>(this.module.HookedSubModule.GetProperty(x => x.HookedComponent));
 
-            Assert.AreEqual(1, results.Count());
+            Assert.AreEqual(1, resultsFromRegistry.Count());
+            Assert.AreEqual(0, resultsFromModule.Count());
         }
 
         [Test]
         public void Resolve_HookedComponentInNonHookedSubmodule_WasNotHooked()
         {
             this.module.Resolve();
-            var results = GetHookedRegistration<TestComponent1, SubTestModule2>(this.module.NonHookedSubModule.GetProperty(x => x.HookedComponent));
+            var resultsFromRegistry = GetRegistrationsFromRegistry<TestComponent1, SubTestModule2>(this.module.NonHookedSubModule.GetProperty(x => x.HookedComponent));
+            var resultsFromModule = GetRegistrationsFromModule<TestComponent1, SubTestModule2>(this.module.NonHookedSubModule.GetProperty(x => x.HookedComponent));
 
-            Assert.AreEqual(0, results.Count());
+            Assert.AreEqual(0, resultsFromRegistry.Count());
+            Assert.AreEqual(0, resultsFromModule.Count());
         }
 
-        private IEnumerable<IRegistrationContext> GetHookedRegistration<TComponet, TModule>(string componentName)
+        private IEnumerable<IRegistrationContext> GetRegistrationsFromRegistry<TComponet, TModule>(string componentName)
         {
-            var results = this.hookedRegistrations.Where(r =>
+            return GetRegistrationsFrom<TComponet, TModule>(this.registrationsHookedFromRegistry, componentName);
+        }
+
+        private IEnumerable<IRegistrationContext> GetRegistrationsFromModule<TComponet, TModule>(string componentName)
+        {
+            return GetRegistrationsFrom<TComponet, TModule>(this.registrationsHookedFromModule, componentName);
+        }
+
+        private IEnumerable<IRegistrationContext> GetRegistrationsFrom<TComponet, TModule>(IList<IRegistrationContext> hookedRegistrations, string componentName)
+        {
+            var results = hookedRegistrations.Where(r =>
             {
                 return r.RegistrationTypes.TComponent == typeof(TComponet)
                     && r.RegistrationTypes.TModule == typeof(TModule)

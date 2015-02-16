@@ -57,15 +57,17 @@ namespace ModuleInject.Modules
 
         public void TryAddRegistrationHooks()
         {
-            var registrationHooks = this.registry.GetRegistrationHooks().Where(h => h.AppliesToModule(this.module));
-            if (!registrationHooks.Any())
+            var registrationHooksFromRegistry = this.registry.GetRegistrationHooks().Where(h => h.AppliesToModule(this.module));
+            var registrationHooksFromModule = this.module.RegistrationHooks;
+            var allRegistrationHooks = registrationHooksFromModule.Union(registrationHooksFromRegistry);
+            if (!allRegistrationHooks.Any())
             {
                 return;
             }
 
             foreach (var registrationContext in this.module.GetRegistrationContexts()) 
             {
-                foreach (var registrationHook in registrationHooks)
+                foreach (var registrationHook in allRegistrationHooks)
                 {
                     if(registrationHook.AppliesToRegistration(registrationContext))
                     {

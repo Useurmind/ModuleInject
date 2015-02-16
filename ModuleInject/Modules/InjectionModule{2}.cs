@@ -71,7 +71,6 @@ namespace ModuleInject.Modules
         /// <inheritdoc />
         protected override void OnRegistryResolved(IRegistry usedRegistry)
         {
-
             CheckAllPropertiesAreValid();
 
             var resolver = new ModuleResolver<IModule, TModule>((TModule)(object)this, this.container, usedRegistry);

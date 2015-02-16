@@ -15,17 +15,17 @@ namespace ModuleInject.Modularity.Registry
     /// <summary>
     /// A simple registry module that implements type based resolution of entries.
     /// </summary>
-    public class StandardRegistry : RegistryBase
+    public class StandardRegistry : RegistryBase, IAddRegistrationHooksMixin
     {
         private const string componentName = "a";
-        private IList<IRegistrationHook> registrationHooks;
+        private ISet<IRegistrationHook> registrationHooks;
 
         protected IDependencyContainer Container { get; private set; }
 
         public StandardRegistry()
         {
             this.Container = new DependencyContainer();
-            this.registrationHooks = new List<IRegistrationHook>();
+            this.registrationHooks = new HashSet<IRegistrationHook>();
         }
 
         public override bool IsRegistered(Type type)
@@ -63,39 +63,5 @@ namespace ModuleInject.Modularity.Registry
         }
     }
 
-    public static class StandardRegistryExtensions
-    {
-        /// <summary>
-        /// Adds an interface injector registration hook to the module.
-        /// </summary>
-        /// <typeparam name="IComponent">The interface that a component must implement so that the hook is executed on it.</typeparam>
-        /// <typeparam name="IModule">The interface that a module must implement so that the hook is executed on it.</typeparam>
-        /// <param name="registry">The registy to add the hook to.</param>
-        /// <param name="injectInto">The action that contains the injection pattern for the component.</param>
-        public static void AddRegistrationHook<IComponent, IModule>(
-            this StandardRegistry registry,
-            Action<IInterfaceRegistrationContext<IComponent, IModule>> injectInto)
-            where IComponent : class
-            where IModule : class
-        {
-            registry.AddRegistrationHook(new InterfaceInjector<IComponent, IModule>(injectInto));
-        }
-
-        /// <summary>
-        /// Adds an interface injector registration hook to the module.
-        /// </summary>
-        /// <typeparam name="IComponent">The interface that a component must implement so that the hook is executed on it.</typeparam>
-        /// <typeparam name="IModule">The interface that a module must implement so that the hook is executed on it.</typeparam>
-        /// <param name="registry">The registy to add the hook to.</param>
-        /// <param name="interfaceInjector">The injector that should be executed for matching components.</param>
-        public static void AddRegistrationHook<IComponent, IModule>(
-            this StandardRegistry registry,
-            IInterfaceInjector<IComponent, IModule> interfaceInjector)
-            where IComponent : class
-            where IModule : class
-        {
-            var hook = new InterfaceInjectorRegistrationHook<IComponent, IModule>(interfaceInjector);
-            registry.AddRegistrationHook(hook);
-        }
-    }
+   
 }

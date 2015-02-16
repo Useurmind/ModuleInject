@@ -7,18 +7,26 @@ using ModuleInject.Common.Exceptions;
 using ModuleInject.Interfaces;
 using ModuleInject.Modularity.Registry;
 using ModuleInject.Modules;
+using ModuleInject.Interfaces.Hooks;
+using ModuleInject.Hooks;
 
 namespace ModuleInject.Modularity
 {
     /// <summary>
     /// Base class for all modules
     /// </summary>
-    public abstract class Module : IModule, IDisposable
+    public abstract class Module : IModule, IDisposable, IAddRegistrationHooksMixin
     {
         private IRegistry registry;
 
         private bool isResolved;
         private bool isResolving;
+        private ISet<IRegistrationHook> registrationHooks;
+
+        /// <summary>
+        /// Gets the registrations hooks that are registered for application in this module only.
+        /// </summary>
+        public IEnumerable<IRegistrationHook> RegistrationHooks { get { return this.registrationHooks; } }
 
         /// <summary>
         /// Gets a value indicating whether this instance is currently resolving.
@@ -76,8 +84,23 @@ namespace ModuleInject.Modularity
         public Module()
         {
             this.registry = new EmptyRegistry();
+            this.registrationHooks = new HashSet<IRegistrationHook>();
             this.isResolving = false;
             this.isResolved = false;
+        }
+
+        /// <summary>
+        /// Adds a registration hook to the module.
+        /// </summary>
+        /// <param name="registrationHook">The registration hook to add.</param>
+        public virtual void AddRegistrationHook(IRegistrationHook registrationHook)
+        {
+            if(!registrationHook.AppliesToModule(this))
+            {
+                ExceptionHelper.ThrowTypeException(this.GetType(), Errors.Module_RegistrationHookDoesNotApply, registrationHook.GetType());
+            }
+
+            this.registrationHooks.Add(registrationHook);
         }
 
         /// <inheritdoc />
