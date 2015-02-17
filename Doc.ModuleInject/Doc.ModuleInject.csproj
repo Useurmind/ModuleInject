@@ -233,6 +233,7 @@
     <Content Include="navigation.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="registration_hooks.md" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

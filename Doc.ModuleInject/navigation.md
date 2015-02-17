@@ -10,6 +10,7 @@
  * [Factory methods](factory_methods.md)
  * [Module trees](module_trees.md)
  * [Injectors](injectors.md)
+ * [Registration hooks](registration_hooks.md)
  * [Interceptors](interceptors.md)
  * [Dependency resolution](dependency_resolution.md)
  * [No container injection](nocontainer_injection.md) 
