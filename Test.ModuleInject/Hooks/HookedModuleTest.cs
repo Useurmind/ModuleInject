@@ -4,6 +4,7 @@ using ModuleInject.Interfaces;
 using ModuleInject.Interfaces.Fluent;
 using ModuleInject.Modularity.Registry;
 using ModuleInject.Modules;
+using ModuleInject.Modules.Fluent;
 using ModuleInject.Hooks;
 using NUnit.Framework;
 using System;
