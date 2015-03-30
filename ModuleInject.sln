@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModuleInject", "ModuleInject\ModuleInject.csproj", "{53221937-AEFF-477F-B132-91A5449C9738}"
 EndProject
@@ -31,6 +31,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModuleInject.Container.Interface", "ModuleInject.Container.Interface\ModuleInject.Container.Interface.csproj", "{2BE60231-EAD7-4330-B40E-FC21E97BAC66}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModuleInject.Interfaces", "ModuleInject.Interfaces\ModuleInject.Interfaces.csproj", "{F220AFE2-9601-4F1B-9C4B-4CA04089073B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Performance.ModuleInject", "Test.Performance.ModuleInject\Test.Performance.ModuleInject.csproj", "{940D99F2-73AE-48DF-976B-2056BE1E163F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -88,6 +90,12 @@ Global
 		{F220AFE2-9601-4F1B-9C4B-4CA04089073B}.NuGet Package|Any CPU.Build.0 = NuGet Package|Any CPU
 		{F220AFE2-9601-4F1B-9C4B-4CA04089073B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F220AFE2-9601-4F1B-9C4B-4CA04089073B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{940D99F2-73AE-48DF-976B-2056BE1E163F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{940D99F2-73AE-48DF-976B-2056BE1E163F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{940D99F2-73AE-48DF-976B-2056BE1E163F}.NuGet Package|Any CPU.ActiveCfg = Release|Any CPU
+		{940D99F2-73AE-48DF-976B-2056BE1E163F}.NuGet Package|Any CPU.Build.0 = Release|Any CPU
+		{940D99F2-73AE-48DF-976B-2056BE1E163F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{940D99F2-73AE-48DF-976B-2056BE1E163F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -102,6 +110,7 @@ Global
 		{40FE411F-66AE-49CF-91E4-285C7BC77F15} = {8861F23C-BDD2-4A55-8F42-CA9E38C3B6E0}
 		{2BE60231-EAD7-4330-B40E-FC21E97BAC66} = {680704D6-8901-4D30-9BF1-7B011C5EE4A1}
 		{F220AFE2-9601-4F1B-9C4B-4CA04089073B} = {680704D6-8901-4D30-9BF1-7B011C5EE4A1}
+		{940D99F2-73AE-48DF-976B-2056BE1E163F} = {8861F23C-BDD2-4A55-8F42-CA9E38C3B6E0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.Interception.2.1.505.2\lib\NET35
