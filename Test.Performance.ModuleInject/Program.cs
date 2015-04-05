@@ -13,6 +13,8 @@ namespace Test.Performance.ModuleInject
         {
             TestModuleType<TestInjectionModule>();
             TestModuleType<TestManualModule>();
+            TestModuleType<TestUnityModule>();
+            TestModuleType<TestAutofacModule>();
 
             Console.ReadLine();
         }
