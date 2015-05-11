@@ -26,8 +26,8 @@ namespace Test.ModuleInject.Injection
 		public void Create_Next_ReturnsNewInstanceEachTime()
 		{
 			object stubContext = null;
-			var factory = new Factory<object, ITestComponent, TestComponent>(stubContext)
-				.Create(ctx => new TestComponent());
+			var factory = new Factory<object, ITestComponent, TestComponent>(stubContext);
+			factory.Construct(ctx => new TestComponent());
 
 			var instance1 = factory.Next();
 			var instance2 = factory.Next();
@@ -42,15 +42,15 @@ namespace Test.ModuleInject.Injection
 		{
 			string stringValue = "Adfadhsdfghfd";
 			object stubContext = null;
-			var factory = new Factory<object, ITestComponent, TestComponent>(stubContext)
-				.Create(ctx => new TestComponent()
-				{
-					IntProperty = 5
-				})
-				.Inject((ctx, comp) =>
-				{
-					comp.StringProperty = stringValue;
-				});
+			var factory = new Factory<object, ITestComponent, TestComponent>(stubContext);
+			factory.Construct(ctx => new TestComponent()
+			{
+				IntProperty = 5
+			});
+			factory.Inject((ctx, comp) =>
+			{
+				comp.StringProperty = stringValue;
+			});
 
 			var instance = factory.Next();
 
@@ -65,9 +65,9 @@ namespace Test.ModuleInject.Injection
 			object stubContext = null;
 			var createdComponent = new TestComponent();
 			var changedComponent = new TestComponent();
-			var factory = new Factory<object, ITestComponent, TestComponent>(stubContext)
-				.Create(ctx => createdComponent)
-				.Change((ctx, comp) => changedComponent);
+			var factory = new Factory<object, ITestComponent, TestComponent>(stubContext);
+			factory.Construct(ctx => createdComponent);
+			factory.Change((ctx, comp) => changedComponent);
 
 			var instance = factory.Next();
 
@@ -83,21 +83,22 @@ namespace Test.ModuleInject.Injection
 			object injectContext = null;
 			object changeContext = null;
 
-			var factory = new Factory<object, ITestComponent, TestComponent>(stubContext)
-				.Create(ctx =>
-				{
-					createContext = ctx;
-					return new TestComponent();
-				})
-				.Inject((ctx, comp) =>
-				{
-					injectContext = ctx;
-				})
-				.Change((ctx, comp) =>
-				{
-					changeContext = ctx;
-					return comp;
-				});
+			var factory = new Factory<object, ITestComponent, TestComponent>(stubContext);
+			factory.Construct(ctx =>
+			{
+				createContext = ctx;
+				return new TestComponent();
+			});
+			factory
+			.Inject((ctx, comp) =>
+			{
+				injectContext = ctx;
+			});
+			factory.Change((ctx, comp) =>
+			{
+				changeContext = ctx;
+				return comp;
+			});
 
 			var instance = factory.Next();
 

@@ -5,37 +5,40 @@ using System.Text;
 
 namespace ModuleInject.Injection
 {
-	public class Factory<TContext, TIComponent, TComponent> : IFactory<TIComponent>
+	public sealed class Factory<TContext, TIComponent, TComponent> : IFactory<TIComponent>, IRegisterInjection<TContext, TIComponent, TComponent>
 		where TComponent : TIComponent
+		where TContext : class
 	{
 		private TContext context;
 		private Func<TContext, TComponent> constructInstance;
 		private IList<Action<TContext, TComponent>> injectInInstanceList;
 		private IList<Func<TContext, TIComponent, TIComponent>> changeInstanceList;
 
-		public Factory(TContext context)
+		public Factory(TContext context=null)
 		{
 			this.context = context;
 			this.injectInInstanceList = new List<Action<TContext, TComponent>>();
 			this.changeInstanceList = new List<Func<TContext, TIComponent, TIComponent>>();
 		}
 
-		public Factory<TContext, TIComponent, TComponent> Create(Func<TContext, TComponent> constructInstance)
+		public void SetContext(TContext context)
+		{
+			this.context = context;
+		}
+
+		public void Construct(Func<TContext, TComponent> constructInstance)
 		{
 			this.constructInstance = constructInstance;
-			return this;
 		}
 
-		public Factory<TContext, TIComponent, TComponent> Inject(Action<TContext, TComponent> injectInInstance)
+		public void Inject(Action<TContext, TComponent> injectInInstance)
 		{
 			this.injectInInstanceList.Add(injectInInstance);
-			return this;
 		}
 
-		public Factory<TContext, TIComponent, TComponent> Change(Func<TContext, TIComponent, TIComponent> changeInstance)
+		public void Change(Func<TContext, TIComponent, TIComponent> changeInstance)
 		{
 			this.changeInstanceList.Add(changeInstance);
-			return this;
 		}
 
 		public TIComponent Next()
