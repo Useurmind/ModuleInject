@@ -87,6 +87,10 @@
     <Compile Include="Hooks\InterfaceInjectorRegistrationHook.cs" />
     <Compile Include="Injection\Factory.cs" />
     <Compile Include="Injection\IFactory.cs" />
+    <Compile Include="Injection\InjectionModule.cs" />
+    <Compile Include="Injection\IRegisterInjection.cs" />
+    <Compile Include="Injection\ISingleton.cs" />
+    <Compile Include="Injection\Singleton.cs" />
     <Compile Include="Modularity\Module.cs" />
     <Compile Include="Modularity\RegistryResolver.cs" />
     <Compile Include="Modularity\Registry\AggregateRegistry.cs" />

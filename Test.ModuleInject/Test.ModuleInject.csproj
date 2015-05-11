@@ -103,6 +103,8 @@
     <Compile Include="Hooks\HookedModuleTest.cs" />
     <Compile Include="Hooks\InterfaceInjectorRegistrationHookTest.cs" />
     <Compile Include="Injection\FactoryTest.cs" />
+    <Compile Include="Injection\InjectionModuleTest.cs" />
+    <Compile Include="Injection\SingletonTest.cs" />
     <Compile Include="Modularity\ModuleTest.cs" />
     <Compile Include="Modules\AfterResolveModuleTest.cs" />
     <Compile Include="Modules\BehaviourModuleTest.cs" />
