@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ModuleInject.Injection
 {
-	public interface ISingleton<TComponent>
+	public interface ISingleton<TComponent> : IInstanceProvider<TComponent>
 	{
 		TComponent Instance { get; }
 	}
