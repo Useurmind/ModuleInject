@@ -29,8 +29,8 @@ namespace Test.ModuleInject.Injection
 			var factory = new Factory<object, ITestComponent, TestComponent>(stubContext);
 			factory.Construct(ctx => new TestComponent());
 
-			var instance1 = factory.Next();
-			var instance2 = factory.Next();
+			var instance1 = factory.GetInstance();
+			var instance2 = factory.GetInstance();
 
 			Assert.IsNotNull(instance1);
 			Assert.IsNotNull(instance2);
@@ -52,7 +52,7 @@ namespace Test.ModuleInject.Injection
 				comp.StringProperty = stringValue;
 			});
 
-			var instance = factory.Next();
+			var instance = factory.GetInstance();
 
 			Assert.IsNotNull(instance);
 			Assert.AreEqual(5, instance.IntProperty);
@@ -69,7 +69,7 @@ namespace Test.ModuleInject.Injection
 			factory.Construct(ctx => createdComponent);
 			factory.Change((ctx, comp) => changedComponent);
 
-			var instance = factory.Next();
+			var instance = factory.GetInstance();
 
 			Assert.IsNotNull(instance);
 			Assert.AreSame(changedComponent, instance);
@@ -100,7 +100,7 @@ namespace Test.ModuleInject.Injection
 				return comp;
 			});
 
-			var instance = factory.Next();
+			var instance = factory.GetInstance();
 
 			Assert.IsNotNull(instance);
 			Assert.AreSame(stubContext, createContext);

@@ -5,16 +5,16 @@ using System.Text;
 
 namespace ModuleInject.Injection
 {
-	public class Singleton<TContext, TIComponent, TComponent> : ISingleton<TIComponent>, IRegisterInjection<TContext, TIComponent, TComponent>
+	public class Singleton<TContext, TIComponent, TComponent> :
+		InjectionRegister<Singleton<TContext, TIComponent, TComponent>, TContext, TIComponent, TComponent>,
+        ISingleton<TIComponent>
 		where TComponent : TIComponent
 		where TContext : class
 	{
-		private Factory<TContext, TIComponent, TComponent> factory;
 		private TIComponent instance;
 
-		public Singleton(TContext context=null)
+		public Singleton(TContext context=null) : base(context)
 		{
-			factory = new Factory<TContext, TIComponent, TComponent>(context);
 		}
 
 		public TIComponent Instance
@@ -23,30 +23,15 @@ namespace ModuleInject.Injection
 			{
 				if (instance == null)
 				{
-					instance = factory.Next();
+					instance = CreateInstance();
 				}
 				return instance;
 			}
 		}
 
-		public void SetContext(TContext context)
+		public TIComponent GetInstance()
 		{
-			this.factory.SetContext(context);
-		}
-
-		public void Construct(Func<TContext, TComponent> constructInstance)
-		{
-			factory.Construct(constructInstance);
-		}
-
-		public void Inject(Action<TContext, TComponent> injectInInstance)
-		{
-			factory.Inject(injectInInstance);
-		}
-
-		public void Change(Func<TContext, TIComponent, TIComponent> changeInstance)
-		{
-			factory.Change(changeInstance);
+			return Instance;
 		}
 	}
 }

@@ -85,11 +85,13 @@
     <Compile Include="Hooks\AddRegistrationHooksMixin.cs" />
     <Compile Include="Hooks\DelegateRegistrationHook.cs" />
     <Compile Include="Hooks\InterfaceInjectorRegistrationHook.cs" />
+    <Compile Include="Injection\ConstructionContext.cs" />
     <Compile Include="Injection\Factory.cs" />
-    <Compile Include="Injection\IFactory.cs" />
+    <Compile Include="Injection\IInstanceProvider.cs" />
     <Compile Include="Injection\InjectionModule.cs" />
-    <Compile Include="Injection\IRegisterInjection.cs" />
+    <Compile Include="Injection\IInjectionRegister.cs" />
     <Compile Include="Injection\ISingleton.cs" />
+    <Compile Include="Injection\InjectionRegisterBase.cs" />
     <Compile Include="Injection\Singleton.cs" />
     <Compile Include="Modularity\Module.cs" />
     <Compile Include="Modularity\RegistryResolver.cs" />
