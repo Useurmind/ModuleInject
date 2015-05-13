@@ -1,4 +1,6 @@
 ﻿using Microsoft.Practices.Unity;
+
+using ModuleInject.Injection;
 using ModuleInject.Interfaces;
 using ModuleInject.Modularity;
 using ModuleInject.Modules;
@@ -49,6 +51,113 @@ namespace Test.Performance.ModuleInject
             RegisterPublicComponent<ITestComponent1>(x => x.Component8).Construct<TestComponent1>();
             RegisterPublicComponent<ITestComponent1>(x => x.Component9).Construct<TestComponent1>();
             RegisterPublicComponent<ITestComponent1>(x => x.Component10).Construct<TestComponent1>();
+        }
+    }
+
+    public class TestInjectionModuleV2 : InjectionModule<TestInjectionModuleV2>, ITestModule
+    {
+        private ISingleton<ITestComponent1> component1;
+
+        private ISingleton<ITestComponent1> component2;
+
+        private ISingleton<ITestComponent1> component3;
+
+        private ISingleton<ITestComponent1> component4;
+
+        private ISingleton<ITestComponent1> component5;
+
+        private ISingleton<ITestComponent1> component6;
+
+        private ISingleton<ITestComponent1> component7;
+
+        private ISingleton<ITestComponent1> component8;
+        private ISingleton<ITestComponent1> component9;
+
+        private ISingleton<ITestComponent1> component10;
+
+        public ITestComponent1 Component1
+        {
+            get
+            {
+                return component1.GetInstance();
+            }
+        }
+        public ITestComponent1 Component2
+        {
+            get
+            {
+                return component2.GetInstance();
+            }
+        }
+        public ITestComponent1 Component3
+        {
+            get
+            {
+                return component3.GetInstance();
+            }
+        }
+        public ITestComponent1 Component4
+        {
+            get
+            {
+                return component4.GetInstance();
+            }
+        }
+        public ITestComponent1 Component5
+        {
+            get
+            {
+                return component5.GetInstance();
+            }
+        }
+        public ITestComponent1 Component6
+        {
+            get
+            {
+                return component6.GetInstance();
+            }
+        }
+        public ITestComponent1 Component7
+        {
+            get
+            {
+                return component7.GetInstance();
+            }
+        }
+        public ITestComponent1 Component8
+        {
+            get
+            {
+                return component8.GetInstance();
+            }
+        }
+        public ITestComponent1 Component9
+        {
+            get
+            {
+                return component9.GetInstance();
+            }
+        }
+        public ITestComponent1 Component10
+        {
+            get
+            {
+                return component10.GetInstance();
+            }
+        }
+
+        public TestInjectionModuleV2()
+        {
+            component1 = Singleton<ITestComponent1>().Construct<TestComponent1>();
+            component2 = Singleton<ITestComponent1>().Construct<TestComponent1>();
+            component3 = Singleton<ITestComponent1>().Construct<TestComponent1>();
+            component4 = Singleton<ITestComponent1>().Construct<TestComponent1>();
+            component5 = Singleton<ITestComponent1>().Construct<TestComponent1>();
+            component6 = Singleton<ITestComponent1>().Construct<TestComponent1>();
+            component7 = Singleton<ITestComponent1>().Construct<TestComponent1>();
+            component8 = Singleton<ITestComponent1>().Construct<TestComponent1>();
+            component9 = Singleton<ITestComponent1>().Construct<TestComponent1>();
+            component10 = Singleton<ITestComponent1>().Construct<TestComponent1>();
         }
     }
 
