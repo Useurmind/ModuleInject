@@ -8,7 +8,7 @@ using System.Text;
 namespace Test.ModuleInject.Injection
 {
 	[TestFixture]
-	public class SingletonTest
+	public class SingleInstanceInstantiationStrategyTest
 	{
 		private interface ITestComponent
 		{
@@ -21,11 +21,10 @@ namespace Test.ModuleInject.Injection
 		[TestCase]
 		public void Instance_ReturnsAlwaysSameInstance()
 		{
-			var singelton = new Singleton<object, ITestComponent, TestComponent>(null);
-			singelton.Construct(ctx => new TestComponent());
+			var singelton = new SingleInstanceInstantiationStrategy<ITestComponent>();
 
-			var instance1 = singelton.Instance;
-			var instance2 = singelton.Instance;
+			var instance1 = singelton.GetInstance(() => new TestComponent());
+			var instance2 = singelton.GetInstance(() => new TestComponent());
 
 			Assert.IsNotNull(instance1);
 			Assert.AreSame(instance1, instance2);

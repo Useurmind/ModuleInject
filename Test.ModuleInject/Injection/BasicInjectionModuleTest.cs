@@ -64,7 +64,7 @@ namespace Test.ModuleInject.Injection
 				this.Number = number;
 			}
 		}
-		
+
 		private class TestSubComponent : ITestSubComponent
 		{
 			public ITestSubSubComponent SubSubComponent1 { get; set; }
@@ -76,13 +76,13 @@ namespace Test.ModuleInject.Injection
 
 		private class TestModule : InjectionModule<TestModule>
 		{
-			private IFactory<ITestComponent> component1;
-			private IFactory<ITestSubComponent> subComponent1;
-			private IFactory<ITestSubSubComponent> subSubComponent1;
-			
-			private ISingleton<ITestComponent> component2;
-			private ISingleton<ITestSubComponent> subComponent2;
-			private ISingleton<ITestSubSubComponent> subSubComponent2;
+			private ISourceOf<ITestComponent> component1;
+			private ISourceOf<ITestSubComponent> subComponent1;
+			private ISourceOf<ITestSubSubComponent> subSubComponent1;
+			private ISourceOf<ITestComponent> component2;
+			private ISourceOf<ITestSubComponent> subComponent2;
+			private ISourceOf<ITestSubSubComponent> subSubComponent2;
+
 
 			public ITestComponent Component1 { get { return component1.GetInstance(); } }
 			public ITestSubComponent SubComponent1 { get { return subComponent1.GetInstance(); } }
@@ -102,10 +102,10 @@ namespace Test.ModuleInject.Injection
 						SubSubComponent1 = m.SubSubComponent1
 					});
 
-				subSubComponent2 = Singleton<ITestSubSubComponent>()
+				subSubComponent2 = SingleInstance<ITestSubSubComponent>()
 					.Construct<TestSubSubComponent>();
 
-				subComponent2 = Singleton<ITestSubComponent>()
+				subComponent2 = SingleInstance<ITestSubComponent>()
 					.Construct(m => new TestSubComponent()
 					{
 						SubSubComponent1 = m.SubSubComponent2
@@ -116,7 +116,7 @@ namespace Test.ModuleInject.Injection
 			{
 				component1 = Factory<ITestComponent>()
 								.Construct(m => new TestComponent(m.SubComponent1));
-				component2 = Singleton<ITestComponent>()
+				component2 = SingleInstance<ITestComponent>()
 								.Construct(m => new TestComponent(m.SubComponent2));
 			}
 
@@ -125,7 +125,7 @@ namespace Test.ModuleInject.Injection
 				component1 = Factory<ITestComponent>()
 								.Construct(m => new TestComponent())
 								.Inject((m, c) => { c.SubComponent1 = m.SubComponent1; });
-				component2 = Singleton<ITestComponent>()
+				component2 = SingleInstance<ITestComponent>()
 								.Construct(m => new TestComponent())
 								.Inject((m, c) => { c.SubComponent1 = m.SubComponent2; });
 			}
@@ -135,7 +135,7 @@ namespace Test.ModuleInject.Injection
 				component1 = Factory<ITestComponent>()
 								.Construct(m => new TestComponent())
 								.Inject((m, c) => { c.Inject(m.SubComponent1); });
-				component2 = Singleton<ITestComponent>()
+				component2 = SingleInstance<ITestComponent>()
 								.Construct(m => new TestComponent())
 								.Inject((m, c) => { c.Inject(m.SubComponent2); });
 			}
@@ -146,7 +146,7 @@ namespace Test.ModuleInject.Injection
 								.Construct<TestComponent>()
 								.Inject((m, c) => { c.Inject(m.SubComponent1); })
 								.Change((m, c) => new TestComponentWrapper(1, c));
-				component2 = Singleton<ITestComponent>()
+				component2 = SingleInstance<ITestComponent>()
 								.Construct<TestComponent>()
 								.Inject((m, c) => { c.Inject(m.SubComponent2); })
 								.Change((m, c) => new TestComponentWrapper(1, c));
@@ -159,7 +159,7 @@ namespace Test.ModuleInject.Injection
 								.Inject((m, c) => { c.Inject(m.SubComponent1); })
 								.Change((m, c) => new TestComponentWrapper(1, c))
 								.Change((m, c) => new TestComponentWrapper(2, c));
-				component2 = Singleton<ITestComponent>()
+				component2 = SingleInstance<ITestComponent>()
 								.Construct<TestComponent>()
 								.Inject((m, c) => { c.Inject(m.SubComponent2); })
 								.Change((m, c) => new TestComponentWrapper(1, c))
@@ -175,7 +175,7 @@ namespace Test.ModuleInject.Injection
 								.Change((m, c) => new TestComponentWrapper(1, c))
 								.Change((m, c) => new TestComponentWrapper(2, c));
 
-				component2 = Singleton<ITestComponent>()
+				component2 = SingleInstance<ITestComponent>()
 								.Construct(m => new TestComponent(m.SubComponent2))
 								.Inject((m, c) => { c.Inject2(m.SubComponent2); })
 								.Inject((m, c) => { c.SubComponent3 = m.SubComponent2; })

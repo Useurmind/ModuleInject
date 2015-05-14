@@ -9,14 +9,26 @@ namespace ModuleInject.Injection
 	{
 	}
 
+	public interface IInject<TContext, TComponent>
+	{
+		void Inject(Action<TContext, TComponent> injectInInstance);
+	}
+
+	public interface IChange<TContext, TIComponent>
+	{
+		void Change(Func<TContext, TIComponent, TIComponent> changeInstance);
+	}
+
 	public interface IInjectionRegister<TContext, TIComponent, TComponent> : IInjectionRegister
 	{
-		IInjectionRegister<TContext, TIComponent, TComponent> SetContext(TContext context);
+		void SetContext(TContext context);
 
-		IInjectionRegister<TContext, TIComponent, TComponent> Construct(Func<TContext, TComponent> constructInstance);
+		void Construct(Func<TContext, TComponent> constructInstance);
 
-		IInjectionRegister<TContext, TIComponent, TComponent> Inject(Action<TContext, TComponent> injectInInstance);
+		void Inject(Action<TContext, TComponent> injectInInstance);
 
-		IInjectionRegister<TContext, TIComponent, TComponent> Change(Func<TContext, TIComponent, TIComponent> changeInstance);
+		void Change(Func<TContext, TIComponent, TIComponent> changeInstance);
+
+		TIComponent CreateInstance();
 	}
 }

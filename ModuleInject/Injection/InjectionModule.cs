@@ -22,14 +22,14 @@ namespace ModuleInject.Injection
 			this.injectionRegisters = new HashSet<IInjectionRegister>();
 		}
 
-		protected FactoryConstructionContext<TModule, TIComponent> Factory<TIComponent>()
+		protected ConstructionContext<TModule, TIComponent> Factory<TIComponent>()
 		{
-			return new FactoryConstructionContext<TModule, TIComponent>((TModule)this);
+			return new ConstructionContext<TModule, TIComponent>((TModule)this, new FactoryInstantiationStrategy<TIComponent>());
 		}
 
-		protected SingletonConstructionContext<TModule, TIComponent> Singleton<TIComponent>()
+		protected ConstructionContext<TModule, TIComponent> SingleInstance<TIComponent>()
 		{
-			return new SingletonConstructionContext<TModule, TIComponent>((TModule)this);
+			return new ConstructionContext<TModule, TIComponent>((TModule)this, new SingleInstanceInstantiationStrategy<TIComponent>());
 		}
 
 		protected override void OnRegistryResolved(IRegistry usedRegistry)

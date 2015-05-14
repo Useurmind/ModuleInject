@@ -56,24 +56,24 @@ namespace Test.Performance.ModuleInject
 
     public class TestInjectionModuleV2 : InjectionModule<TestInjectionModuleV2>, ITestModule
     {
-        private ISingleton<ITestComponent1> component1;
+        private ISourceOf<ITestComponent1> component1;
 
-        private ISingleton<ITestComponent1> component2;
+        private ISourceOf<ITestComponent1> component2;
 
-        private ISingleton<ITestComponent1> component3;
+        private ISourceOf<ITestComponent1> component3;
 
-        private ISingleton<ITestComponent1> component4;
+        private ISourceOf<ITestComponent1> component4;
 
-        private ISingleton<ITestComponent1> component5;
+        private ISourceOf<ITestComponent1> component5;
 
-        private ISingleton<ITestComponent1> component6;
+        private ISourceOf<ITestComponent1> component6;
 
-        private ISingleton<ITestComponent1> component7;
+        private ISourceOf<ITestComponent1> component7;
 
-        private ISingleton<ITestComponent1> component8;
-        private ISingleton<ITestComponent1> component9;
+        private ISourceOf<ITestComponent1> component8;
+        private ISourceOf<ITestComponent1> component9;
 
-        private ISingleton<ITestComponent1> component10;
+        private ISourceOf<ITestComponent1> component10;
 
         public ITestComponent1 Component1
         {
@@ -148,16 +148,16 @@ namespace Test.Performance.ModuleInject
 
         public TestInjectionModuleV2()
         {
-            component1 = Singleton<ITestComponent1>().Construct<TestComponent1>();
-            component2 = Singleton<ITestComponent1>().Construct<TestComponent1>();
-            component3 = Singleton<ITestComponent1>().Construct<TestComponent1>();
-            component4 = Singleton<ITestComponent1>().Construct<TestComponent1>();
-            component5 = Singleton<ITestComponent1>().Construct<TestComponent1>();
-            component6 = Singleton<ITestComponent1>().Construct<TestComponent1>();
-            component7 = Singleton<ITestComponent1>().Construct<TestComponent1>();
-            component8 = Singleton<ITestComponent1>().Construct<TestComponent1>();
-            component9 = Singleton<ITestComponent1>().Construct<TestComponent1>();
-            component10 = Singleton<ITestComponent1>().Construct<TestComponent1>();
+            component1 = SingleInstance<ITestComponent1>().Construct<TestComponent1>();
+            component2 = SingleInstance<ITestComponent1>().Construct<TestComponent1>();
+            component3 = SingleInstance<ITestComponent1>().Construct<TestComponent1>();
+            component4 = SingleInstance<ITestComponent1>().Construct<TestComponent1>();
+            component5 = SingleInstance<ITestComponent1>().Construct<TestComponent1>();
+            component6 = SingleInstance<ITestComponent1>().Construct<TestComponent1>();
+            component7 = SingleInstance<ITestComponent1>().Construct<TestComponent1>();
+            component8 = SingleInstance<ITestComponent1>().Construct<TestComponent1>();
+            component9 = SingleInstance<ITestComponent1>().Construct<TestComponent1>();
+            component10 = SingleInstance<ITestComponent1>().Construct<TestComponent1>();
         }
     }
 

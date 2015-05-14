@@ -5,12 +5,7 @@ using System.Text;
 
 namespace ModuleInject.Injection
 {
-	public interface IFactory<TIComponent> : IInstanceProvider<TIComponent>
-	{
-		TIComponent Next();
-	}
-
-	public interface IInstanceProvider<TIComponent>
+	public interface ISourceOf<TIComponent>
 	{
 		/// <summary>
 		/// Create an instance of the component.

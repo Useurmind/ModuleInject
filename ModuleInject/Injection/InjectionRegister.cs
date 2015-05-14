@@ -19,10 +19,9 @@ namespace ModuleInject.Injection
 		public Type ContextType { get; private set; }
 	}
 
-	public abstract class InjectionRegister<TSelf, TContext, TIComponent, TComponent> : InjectionRegister, IInjectionRegister<TContext, TIComponent, TComponent>
+	public class InjectionRegister<TContext, TIComponent, TComponent> : InjectionRegister, IInjectionRegister<TContext, TIComponent, TComponent>
 		where TComponent : TIComponent
 		where TContext : class
-		where TSelf :InjectionRegister<TSelf, TContext, TIComponent, TComponent>
     {
 		private TContext context;
 		private Func<TContext, TComponent> constructInstance;
@@ -36,48 +35,24 @@ namespace ModuleInject.Injection
 			this.changeInstanceList = new List<Func<TContext, TIComponent, TIComponent>>();
 		}
 
-		public TSelf SetContext(TContext context)
+		public void SetContext(TContext context)
 		{
 			this.context = context;
-			return (TSelf)this;
 		}
 
-		public TSelf Construct(Func<TContext, TComponent> constructInstance)
+		public void Construct(Func<TContext, TComponent> constructInstance)
 		{
 			this.constructInstance = constructInstance;
-			return (TSelf)this;
 		}
 
-		public TSelf Inject(Action<TContext, TComponent> injectInInstance)
+		public void Inject(Action<TContext, TComponent> injectInInstance)
 		{
 			this.injectInInstanceList.Add(injectInInstance);
-			return (TSelf)this;
 		}
 
-		public TSelf Change(Func<TContext, TIComponent, TIComponent> changeInstance)
+		public void Change(Func<TContext, TIComponent, TIComponent> changeInstance)
 		{
 			this.changeInstanceList.Add(changeInstance);
-			return (TSelf)this;
-		}
-
-		IInjectionRegister<TContext, TIComponent, TComponent> IInjectionRegister<TContext, TIComponent, TComponent>.SetContext(TContext context)
-		{
-			return this.SetContext(context);
-		}
-
-		IInjectionRegister<TContext, TIComponent, TComponent> IInjectionRegister<TContext, TIComponent, TComponent>.Construct(Func<TContext, TComponent> constructInstance)
-		{
-			return this.Construct(constructInstance);
-		}
-
-		IInjectionRegister<TContext, TIComponent, TComponent> IInjectionRegister<TContext, TIComponent, TComponent>.Inject(Action<TContext, TComponent> injectInInstance)
-		{
-			return this.Inject(injectInInstance);
-		}
-
-		IInjectionRegister<TContext, TIComponent, TComponent> IInjectionRegister<TContext, TIComponent, TComponent>.Change(Func<TContext, TIComponent, TIComponent> changeInstance)
-		{
-			return this.Change(changeInstance);
 		}
 
 		public TIComponent CreateInstance()
@@ -98,4 +73,15 @@ namespace ModuleInject.Injection
 			return usedInstance;
 		}
 	}
+
+	//public class WrappingInjectionRegister<TIModule, TModule, TIComponent, TIComponent2, TComponent> : IInject<TIModule, TIComponent2>
+	//	where TModule : TIModule
+	//	where TComponent : TIComponent2, TIComponent
+	//{
+	//	public WrappingInjectionRegister(IInjectionRegister<TModule, TIComponent, TComponent> injectionRegister)
+	//	{
+
+	//	}
+
+	//}
 }

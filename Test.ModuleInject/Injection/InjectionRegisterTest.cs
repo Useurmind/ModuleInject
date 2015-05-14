@@ -8,7 +8,7 @@ using System.Text;
 namespace Test.ModuleInject.Injection
 {
 	[TestFixture]
-	public class FactoryTest
+	public class InjectionRegisterTest
 	{
 		private interface ITestComponent
 		{
@@ -26,11 +26,11 @@ namespace Test.ModuleInject.Injection
 		public void Create_Next_ReturnsNewInstanceEachTime()
 		{
 			object stubContext = null;
-			var factory = new Factory<object, ITestComponent, TestComponent>(stubContext);
-			factory.Construct(ctx => new TestComponent());
+			var injectionRegister = new InjectionRegister<object, ITestComponent, TestComponent>(stubContext);
+			injectionRegister.Construct(ctx => new TestComponent());
 
-			var instance1 = factory.GetInstance();
-			var instance2 = factory.GetInstance();
+			var instance1 = injectionRegister.CreateInstance();
+			var instance2 = injectionRegister.CreateInstance();
 
 			Assert.IsNotNull(instance1);
 			Assert.IsNotNull(instance2);
@@ -42,17 +42,17 @@ namespace Test.ModuleInject.Injection
 		{
 			string stringValue = "Adfadhsdfghfd";
 			object stubContext = null;
-			var factory = new Factory<object, ITestComponent, TestComponent>(stubContext);
-			factory.Construct(ctx => new TestComponent()
+			var injectionRegister = new InjectionRegister<object, ITestComponent, TestComponent>(stubContext);
+			injectionRegister.Construct(ctx => new TestComponent()
 			{
 				IntProperty = 5
 			});
-			factory.Inject((ctx, comp) =>
+			injectionRegister.Inject((ctx, comp) =>
 			{
 				comp.StringProperty = stringValue;
 			});
 
-			var instance = factory.GetInstance();
+			var instance = injectionRegister.CreateInstance();
 
 			Assert.IsNotNull(instance);
 			Assert.AreEqual(5, instance.IntProperty);
@@ -65,11 +65,11 @@ namespace Test.ModuleInject.Injection
 			object stubContext = null;
 			var createdComponent = new TestComponent();
 			var changedComponent = new TestComponent();
-			var factory = new Factory<object, ITestComponent, TestComponent>(stubContext);
-			factory.Construct(ctx => createdComponent);
-			factory.Change((ctx, comp) => changedComponent);
+			var injectionRegister = new InjectionRegister<object, ITestComponent, TestComponent>(stubContext);
+			injectionRegister.Construct(ctx => createdComponent);
+			injectionRegister.Change((ctx, comp) => changedComponent);
 
-			var instance = factory.GetInstance();
+			var instance = injectionRegister.CreateInstance();
 
 			Assert.IsNotNull(instance);
 			Assert.AreSame(changedComponent, instance);
@@ -83,24 +83,23 @@ namespace Test.ModuleInject.Injection
 			object injectContext = null;
 			object changeContext = null;
 
-			var factory = new Factory<object, ITestComponent, TestComponent>(stubContext);
-			factory.Construct(ctx =>
+			var injectionRegister = new InjectionRegister<object, ITestComponent, TestComponent>(stubContext);
+			injectionRegister.Construct(ctx =>
 			{
 				createContext = ctx;
 				return new TestComponent();
 			});
-			factory
-			.Inject((ctx, comp) =>
+			injectionRegister.Inject((ctx, comp) =>
 			{
 				injectContext = ctx;
 			});
-			factory.Change((ctx, comp) =>
+			injectionRegister.Change((ctx, comp) =>
 			{
 				changeContext = ctx;
 				return comp;
 			});
 
-			var instance = factory.GetInstance();
+			var instance = injectionRegister.CreateInstance();
 
 			Assert.IsNotNull(instance);
 			Assert.AreSame(stubContext, createContext);

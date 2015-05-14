@@ -5,63 +5,36 @@ using System.Text;
 
 namespace ModuleInject.Injection
 {
-	public abstract class ConstructionContext<TModule, TIComponent>
+	public class ConstructionContext<TModule, TIComponent>
 		   where TModule : class, IInjectionModule
 	{
+		private IInstantiationStrategy<TIComponent> instantiationStrategy;
+
 		protected TModule Module { get; private set; }
 
-		public ConstructionContext(TModule module)
+		public ConstructionContext(TModule module, IInstantiationStrategy<TIComponent> instantiationStrategy)
 		{
 			this.Module = module;
-		}
-
-		protected void OnConstruct<TComponent>(IInjectionRegister<TModule, TIComponent, TComponent> createdInjectionRegister)
-		{
-			this.Module.RegisterInjectionRegister(createdInjectionRegister);
+			this.instantiationStrategy = instantiationStrategy;
         }
-	}
 
-	public class FactoryConstructionContext<TModule, TIComponent> : ConstructionContext<TModule, TIComponent>
-		where TModule : class, IInjectionModule
-	{
-		public FactoryConstructionContext(TModule module) : base(module)
-		{
-		}
-
-		public Factory<TModule, TIComponent, TComponent> Construct<TComponent>()
+		public SourceOf<TModule, TIComponent, TComponent> Construct<TComponent>()
 			where TComponent : TIComponent, new()
 		{
-			return this.Construct(m => new TComponent());
+			return this.Construct<TComponent>(m => new TComponent());
 		}
 
-		public Factory<TModule, TIComponent, TComponent> Construct<TComponent>(Func<TModule, TComponent> constructInstance)
+		public SourceOf<TModule, TIComponent, TComponent> Construct<TComponent>(Func<TModule, TComponent> constructInstance)
 			where TComponent : TIComponent
 		{
-			var factory = new Factory<TModule, TIComponent, TComponent>(Module);
-			factory.Construct(constructInstance);
-			return factory;
-		}
-	}
+			var injectionRegister = new InjectionRegister<TModule, TIComponent, TComponent>(Module);
+            var source = new SourceOf<TModule, TIComponent, TComponent>(injectionRegister, instantiationStrategy);
 
-	public class SingletonConstructionContext<TModule, TIComponent> : ConstructionContext<TModule, TIComponent>
-		where TModule : class, IInjectionModule
-	{
-		public SingletonConstructionContext(TModule module) : base(module)
-		{
-		}
+			source.Construct(constructInstance);
 
-		public Singleton<TModule, TIComponent, TComponent> Construct<TComponent>()
-			where TComponent : TIComponent, new()
-		{
-			return this.Construct(m => new TComponent());
-		}
+			this.Module.RegisterInjectionRegister(injectionRegister);
 
-		public Singleton<TModule, TIComponent, TComponent> Construct<TComponent>(Func<TModule, TComponent> constructInstance)
-			where TComponent : TIComponent
-		{
-			var singleton = new Singleton<TModule, TIComponent, TComponent>(Module);
-			singleton.Construct(constructInstance);
-			return singleton;
-		}
+			return source;
+        }
 	}
 }
