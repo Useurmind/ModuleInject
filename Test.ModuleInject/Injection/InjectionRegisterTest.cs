@@ -26,7 +26,8 @@ namespace Test.ModuleInject.Injection
 		public void Create_Next_ReturnsNewInstanceEachTime()
 		{
 			object stubContext = null;
-			var injectionRegister = new InjectionRegister<object, ITestComponent, TestComponent>(stubContext);
+			var injectionRegister = new InjectionRegister<object, ITestComponent, TestComponent>();
+			injectionRegister.SetContext(stubContext);
 			injectionRegister.Construct(ctx => new TestComponent());
 
 			var instance1 = injectionRegister.CreateInstance();
@@ -42,7 +43,8 @@ namespace Test.ModuleInject.Injection
 		{
 			string stringValue = "Adfadhsdfghfd";
 			object stubContext = null;
-			var injectionRegister = new InjectionRegister<object, ITestComponent, TestComponent>(stubContext);
+			var injectionRegister = new InjectionRegister<object, ITestComponent, TestComponent>();
+			injectionRegister.SetContext(stubContext);
 			injectionRegister.Construct(ctx => new TestComponent()
 			{
 				IntProperty = 5
@@ -65,7 +67,8 @@ namespace Test.ModuleInject.Injection
 			object stubContext = null;
 			var createdComponent = new TestComponent();
 			var changedComponent = new TestComponent();
-			var injectionRegister = new InjectionRegister<object, ITestComponent, TestComponent>(stubContext);
+			var injectionRegister = new InjectionRegister<object, ITestComponent, TestComponent>();
+			injectionRegister.SetContext(stubContext);
 			injectionRegister.Construct(ctx => createdComponent);
 			injectionRegister.Change((ctx, comp) => changedComponent);
 
@@ -83,7 +86,8 @@ namespace Test.ModuleInject.Injection
 			object injectContext = null;
 			object changeContext = null;
 
-			var injectionRegister = new InjectionRegister<object, ITestComponent, TestComponent>(stubContext);
+			var injectionRegister = new InjectionRegister<object, ITestComponent, TestComponent>();
+			injectionRegister.SetContext(stubContext);
 			injectionRegister.Construct(ctx =>
 			{
 				createContext = ctx;

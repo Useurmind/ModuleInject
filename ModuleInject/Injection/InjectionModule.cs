@@ -9,7 +9,7 @@ namespace ModuleInject.Injection
 {
 	public interface IInjectionModule
 	{
-		void RegisterInjectionRegister<TModule, TIComponent, TComponent>(IInjectionRegister<TModule, TIComponent, TComponent> injectionRegister);
+		void RegisterInjectionRegister(IInjectionRegister injectionRegister);
     }
 
 	public class InjectionModule<TModule> : Module, IInjectionModule
@@ -37,7 +37,7 @@ namespace ModuleInject.Injection
 
 		}
 
-		public void RegisterInjectionRegister<TModule, TIComponent, TComponent>(IInjectionRegister<TModule, TIComponent, TComponent> injectionRegister)
+		public void RegisterInjectionRegister(IInjectionRegister injectionRegister)
 		{
 			this.injectionRegisters.Add(injectionRegister);
 		}

@@ -27,12 +27,13 @@ namespace ModuleInject.Injection
 		public SourceOf<TModule, TIComponent, TComponent> Construct<TComponent>(Func<TModule, TComponent> constructInstance)
 			where TComponent : TIComponent
 		{
-			var injectionRegister = new InjectionRegister<TModule, TIComponent, TComponent>(Module);
+			var injectionRegister = new InjectionRegister<TModule, TIComponent, TComponent>();
             var source = new SourceOf<TModule, TIComponent, TComponent>(injectionRegister, instantiationStrategy);
 
+			source.SetContext(Module);
 			source.Construct(constructInstance);
 
-			this.Module.RegisterInjectionRegister(injectionRegister);
+			this.Module.RegisterInjectionRegister(injectionRegister.Register);
 
 			return source;
         }

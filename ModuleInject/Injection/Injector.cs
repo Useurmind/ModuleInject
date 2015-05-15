@@ -5,12 +5,24 @@ using System.Text;
 
 namespace ModuleInject.Injection
 {
-	public interface IInjector<TContext, TComponent>
+	public interface IInterfaceInjector<TIContext, TIComponent>
 	{
-		void Execute(IInject<TContext, TComponent> injectionRegister);
+		void InjectInto(IInterfaceInjectionRegister<TIContext, TIComponent> injectionRegister);
 	}
 
-	//public class Injector<TContext, TComponent> : IInjector<TContext, TComponent>
-	//{
-	//}
+	public class InterfaceInjector<TIContext, TIComponent> : IInterfaceInjector<TIContext, TIComponent>
+	{
+
+		private Action<IInterfaceInjectionRegister<TIContext, TIComponent>> _injectInto;
+
+		public InterfaceInjector(Action<IInterfaceInjectionRegister<TIContext, TIComponent>> injectInto)
+		{
+			this._injectInto = injectInto;
+		}
+
+		public void InjectInto(IInterfaceInjectionRegister<TIContext, TIComponent> context)
+		{
+			this._injectInto(context);
+		}
+	}
 }
