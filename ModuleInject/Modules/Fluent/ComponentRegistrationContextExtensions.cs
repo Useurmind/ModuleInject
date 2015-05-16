@@ -121,40 +121,6 @@ namespace ModuleInject.Modules.Fluent
         }
 
         public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
-            AddInterfaceInjection<IComponent, TComponent, IModule, TModule>(
-            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> componentContext,
-            Action<IInterfaceRegistrationContext<IComponent, IModule, TModule>> injectInto)
-            where TComponent : IComponent
-            where TModule : IModule
-            where IModule : Interfaces.IModule
-        {
-            CommonFunctions.CheckNullArgument("injectInto", injectInto);
-
-            InterfaceInjector<IComponent, IModule, TModule> injector =
-                new InterfaceInjector<IComponent, IModule, TModule>(injectInto);
-
-            componentContext.AddInjector(injector);
-            return componentContext;
-        }
-
-        public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
-            AddInterfaceInjection<IComponent, TComponent, IModule, TModule, IComponentBase, IModuleBase>(
-            this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> componentContext,
-            Action<IInterfaceRegistrationContext<IComponentBase, IModuleBase>> injectInto)
-            where TComponent : IComponent, IComponentBase
-            where TModule : IModule, IModuleBase
-            where IModule : Interfaces.IModule
-        {
-            CommonFunctions.CheckNullArgument("injectInto", injectInto);
-
-            InterfaceInjector<IComponentBase, IModuleBase> injector =
-                new InterfaceInjector<IComponentBase, IModuleBase>(injectInto);
-
-            componentContext.AddInjector(injector);
-            return componentContext;
-        }
-
-        public static IComponentRegistrationContext<IComponent, TComponent, IModule, TModule>
             AlsoRegisterFor<IComponent, TComponent, IModule, TModule, IComponent2>(
             this IComponentRegistrationContext<IComponent, TComponent, IModule, TModule> componentContext,
             Expression<Func<TModule, IComponent2>> secondModuleProperty)

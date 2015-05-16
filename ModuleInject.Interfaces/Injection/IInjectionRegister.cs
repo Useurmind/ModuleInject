@@ -3,13 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ModuleInject.Injection
+namespace ModuleInject.Interfaces.Injection
 {
+	public interface IWrapInjectionRegister
+	{
+		IInjectionRegister Register { get; }
+	}
+
 	public interface IInjectionRegister
 	{
 		Type ComponentInterface { get; }
 		Type ComponentType { get; }
 		Type ContextType { get; }
+
+		IEnumerable<object> MetaData { get; }
 
 		void SetContext(object context);
 
@@ -21,19 +28,23 @@ namespace ModuleInject.Injection
 
 		void Change(Func<object, object> changeInstance);
 
+		void AddMeta(object metaData);
+
 		object CreateInstance();
 	}
 
-	public interface IInterfaceInjectionRegister<TIContext, TIComponent>
+	public interface IInterfaceInjectionRegister<TIContext, TIComponent> : IWrapInjectionRegister
 	{
 		void Inject(Action<TIContext, TIComponent> injectInInstance);
 
 		void Change(Func<TIContext, TIComponent, TIComponent> changeInstance);
 
 		void Change(Func<TIComponent, TIComponent> changeInstance);
+
+		void AddMeta<T>(T metaData);
 	}
 
-	public interface IInjectionRegister<TContext, TIComponent, TComponent>
+	public interface IInjectionRegister<TContext, TIComponent, TComponent> : IWrapInjectionRegister
 	{
 		void SetContext(TContext context);
 
@@ -44,6 +55,8 @@ namespace ModuleInject.Injection
 		void Change(Func<TContext, TIComponent, TIComponent> changeInstance);
 
 		void Change(Func<TIComponent, TIComponent> changeInstance);
+
+		void AddMeta<T>(T metaData);
 
 		TIComponent CreateInstance();
 	}

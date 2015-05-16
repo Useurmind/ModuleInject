@@ -2,6 +2,7 @@
 
 using ModuleInject.Injection;
 using ModuleInject.Interfaces;
+using ModuleInject.Interfaces.Injection;
 using ModuleInject.Modularity;
 using ModuleInject.Modules;
 using System;

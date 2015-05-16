@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModuleInject.Interfaces.Injection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace ModuleInject.Injection
 		private Func<object, object> constructInstance;
 		private IList<Action<object, object>> injectInInstanceList;
 		private IList<Func<object, object, object>> changeInstanceList;
+		private ISet<object> metaData;
 
 		public InjectionRegister(Type contextType, Type componentInterface, Type componentType)
 		{
@@ -25,6 +27,8 @@ namespace ModuleInject.Injection
 		public Type ComponentInterface { get; private set; }
 		public Type ComponentType { get; private set; }
 		public Type ContextType { get; private set; }
+
+		public IEnumerable<object> MetaData { get { return this.metaData; } }
 
 		public void SetContext(object context)
 		{
@@ -49,6 +53,11 @@ namespace ModuleInject.Injection
 		public void Change(Func<object, object> changeInstance)
 		{
 			this.Change((ctx, comp) => changeInstance(comp));
+		}
+
+		public void AddMeta(object metaData)
+		{
+			this.metaData.Add(metaData);
 		}
 
 		public object CreateInstance()
@@ -93,6 +102,11 @@ namespace ModuleInject.Injection
 		{
 			this.Register.Inject((ctx, comp) => injectInInstance((TIContext)ctx, (TIComponent)comp));
 		}
+
+		public void AddMeta<T>(T metaData)
+		{
+			this.Register.AddMeta(metaData);
+		}		
 	}
 
 	public class InjectionRegister<TContext, TIComponent, TComponent> : IInjectionRegister<TContext, TIComponent, TComponent>
@@ -148,6 +162,11 @@ namespace ModuleInject.Injection
 		public void Change(Func<TIComponent, TIComponent> changeInstance)
 		{
 			this.Change((ctx, comp) => changeInstance(comp));
+		}
+
+		public void AddMeta<T>(T metaData)
+		{
+			this.Register.AddMeta(metaData);
 		}
 
 		public TIComponent CreateInstance()

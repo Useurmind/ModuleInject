@@ -1,6 +1,8 @@
-﻿using ModuleInject.Hooks;
+﻿using ModuleInject.Injection;
+using ModuleInject.Injection.Hooks;
 using ModuleInject.Interfaces;
 using ModuleInject.Interfaces.Fluent;
+using ModuleInject.Interfaces.Injection;
 using ModuleInject.Modularity;
 using ModuleInject.Modules.Fluent;
 using Moq;
@@ -28,9 +30,14 @@ namespace Test.ModuleInject.Hooks
             }
         }
 
-        private class TestModule2 { }
+		private class TestModule2 : Module
+		{
+			protected override void OnRegistryResolved(IRegistry usedRegistry)
+			{
+			}
+		}
 
-        private class TestModule3 : TestModule1 { }
+		private class TestModule3 : TestModule1 { }
 
         private class TestComponent1 : IHookedComponent
         {
@@ -46,7 +53,7 @@ namespace Test.ModuleInject.Hooks
         [Test]
         public void AppliesToModule_ForSimpleImplementingModule_ReturnsTrue()
         {
-            var hook = new InterfaceInjectorRegistrationHook<IHookedComponent, IHookedModule>(null);
+            var hook = new InterfaceInjectorRegistrationHook<IHookedModule, IHookedComponent>(null);
 
             var result = hook.AppliesToModule(new TestModule1());
 
@@ -56,7 +63,7 @@ namespace Test.ModuleInject.Hooks
         [Test]
         public void AppliesToModule_ForNonImplementingModule_ReturnsFalse()
         {
-            var hook = new InterfaceInjectorRegistrationHook<IHookedComponent, IHookedModule>(null);
+            var hook = new InterfaceInjectorRegistrationHook<IHookedModule, IHookedComponent>(null);
 
             var result = hook.AppliesToModule(new TestModule2());
 
@@ -66,7 +73,7 @@ namespace Test.ModuleInject.Hooks
         [Test]
         public void AppliesToModule_ForInheritingImplementingModule_ReturnsTrue()
         {
-            var hook = new InterfaceInjectorRegistrationHook<IHookedComponent, IHookedModule>(null);
+            var hook = new InterfaceInjectorRegistrationHook<IHookedModule, IHookedComponent>(null);
 
             var result = hook.AppliesToModule(new TestModule3());
 
@@ -76,16 +83,13 @@ namespace Test.ModuleInject.Hooks
         [Test]
         public void AppliesToComponent_ForSimpleImplemetingComponent_ReturnsTrue()
         {
-            var hook = new InterfaceInjectorRegistrationHook<IHookedComponent, IHookedModule>(null);
-            var registrationContext = new RegistrationContext("asd", new TestModule1(), null, new RegistrationTypes()
-            {
-                IComponent = typeof(IHookedComponent),
-                TComponent = typeof(TestComponent1),
-                IModule = typeof(IHookedModule),
-                TModule = typeof(TestModule1)
-            });
+            var hook = new InterfaceInjectorRegistrationHook<IHookedModule, IHookedComponent>(null);
+            var injectionRegister = new InjectionRegister(typeof(TestModule1), typeof(IHookedComponent), typeof(TestComponent1));
 
-            var result = hook.AppliesToRegistration(registrationContext);
+			injectionRegister.SetContext(new TestModule1());
+			injectionRegister.AddMeta("asd");
+
+            var result = hook.AppliesToRegistration(injectionRegister);
 
             Assert.IsTrue(result);
         }
@@ -93,16 +97,13 @@ namespace Test.ModuleInject.Hooks
         [Test]
         public void AppliesToComponent_ForSimpleNonImplemetingComponent_ReturnsFalse()
         {
-            var hook = new InterfaceInjectorRegistrationHook<IHookedComponent, IHookedModule>(null);
-            var registrationContext = new RegistrationContext("asd", new TestModule1(), null, new RegistrationTypes()
-            {
-                IComponent = typeof(INonHookedComponent2),
-                TComponent = typeof(TestComponent2),
-                IModule = typeof(IHookedModule),
-                TModule = typeof(TestModule1)
-            });
+            var hook = new InterfaceInjectorRegistrationHook<IHookedModule, IHookedComponent>(null);
+			var injectionRegister = new InjectionRegister(typeof(TestModule1), typeof(INonHookedComponent2), typeof(TestComponent2));
 
-            var result = hook.AppliesToRegistration(registrationContext);
+			injectionRegister.SetContext(new TestModule1());
+			injectionRegister.AddMeta("asd");
+
+			var result = hook.AppliesToRegistration(injectionRegister);
 
             Assert.IsFalse(result);
         }
@@ -110,15 +111,15 @@ namespace Test.ModuleInject.Hooks
         [Test]
         public void Execute__InjectIntoCalled()
         {
-            IInterfaceRegistrationContext<IHookedComponent, IHookedModule> usedContext = null;
-            var injector = new InterfaceInjector<IHookedComponent, IHookedModule>(ctx => usedContext = ctx);
-            var registrationContextMock = new Mock<IRegistrationContext>();
-            var hook = new InterfaceInjectorRegistrationHook<IHookedComponent, IHookedModule>(injector);
+            IInterfaceInjectionRegister<IHookedModule, IHookedComponent> usedContext = null;
+            var injector = new InterfaceInjector<IHookedModule, IHookedComponent>(ctx => usedContext = ctx);
+            var injectionRegisterMock = new Mock<IInjectionRegister>();
+            var hook = new InterfaceInjectorRegistrationHook<IHookedModule, IHookedComponent>(injector);
 
-            hook.Execute(registrationContextMock.Object);
+            hook.Execute(injectionRegisterMock.Object);
 
             Assert.IsNotNull(usedContext);
-            Assert.AreSame(registrationContextMock.Object, usedContext.Context);
+            Assert.AreSame(injectionRegisterMock.Object, usedContext.Register);
         }
     }
 }

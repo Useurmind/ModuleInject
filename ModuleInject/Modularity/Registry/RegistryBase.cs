@@ -4,7 +4,6 @@ using System.Linq;
 using ModuleInject.Common.Disposing;
 using ModuleInject.Interfaces;
 using System.Collections.Generic;
-using ModuleInject.Hooks;
 using ModuleInject.Interfaces.Hooks;
 
 namespace ModuleInject.Modularity.Registry

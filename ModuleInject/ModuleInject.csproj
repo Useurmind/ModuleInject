@@ -82,15 +82,13 @@
       <DependentUpon>Errors.resx</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Hooks\AddRegistrationHooksMixin.cs" />
-    <Compile Include="Hooks\DelegateRegistrationHook.cs" />
-    <Compile Include="Hooks\InterfaceInjectorRegistrationHook.cs" />
     <Compile Include="Injection\ConstructionContext.cs" />
+    <Compile Include="Injection\Hooks\AddRegistrationHooksMixin.cs" />
+    <Compile Include="Injection\Hooks\DelegateRegistrationHook.cs" />
+    <Compile Include="Injection\Hooks\InterfaceInjectorRegistrationHook.cs" />
     <Compile Include="Injection\IInstantiationStrategy.cs" />
     <Compile Include="Injection\Injector.cs" />
-    <Compile Include="Injection\ISourceOf.cs" />
     <Compile Include="Injection\InjectionModule.cs" />
-    <Compile Include="Injection\IInjectionRegister.cs" />
     <Compile Include="Injection\InjectionRegister.cs" />
     <Compile Include="Injection\SourceOf.cs" />
     <Compile Include="Modularity\Module.cs" />
@@ -112,7 +110,6 @@
     <Compile Include="Modules\Fluent\DependencyInjectionContext{5}.cs" />
     <Compile Include="Modules\Fluent\InterfaceDependencyInjectionContextExtensions.cs" />
     <Compile Include="Modules\Fluent\InterfaceDependencyInjectionContext{4}.cs" />
-    <Compile Include="Modules\Fluent\InterfaceInjector.cs" />
     <Compile Include="Modules\Fluent\InterfaceRegistrationContextExtensions{2}.cs" />
     <Compile Include="Modules\Fluent\InterfaceRegistrationContextExtensions{3}.cs" />
     <Compile Include="Modules\Fluent\InterfaceRegistrationContext{2}.cs" />

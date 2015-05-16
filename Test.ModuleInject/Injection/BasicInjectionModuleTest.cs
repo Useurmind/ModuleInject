@@ -1,4 +1,5 @@
 ﻿using ModuleInject.Injection;
+using ModuleInject.Interfaces.Injection;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;

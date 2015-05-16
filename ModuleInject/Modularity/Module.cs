@@ -6,9 +6,8 @@ using System.Text;
 using ModuleInject.Common.Exceptions;
 using ModuleInject.Interfaces;
 using ModuleInject.Modularity.Registry;
-using ModuleInject.Modules;
+using ModuleInject.Injection.Hooks;
 using ModuleInject.Interfaces.Hooks;
-using ModuleInject.Hooks;
 
 namespace ModuleInject.Modularity
 {

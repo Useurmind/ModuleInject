@@ -1,13 +1,14 @@
 ﻿using ModuleInject.Interfaces;
 using ModuleInject.Interfaces.Fluent;
 using ModuleInject.Interfaces.Hooks;
+using ModuleInject.Interfaces.Injection;
 using ModuleInject.Modules.Fluent;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ModuleInject.Hooks
+namespace ModuleInject.Injection.Hooks
 {
     /// <summary>
     /// Interface for classes that should allow the addition of registration hooks.
@@ -26,17 +27,17 @@ namespace ModuleInject.Hooks
         /// <summary>
         /// Adds an interface injector registration hook to the instance.
         /// </summary>
-        /// <typeparam name="IComponent">The interface that a component must implement so that the hook is executed on it.</typeparam>
-        /// <typeparam name="IModule">The interface that a module must implement so that the hook is executed on it.</typeparam>
+        /// <typeparam name="TIComponent">The interface that a component must implement so that the hook is executed on it.</typeparam>
+        /// <typeparam name="TIModule">The interface that a module must implement so that the hook is executed on it.</typeparam>
         /// <param name="hookedInstance">The instance to add the hook to.</param>
         /// <param name="injectInto">The action that contains the injection pattern for the component.</param>
-        public static void AddRegistrationHook<IComponent, IModule>(
+        public static void AddRegistrationHook<TIModule, TIComponent>(
             this IAddRegistrationHooksMixin hookedInstance,
-            Action<IInterfaceRegistrationContext<IComponent, IModule>> injectInto)
-            where IComponent : class
-            where IModule : class
+            Action<IInterfaceInjectionRegister<TIModule, TIComponent>> injectInto)
+            where TIComponent : class
+            where TIModule : class
         {
-            hookedInstance.AddRegistrationHook(new InterfaceInjector<IComponent, IModule>(injectInto));
+            hookedInstance.AddRegistrationHook(new InterfaceInjector<TIModule, TIComponent>(injectInto));
         }
 
         /// <summary>

@@ -4,15 +4,17 @@ using ModuleInject.Decoration;
 using ModuleInject.Interfaces;
 using ModuleInject.Modules;
 using ModuleInject.Modules.Fluent;
+using ModuleInject.Injection;
+using ModuleInject.Interfaces.Injection;
 
 namespace Test.ModuleInject.Modules.TestModules
 {
-    public class PureInterfaceInjector : InterfaceInjector<IMainComponent1Sub, ISomeModuleProperties>
+    public class PureInterfaceInjector : InterfaceInjector<ISomeModuleProperties, IMainComponent1Sub>
     {
         public PureInterfaceInjector()
             : base(context =>
             {
-                context.Inject(x => x.MainComponent2).IntoProperty(x => x.MainComponent2);
+                context.Inject((m, c) => c.MainComponent2 = m.MainComponent2);
             })
         {
 
@@ -31,44 +33,47 @@ namespace Test.ModuleInject.Modules.TestModules
         IMainComponent1 CreateMainComponent1();
     }
 
-    public class PureInterfaceInjectionModule : InjectionModule<IPureInterfaceInjectionModule, PureInterfaceInjectionModule>, IPureInterfaceInjectionModule, ISomeModuleProperties
+    public class PureInterfaceInjectionModule : InjectionModule<PureInterfaceInjectionModule>, IPureInterfaceInjectionModule, ISomeModuleProperties
     {
-        public IMainComponent1 MainComponent1 { get; private set; }
+		private ISourceOf<IMainComponent1> mainComponent1;
+		private ISourceOf<IMainComponent1> mainComponent1Factory;
+		private ISourceOf<IMainComponent2> mainComponent2;
+
+		public IMainComponent1 MainComponent1 { get { return mainComponent1.GetInstance(); } }
 
         public IMainComponent1 CreateMainComponent1()
         {
-            return this.CreateInstance(x => x.CreateMainComponent1());
+			return mainComponent1Factory.GetInstance();
         }
+		
+        public IMainComponent2 MainComponent2 { get { return mainComponent2.GetInstance(); } }
 
-        [PrivateComponent]
-        public IMainComponent2 MainComponent2 { get; private set;}
-
-        public PureInterfaceInjectionModule()
+		public PureInterfaceInjectionModule()
         {
-            this.RegisterPrivateComponent(x => x.MainComponent2).Construct<MainComponent2>();
+			mainComponent2 = SingleInstance<IMainComponent2>().Construct<MainComponent2>();
 
             this.RegisterComponentWithInjector();
         }
 
         public void RegisterComponentWithInjector()
         {
-            this.RegisterPublicComponent(x => x.MainComponent1)
-                .Construct<MainComponent1>()
-                .AddInjector(new PureInterfaceInjector());
+			mainComponent1 = SingleInstance<IMainComponent1>()
+				.Construct<MainComponent1>()
+				.AddInjector(new PureInterfaceInjector());
         }
 
         public void RegisterInstanceWithInjector()
         {
-            this.RegisterPublicComponent(x => x.MainComponent1)
-                .Construct(new MainComponent1())
-                .AddInjector(new PureInterfaceInjector());
+			mainComponent1 = SingleInstance<IMainComponent1>()
+				.Construct(m => new MainComponent1())
+				.AddInjector(new PureInterfaceInjector());
         }
 
         public void RegisterFactoryWithInjector()
         {
-            this.RegisterPublicComponentFactory(x => x.CreateMainComponent1())
-                .Construct<MainComponent1>()
-                .AddInjector(new PureInterfaceInjector());
+			mainComponent1Factory = Factory<IMainComponent1>()
+				.Construct<MainComponent1>()
+				.AddInjector(new PureInterfaceInjector());
         }
     }
 }

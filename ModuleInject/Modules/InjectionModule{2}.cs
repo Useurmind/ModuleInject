@@ -77,8 +77,6 @@ namespace ModuleInject.Modules
 
             resolver.CheckBeforeResolve();
 
-            resolver.TryAddRegistrationHooks();
-
             resolver.ResolveSubmodules();
 
             resolver.ResolveComponents();

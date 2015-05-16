@@ -66,6 +66,8 @@
     <Compile Include="IClassInjector.cs" />
     <Compile Include="IModule.cs" />
     <Compile Include="IInterfaceInjector.cs" />
+    <Compile Include="Injection\IInjectionRegister.cs" />
+    <Compile Include="Injection\ISourceOf.cs" />
     <Compile Include="IRegistry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

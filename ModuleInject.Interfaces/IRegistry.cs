@@ -1,15 +1,13 @@
 ﻿using System.Linq;
 
+using System;
+
+using ModuleInject.Interfaces.Disposing;
+using System.Collections.Generic;
+using ModuleInject.Interfaces.Hooks;
+
 namespace ModuleInject.Interfaces
 {
-    using System;
-
-    using ModuleInject.Interfaces.Disposing;
-    using System.Collections.Generic;
-    using ModuleInject.Interfaces.Hooks;
-
-
-
     /// <summary>
     /// Interface for a registry that is used to distribute components over
     /// a tree of modules.
