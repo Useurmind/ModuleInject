@@ -45,7 +45,9 @@ namespace Test.ModuleInject.Hooks
 
 			public SubTestModule1()
 			{
-				hookedComponent = SingleInstance<ITestComponent1>().Construct<TestComponent1>();
+				hookedComponent = SingleInstance<ITestComponent1>()
+					.Construct<TestComponent1>()
+					.AddMeta(this.GetProperty(x => x.HookedComponent));
 			}
 		}
 		private interface ISubTestModule2 : IModule
@@ -60,7 +62,9 @@ namespace Test.ModuleInject.Hooks
 
 			public SubTestModule2()
 			{
-				hookedComponent = SingleInstance<ITestComponent1>().Construct<TestComponent1>();
+				hookedComponent = SingleInstance<ITestComponent1>()
+					.Construct<TestComponent1>()
+					.AddMeta(this.GetProperty(x => x.HookedComponent));
 			}
 		}
 
@@ -139,6 +143,8 @@ namespace Test.ModuleInject.Hooks
 				var c = PrivateNonHookedComponent;
 
 				var d = GetHookedComponentPrivate();
+				var e = GetNonHookedComponentPrivate();
+				var f = GetHookedComponentPublic();
 			}
 
 			protected override void OnComponentResolved(ObjectResolvedContext context)
@@ -154,14 +160,14 @@ namespace Test.ModuleInject.Hooks
 			this.registrationsHookedFromModule = new List<IInjectionRegister>();
 			this.registrationsHookedFromRegistry = new List<IInjectionRegister>();
 			this.module = new TestModule();
-			this.module.AddRegistrationHook<IHookedComponent, IHookedModule>(ctx =>
+			this.module.AddRegistrationHook<IHookedModule, IHookedComponent>(ctx =>
 			{
 				Assert.AreEqual(0, this.module.ResolvedComponents);
 				this.registrationsHookedFromModule.Add(ctx.Register);
 			});
 
 			this.registry = new StandardRegistry();
-			this.registry.AddRegistrationHook<IHookedComponent, IHookedModule>(ctx =>
+			this.registry.AddRegistrationHook<IHookedModule, IHookedComponent>(ctx =>
 			{
 				if (ctx.Register.ContextType == this.module.GetType())
 				{

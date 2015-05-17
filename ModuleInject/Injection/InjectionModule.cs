@@ -41,8 +41,8 @@ namespace ModuleInject.Injection
 
 		protected override void OnRegistryResolved(IRegistry usedRegistry)
 		{
-
-		}
+			TryAddRegistrationHooks(usedRegistry);
+        }
 
 		protected virtual void OnComponentResolved(ObjectResolvedContext context)
 		{
