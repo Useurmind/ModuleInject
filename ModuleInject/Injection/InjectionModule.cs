@@ -9,13 +9,6 @@ using ModuleInject.Interfaces.Injection;
 
 namespace ModuleInject.Injection
 {
-	public class ObjectResolvedContext
-	{
-		public Type ComponentInterface { get; set; }
-		public Type ComponentType { get; set; }
-		public Object Instance { get; set; }
-	}
-
 	public interface IInjectionModule
 	{
 		void RegisterInjectionRegister(IInjectionRegister injectionRegister);
@@ -33,12 +26,17 @@ namespace ModuleInject.Injection
 
 		protected ConstructionContext<TModule, TIComponent> Factory<TIComponent>()
 		{
-			return new ConstructionContext<TModule, TIComponent>((TModule)this, new FactoryInstantiationStrategy<TIComponent>());
+			return SourceOf<TIComponent>(new FactoryInstantiationStrategy<TIComponent>());
 		}
 
 		protected ConstructionContext<TModule, TIComponent> SingleInstance<TIComponent>()
 		{
-			return new ConstructionContext<TModule, TIComponent>((TModule)this, new SingleInstanceInstantiationStrategy<TIComponent>());
+			return SourceOf<TIComponent>(new SingleInstanceInstantiationStrategy<TIComponent>());
+		}
+
+		protected ConstructionContext<TModule, TIComponent> SourceOf<TIComponent>(IInstantiationStrategy<TIComponent> instantiationStrategy)
+		{
+			return new ConstructionContext<TModule, TIComponent>((TModule)this, instantiationStrategy);
 		}
 
 		protected override void OnRegistryResolved(IRegistry usedRegistry)
@@ -52,6 +50,7 @@ namespace ModuleInject.Injection
 
 		public void RegisterInjectionRegister(IInjectionRegister injectionRegister)
 		{
+			injectionRegister.OnResolve(context => this.OnComponentResolved(context));
 			this.injectionRegisters.Add(injectionRegister);
 		}
 

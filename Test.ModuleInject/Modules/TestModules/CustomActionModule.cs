@@ -3,38 +3,40 @@
 using ModuleInject.Decoration;
 using ModuleInject.Modules;
 using ModuleInject.Modules.Fluent;
+using ModuleInject.Injection;
+using ModuleInject.Interfaces.Injection;
 
 namespace Test.ModuleInject.Modules.TestModules
 {
-    internal class CustomActionModule : InjectionModule<IEmptyModule, CustomActionModule>, IEmptyModule
-    {
-        [PrivateComponent]
-        public IMainComponent1 MainComponent1 { get; private set; }
+	internal class CustomActionModule : InjectionModule<CustomActionModule>, IEmptyModule
+	{
+		public ISourceOf<IMainComponent1> mainComponent1;
 
-        [NonModuleProperty]
-        public IMainComponent2 MainComponent2 { get; private set; }
+		public IMainComponent1 MainComponent1 { get { return mainComponent1.GetInstance(); } }
 
-        public CustomActionModule()
-        {
-            this.MainComponent2 = new MainComponent2();
-        }
+		public IMainComponent2 MainComponent2 { get; private set; }
 
-        public void RegisterWithClosure_ConstructFromType()
-        {
-            this.RegisterPrivateComponent(x => x.MainComponent1)
-                .Construct<MainComponent1>()
-                .AddCustomAction(c => c.MainComponent2 = this.MainComponent2);
-        }
+		public CustomActionModule()
+		{
+			this.MainComponent2 = new MainComponent2();
+		}
 
-        public void RegisterInInterfaceInjector_ConstructFromInstance()
-        {
-            this.RegisterPrivateComponent(x => x.MainComponent1)
-                .Construct(new MainComponent1())
-                .AddInterfaceInjection<IMainComponent1, MainComponent1, IEmptyModule, CustomActionModule, IMainComponent1, IEmptyModule>(
-                (context) =>
-                {
-                    context.AddCustomAction(c => c.MainComponent2 = this.MainComponent2);
-                });
-        }
-    }
+		public void RegisterWithClosure_ConstructFromType()
+		{
+			mainComponent1 = SingleInstance<IMainComponent1>()
+				.Construct<MainComponent1>()
+				.Inject((m, c) => c.MainComponent2 = this.MainComponent2);
+		}
+
+		public void RegisterInInterfaceInjector_ConstructFromInstance()
+		{
+			mainComponent1 = SingleInstance<IMainComponent1>()
+				 .Construct<MainComponent1>()
+				 .AddInjector(new InterfaceInjector<IEmptyModule, IMainComponent1>(
+					(context) =>
+					{
+						context.Inject((m, c) => c.MainComponent2 = this.MainComponent2);
+					}));
+		}
+	}
 }

@@ -11,7 +11,7 @@ namespace Test.ModuleInject.Modules.TestModules
     {
         int InjectedValue { get;  }
         IMainComponent2 MainComponent22 { get; set;  }
-        IMainComponent2 MainComponent23 { get; }
+        IMainComponent2 MainComponent23 { get; set;  }
         ISubComponent1 SubComponent1 { get; }
 
         IMainComponent1 RecursiveComponent1 { get; }

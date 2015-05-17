@@ -12,6 +12,7 @@ namespace ModuleInject.Injection
 		private Func<object, object> constructInstance;
 		private IList<Action<object, object>> injectInInstanceList;
 		private IList<Func<object, object, object>> changeInstanceList;
+		private IList<Action<ObjectResolvedContext>> resolvedHandlers;
 		private ISet<object> metaData;
 
 		public InjectionRegister(Type contextType, Type componentInterface, Type componentType)
@@ -22,6 +23,8 @@ namespace ModuleInject.Injection
 
 			this.injectInInstanceList = new List<Action<object, object>>();
 			this.changeInstanceList = new List<Func<object, object, object>>();
+			this.metaData = new HashSet<object>();
+			this.resolvedHandlers = new List<Action<ObjectResolvedContext>>();
 		}
 
 		public Type ComponentInterface { get; private set; }
@@ -60,6 +63,11 @@ namespace ModuleInject.Injection
 			this.metaData.Add(metaData);
 		}
 
+		public void OnResolve(Action<ObjectResolvedContext> resolveHandler)
+		{
+			this.resolvedHandlers.Add(resolveHandler);
+        }
+
 		public object CreateInstance()
 		{
 			object instance = constructInstance(this.context);
@@ -73,6 +81,21 @@ namespace ModuleInject.Injection
 			foreach (var changeInstance in changeInstanceList)
 			{
 				usedInstance = changeInstance(this.context, usedInstance);
+			}
+
+			if (this.resolvedHandlers.Count > 0)
+			{
+				var resolvedContext = new ObjectResolvedContext()
+				{
+					ContextType = this.ContextType,
+					ComponentInterface = this.ComponentInterface,
+					ComponentType = this.ComponentType,
+					Instance = usedInstance
+				};
+				foreach (var resolvedHandler in this.resolvedHandlers)
+				{
+					resolvedHandler(resolvedContext);
+				}
 			}
 
 			return usedInstance;
@@ -106,7 +129,7 @@ namespace ModuleInject.Injection
 		public void AddMeta<T>(T metaData)
 		{
 			this.Register.AddMeta(metaData);
-		}		
+		}
 	}
 
 	public class InjectionRegister<TContext, TIComponent, TComponent> : IInjectionRegister<TContext, TIComponent, TComponent>
@@ -172,6 +195,22 @@ namespace ModuleInject.Injection
 		public TIComponent CreateInstance()
 		{
 			return (TIComponent)this.Register.CreateInstance();
+		}
+	}
+
+	public static class InjectionRegisterExtensions
+	{
+		public static IInjectionRegister<TContext, TIComponent, TComponent> AddInterfaceInjector<TContext, TIComponent, TComponent, TIContext, TIComponent2>(
+			this IInjectionRegister<TContext, TIComponent, TComponent> injectionRegister,
+			IInterfaceInjector<TIContext, TIComponent2> injector)
+			where TComponent : TIComponent, TIComponent2
+			where TContext : TIContext
+		{
+			var interfaceInjectionRegister = new InterfaceInjectionRegister<TIContext, TIComponent2>(injectionRegister.Register);
+
+			injector.InjectInto(interfaceInjectionRegister);
+
+			return injectionRegister;
 		}
 	}
 }

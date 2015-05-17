@@ -118,7 +118,7 @@ namespace Test.ModuleInject.Hooks
 				publicHookedComponent = SingleInstance<ITestComponent1>().Construct<TestComponent1>()
 					.AddMeta<string>(this.GetProperty(x => x.PublicHookedComponent));
 				privateHookedComponent = SingleInstance<ITestComponent1>().Construct<TestComponent1>()
-					.AddMeta<string>(this.GetProperty(x => x.privateHookedComponent));
+					.AddMeta<string>(this.GetProperty(x => x.PrivateHookedComponent));
 				privateNonHookedComponent = SingleInstance<ITestComponent2>().Construct<TestComponent2>()
 					.AddMeta<string>(this.GetProperty(x => x.PrivateNonHookedComponent));
 
@@ -128,6 +128,17 @@ namespace Test.ModuleInject.Hooks
 					.AddMeta<string>(this.GetMethod(x => x.GetNonHookedComponentPrivate()));
 				hookedComponentPublicFactory = Factory<ITestComponent1>().Construct<TestComponent1>()
 					.AddMeta<string>(this.GetMethod(x => x.GetHookedComponentPublic()));
+			}
+
+			protected override void OnResolved()
+			{
+				base.OnResolved();
+
+				var a = PublicHookedComponent;
+				var b = PrivateHookedComponent;
+				var c = PrivateNonHookedComponent;
+
+				var d = GetHookedComponentPrivate();
 			}
 
 			protected override void OnComponentResolved(ObjectResolvedContext context)

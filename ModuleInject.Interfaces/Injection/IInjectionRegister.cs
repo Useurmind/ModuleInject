@@ -5,6 +5,14 @@ using System.Text;
 
 namespace ModuleInject.Interfaces.Injection
 {
+	public class ObjectResolvedContext
+	{
+		public Type ContextType { get; set; }
+		public Type ComponentInterface { get; set; }
+		public Type ComponentType { get; set; }
+		public Object Instance { get; set; }
+	}
+
 	public interface IWrapInjectionRegister
 	{
 		IInjectionRegister Register { get; }
@@ -29,6 +37,8 @@ namespace ModuleInject.Interfaces.Injection
 		void Change(Func<object, object> changeInstance);
 
 		void AddMeta(object metaData);
+
+		void OnResolve(Action<ObjectResolvedContext> resolveHandler);
 
 		object CreateInstance();
 	}

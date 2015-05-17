@@ -27,7 +27,7 @@ namespace ModuleInject.Injection
 		protected abstract T CreateInstance();
 	}
 
-	public class SourceOf<TContext, TIComponent, TComponent> : SourceOf<TIComponent> : IWrapInjectionRegister
+	public class SourceOf<TContext, TIComponent, TComponent> : SourceOf<TIComponent>, IWrapInjectionRegister
 		where TComponent : TIComponent
 	{
 		private readonly IInjectionRegister<TContext, TIComponent, TComponent> injectionRegister;
