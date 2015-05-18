@@ -12,12 +12,13 @@ namespace ModuleInject.Injection
 	public interface IInjectionModule
 	{
 		void RegisterInjectionRegister(IInjectionRegister injectionRegister);
-    }
+	}
 
 	public class InjectionModule<TModule> : Module, IInjectionModule
 		where TModule : InjectionModule<TModule>
 	{
 		private ISet<IInjectionRegister> injectionRegisters;
+		private IRegistry usedRegistry;
 
 		public InjectionModule()
 		{
@@ -41,8 +42,10 @@ namespace ModuleInject.Injection
 
 		protected override void OnRegistryResolved(IRegistry usedRegistry)
 		{
-			TryAddRegistrationHooks(usedRegistry);
-        }
+			this.usedRegistry = usedRegistry;
+			TryAddRegistrationHooks();
+			TryAddModuleResolveHooks();
+		}
 
 		protected virtual void OnComponentResolved(ObjectResolvedContext context)
 		{
@@ -54,9 +57,9 @@ namespace ModuleInject.Injection
 			this.injectionRegisters.Add(injectionRegister);
 		}
 
-		public void TryAddRegistrationHooks(IRegistry usedRegistry)
+		public void TryAddRegistrationHooks()
 		{
-			var registrationHooksFromRegistry = usedRegistry.GetRegistrationHooks().Where(h => h.AppliesToModule(this));
+			var registrationHooksFromRegistry = this.usedRegistry.GetRegistrationHooks().Where(h => h.AppliesToModule(this));
 			var registrationHooksFromModule = this.RegistrationHooks;
 			var allRegistrationHooks = registrationHooksFromModule.Union(registrationHooksFromRegistry);
 			if (!allRegistrationHooks.Any())
@@ -73,6 +76,25 @@ namespace ModuleInject.Injection
 						registrationHook.Execute(injectionRegister);
 					}
 				}
+			}
+		}
+
+		private void TryAddModuleResolveHooks()
+		{
+			var moduleTypeName = typeof(IModule).Name;
+			var moduleInjectionRegisters = this.injectionRegisters.Where(reg => reg.ComponentType.GetInterface(moduleTypeName) != null);
+			foreach (var registeredModule in moduleInjectionRegisters)
+			{
+				registeredModule.OnResolve(this.OnRegisteredModuleResolved);
+			}
+		}
+
+		private void OnRegisteredModuleResolved(ObjectResolvedContext context)
+		{
+			var module = context.Instance as IModule;
+			if (module != null)
+			{
+				module.Resolve(this.usedRegistry);
 			}
 		}
 	}

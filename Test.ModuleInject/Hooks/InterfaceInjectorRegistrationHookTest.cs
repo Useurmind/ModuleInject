@@ -30,8 +30,11 @@ namespace Test.ModuleInject.Hooks
             }
         }
 
-		private class TestModule2
+		private class TestModule2 : Module
 		{
+			protected override void OnRegistryResolved(IRegistry usedRegistry)
+			{
+			}
 		}
 
 		private class TestModule3 : TestModule1 { }
@@ -57,7 +60,17 @@ namespace Test.ModuleInject.Hooks
             Assert.IsTrue(result);
         }
 
-        [Test]
+		[Test]
+		public void AppliesToModule_ForSimpleNonImplementingModule_ReturnsFalse()
+		{
+			var hook = new InterfaceInjectorRegistrationHook<IHookedModule, IHookedComponent>(null);
+
+			var result = hook.AppliesToModule(new TestModule2());
+
+			Assert.IsFalse(result);
+		}
+
+		[Test]
         public void AppliesToModule_ForInheritingImplementingModule_ReturnsTrue()
         {
             var hook = new InterfaceInjectorRegistrationHook<IHookedModule, IHookedComponent>(null);

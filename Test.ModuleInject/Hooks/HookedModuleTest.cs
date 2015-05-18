@@ -47,7 +47,7 @@ namespace Test.ModuleInject.Hooks
 			{
 				hookedComponent = SingleInstance<ITestComponent1>()
 					.Construct<TestComponent1>()
-					.AddMeta(this.GetProperty(x => x.HookedComponent));
+					.AddMeta<string>(this.GetProperty(x => x.HookedComponent));
 			}
 		}
 		private interface ISubTestModule2 : IModule
@@ -64,7 +64,7 @@ namespace Test.ModuleInject.Hooks
 			{
 				hookedComponent = SingleInstance<ITestComponent1>()
 					.Construct<TestComponent1>()
-					.AddMeta(this.GetProperty(x => x.HookedComponent));
+					.AddMeta<string>(this.GetProperty(x => x.HookedComponent));
 			}
 		}
 
@@ -290,22 +290,29 @@ namespace Test.ModuleInject.Hooks
 		}
 
 		private IEnumerable<IInjectionRegister> GetRegistrationsFromRegistry<TComponet, TModule>(string componentName)
+			where TModule : IModule
 		{
 			return GetRegistrationsFrom<TComponet, TModule>(this.registrationsHookedFromRegistry, componentName);
 		}
 
 		private IEnumerable<IInjectionRegister> GetRegistrationsFromModule<TComponet, TModule>(string componentName)
+			where TModule : IModule
 		{
 			return GetRegistrationsFrom<TComponet, TModule>(this.registrationsHookedFromModule, componentName);
 		}
 
 		private IEnumerable<IInjectionRegister> GetRegistrationsFrom<TComponet, TModule>(IList<IInjectionRegister> hookedRegistrations, string componentName)
+			where TModule : IModule
 		{
+			var componentType = typeof(TComponet);
+			var moduleType = typeof(TModule);
+			var componentName2 = componentName;
+
 			var results = hookedRegistrations.Where(r =>
 			{
-				return r.ComponentType == typeof(TComponet)
-					&& r.ContextType == typeof(TModule)
-					&& r.MetaData.Contains(componentName);
+				return r.ComponentType == componentType
+					&& r.ContextType == moduleType
+					&& r.MetaData.Contains(componentName2);
 			});
 
 			return results;

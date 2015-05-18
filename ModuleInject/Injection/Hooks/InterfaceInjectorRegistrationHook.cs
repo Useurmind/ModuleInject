@@ -29,7 +29,7 @@ namespace ModuleInject.Injection.Hooks
 
 		public bool AppliesToModule(IModule module)
 		{
-			return (module as IModule) != null;
+			return (module as TIModule) != null;
 		}
 		
 		public bool AppliesToRegistration(IInjectionRegister injectionRegister)
