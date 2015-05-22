@@ -80,70 +80,70 @@ namespace Test.Performance.ModuleInject
         {
             get
             {
-                return component1.GetInstance();
+                return component1.Get();
             }
         }
         public ITestComponent1 Component2
         {
             get
             {
-                return component2.GetInstance();
+                return component2.Get();
             }
         }
         public ITestComponent1 Component3
         {
             get
             {
-                return component3.GetInstance();
+                return component3.Get();
             }
         }
         public ITestComponent1 Component4
         {
             get
             {
-                return component4.GetInstance();
+                return component4.Get();
             }
         }
         public ITestComponent1 Component5
         {
             get
             {
-                return component5.GetInstance();
+                return component5.Get();
             }
         }
         public ITestComponent1 Component6
         {
             get
             {
-                return component6.GetInstance();
+                return component6.Get();
             }
         }
         public ITestComponent1 Component7
         {
             get
             {
-                return component7.GetInstance();
+                return component7.Get();
             }
         }
         public ITestComponent1 Component8
         {
             get
             {
-                return component8.GetInstance();
+                return component8.Get();
             }
         }
         public ITestComponent1 Component9
         {
             get
             {
-                return component9.GetInstance();
+                return component9.Get();
             }
         }
         public ITestComponent1 Component10
         {
             get
             {
-                return component10.GetInstance();
+                return component10.Get();
             }
         }
 

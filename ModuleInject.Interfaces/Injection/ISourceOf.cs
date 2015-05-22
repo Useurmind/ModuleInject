@@ -11,6 +11,6 @@ namespace ModuleInject.Interfaces.Injection
 		/// Create an instance of the component.
 		/// </summary>
 		/// <returns>The created instance.</returns>
-		TIComponent GetInstance();
+		TIComponent Get();
 	}
 }

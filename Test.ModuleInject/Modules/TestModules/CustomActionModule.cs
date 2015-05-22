@@ -12,7 +12,7 @@ namespace Test.ModuleInject.Modules.TestModules
 	{
 		public ISourceOf<IMainComponent1> mainComponent1;
 
-		public IMainComponent1 MainComponent1 { get { return mainComponent1.GetInstance(); } }
+		public IMainComponent1 MainComponent1 { get { return mainComponent1.Get(); } }
 
 		public IMainComponent2 MainComponent2 { get; private set; }
 

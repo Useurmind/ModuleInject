@@ -41,7 +41,7 @@ namespace Test.ModuleInject.Hooks
 		{
 			private ISourceOf<ITestComponent1> hookedComponent;
 
-			public ITestComponent1 HookedComponent { get { return hookedComponent.GetInstance(); } }
+			public ITestComponent1 HookedComponent { get { return hookedComponent.Get(); } }
 
 			public SubTestModule1()
 			{
@@ -58,7 +58,7 @@ namespace Test.ModuleInject.Hooks
 		{
 			private ISourceOf<ITestComponent1> hookedComponent;
 
-			public ITestComponent1 HookedComponent { get { return hookedComponent.GetInstance(); } }
+			public ITestComponent1 HookedComponent { get { return hookedComponent.Get(); } }
 
 			public SubTestModule2()
 			{
@@ -88,29 +88,29 @@ namespace Test.ModuleInject.Hooks
 
 			public int ResolvedComponents { get; private set; }
 
-			public ITestComponent1 PublicHookedComponent { get { return publicHookedComponent.GetInstance(); } }
+			public ITestComponent1 PublicHookedComponent { get { return publicHookedComponent.Get(); } }
 
-			public ITestComponent1 PrivateHookedComponent { get { return privateHookedComponent.GetInstance(); } }
+			public ITestComponent1 PrivateHookedComponent { get { return privateHookedComponent.Get(); } }
 
-			public ITestComponent2 PrivateNonHookedComponent { get { return privateNonHookedComponent.GetInstance(); } }
+			public ITestComponent2 PrivateNonHookedComponent { get { return privateNonHookedComponent.Get(); } }
 
-			public SubTestModule1 HookedSubModule { get { return hookedSubModule.GetInstance(); } }
+			public SubTestModule1 HookedSubModule { get { return hookedSubModule.Get(); } }
 
-			public SubTestModule2 NonHookedSubModule { get { return nonHookedSubModule.GetInstance(); } }
+			public SubTestModule2 NonHookedSubModule { get { return nonHookedSubModule.Get(); } }
 
 			public ITestComponent1 GetHookedComponentPrivate()
 			{
-				return hookedComponentPrivateFactory.GetInstance();
+				return hookedComponentPrivateFactory.Get();
 			}
 
 			public ITestComponent2 GetNonHookedComponentPrivate()
 			{
-				return nonHookedComponentPrivateFactory.GetInstance();
+				return nonHookedComponentPrivateFactory.Get();
 			}
 
 			public ITestComponent1 GetHookedComponentPublic()
 			{
-				return hookedComponentPublicFactory.GetInstance();
+				return hookedComponentPublicFactory.Get();
 			}
 
 			public TestModule()

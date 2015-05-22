@@ -22,11 +22,11 @@ namespace Test.ModuleInject.Modules.TestModules
 		private ISourceOf<IMainComponent2> component22;
 		private ISourceOf<IMainComponent2> component23;
 
-		public IMainComponent1 Component1 { get { return component1.GetInstance(); } }
+		public IMainComponent1 Component1 { get { return component1.Get(); } }
 
-        public IMainComponent2 Component2 { get { return component2.GetInstance(); } }
-        public IMainComponent2 Component22 { get { return component22.GetInstance(); } }
-        public IMainComponent2 Component23 { get { return component23.GetInstance(); } }
+        public IMainComponent2 Component2 { get { return component2.Get(); } }
+        public IMainComponent2 Component22 { get { return component22.Get(); } }
+        public IMainComponent2 Component23 { get { return component23.Get(); } }
 
         public InjectorModule()
         {

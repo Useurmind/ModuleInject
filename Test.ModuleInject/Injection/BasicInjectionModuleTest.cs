@@ -85,12 +85,12 @@ namespace Test.ModuleInject.Injection
 			private ISourceOf<ITestSubSubComponent> subSubComponent2;
 
 
-			public ITestComponent Component1 { get { return component1.GetInstance(); } }
-			public ITestSubComponent SubComponent1 { get { return subComponent1.GetInstance(); } }
-			public ITestSubSubComponent SubSubComponent1 { get { return subSubComponent1.GetInstance(); } }
-			public ITestComponent Component2 { get { return component2.GetInstance(); } }
-			public ITestSubComponent SubComponent2 { get { return subComponent2.GetInstance(); } }
-			public ITestSubSubComponent SubSubComponent2 { get { return subSubComponent2.GetInstance(); } }
+			public ITestComponent Component1 { get { return component1.Get(); } }
+			public ITestSubComponent SubComponent1 { get { return subComponent1.Get(); } }
+			public ITestSubSubComponent SubSubComponent1 { get { return subSubComponent1.Get(); } }
+			public ITestComponent Component2 { get { return component2.Get(); } }
+			public ITestSubComponent SubComponent2 { get { return subComponent2.Get(); } }
+			public ITestSubSubComponent SubSubComponent2 { get { return subSubComponent2.Get(); } }
 
 			public TestModule()
 			{

@@ -39,14 +39,14 @@ namespace Test.ModuleInject.Modules.TestModules
 		private ISourceOf<IMainComponent1> mainComponent1Factory;
 		private ISourceOf<IMainComponent2> mainComponent2;
 
-		public IMainComponent1 MainComponent1 { get { return mainComponent1.GetInstance(); } }
+		public IMainComponent1 MainComponent1 { get { return mainComponent1.Get(); } }
 
         public IMainComponent1 CreateMainComponent1()
         {
-			return mainComponent1Factory.GetInstance();
+			return mainComponent1Factory.Get();
         }
 		
-        public IMainComponent2 MainComponent2 { get { return mainComponent2.GetInstance(); } }
+        public IMainComponent2 MainComponent2 { get { return mainComponent2.Get(); } }
 
 		public PureInterfaceInjectionModule()
         {

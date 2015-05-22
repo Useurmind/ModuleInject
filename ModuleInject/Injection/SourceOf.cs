@@ -19,7 +19,7 @@ namespace ModuleInject.Injection
 			this.instantiationStrategy = instantiationStrategy;
 		}
 
-		public T GetInstance()
+		public T Get()
 		{
 			return instantiationStrategy.GetInstance(CreateInstance);
 		}
