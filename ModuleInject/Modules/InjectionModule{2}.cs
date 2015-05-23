@@ -29,6 +29,7 @@ namespace ModuleInject.Modules
     {
         private IList<RegistrationContext> registrationContexts;
         private IDependencyContainer container;
+		private ModuleMemberExpressionChecker<IModule, TModule> memberExpressionChecker;
 
         internal override Type ModuleInterface
         {
@@ -59,6 +60,7 @@ namespace ModuleInject.Modules
         /// </summary>
         protected InjectionModule()
         {
+			this.memberExpressionChecker = new ModuleMemberExpressionChecker<IModule, TModule>();
             this.registrationContexts = new List<RegistrationContext>();
             this.container = new DependencyContainer();
 
@@ -157,7 +159,7 @@ namespace ModuleInject.Modules
         {
             CommonFunctions.CheckNullArgument("moduleProperty", moduleProperty);
 
-            CheckExpressionDescribesDirectMember(moduleProperty);
+			memberExpressionChecker.CheckExpressionDescribesDirectMemberAndGetMemberName(moduleProperty);
 
             MemberExpression member = (MemberExpression)moduleProperty.Body;
             MemberInfo propInfo = member.Member;
@@ -180,7 +182,7 @@ namespace ModuleInject.Modules
         {
             CommonFunctions.CheckNullArgument("moduleProperty", moduleProperty);
 
-            CheckExpressionDescribesDirectMember(moduleProperty);
+			memberExpressionChecker.CheckExpressionDescribesDirectMemberAndGetMemberName(moduleProperty);
 
             MemberExpression member = (MemberExpression)moduleProperty.Body;
             MemberInfo propInfo = member.Member;
@@ -200,7 +202,7 @@ namespace ModuleInject.Modules
         {
             CommonFunctions.CheckNullArgument("moduleMethod", moduleMethod);
 
-            CheckExpressionDescribesDirectMember(moduleMethod);
+			memberExpressionChecker.CheckExpressionDescribesDirectMemberAndGetMemberName(moduleMethod);
 
             MethodCallExpression method = (MethodCallExpression)moduleMethod.Body;
             MethodInfo methodInfo = method.Method;
@@ -219,7 +221,7 @@ namespace ModuleInject.Modules
         {
             CommonFunctions.CheckNullArgument("moduleMethod", moduleMethod);
 
-            CheckExpressionDescribesDirectMember(moduleMethod);
+			memberExpressionChecker.CheckExpressionDescribesDirectMemberAndGetMemberName(moduleMethod);
 
             MethodCallExpression method = (MethodCallExpression)moduleMethod.Body;
             MethodInfo methodInfo = method.Method;
@@ -294,59 +296,6 @@ namespace ModuleInject.Modules
         internal override IEnumerable<RegistrationContext> GetRegistrationContexts()
         {
             return this.registrationContexts;
-        }
-
-        private static void CheckExpressionDescribesDirectMember<TObject, IComponent>(Expression<Func<TObject, IComponent>> moduleProperty)
-        {
-            int depth;
-            string path = LinqHelper.GetMemberPath(moduleProperty, out depth);
-            if (depth > 1)
-            {
-                ExceptionHelper.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_CannotRegisterPropertyOrMethodsWhichAreNotMembersOfTheModule, path);
-            }
-
-            ParameterExpression parameterExpression = moduleProperty.Parameters[0];
-
-            ParameterExpression paramExp = null;
-            MemberExpression propExpression = moduleProperty.Body as MemberExpression;
-            MethodCallExpression methodExpression = moduleProperty.Body as MethodCallExpression;
-            if (propExpression != null)
-            {
-                PropertyInfo propInfo = propExpression.Member as PropertyInfo;
-                if (propInfo == null || !IsTypeOfModule(propInfo.DeclaringType))
-                {
-                    ThrowNoPropertyOrMethodOfModuleException(moduleProperty);
-                }
-                paramExp = CommonLinq.GetParameterExpressionWithPossibleConvert(propExpression.Expression, parameterExpression.Type);
-            }
-            else if (methodExpression != null)
-            {
-                MethodInfo methodInfo = methodExpression.Method;
-                if (!IsTypeOfModule(methodInfo.DeclaringType))
-                {
-                    ThrowNoPropertyOrMethodOfModuleException(moduleProperty);
-                }
-                paramExp = CommonLinq.GetParameterExpressionWithPossibleConvert(methodExpression.Object, parameterExpression.Type);
-            }
-            else
-            {
-                ThrowNoPropertyOrMethodOfModuleException(moduleProperty);
-            }
-
-            if (paramExp == null || !IsTypeOfModule(paramExp.Type))
-            {
-                ThrowNoPropertyOrMethodOfModuleException(moduleProperty);
-            }
-        }
-
-        private static void ThrowNoPropertyOrMethodOfModuleException<TObject, IComponent>(Expression<Func<TObject, IComponent>> expression)
-        {
-            ExceptionHelper.ThrowTypeException<TModule>(Errors.InjectionModule_NeitherPropertyNorMethodExpression, expression);
-        }
-
-        private static bool IsTypeOfModule(Type type)
-        {
-            return type.IsAssignableFrom(typeof(IModule)) || type.IsAssignableFrom(typeof(TModule));
         }
 
         private static void CheckPropertyQualifiesForPrivateRegistration(MemberInfo propInfo)

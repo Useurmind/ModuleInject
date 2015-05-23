@@ -6,23 +6,43 @@ using System.Text;
 using ModuleInject.Interfaces;
 using ModuleInject.Injection.Hooks;
 using ModuleInject.Interfaces.Injection;
+using System.Linq.Expressions;
+using ModuleInject.Common.Utility;
+using ModuleInject.Utility;
+using ModuleInject.Common.Exceptions;
 
 namespace ModuleInject.Injection
 {
 	public interface IInjectionModule
 	{
-		void RegisterInjectionRegister(IInjectionRegister injectionRegister);
+		void RegisterInjectionRegister(IInjectionRegister injectionRegister, string componentName=null);
 	}
 
 	public class InjectionModule<TModule> : Module, IInjectionModule
 		where TModule : InjectionModule<TModule>
 	{
+		private ModuleMemberExpressionChecker<TModule, TModule> expressionChecker;
+
 		private ISet<IInjectionRegister> injectionRegisters;
+		private IDictionary<string, IInjectionRegister> namedInjectionRegisters;
+
 		private IRegistry usedRegistry;
 
 		public InjectionModule()
 		{
-			this.injectionRegisters = new HashSet<IInjectionRegister>();
+			this.expressionChecker = new ModuleMemberExpressionChecker<TModule, TModule>();
+            this.injectionRegisters = new HashSet<IInjectionRegister>();
+			this.namedInjectionRegisters = new Dictionary<string, IInjectionRegister>();
+        }
+
+		protected ConstructionContext<TModule, TIComponent> Factory<TIComponent>(Expression<Func<TModule, TIComponent>> componentMember)
+		{
+			return SourceOf<TIComponent>(componentMember, new FactoryInstantiationStrategy<TIComponent>());
+		}
+
+		protected ConstructionContext<TModule, TIComponent> SingleInstance<TIComponent>(Expression<Func<TModule, TIComponent>> componentMember)
+		{
+			return SourceOf<TIComponent>(componentMember, new SingleInstanceInstantiationStrategy<TIComponent>());
 		}
 
 		protected ConstructionContext<TModule, TIComponent> Factory<TIComponent>()
@@ -33,6 +53,17 @@ namespace ModuleInject.Injection
 		protected ConstructionContext<TModule, TIComponent> SingleInstance<TIComponent>()
 		{
 			return SourceOf<TIComponent>(new SingleInstanceInstantiationStrategy<TIComponent>());
+		}
+
+		protected ConstructionContext<TModule, TIComponent> SourceOf<TIComponent>(
+			Expression<Func<TModule, TIComponent>> componentMember,
+			IInstantiationStrategy<TIComponent> instantiationStrategy)
+		{
+			CommonFunctions.CheckNullArgument("componentMember", componentMember);
+
+			string memberName = expressionChecker.CheckExpressionDescribesDirectMemberAndGetMemberName(componentMember);
+
+			return new ConstructionContext<TModule, TIComponent>((TModule)this, instantiationStrategy, memberName);
 		}
 
 		protected ConstructionContext<TModule, TIComponent> SourceOf<TIComponent>(IInstantiationStrategy<TIComponent> instantiationStrategy)
@@ -51,10 +82,14 @@ namespace ModuleInject.Injection
 		{
 		}
 
-		public void RegisterInjectionRegister(IInjectionRegister injectionRegister)
+		public void RegisterInjectionRegister(IInjectionRegister injectionRegister, string componentName = null)
 		{
 			injectionRegister.OnResolve(context => this.OnComponentResolved(context));
 			this.injectionRegisters.Add(injectionRegister);
+			if (!string.IsNullOrEmpty(componentName))
+			{
+				this.namedInjectionRegisters.Add(componentName, injectionRegister);
+			}
 		}
 
 		public void TryAddRegistrationHooks()
@@ -77,6 +112,20 @@ namespace ModuleInject.Injection
 					}
 				}
 			}
+		}
+
+		protected TIComponent Get<TIComponent>(Expression<Func<TModule, TIComponent>> componentMember)
+		{
+			CommonFunctions.CheckNullArgument("componentMember", componentMember);
+
+			string componentName = expressionChecker.CheckExpressionDescribesDirectMemberAndGetMemberName(componentMember);
+
+			return (TIComponent)Get(componentName);
+		}
+
+		protected object Get(string componentName)
+		{
+			return this.namedInjectionRegisters[componentName].GetInstance();
 		}
 
 		private void TryAddModuleResolveHooks()

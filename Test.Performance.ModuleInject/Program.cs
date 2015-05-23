@@ -13,7 +13,8 @@ namespace Test.Performance.ModuleInject
         {
             TestModuleType<TestInjectionModule>();
             TestModuleType<TestInjectionModuleV2>();
-            TestModuleType<TestManualModule>();
+			TestModuleType<TestInjectionModuleV2NamedSources>();
+			TestModuleType<TestManualModule>();
             TestModuleType<TestUnityModule>();
             TestModuleType<TestAutofacModule>();
 

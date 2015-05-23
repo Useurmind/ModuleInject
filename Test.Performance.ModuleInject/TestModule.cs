@@ -162,7 +162,95 @@ namespace Test.Performance.ModuleInject
         }
     }
 
-    public class TestManualModule : Module, ITestModule
+	public class TestInjectionModuleV2NamedSources : InjectionModule<TestInjectionModuleV2NamedSources>, ITestModule
+	{
+		public ITestComponent1 Component1
+		{
+			get
+			{
+				return Get(m => m.Component1);
+			}
+		}
+		public ITestComponent1 Component2
+		{
+			get
+			{
+				return Get(m => m.Component2);
+			}
+		}
+		public ITestComponent1 Component3
+		{
+			get
+			{
+				return Get(m => m.Component3);
+			}
+		}
+		public ITestComponent1 Component4
+		{
+			get
+			{
+				return Get(m => m.Component4);
+			}
+		}
+		public ITestComponent1 Component5
+		{
+			get
+			{
+				return Get(m => m.Component5);
+			}
+		}
+		public ITestComponent1 Component6
+		{
+			get
+			{
+				return Get(m => m.Component6);
+			}
+		}
+		public ITestComponent1 Component7
+		{
+			get
+			{
+				return Get(m => m.Component7);
+			}
+		}
+		public ITestComponent1 Component8
+		{
+			get
+			{
+				return Get(m => m.Component8);
+			}
+		}
+		public ITestComponent1 Component9
+		{
+			get
+			{
+				return Get(m => m.Component9);
+			}
+		}
+		public ITestComponent1 Component10
+		{
+			get
+			{
+				return Get(m => m.Component10);
+			}
+		}
+
+		public TestInjectionModuleV2NamedSources()
+		{
+			SingleInstance(m => m.Component1).Construct<TestComponent1>();
+			SingleInstance(m => m.Component2).Construct<TestComponent1>();
+			SingleInstance(m => m.Component3).Construct<TestComponent1>();
+			SingleInstance(m => m.Component4).Construct<TestComponent1>();
+			SingleInstance(m => m.Component5).Construct<TestComponent1>();
+			SingleInstance(m => m.Component6).Construct<TestComponent1>();
+			SingleInstance(m => m.Component7).Construct<TestComponent1>();
+			SingleInstance(m => m.Component8).Construct<TestComponent1>();
+			SingleInstance(m => m.Component9).Construct<TestComponent1>();
+			SingleInstance(m => m.Component10).Construct<TestComponent1>();
+		}
+	}
+
+	public class TestManualModule : Module, ITestModule
     {
         public ITestComponent1 Component1 { get; set; }
         public ITestComponent1 Component2 { get; set; }

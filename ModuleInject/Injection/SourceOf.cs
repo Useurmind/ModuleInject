@@ -8,23 +8,7 @@ namespace ModuleInject.Injection
 {
 	public abstract class SourceOf<T> : ISourceOf<T>
 	{
-		private readonly IInstantiationStrategy<T> instantiationStrategy;
-
-		public SourceOf(IInstantiationStrategy<T> instantiationStrategy)
-		{
-			if (instantiationStrategy == null)
-			{
-				throw new ArgumentNullException("The inner ISourceOf for a SourceOf instance must not be null.");
-			}
-			this.instantiationStrategy = instantiationStrategy;
-		}
-
-		public T Get()
-		{
-			return instantiationStrategy.GetInstance(CreateInstance);
-		}
-
-		protected abstract T CreateInstance();
+		public abstract T Get();
 	}
 
 	public class SourceOf<TContext, TIComponent, TComponent> : SourceOf<TIComponent>, IWrapInjectionRegister
@@ -40,7 +24,7 @@ namespace ModuleInject.Injection
 			}
 		}
 
-		public SourceOf(IInjectionRegister<TContext, TIComponent, TComponent> injectionRegister, IInstantiationStrategy<TIComponent> instantiationStrategy) : base(instantiationStrategy)
+		public SourceOf(IInjectionRegister<TContext, TIComponent, TComponent> injectionRegister)
 		{
 			this.injectionRegister = injectionRegister;
 		}
@@ -77,9 +61,9 @@ namespace ModuleInject.Injection
 			return this;
 		}
 
-		protected override TIComponent CreateInstance()
+		public override TIComponent Get()
 		{
-			return injectionRegister.CreateInstance();
+			return injectionRegister.GetInstance();
 		}
 	}
 

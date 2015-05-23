@@ -9,6 +9,7 @@ namespace ModuleInject.Injection
 	public class InjectionRegister : IInjectionRegister
 	{
 		private object context;
+		private IInstantiationStrategy instantiationStrategy;
 		private Func<object, object> constructInstance;
 		private IList<Action<object, object>> injectInInstanceList;
 		private IList<Func<object, object, object>> changeInstanceList;
@@ -32,11 +33,20 @@ namespace ModuleInject.Injection
 		public Type ContextType { get; private set; }
 
 		public IEnumerable<object> MetaData { get { return this.metaData; } }
+		public IInstantiationStrategy GetInstantiationStrategy()
+		{
+			return instantiationStrategy;
+		}
 
 		public void SetContext(object context)
 		{
 			this.context = context;
 		}
+
+		public void InstantiationStrategy(IInstantiationStrategy instantiationStrategy)
+		{
+			this.instantiationStrategy = instantiationStrategy;
+        }
 
 		public void Construct(Func<object, object> constructInstance)
 		{
@@ -68,7 +78,12 @@ namespace ModuleInject.Injection
 			this.resolvedHandlers.Add(resolveHandler);
         }
 
-		public object CreateInstance()
+		public object GetInstance()
+		{
+			return instantiationStrategy.GetInstance(() => CreateInstance());
+		}
+
+		private object CreateInstance()
 		{
 			object instance = constructInstance(this.context);
 			foreach (var injectInInstance in this.injectInInstanceList)
@@ -141,12 +156,17 @@ namespace ModuleInject.Injection
 		public InjectionRegister()
 		{
 			this.Register = new InjectionRegister(typeof(TContext), typeof(TIComponent), typeof(TComponent));
+			this.InstantiationStrategy(new FactoryInstantiationStrategy<TIComponent>());
 		}
 
 		public InjectionRegister(IInjectionRegister injectionRegister)
 		{
 			CheckTypes(injectionRegister);
 			this.Register = injectionRegister;
+			if (injectionRegister.GetInstantiationStrategy() == null)
+			{
+				this.InstantiationStrategy(new FactoryInstantiationStrategy<TIComponent>());
+			}
 		}
 
 		private void CheckTypes(IInjectionRegister injectionRegister)
@@ -165,6 +185,11 @@ namespace ModuleInject.Injection
 		public void SetContext(TContext context)
 		{
 			this.Register.SetContext(context);
+		}
+
+		public void InstantiationStrategy(IInstantiationStrategy<TIComponent> instantiationStrategy)
+		{
+			this.Register.InstantiationStrategy(instantiationStrategy.Strategy);
 		}
 
 		public void Construct(Func<TContext, TComponent> constructInstance)
@@ -192,9 +217,9 @@ namespace ModuleInject.Injection
 			this.Register.AddMeta(metaData);
 		}
 
-		public TIComponent CreateInstance()
+		public TIComponent GetInstance()
 		{
-			return (TIComponent)this.Register.CreateInstance();
+			return (TIComponent)this.Register.GetInstance();
 		}
 	}
 

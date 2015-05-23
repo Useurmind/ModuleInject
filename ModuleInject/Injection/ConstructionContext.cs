@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModuleInject.Interfaces.Injection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,12 +10,14 @@ namespace ModuleInject.Injection
 		   where TModule : class, IInjectionModule
 	{
 		private IInstantiationStrategy<TIComponent> instantiationStrategy;
+		private string componentName;
 
 		protected TModule Module { get; private set; }
 
-		public ConstructionContext(TModule module, IInstantiationStrategy<TIComponent> instantiationStrategy)
+		public ConstructionContext(TModule module, IInstantiationStrategy<TIComponent> instantiationStrategy, string componentName=null)
 		{
 			this.Module = module;
+			this.componentName = componentName;
 			this.instantiationStrategy = instantiationStrategy;
         }
 
@@ -28,12 +31,15 @@ namespace ModuleInject.Injection
 			where TComponent : TIComponent
 		{
 			var injectionRegister = new InjectionRegister<TModule, TIComponent, TComponent>();
-            var source = new SourceOf<TModule, TIComponent, TComponent>(injectionRegister, instantiationStrategy);
+
+			injectionRegister.InstantiationStrategy(instantiationStrategy);
+
+            var source = new SourceOf<TModule, TIComponent, TComponent>(injectionRegister);
 
 			source.SetContext(Module);
 			source.Construct(constructInstance);
 
-			this.Module.RegisterInjectionRegister(injectionRegister.Register);
+			this.Module.RegisterInjectionRegister(injectionRegister.Register, this.componentName);
 
 			return source;
         }

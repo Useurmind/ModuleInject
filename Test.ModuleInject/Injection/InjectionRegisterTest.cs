@@ -30,8 +30,8 @@ namespace Test.ModuleInject.Injection
 			injectionRegister.SetContext(stubContext);
 			injectionRegister.Construct(ctx => new TestComponent());
 
-			var instance1 = injectionRegister.CreateInstance();
-			var instance2 = injectionRegister.CreateInstance();
+			var instance1 = injectionRegister.GetInstance();
+			var instance2 = injectionRegister.GetInstance();
 
 			Assert.IsNotNull(instance1);
 			Assert.IsNotNull(instance2);
@@ -54,7 +54,7 @@ namespace Test.ModuleInject.Injection
 				comp.StringProperty = stringValue;
 			});
 
-			var instance = injectionRegister.CreateInstance();
+			var instance = injectionRegister.GetInstance();
 
 			Assert.IsNotNull(instance);
 			Assert.AreEqual(5, instance.IntProperty);
@@ -72,7 +72,7 @@ namespace Test.ModuleInject.Injection
 			injectionRegister.Construct(ctx => createdComponent);
 			injectionRegister.Change((ctx, comp) => changedComponent);
 
-			var instance = injectionRegister.CreateInstance();
+			var instance = injectionRegister.GetInstance();
 
 			Assert.IsNotNull(instance);
 			Assert.AreSame(changedComponent, instance);
@@ -103,7 +103,7 @@ namespace Test.ModuleInject.Injection
 				return comp;
 			});
 
-			var instance = injectionRegister.CreateInstance();
+			var instance = injectionRegister.GetInstance();
 
 			Assert.IsNotNull(instance);
 			Assert.AreSame(stubContext, createContext);

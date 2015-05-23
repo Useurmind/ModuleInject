@@ -26,7 +26,11 @@ namespace ModuleInject.Interfaces.Injection
 
 		IEnumerable<object> MetaData { get; }
 
+		IInstantiationStrategy GetInstantiationStrategy();
+
 		void SetContext(object context);
+
+		void InstantiationStrategy(IInstantiationStrategy instantiationStrategy);
 
 		void Construct(Func<object, object> constructInstance);
 
@@ -40,7 +44,7 @@ namespace ModuleInject.Interfaces.Injection
 
 		void OnResolve(Action<ObjectResolvedContext> resolveHandler);
 
-		object CreateInstance();
+		object GetInstance();
 	}
 
 	public interface IInterfaceInjectionRegister<TIContext, TIComponent> : IWrapInjectionRegister
@@ -58,6 +62,8 @@ namespace ModuleInject.Interfaces.Injection
 	{
 		void SetContext(TContext context);
 
+		void InstantiationStrategy(IInstantiationStrategy<TIComponent> instantiationStrategy);
+
 		void Construct(Func<TContext, TComponent> constructInstance);
 
 		void Inject(Action<TContext, TComponent> injectInInstance);
@@ -68,6 +74,6 @@ namespace ModuleInject.Interfaces.Injection
 
 		void AddMeta<T>(T metaData);
 
-		TIComponent CreateInstance();
+		TIComponent GetInstance();
 	}
 }

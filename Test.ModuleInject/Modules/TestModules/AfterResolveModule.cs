@@ -20,23 +20,15 @@ namespace Test.ModuleInject.Modules.TestModules
 
 	public class AfterResolveModule : InjectionModule<AfterResolveModule>, IFunctionCallModule
 	{
-		private ISourceOf<IMainComponent1> mainComponent1;
-		private ISourceOf<IMainComponent1> mainInstance1;
-		private ISourceOf<IList<IMainComponent1>> mainComponent1List;
+		public IMainComponent1 MainComponent1 { get { return Get(m => m.MainComponent1); } }
+		public IMainComponent1 MainInstance1 { get { return Get(m => m.MainInstance1); } }
+		public IList<IMainComponent1> MainComponent1List { get { return Get(m => m.MainComponent1List); } }
 
-		private ISourceOf<IMainComponent2> mainComponent2;
-
-		private ISourceOf<IMainComponent1> createMainComponent1;
-
-		public IMainComponent1 MainComponent1 { get { return mainComponent1.Get(); } }
-		public IMainComponent1 MainInstance1 { get { return mainInstance1.Get(); } }
-		public IList<IMainComponent1> MainComponent1List { get { return mainComponent1List.Get(); } }
-
-		internal IMainComponent2 MainComponent2 { get { return mainComponent2.Get(); } }
+		internal IMainComponent2 MainComponent2 { get { return Get(m => m.MainComponent2); } }
 
 		internal IMainComponent1 CreateMainComponent1()
 		{
-			return createMainComponent1.Get();
+			return Get(m => m.CreateMainComponent1());
 		}
 
 		//[PrivateFactory]
@@ -47,19 +39,19 @@ namespace Test.ModuleInject.Modules.TestModules
 
 		public void RegisterComponentsByInitializeWithOtherComponent()
 		{
-			mainComponent1 = SingleInstance<IMainComponent1>()
+			SingleInstance(m => m.MainComponent1)
 				.Construct<MainComponent1>()
 				.Inject((module, comp) => comp.Initialize(module.MainComponent2));
 
-			createMainComponent1 = Factory<IMainComponent1>().Construct<MainComponent1>();
+			Factory(m => m.CreateMainComponent1()).Construct<MainComponent1>();
 
-			mainComponent2 = SingleInstance<IMainComponent2>().Construct<MainComponent2>();
+			SingleInstance(m => m.MainComponent2).Construct<MainComponent2>();
 
-			mainInstance1 = SingleInstance<IMainComponent1>()
+			SingleInstance(m => m.MainInstance1)
 				.Construct(m => new MainComponent1())
 				.Inject((module, comp) => comp.Initialize(module.MainComponent2));
 
-			mainComponent1List = SingleInstance<IList<IMainComponent1>>()
+			SingleInstance(m => m.MainComponent1List)
 				.Construct<List<IMainComponent1>>()
 				.Inject((module, comp) => comp.Add(module.MainComponent1))
 				.Inject((module, comp) => comp.Add(module.CreateMainComponent1()))

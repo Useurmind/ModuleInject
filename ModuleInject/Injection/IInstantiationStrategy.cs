@@ -1,20 +1,46 @@
-﻿using System;
+﻿using ModuleInject.Interfaces.Injection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace ModuleInject.Injection
 {
-	public interface IInstantiationStrategy<T>
+	public class DelegateInstantiationStrategy : IInstantiationStrategy
 	{
-		T GetInstance(Func<T> createInstance);
+		private Func<Func<object>, object> getInstance;
+
+		public DelegateInstantiationStrategy(Func<Func<object>, object> getInstance)
+		{
+			this.getInstance = getInstance;
+		}
+
+		public object GetInstance(Func<object> createInstance)
+		{
+			return getInstance(createInstance);
+		}
 	}
 
-	public class SingleInstanceInstantiationStrategy<T> : IInstantiationStrategy<T>
+	public abstract class InstantiationStrategy<T> : IInstantiationStrategy<T>
+	{
+		public IInstantiationStrategy Strategy { get; private set; }
+
+		public InstantiationStrategy()
+		{
+			this.Strategy = new DelegateInstantiationStrategy(createInstance =>
+			{
+				return GetInstance(() => (T)createInstance());
+            });
+        }
+
+		public abstract T GetInstance(Func<T> createInstance);
+	}
+
+	public class SingleInstanceInstantiationStrategy<T> : InstantiationStrategy<T>
 	{
 		private T instance;
 
-		public T GetInstance(Func<T> createInstance)
+		public override T GetInstance(Func<T> createInstance)
 		{
 			if (instance == null)
 			{
@@ -24,9 +50,9 @@ namespace ModuleInject.Injection
 		}
 	}
 
-	public class FactoryInstantiationStrategy<T> : IInstantiationStrategy<T>
+	public class FactoryInstantiationStrategy<T> : InstantiationStrategy<T>
 	{
-		public T GetInstance(Func<T> createInstance)
+		public override T GetInstance(Func<T> createInstance)
 		{
 			return createInstance();
 		}
