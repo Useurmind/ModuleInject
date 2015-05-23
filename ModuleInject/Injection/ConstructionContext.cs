@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace ModuleInject.Injection
@@ -14,7 +15,7 @@ namespace ModuleInject.Injection
 
 		protected TModule Module { get; private set; }
 
-		public ConstructionContext(TModule module, IInstantiationStrategy<TIComponent> instantiationStrategy, string componentName=null)
+		public ConstructionContext(TModule module, IInstantiationStrategy<TIComponent> instantiationStrategy, string componentName =null)
 		{
 			this.Module = module;
 			this.componentName = componentName;

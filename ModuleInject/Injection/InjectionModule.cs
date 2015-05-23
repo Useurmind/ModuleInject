@@ -15,7 +15,7 @@ namespace ModuleInject.Injection
 {
 	public interface IInjectionModule
 	{
-		void RegisterInjectionRegister(IInjectionRegister injectionRegister, string componentName=null);
+		void RegisterInjectionRegister(IInjectionRegister injectionRegister, string componentName =null);
 	}
 
 	public class InjectionModule<TModule> : Module, IInjectionModule
@@ -45,6 +45,16 @@ namespace ModuleInject.Injection
 			return SourceOf<TIComponent>(componentMember, new SingleInstanceInstantiationStrategy<TIComponent>());
 		}
 
+		protected ConstructionContext<TModule, TIComponent> Factory<TIComponent>(string componentName)
+		{
+			return SourceOf<TIComponent>(componentName, new FactoryInstantiationStrategy<TIComponent>());
+		}
+
+		protected ConstructionContext<TModule, TIComponent> SingleInstance<TIComponent>(string componentName)
+		{
+			return SourceOf<TIComponent>(componentName, new SingleInstanceInstantiationStrategy<TIComponent>());
+		}
+
 		protected ConstructionContext<TModule, TIComponent> Factory<TIComponent>()
 		{
 			return SourceOf<TIComponent>(new FactoryInstantiationStrategy<TIComponent>());
@@ -60,10 +70,17 @@ namespace ModuleInject.Injection
 			IInstantiationStrategy<TIComponent> instantiationStrategy)
 		{
 			CommonFunctions.CheckNullArgument("componentMember", componentMember);
+			
+			var componentName = GetComponentName(componentMember);
 
-			string memberName = expressionChecker.CheckExpressionDescribesDirectMemberAndGetMemberName(componentMember);
+			return SourceOf<TIComponent>(componentName.Name, instantiationStrategy);
+		}
 
-			return new ConstructionContext<TModule, TIComponent>((TModule)this, instantiationStrategy, memberName);
+		protected ConstructionContext<TModule, TIComponent> SourceOf<TIComponent>(
+			string componentName,
+			IInstantiationStrategy<TIComponent> instantiationStrategy)
+		{
+			return new ConstructionContext<TModule, TIComponent>((TModule)this, instantiationStrategy, componentName);
 		}
 
 		protected ConstructionContext<TModule, TIComponent> SourceOf<TIComponent>(IInstantiationStrategy<TIComponent> instantiationStrategy)
@@ -118,9 +135,31 @@ namespace ModuleInject.Injection
 		{
 			CommonFunctions.CheckNullArgument("componentMember", componentMember);
 
-			string componentName = expressionChecker.CheckExpressionDescribesDirectMemberAndGetMemberName(componentMember);
+			var componentName = GetComponentName(componentMember);
 
+			return (TIComponent)Get(componentName.Name);
+		}
+
+		protected TIComponent Get<TIComponent>(string componentName)
+		{
 			return (TIComponent)Get(componentName);
+		}
+
+		private System.Reflection.MemberInfo GetComponentName<TIComponent>(Expression<Func<TModule, TIComponent>> componentMember)
+		{
+			Expression body = componentMember.Body;
+			if (body.NodeType == ExpressionType.MemberAccess)
+			{
+				var member = (MemberExpression)body;
+				return member.Member;
+			}
+			else if (body.NodeType == ExpressionType.Call)
+			{
+				var method = (MethodCallExpression)body;
+				return method.Method;
+            }
+
+			throw new ArgumentException("Expression for component not correct.");
 		}
 
 		protected object Get(string componentName)
