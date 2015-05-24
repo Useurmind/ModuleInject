@@ -10,12 +10,14 @@ using System.Linq.Expressions;
 using ModuleInject.Common.Utility;
 using ModuleInject.Utility;
 using ModuleInject.Common.Exceptions;
+using System.Runtime.CompilerServices;
+using ModuleInject.Interfaces.Hooks;
 
 namespace ModuleInject.Injection
 {
 	public interface IInjectionModule
 	{
-		void RegisterInjectionRegister(IInjectionRegister injectionRegister, string componentName =null);
+		void RegisterInjectionRegister(IInjectionRegister injectionRegister, string componentName = null);
 	}
 
 	public class InjectionModule<TModule> : Module, IInjectionModule
@@ -27,13 +29,14 @@ namespace ModuleInject.Injection
 		private IDictionary<string, IInjectionRegister> namedInjectionRegisters;
 
 		private IRegistry usedRegistry;
+		private IEnumerable<IRegistrationHook> allRegistrationHooks;
 
 		public InjectionModule()
 		{
 			this.expressionChecker = new ModuleMemberExpressionChecker<TModule, TModule>();
-            this.injectionRegisters = new HashSet<IInjectionRegister>();
+			this.injectionRegisters = new HashSet<IInjectionRegister>();
 			this.namedInjectionRegisters = new Dictionary<string, IInjectionRegister>();
-        }
+		}
 
 		protected ConstructionContext<TModule, TIComponent> Factory<TIComponent>(Expression<Func<TModule, TIComponent>> componentMember)
 		{
@@ -45,12 +48,12 @@ namespace ModuleInject.Injection
 			return SourceOf<TIComponent>(componentMember, new SingleInstanceInstantiationStrategy<TIComponent>());
 		}
 
-		protected ConstructionContext<TModule, TIComponent> Factory<TIComponent>(string componentName)
+		protected ConstructionContext<TModule, TIComponent> Factory2<TIComponent>([CallerMemberName]string componentName = null)
 		{
 			return SourceOf<TIComponent>(componentName, new FactoryInstantiationStrategy<TIComponent>());
 		}
 
-		protected ConstructionContext<TModule, TIComponent> SingleInstance<TIComponent>(string componentName)
+		protected ConstructionContext<TModule, TIComponent> SingleInstance2<TIComponent>([CallerMemberName]string componentName = null)
 		{
 			return SourceOf<TIComponent>(componentName, new SingleInstanceInstantiationStrategy<TIComponent>());
 		}
@@ -69,8 +72,8 @@ namespace ModuleInject.Injection
 			Expression<Func<TModule, TIComponent>> componentMember,
 			IInstantiationStrategy<TIComponent> instantiationStrategy)
 		{
-			CommonFunctions.CheckNullArgument("componentMember", componentMember);
-			
+			//CommonFunctions.CheckNullArgument("componentMember", componentMember);
+
 			var componentName = GetComponentName(componentMember);
 
 			return SourceOf<TIComponent>(componentName.Name, instantiationStrategy);
@@ -91,6 +94,11 @@ namespace ModuleInject.Injection
 		protected override void OnRegistryResolved(IRegistry usedRegistry)
 		{
 			this.usedRegistry = usedRegistry;
+
+			var registrationHooksFromRegistry = this.usedRegistry.GetRegistrationHooks().Where(h => h.AppliesToModule(this));
+			var registrationHooksFromModule = this.RegistrationHooks;
+			allRegistrationHooks = registrationHooksFromModule.Union(registrationHooksFromRegistry);
+
 			TryAddRegistrationHooks();
 			TryAddModuleResolveHooks();
 		}
@@ -105,28 +113,36 @@ namespace ModuleInject.Injection
 			this.injectionRegisters.Add(injectionRegister);
 			if (!string.IsNullOrEmpty(componentName))
 			{
+				if (this.IsResolved)
+				{
+					this.TryAddRegistrationHooks(injectionRegister);
+					this.TryAddModuleResolveHook(injectionRegister);
+				}
+
 				this.namedInjectionRegisters.Add(componentName, injectionRegister);
 			}
 		}
 
-		public void TryAddRegistrationHooks()
+		private void TryAddRegistrationHooks()
 		{
-			var registrationHooksFromRegistry = this.usedRegistry.GetRegistrationHooks().Where(h => h.AppliesToModule(this));
-			var registrationHooksFromModule = this.RegistrationHooks;
-			var allRegistrationHooks = registrationHooksFromModule.Union(registrationHooksFromRegistry);
+			foreach (var injectionRegister in this.injectionRegisters)
+			{
+				TryAddRegistrationHooks(injectionRegister);
+            }
+		}
+
+		private void TryAddRegistrationHooks(IInjectionRegister injectionRegister)
+		{
 			if (!allRegistrationHooks.Any())
 			{
 				return;
 			}
 
-			foreach (var injectionRegister in this.injectionRegisters)
+			foreach (var registrationHook in allRegistrationHooks)
 			{
-				foreach (var registrationHook in allRegistrationHooks)
+				if (registrationHook.AppliesToRegistration(injectionRegister))
 				{
-					if (registrationHook.AppliesToRegistration(injectionRegister))
-					{
-						registrationHook.Execute(injectionRegister);
-					}
+					registrationHook.Execute(injectionRegister);
 				}
 			}
 		}
@@ -140,7 +156,19 @@ namespace ModuleInject.Injection
 			return (TIComponent)Get(componentName.Name);
 		}
 
-		protected TIComponent Get<TIComponent>(string componentName)
+		protected TIComponent Get<TIComponent>(
+			Action<TModule> registerComponent,
+            [CallerMemberName]string componentName = null)
+		{
+			if (!this.namedInjectionRegisters.ContainsKey(componentName))
+			{
+				registerComponent((TModule)this);
+			}
+
+			return (TIComponent)Get(componentName);
+		}
+
+		protected TIComponent Get<TIComponent>([CallerMemberName]string componentName = null)
 		{
 			return (TIComponent)Get(componentName);
 		}
@@ -157,7 +185,7 @@ namespace ModuleInject.Injection
 			{
 				var method = (MethodCallExpression)body;
 				return method.Method;
-            }
+			}
 
 			throw new ArgumentException("Expression for component not correct.");
 		}
@@ -169,11 +197,19 @@ namespace ModuleInject.Injection
 
 		private void TryAddModuleResolveHooks()
 		{
-			var moduleTypeName = typeof(IModule).Name;
-			var moduleInjectionRegisters = this.injectionRegisters.Where(reg => reg.ComponentType.GetInterface(moduleTypeName) != null);
-			foreach (var registeredModule in moduleInjectionRegisters)
+			foreach (var injectionRegister in injectionRegisters)
 			{
-				registeredModule.OnResolve(this.OnRegisteredModuleResolved);
+				TryAddModuleResolveHook(injectionRegister);
+			}
+		}
+
+		void TryAddModuleResolveHook(IInjectionRegister injectionRegister)
+		{
+			var moduleTypeName = typeof(IModule).Name;
+			var isModule = injectionRegister.ComponentType.GetInterface(moduleTypeName) != null;
+			if (isModule)
+			{
+				injectionRegister.OnResolve(this.OnRegisteredModuleResolved);
 			}
 		}
 

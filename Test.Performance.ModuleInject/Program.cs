@@ -13,8 +13,10 @@ namespace Test.Performance.ModuleInject
         {
             TestModuleType<TestInjectionModule>();
             TestModuleType<TestInjectionModuleV2>();
-			TestModuleType<TestInjectionModuleV2NamedSources>();
+			TestModuleType<TestInjectionModuleV2NamedSourcesExpressions>();
 			TestModuleType<TestInjectionModuleV2NamedSourcesWithStrings>();
+			TestModuleType<TestInjectionModuleV2NamedSourcesMixed>();
+			TestModuleType<TestInjectionModuleV2NamedSourcesAllInGet>();
 			TestModuleType<TestManualModule>();
             TestModuleType<TestAutofacModule>();
             TestModuleType<TestUnityModule>();
@@ -31,7 +33,7 @@ namespace Test.Performance.ModuleInject
             var constructMeasure = new TimeMeasure(() =>
             {
                 module = new TModule();
-			});
+			}, repetitions);
 
             constructMeasure.Run();
 
@@ -51,14 +53,14 @@ namespace Test.Performance.ModuleInject
 				var c8 = module.Component8;
 				var c9 = module.Component9;
 				var c10 = module.Component10;
-			});
+			}, repetitions);
 
 			resolveMeasure.Run();
 
-			Console.WriteLine("Measured time for module type '{0}': construct (with resolve): {1} ({2})",
+			Console.WriteLine("Measured time for module type '{0}': resolve (construct): {1} ({2})",
                 typeof(TModule).Name,
-                constructMeasure.MeasuredTotalTimeMs,
-                resolveMeasure.MeasuredTotalTimeMs);
+				resolveMeasure.MeasuredTotalTimeMs,
+                constructMeasure.MeasuredTotalTimeMs);
         }
     }
 }

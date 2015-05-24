@@ -162,7 +162,7 @@ namespace Test.Performance.ModuleInject
         }
     }
 
-	public class TestInjectionModuleV2NamedSources : InjectionModule<TestInjectionModuleV2NamedSources>, ITestModule
+	public class TestInjectionModuleV2NamedSourcesExpressions : InjectionModule<TestInjectionModuleV2NamedSourcesExpressions>, ITestModule
 	{
 		public ITestComponent1 Component1
 		{
@@ -235,7 +235,7 @@ namespace Test.Performance.ModuleInject
 			}
 		}
 
-		public TestInjectionModuleV2NamedSources()
+		public TestInjectionModuleV2NamedSourcesExpressions()
 		{
 			SingleInstance(m => m.Component1).Construct<TestComponent1>();
 			SingleInstance(m => m.Component2).Construct<TestComponent1>();
@@ -325,16 +325,179 @@ namespace Test.Performance.ModuleInject
 
 		public TestInjectionModuleV2NamedSourcesWithStrings()
 		{
-			SingleInstance<ITestComponent1>("Component1").Construct<TestComponent1>();
-			SingleInstance<ITestComponent1>("Component2").Construct<TestComponent1>();
-			SingleInstance<ITestComponent1>("Component3").Construct<TestComponent1>();
-			SingleInstance<ITestComponent1>("Component4").Construct<TestComponent1>();
-			SingleInstance<ITestComponent1>("Component5").Construct<TestComponent1>();
-			SingleInstance<ITestComponent1>("Component6").Construct<TestComponent1>();
-			SingleInstance<ITestComponent1>("Component7").Construct<TestComponent1>();
-			SingleInstance<ITestComponent1>("Component8").Construct<TestComponent1>();
-			SingleInstance<ITestComponent1>("Component9").Construct<TestComponent1>();
-			SingleInstance<ITestComponent1>("Component10").Construct<TestComponent1>();
+			SingleInstance2<ITestComponent1>("Component1").Construct<TestComponent1>();
+			SingleInstance2<ITestComponent1>("Component2").Construct<TestComponent1>();
+			SingleInstance2<ITestComponent1>("Component3").Construct<TestComponent1>();
+			SingleInstance2<ITestComponent1>("Component4").Construct<TestComponent1>();
+			SingleInstance2<ITestComponent1>("Component5").Construct<TestComponent1>();
+			SingleInstance2<ITestComponent1>("Component6").Construct<TestComponent1>();
+			SingleInstance2<ITestComponent1>("Component7").Construct<TestComponent1>();
+			SingleInstance2<ITestComponent1>("Component8").Construct<TestComponent1>();
+			SingleInstance2<ITestComponent1>("Component9").Construct<TestComponent1>();
+			SingleInstance2<ITestComponent1>("Component10").Construct<TestComponent1>();
+		}
+	}
+
+	public class TestInjectionModuleV2NamedSourcesMixed : InjectionModule<TestInjectionModuleV2NamedSourcesMixed>, ITestModule
+	{
+		public ITestComponent1 Component1
+		{
+			get
+			{
+				return Get<ITestComponent1>();
+			}
+		}
+		public ITestComponent1 Component2
+		{
+			get
+			{
+				return Get<ITestComponent1>();
+			}
+		}
+		public ITestComponent1 Component3
+		{
+			get
+			{
+				return Get<ITestComponent1>();
+			}
+		}
+		public ITestComponent1 Component4
+		{
+			get
+			{
+				return Get<ITestComponent1>();
+			}
+		}
+		public ITestComponent1 Component5
+		{
+			get
+			{
+				return Get<ITestComponent1>();
+			}
+		}
+		public ITestComponent1 Component6
+		{
+			get
+			{
+				return Get<ITestComponent1>();
+			}
+		}
+		public ITestComponent1 Component7
+		{
+			get
+			{
+				return Get<ITestComponent1>();
+			}
+		}
+		public ITestComponent1 Component8
+		{
+			get
+			{
+				return Get<ITestComponent1>();
+			}
+		}
+		public ITestComponent1 Component9
+		{
+			get
+			{
+				return Get<ITestComponent1>();
+			}
+		}
+		public ITestComponent1 Component10
+		{
+			get
+			{
+				return Get<ITestComponent1>();
+			}
+		}
+
+		public TestInjectionModuleV2NamedSourcesMixed()
+		{
+			SingleInstance(m => m.Component1).Construct<TestComponent1>();
+			SingleInstance(m => m.Component2).Construct<TestComponent1>();
+			SingleInstance(m => m.Component3).Construct<TestComponent1>();
+			SingleInstance(m => m.Component4).Construct<TestComponent1>();
+			SingleInstance(m => m.Component5).Construct<TestComponent1>();
+			SingleInstance(m => m.Component6).Construct<TestComponent1>();
+			SingleInstance(m => m.Component7).Construct<TestComponent1>();
+			SingleInstance(m => m.Component8).Construct<TestComponent1>();
+			SingleInstance(m => m.Component9).Construct<TestComponent1>();
+			SingleInstance(m => m.Component10).Construct<TestComponent1>()
+				.Inject((m, c) => c.Part1 = new TestComponent2());
+		}
+	}
+
+	public class TestInjectionModuleV2NamedSourcesAllInGet : InjectionModule<TestInjectionModuleV2NamedSourcesAllInGet>, ITestModule
+	{
+		public ITestComponent1 Component1
+		{
+			get
+			{
+				return Get<ITestComponent1>(m => m.SingleInstance2<ITestComponent1>().Construct<TestComponent1>());
+			}
+		}
+		public ITestComponent1 Component2
+		{
+			get
+			{
+				return Get<ITestComponent1>(m => m.SingleInstance2<ITestComponent1>().Construct<TestComponent1>());
+			}
+		}
+		public ITestComponent1 Component3
+		{
+			get
+			{
+				return Get<ITestComponent1>(m => m.SingleInstance2<ITestComponent1>().Construct<TestComponent1>());
+			}
+		}
+		public ITestComponent1 Component4
+		{
+			get
+			{
+				return Get<ITestComponent1>(m => m.SingleInstance2<ITestComponent1>().Construct<TestComponent1>());
+			}
+		}
+		public ITestComponent1 Component5
+		{
+			get
+			{
+				return Get<ITestComponent1>(m => m.SingleInstance2<ITestComponent1>().Construct<TestComponent1>());
+			}
+		}
+		public ITestComponent1 Component6
+		{
+			get
+			{
+				return Get<ITestComponent1>(m => m.SingleInstance2<ITestComponent1>().Construct<TestComponent1>());
+			}
+		}
+		public ITestComponent1 Component7
+		{
+			get
+			{
+				return Get<ITestComponent1>(m => m.SingleInstance2<ITestComponent1>().Construct<TestComponent1>());
+			}
+		}
+		public ITestComponent1 Component8
+		{
+			get
+			{
+				return Get<ITestComponent1>(m => m.SingleInstance2<ITestComponent1>().Construct<TestComponent1>());
+			}
+		}
+		public ITestComponent1 Component9
+		{
+			get
+			{
+				return Get<ITestComponent1>(m => m.SingleInstance2<ITestComponent1>().Construct<TestComponent1>());
+			}
+		}
+		public ITestComponent1 Component10
+		{
+			get
+			{
+				return Get<ITestComponent1>(m => m.SingleInstance2<ITestComponent1>().Construct<TestComponent1>());
+			}
 		}
 	}
 
