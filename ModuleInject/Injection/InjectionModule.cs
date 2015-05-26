@@ -72,7 +72,7 @@ namespace ModuleInject.Injection
 			Expression<Func<TModule, TIComponent>> componentMember,
 			IInstantiationStrategy<TIComponent> instantiationStrategy)
 		{
-			//CommonFunctions.CheckNullArgument("componentMember", componentMember);
+			CommonFunctions.CheckNullArgument("componentMember", componentMember);
 
 			var componentName = GetComponentName(componentMember);
 
@@ -83,6 +83,8 @@ namespace ModuleInject.Injection
 			string componentName,
 			IInstantiationStrategy<TIComponent> instantiationStrategy)
 		{
+			CommonFunctions.CheckNullArgument("instantiationStrategy", instantiationStrategy);
+
 			return new ConstructionContext<TModule, TIComponent>((TModule)this, instantiationStrategy, componentName);
 		}
 
@@ -156,13 +158,65 @@ namespace ModuleInject.Injection
 			return (TIComponent)Get(componentName.Name);
 		}
 
-		protected TIComponent Get<TIComponent>(
-			Action<TModule> registerComponent,
+		protected TComponent GetFactory<TComponent>(
+			[CallerMemberName]string componentName = null)
+			where TComponent : new()
+		{
+			return GetFactory(m => new TComponent(), componentName);
+		}
+
+		protected TComponent GetFactory<TComponent>(
+			Func<TModule, TComponent> construct,
+			[CallerMemberName]string componentName = null)
+		{
+			Action<ConstructionContext<TModule, TComponent>> registerComponent = cc =>
+			{
+				cc.Construct(construct);
+			};
+			return GetFactory(registerComponent, componentName);
+		}
+
+		protected TIComponent GetFactory<TIComponent>(
+			Action<ConstructionContext<TModule, TIComponent>> registerComponent,
             [CallerMemberName]string componentName = null)
+		{
+			return Get<TIComponent>(registerComponent, new FactoryInstantiationStrategy<TIComponent>(), componentName);
+		}
+
+		protected TComponent GetSingleInstance<TComponent>(
+			[CallerMemberName]string componentName = null)
+			where TComponent : new()
+		{
+			return GetSingleInstance(m => new TComponent(), componentName);
+		}
+
+		protected TComponent GetSingleInstance<TComponent>(
+			Func<TModule, TComponent> construct,
+			[CallerMemberName]string componentName = null)
+		{
+			Action<ConstructionContext<TModule, TComponent>> registerComponent = cc =>
+			{
+				cc.Construct(construct);
+			};
+			return GetSingleInstance(registerComponent, componentName);
+		}
+
+		protected TIComponent GetSingleInstance<TIComponent>(
+			Action<ConstructionContext<TModule, TIComponent>> registerComponent,
+            [CallerMemberName]string componentName = null)
+		{
+			return Get<TIComponent>(registerComponent, new SingleInstanceInstantiationStrategy<TIComponent>(), componentName);
+		}
+
+		protected TIComponent Get<TIComponent>(
+			Action<ConstructionContext<TModule, TIComponent>> registerComponent,
+			IInstantiationStrategy<TIComponent> instantiationStrategy,
+			[CallerMemberName]string componentName = null)
 		{
 			if (!this.namedInjectionRegisters.ContainsKey(componentName))
 			{
-				registerComponent((TModule)this);
+				var constructionContext = this.SourceOf<TIComponent>(componentName, instantiationStrategy);
+				registerComponent(constructionContext);
 			}
 
 			return (TIComponent)Get(componentName);

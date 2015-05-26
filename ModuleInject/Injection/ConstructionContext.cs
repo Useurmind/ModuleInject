@@ -11,14 +11,14 @@ namespace ModuleInject.Injection
 		   where TModule : class, IInjectionModule
 	{
 		private IInstantiationStrategy<TIComponent> instantiationStrategy;
-		private string componentName;
+		public string ComponentName { get; private set; }
 
-		protected TModule Module { get; private set; }
+		public TModule Module { get; private set; }
 
 		public ConstructionContext(TModule module, IInstantiationStrategy<TIComponent> instantiationStrategy, string componentName =null)
 		{
 			this.Module = module;
-			this.componentName = componentName;
+			this.ComponentName = componentName;
 			this.instantiationStrategy = instantiationStrategy;
         }
 
@@ -40,7 +40,7 @@ namespace ModuleInject.Injection
 			source.SetContext(Module);
 			source.Construct(constructInstance);
 
-			this.Module.RegisterInjectionRegister(injectionRegister.Register, this.componentName);
+			this.Module.RegisterInjectionRegister(injectionRegister.Register, this.ComponentName);
 
 			return source;
         }

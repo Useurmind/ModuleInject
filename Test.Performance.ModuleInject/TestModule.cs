@@ -422,8 +422,7 @@ namespace Test.Performance.ModuleInject
 			SingleInstance(m => m.Component7).Construct<TestComponent1>();
 			SingleInstance(m => m.Component8).Construct<TestComponent1>();
 			SingleInstance(m => m.Component9).Construct<TestComponent1>();
-			SingleInstance(m => m.Component10).Construct<TestComponent1>()
-				.Inject((m, c) => c.Part1 = new TestComponent2());
+			SingleInstance(m => m.Component10).Construct<TestComponent1>();
 		}
 	}
 
@@ -433,70 +432,70 @@ namespace Test.Performance.ModuleInject
 		{
 			get
 			{
-				return Get<ITestComponent1>(m => m.SingleInstance2<ITestComponent1>().Construct<TestComponent1>());
+				return GetSingleInstance<ITestComponent1>(cc => cc.Construct<TestComponent1>());
 			}
 		}
 		public ITestComponent1 Component2
 		{
 			get
 			{
-				return Get<ITestComponent1>(m => m.SingleInstance2<ITestComponent1>().Construct<TestComponent1>());
+				return GetSingleInstance<ITestComponent1>(cc => cc.Construct<TestComponent1>());
 			}
 		}
 		public ITestComponent1 Component3
 		{
 			get
 			{
-				return Get<ITestComponent1>(m => m.SingleInstance2<ITestComponent1>().Construct<TestComponent1>());
+				return GetSingleInstance<ITestComponent1>(cc => cc.Construct<TestComponent1>());
 			}
 		}
 		public ITestComponent1 Component4
 		{
 			get
 			{
-				return Get<ITestComponent1>(m => m.SingleInstance2<ITestComponent1>().Construct<TestComponent1>());
+				return GetSingleInstance<ITestComponent1>(cc => cc.Construct<TestComponent1>());
 			}
 		}
 		public ITestComponent1 Component5
 		{
 			get
 			{
-				return Get<ITestComponent1>(m => m.SingleInstance2<ITestComponent1>().Construct<TestComponent1>());
+				return GetSingleInstance<ITestComponent1>(cc => cc.Construct<TestComponent1>());
 			}
 		}
 		public ITestComponent1 Component6
 		{
 			get
 			{
-				return Get<ITestComponent1>(m => m.SingleInstance2<ITestComponent1>().Construct<TestComponent1>());
+				return GetSingleInstance<ITestComponent1>(cc => cc.Construct<TestComponent1>());
 			}
 		}
 		public ITestComponent1 Component7
 		{
 			get
 			{
-				return Get<ITestComponent1>(m => m.SingleInstance2<ITestComponent1>().Construct<TestComponent1>());
+				return GetSingleInstance<ITestComponent1>(cc => cc.Construct<TestComponent1>());
 			}
 		}
 		public ITestComponent1 Component8
 		{
 			get
 			{
-				return Get<ITestComponent1>(m => m.SingleInstance2<ITestComponent1>().Construct<TestComponent1>());
+				return GetSingleInstance<ITestComponent1>(cc => cc.Construct<TestComponent1>());
 			}
 		}
 		public ITestComponent1 Component9
 		{
 			get
 			{
-				return Get<ITestComponent1>(m => m.SingleInstance2<ITestComponent1>().Construct<TestComponent1>());
+				return GetSingleInstance<ITestComponent1>(cc => cc.Construct<TestComponent1>());
 			}
 		}
 		public ITestComponent1 Component10
 		{
 			get
 			{
-				return Get<ITestComponent1>(m => m.SingleInstance2<ITestComponent1>().Construct<TestComponent1>());
+				return GetSingleInstance<ITestComponent1>(cc => cc.Construct<TestComponent1>());
 			}
 		}
 	}

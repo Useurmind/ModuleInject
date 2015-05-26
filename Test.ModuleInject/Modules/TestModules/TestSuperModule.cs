@@ -3,26 +3,38 @@
 using ModuleInject.Interfaces;
 using ModuleInject.Modules;
 using ModuleInject.Modules.Fluent;
+using ModuleInject.Injection;
 
 namespace Test.ModuleInject.Modules.TestModules
 {
-    public interface ITestSuperModule : IModule
-    {
-        PropertyModule MainModule { get; }
-        ISubModule SubModule { get; }
-    }
+	public interface ITestSuperModule : IModule
+	{
+		PropertyModule MainModule { get; }
+		ISubModule SubModule { get; }
+	}
 
-    public class TestSuperModule : InjectionModule<ITestSuperModule, TestSuperModule>, ITestSuperModule
-    {
-        public PropertyModule MainModule { get; set; }
-        public ISubModule SubModule { get; set; }
-
-        public TestSuperModule()
-        {
-            this.RegisterPublicComponent(x => x.SubModule).Construct<Submodule>();
-            this.RegisterPublicComponent(x => x.MainModule)
-                .Construct<PropertyModule>()
-                .Inject(x => x.SubModule).IntoProperty(x => x.SubModule);
-        }
-    }
+	public class TestSuperModule : InjectionModule<TestSuperModule>, ITestSuperModule
+	{
+		public PropertyModule MainModule
+		{
+			get
+			{
+				return GetSingleInstance<PropertyModule>(cc =>
+				{
+					cc.Construct<PropertyModule>()
+					.Inject((m, c) => c.SubModule = m.SubModule);
+				});
+			}
+		}
+		public ISubModule SubModule
+		{
+			get
+			{
+				return GetSingleInstance<ISubModule>(cc =>
+				{
+					cc.Construct<Submodule>();
+				});
+			}
+		}
+	}
 }

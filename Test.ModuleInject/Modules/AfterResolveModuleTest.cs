@@ -20,7 +20,6 @@ namespace Test.ModuleInject.Modules
         [TestCase]
         public void TestSimpleInitializeCallWithOtherComponent_OtherComponentInjected()
         {
-            this._module.RegisterComponentsByInitializeWithOtherComponent();
             this._module.Resolve();
 
             Assert.IsNotNull(this._module.MainComponent2);
