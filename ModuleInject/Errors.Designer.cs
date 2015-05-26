@@ -106,20 +106,20 @@ namespace ModuleInject {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The factory method &apos;{0}&apos; of module with type &apos;{1}&apos; was called before the module was resolved. Please resolve the module before creating any instances via factories..
+        ///   Looks up a localized string similar to The component &apos;{0}&apos; of module with type &apos;{1}&apos; is not registered. Could not create instance of requested component..
         /// </summary>
-        internal static string InjectionModule_CreateInstanceBeforeResolve {
+        internal static string InjectionModule_ComponentNotRegistered {
             get {
-                return ResourceManager.GetString("InjectionModule_CreateInstanceBeforeResolve", resourceCulture);
+                return ResourceManager.GetString("InjectionModule_ComponentNotRegistered", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The method &apos;{0}&apos; of module with type &apos;{1}&apos; is not registered as a factory method. Could not create instance of requested type..
+        ///   Looks up a localized string similar to The component &apos;{0}&apos; of module with type &apos;{1}&apos; was tried to be resolved before the module was resolved. Please resolve the module before creating any instances..
         /// </summary>
-        internal static string InjectionModule_FactoryMethodNotRegistered {
+        internal static string InjectionModule_CreateInstanceBeforeResolve {
             get {
-                return ResourceManager.GetString("InjectionModule_FactoryMethodNotRegistered", resourceCulture);
+                return ResourceManager.GetString("InjectionModule_CreateInstanceBeforeResolve", resourceCulture);
             }
         }
         

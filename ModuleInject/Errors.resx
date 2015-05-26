@@ -132,11 +132,11 @@
   <data name="InjectionModule_CannotRegisterPropertyOrMethodsWhichAreNotMembersOfTheModule" xml:space="preserve">
     <value>The property or method '{0}' of module with type '{1}' could not be registered. Only direct properties and methods of a module can be registered.</value>
   </data>
-  <data name="InjectionModule_CreateInstanceBeforeResolve" xml:space="preserve">
-    <value>The factory method '{0}' of module with type '{1}' was called before the module was resolved. Please resolve the module before creating any instances via factories.</value>
+  <data name="InjectionModule_ComponentNotRegistered" xml:space="preserve">
+    <value>The component '{0}' of module with type '{1}' is not registered. Could not create instance of requested component.</value>
   </data>
-  <data name="InjectionModule_FactoryMethodNotRegistered" xml:space="preserve">
-    <value>The method '{0}' of module with type '{1}' is not registered as a factory method. Could not create instance of requested type.</value>
+  <data name="InjectionModule_CreateInstanceBeforeResolve" xml:space="preserve">
+    <value>The component '{0}' of module with type '{1}' was tried to be resolved before the module was resolved. Please resolve the module before creating any instances.</value>
   </data>
   <data name="InjectionModule_FactoryMethodsWithParametersNotSupportedYet" xml:space="preserve">
     <value>The method '{0}' of module with type '{1}' can not be registered as a factory method. Only parameterless methods can currently be registered.</value>

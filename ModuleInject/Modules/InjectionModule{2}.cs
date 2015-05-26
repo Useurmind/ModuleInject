@@ -253,7 +253,7 @@ namespace ModuleInject.Modules
 
             if (!this.container.IsRegistered<IComponent>(functionName))
             {
-                ExceptionHelper.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_FactoryMethodNotRegistered, functionName);
+                ExceptionHelper.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_ComponentNotRegistered, functionName);
             }
 
             return this.container.Resolve<IComponent>(functionName);

@@ -23,8 +23,6 @@ namespace ModuleInject.Injection
 	public class InjectionModule<TModule> : Module, IInjectionModule
 		where TModule : InjectionModule<TModule>
 	{
-		private ModuleMemberExpressionChecker<TModule, TModule> expressionChecker;
-
 		private ISet<IInjectionRegister> injectionRegisters;
 		private IDictionary<string, IInjectionRegister> namedInjectionRegisters;
 
@@ -33,7 +31,6 @@ namespace ModuleInject.Injection
 
 		public InjectionModule()
 		{
-			this.expressionChecker = new ModuleMemberExpressionChecker<TModule, TModule>();
 			this.injectionRegisters = new HashSet<IInjectionRegister>();
 			this.namedInjectionRegisters = new Dictionary<string, IInjectionRegister>();
 		}
@@ -227,6 +224,22 @@ namespace ModuleInject.Injection
 			return (TIComponent)Get(componentName);
 		}
 
+		protected object Get(string componentName)
+		{
+			// this must be available during resolution now, because of lambda expression
+			if (!this.IsResolving && !this.IsResolved)
+			{
+				ExceptionHelper.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_CreateInstanceBeforeResolve, componentName);
+			}
+
+			if (!this.namedInjectionRegisters.ContainsKey(componentName))
+			{
+				ExceptionHelper.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_ComponentNotRegistered, componentName);
+			}
+
+			return this.namedInjectionRegisters[componentName].GetInstance();
+		}
+
 		private System.Reflection.MemberInfo GetComponentName<TIComponent>(Expression<Func<TModule, TIComponent>> componentMember)
 		{
 			Expression body = componentMember.Body;
@@ -242,11 +255,6 @@ namespace ModuleInject.Injection
 			}
 
 			throw new ArgumentException("Expression for component not correct.");
-		}
-
-		protected object Get(string componentName)
-		{
-			return this.namedInjectionRegisters[componentName].GetInstance();
 		}
 
 		private void TryAddModuleResolveHooks()
