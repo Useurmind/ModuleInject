@@ -20,7 +20,7 @@ namespace Test.ModuleInject.Modules
         [TestCase]
         public void TestSubComponent2OfMainComponent2IsInjectedIntoSubComponent1()
         {
-            this._module.SetupSubComponent2OfMainComponent2IsInjectedIntoSubComponent1();
+            this._module.Resolve();
 
             Assert.IsNotNull(this._module.SubComponent1);
             Assert.IsNotNull(this._module.SubComponent2);

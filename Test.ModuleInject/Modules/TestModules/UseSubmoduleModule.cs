@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 
 using ModuleInject.Decoration;
+using ModuleInject.Injection;
 using ModuleInject.Interfaces;
 using ModuleInject.Modules;
 using ModuleInject.Modules.Fluent;
@@ -12,32 +13,24 @@ namespace Test.ModuleInject.Modules.TestModules
         IMainComponent1 MainComponent { get; }
     }
 
-    public class UseSubmoduleModule : InjectionModule<IUseSubmoduleModule, UseSubmoduleModule>, IUseSubmoduleModule
+    public class UseSubmoduleModule : InjectionModule<UseSubmoduleModule>, IUseSubmoduleModule
     {
-        public IMainComponent1 MainComponent { get; private set; }
-
-        [PrivateComponent]
-        public ISubModule SubModule { get; set; }
-
-        public UseSubmoduleModule()
-        {
-            this.RegisterPrivateComponent(x => x.SubModule).Construct<Submodule>();
-        }
-
+        public IMainComponent1 MainComponent { get { return Get<IMainComponent1>(); } }
+        
+        public ISubModule SubModule { get { return GetSingleInstance<Submodule>(); } }
+        
         public void RegisterMainComponent_Injecting_SubmoduleProperty()
         {
-            this.RegisterPublicComponent(x => x.MainComponent)
+            this.SingleInstance(x => x.MainComponent)
                 .Construct<MainComponent1>()
-                .Inject(x => x.SubModule.Component1)
-                .IntoProperty(x => x.SubComponent1);
+                .Inject((m, c) => c.SubComponent1 = m.SubModule.Component1);
         }
 
         public void RegisterMainComponent_Injecting_SubmoduleFactory()
         {
-            this.RegisterPublicComponent(x => x.MainComponent)
+            this.SingleInstance(x => x.MainComponent)
                 .Construct<MainComponent1>()
-                .Inject(x => x.SubModule.CreateComponent1())
-                .IntoProperty(x => x.SubComponent1);
+                .Inject((m, c) => c.SubComponent1 = m.SubModule.CreateComponent1());
         }
     }
 }

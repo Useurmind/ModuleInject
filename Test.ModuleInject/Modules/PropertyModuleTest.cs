@@ -197,33 +197,5 @@ namespace Test.ModuleInject.Modules
 
             Assert.AreSame(this._module.InitWithInitialize1Component, this._module.AlsoRegisterForComponent);
         }
-
-        [TestCase]
-        [ExpectedException(typeof(ModuleInjectException))]
-        public void RegisterPrivateComponent_NotMarkedWithAttribute_ExceptionThrown()
-        {
-            this._module.RegisterUnattributedPrivateProperty();
-        }
-
-        [TestCase]
-        [ExpectedException(typeof(ModuleInjectException))]
-        public void RegisterPrivateComponent_PartOfPublicInterface_ExceptionThrown()
-        {
-            this._module.RegisterInterfacePropertyAsPrivate();
-        }
-
-        [TestCase]
-        [ExpectedException(typeof(ModuleInjectException))]
-        public void RegisterPrivateComponent_WithInstanceNotMarkedWithAttribute_ExceptionThrown()
-        {
-            this._module.RegisterUnattributedPrivatePropertyWithInstance();
-        }
-
-        [TestCase]
-        [ExpectedException(typeof(ModuleInjectException))]
-        public void RegisterPrivateComponent_WithInstancePartOfPublicInterface_ExceptionThrown()
-        {
-            this._module.RegisterInterfacePropertyAsPrivateWithInstance();
-        }
     }
 }

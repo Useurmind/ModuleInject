@@ -86,7 +86,7 @@ namespace Test.ModuleInject.Modules
             var registrySubInstance = this._module.Registry.GetComponent(typeof(ISubModule));
 
             Assert.IsNotNull(this.PrivatePropertyModule);
-            Assert.AreSame(registryInstance, this.PrivatePropertyModule);
+            Assert.AreNotSame(registryInstance, this.PrivatePropertyModule);
             Assert.IsNotNull(this.PrivatePropertyModule.SubModule);
             Assert.AreSame(registrySubInstance, this.PrivatePropertyModule.SubModule);
         }

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 
 using ModuleInject.Decoration;
+using ModuleInject.Injection;
 using ModuleInject.Interfaces;
 using ModuleInject.Modularity.Registry;
 using ModuleInject.Modules;
@@ -13,44 +14,35 @@ namespace Test.ModuleInject.Modules.TestModules
         IPropertyModule PropertyModule { get; }
     }
 
-    public class RegistryUsingModule : InjectionModule<IRegistryUsingModule, RegistryUsingModule>, IRegistryUsingModule
+    public class RegistryUsingModule : InjectionModule<RegistryUsingModule>, IRegistryUsingModule
     {
-        public IPropertyModule PropertyModule { get; set; }
-
-        [PrivateComponent]
-        public IMainComponent1 MainComponent1 { get; set; }
-
-        [PrivateComponent]
+        public IPropertyModule PropertyModule { get { return GetSingleInstance<PropertyModule>(); } }
+        
+        public IMainComponent1 MainComponent1 { get { return Get<IMainComponent1>(); } }
+        
         [RegistryComponent]
         public IPropertyModule PrivatePropertyModule { get; set; }
 
         [RegistryComponent]
         private IPropertyModule PrivatePrivatePropertyModule { get; set; }
-
-        public RegistryUsingModule()
-        {
-            this.RegisterPublicComponent(x => x.PropertyModule).Construct <PropertyModule>();
-        }
-
+        
         public void RegisterComponentFromPublicSubmodule()
         {
-            this.RegisterPrivateComponent(x => x.MainComponent1)
+            this.SingleInstance(x => x.MainComponent1)
                 .Construct<MainComponent1>()
-                .Inject(x => x.PrivatePropertyModule.Component2)
-                .IntoProperty(x => x.MainComponent2);
+                .Inject((m,c ) => c.MainComponent2 = m.PrivatePropertyModule.Component2);
         }
 
         public void RegisterComponentFromPrivateSubmodule()
         {
-            this.RegisterPrivateComponent(x => x.MainComponent1)
+            this.SingleInstance(x => x.MainComponent1)
                 .Construct<MainComponent1>()
-                .Inject(x => x.PrivatePrivatePropertyModule.Component2)
-                .IntoProperty(x => x.MainComponent2);
+                .Inject((m, c) => c.MainComponent2 = m.PrivatePrivatePropertyModule.Component2);
         }
 
         public void RegisterPrivateWithRegistryComponentOverlap()
         {
-            this.RegisterPrivateComponent(x => x.PrivatePropertyModule).Construct<PropertyModule>();
+            this.PrivatePropertyModule = new PropertyModule();
         }
 
         public void ApplyRegistry()

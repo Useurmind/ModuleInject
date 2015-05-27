@@ -3,6 +3,7 @@
 using Microsoft.Practices.Unity;
 
 using ModuleInject.Decoration;
+using ModuleInject.Injection;
 using ModuleInject.Interfaces;
 using ModuleInject.Modules;
 
@@ -36,18 +37,11 @@ namespace Test.ModuleInject.Modules.TestModules
 
     }
 
-    public class NoAutoWiringModule : InjectionModule<INoAutoWiringModule, NoAutoWiringModule>, INoAutoWiringModule
+    public class NoAutoWiringModule : InjectionModule<NoAutoWiringModule>, INoAutoWiringModule
     {
-        [PrivateComponent]
-        public IAutoWiringClass PrivateAutoWiringComponent { get; set; }
+        public IAutoWiringClass PrivateAutoWiringComponent { get { return GetSingleInstance(m => new AutoWiringClass()); } }
 
         [PrivateComponent]
-        public IMainComponent2 PrivateComponent { get; set; }
-
-        public NoAutoWiringModule()
-        {
-            this.RegisterPrivateComponent(x => x.PrivateAutoWiringComponent).Construct<AutoWiringClass>();
-            this.RegisterPrivateComponent(x => x.PrivateComponent).Construct<MainComponent2>();
-        }
+        public IMainComponent2 PrivateComponent { get { return GetSingleInstance(m => new MainComponent2()); } }
     }
 }
