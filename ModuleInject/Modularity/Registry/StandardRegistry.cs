@@ -7,7 +7,6 @@ using ModuleInject.Container.Interface;
 using ModuleInject.Interfaces.Hooks;
 using ModuleInject.Interfaces;
 using ModuleInject.Interfaces.Fluent;
-using ModuleInject.Modules.Fluent;
 using ModuleInject.Injection.Hooks;
 
 namespace ModuleInject.Modularity.Registry

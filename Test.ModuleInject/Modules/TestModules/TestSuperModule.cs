@@ -1,8 +1,6 @@
 ﻿using System.Linq;
 
 using ModuleInject.Interfaces;
-using ModuleInject.Modules;
-using ModuleInject.Modules.Fluent;
 using ModuleInject.Injection;
 
 namespace Test.ModuleInject.Modules.TestModules

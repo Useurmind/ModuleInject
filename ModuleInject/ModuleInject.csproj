@@ -51,21 +51,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.ServiceLocation">
-      <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity">
-      <HintPath>..\packages\Unity.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Configuration">
-      <HintPath>..\packages\Unity.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Interception">
-      <HintPath>..\packages\Unity.Interception.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.Interception.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Interception.Configuration">
-      <HintPath>..\packages\Unity.Interception.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.Interception.Configuration.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
@@ -113,35 +98,7 @@
     <Compile Include="Modularity\Registry\RegistrationEntry.cs" />
     <Compile Include="Modularity\Registry\RegistryBase.cs" />
     <Compile Include="Modularity\Registry\StandardRegistry.cs" />
-    <Compile Include="Modules\ComponentLifetime.cs" />
-    <Compile Include="Modules\FactoryLifetime.cs" />
-    <Compile Include="Modules\Fluent\ClassInjector.cs" />
-    <Compile Include="Modules\Fluent\ComponentRegistrationContextExtensions.cs" />
-    <Compile Include="Modules\Fluent\ComponentRegistrationContext{4}.cs" />
-    <Compile Include="Modules\Fluent\DependencyInjectionContext.cs" />
-    <Compile Include="Modules\Fluent\DependencyInjectionContextExtensions.cs" />
-    <Compile Include="Modules\Fluent\DependencyInjectionContext{5}.cs" />
-    <Compile Include="Modules\Fluent\InterfaceDependencyInjectionContextExtensions.cs" />
-    <Compile Include="Modules\Fluent\InterfaceDependencyInjectionContext{4}.cs" />
-    <Compile Include="Modules\Fluent\InterfaceRegistrationContextExtensions{2}.cs" />
-    <Compile Include="Modules\Fluent\InterfaceRegistrationContextExtensions{3}.cs" />
-    <Compile Include="Modules\Fluent\InterfaceRegistrationContext{2}.cs" />
-    <Compile Include="Modules\Fluent\InterfaceRegistrationContext{3}.cs" />
-    <Compile Include="Modules\Fluent\InterfaceValueInjectionContextExtensions.cs" />
-    <Compile Include="Modules\Fluent\InterfaceValueInjectionContext{4}.cs" />
-    <Compile Include="Modules\Fluent\ModifiedDependency.cs" />
-    <Compile Include="Modules\Fluent\RegistrationContext.cs" />
-    <Compile Include="Modules\Fluent\RegistrationContextBase.cs" />
-    <Compile Include="Modules\Fluent\RegistrationContextExtensions.cs" />
-    <Compile Include="Modules\Fluent\RegistrationContext{3}.cs" />
-    <Compile Include="Modules\Fluent\ValueInjectionContext.cs" />
-    <Compile Include="Modules\Fluent\ValueInjectionContextExtensions.cs" />
-    <Compile Include="Modules\Fluent\ValueInjectionContext{5}.cs" />
-    <Compile Include="Modules\InjectionModule.cs" />
-    <Compile Include="Modules\InjectionModule{2}.cs" />
-    <Compile Include="Modules\ModuleResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceLocator\ModuleServiceLocator.cs" />
     <Compile Include="Utility\LinqHelper.cs" />
     <Compile Include="Utility\MemberChainEvaluator.cs" />
     <Compile Include="Utility\MemberChecker.cs" />

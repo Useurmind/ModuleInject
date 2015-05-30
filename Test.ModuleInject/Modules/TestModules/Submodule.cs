@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using ModuleInject.Injection;
-using ModuleInject.Modules;
 
 namespace Test.ModuleInject.Modules.TestModules
 {

@@ -3,8 +3,6 @@
 using ModuleInject.Decoration;
 using ModuleInject.Injection;
 using ModuleInject.Interfaces;
-using ModuleInject.Modules;
-using ModuleInject.Modules.Fluent;
 
 namespace Test.ModuleInject.Modules.TestModules
 {

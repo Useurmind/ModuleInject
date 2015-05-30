@@ -11,7 +11,6 @@ namespace Test.Performance.ModuleInject
     {
         static void Main(string[] args)
         {
-            TestModuleType<TestInjectionModule>();
             TestModuleType<TestInjectionModuleV2>();
 			TestModuleType<TestInjectionModuleV2NamedSourcesExpressions>();
 			TestModuleType<TestInjectionModuleV2NamedSourcesWithStrings>();

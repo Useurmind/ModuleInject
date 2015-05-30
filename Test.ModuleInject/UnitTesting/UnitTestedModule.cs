@@ -1,324 +1,316 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
 
-using ModuleInject.Modularity.Registry;
-using ModuleInject.Modules;
-using ModuleInject.Modules.Fluent;
+//using ModuleInject.Modularity.Registry;
+//using Test.ModuleInject.Modules.TestModules;
 
-using Test.ModuleInject.Modules.TestModules;
+//namespace Test.ModuleInject.UnitTesting
+//{
+//    using global::ModuleInject;
+//    using global::ModuleInject.Decoration;
+//    using global::ModuleInject.Injection;
+//    using global::ModuleInject.Interfaces;
 
-namespace Test.ModuleInject.UnitTesting
-{
-    using global::ModuleInject;
-    using global::ModuleInject.Decoration;
-    using global::ModuleInject.Interfaces;
+//    using Moq;
 
-    using Moq;
+//    using NUnit.Framework;
 
-    using NUnit.Framework;
+//    public interface IUnitTestedModule2 : IModule
+//    {
+//        IMainComponent2 MainComponent2 { get; }
 
-    public interface IUnitTestedModule2 : IModule
-    {
-        IMainComponent2 MainComponent2 { get; set; }
+//        IMainComponent2 CreateMainComponent2();
+//    }
 
-        IMainComponent2 CreateMainComponent2();
-    }
+//    public class UnitTestedModule2 : InjectionModule<UnitTestedModule2>, IUnitTestedModule2
+//    {
+//        public IMainComponent2 MainComponent2 { get { return GetSingleInstance<MainComponent2>(); } }
 
-    public class UnitTestedModule2 : InjectionModule<IUnitTestedModule2, UnitTestedModule2>, IUnitTestedModule2
-    {
-        public IMainComponent2 MainComponent2 { get; set; }
+//        public IMainComponent2 CreateMainComponent2()
+//        {
+//            return this.GetFactory(x => new MainComponent2());
+//        }
+//    }
 
-        public IMainComponent2 CreateMainComponent2()
-        {
-            return this.CreateInstance(x => x.CreateMainComponent2());
-        }
+//    public interface IUnitTestedModule : IModule
+//    {
 
-        public UnitTestedModule2()
-        {
-            RegisterPublicComponent(x => x.MainComponent2).Construct<MainComponent2>();
-            RegisterPublicComponentFactory(x => x.CreateMainComponent2()).Construct<MainComponent2>();
-        }
-    }
+//    }
 
-    public interface IUnitTestedModule : IModule
-    {
+//    public class UnitTestedModule : InjectionModule<UnitTestedModule>, IUnitTestedModule
+//    {
+//        [PrivateComponent]
+//        public IMainComponent1 MainComponent1 { get { return Get<IMainComponent1>(); } }
 
-    }
+//        [PrivateComponent]
+//        public IMainComponent2 ZMainComponent2 { get { return Get<IMainComponent2>(); } }
 
-    public class UnitTestedModule : InjectionModule<IUnitTestedModule, UnitTestedModule>, IUnitTestedModule
-    {
-        [PrivateComponent]
-        public IMainComponent1 MainComponent1 { get; set; }
+//        [RegistryComponent]
+//        public IUnitTestedModule2 RegistryModule { get; set; }
 
-        [PrivateComponent]
-        public IMainComponent2 ZMainComponent2 { get; set; }
+//        public UnitTestedModule()
+//        {
+//            SingleInstance(x => x.ZMainComponent2).Construct<MainComponent2>();
+//        }
 
-        [RegistryComponent]
-        public IUnitTestedModule2 RegistryModule { get; set; }
+//        public void PerformPropertyInjectionWithComponent()
+//        {
+//            SingleInstance(x => x.MainComponent1)
+//                .Construct<MainComponent1>()
+//                .Inject((m, c) =>c .MainComponent2 = m.RegistryModule.MainComponent2);
+//        }
 
-        public UnitTestedModule()
-        {
-            RegisterPrivateComponent(x => x.ZMainComponent2).Construct<MainComponent2>();
-        }
+//        public void PerformMethodInjectionWithComponent()
+//        {
+//            SingleInstance(x => x.MainComponent1)
+//                .Construct<MainComponent1>()
+//                .Inject((mod, x) => x.Initialize(RegistryModule.MainComponent2));
+//        }
 
-        public void PerformPropertyInjectionWithComponent()
-        {
-            RegisterPrivateComponent(x => x.MainComponent1)
-                .Construct<MainComponent1>()
-                .Inject(x => x.RegistryModule.MainComponent2).IntoProperty(x => x.MainComponent2);
-        }
+//        public void PerformConstructorInjectionWithComponent()
+//        {
+//            SingleInstance(x => x.MainComponent1)
+//                .Construct(m => new MainComponent1(m.RegistryModule.MainComponent2));
+//        }
 
-        public void PerformMethodInjectionWithComponent()
-        {
-            RegisterPrivateComponent(x => x.MainComponent1)
-                .Construct<MainComponent1>()
-                .Inject((x, mod) => x.Initialize(RegistryModule.MainComponent2));
-        }
+//        public void PerformPropertyInjectionWithFactory()
+//        {
+//            SingleInstance(x => x.MainComponent1)
+//                .Construct<MainComponent1>()
+//                .Inject((m, c) => c.MainComponent2 = m.RegistryModule.CreateMainComponent2());
+//        }
 
-        public void PerformConstructorInjectionWithComponent()
-        {
-            RegisterPrivateComponent(x => x.MainComponent1)
-                .Construct(m => new MainComponent1(m.RegistryModule.MainComponent2));
-        }
+//        public void PerformMethodInjectionWithFactory()
+//        {
+//            SingleInstance(x => x.MainComponent1)
+//                .Construct<MainComponent1>()
+//                .Inject((mod, x) => x.Initialize(RegistryModule.CreateMainComponent2()));
+//        }
 
-        public void PerformPropertyInjectionWithFactory()
-        {
-            RegisterPrivateComponent(x => x.MainComponent1)
-                .Construct<MainComponent1>()
-                .Inject(x => x.RegistryModule.CreateMainComponent2()).IntoProperty(x => x.MainComponent2);
-        }
+//        public void PerformConstructorInjectionWithFactory()
+//        {
+//            SingleInstance(x => x.MainComponent1)
+//                .Construct(m => new MainComponent1(m.RegistryModule.CreateMainComponent2()));
+//        }
 
-        public void PerformMethodInjectionWithFactory()
-        {
-            RegisterPrivateComponent(x => x.MainComponent1)
-                .Construct<MainComponent1>()
-                .Inject((x, mod) => x.Initialize(RegistryModule.CreateMainComponent2()));
-        }
+//        public void SimpleConstructWithoutInjection()
+//        {
+//            SingleInstance(x => x.MainComponent1).Construct<MainComponent1>()
+//                .Inject((m, c) => c.MainComponent2 = m.ZMainComponent2);
+//        }
+//    }
 
-        public void PerformConstructorInjectionWithFactory()
-        {
-            RegisterPrivateComponent(x => x.MainComponent1)
-                .Construct(m => new MainComponent1(m.RegistryModule.CreateMainComponent2()));
-        }
+//    [TestFixture]
+//    public class UnitTestedModuleTest
+//    {
+//        private UnitTestedModule testedModule;
+//        private StandardRegistry realRegistry;
+//        private StandardRegistry mockRegistry;
 
-        public void SimpleConstructWithoutInjection()
-        {
-            RegisterPrivateComponent(x => x.MainComponent1).Construct<MainComponent1>()
-                .Inject(m => m.ZMainComponent2).IntoProperty(c => c.MainComponent2);
-        }
-    }
+//        [SetUp]
+//        public void Setup()
+//        {
+//            testedModule = new UnitTestedModule();
 
-    [TestFixture]
-    public class UnitTestedModuleTest
-    {
-        private UnitTestedModule testedModule;
-        private StandardRegistry realRegistry;
-        private StandardRegistry mockRegistry;
+//            realRegistry = new StandardRegistry();
+//            realRegistry.RegisterModule<IUnitTestedModule2, UnitTestedModule2>();
 
-        [SetUp]
-        public void Setup()
-        {
-            testedModule = new UnitTestedModule();
+//            var module2Mock = new Mock<IUnitTestedModule2>();
+//            module2Mock.SetupGet(x => x.MainComponent2).Returns(Mock.Of<IMainComponent2>());
+//            module2Mock.Setup(x => x.CreateMainComponent2()).Returns(Mock.Of<IMainComponent2>());
 
-            realRegistry = new StandardRegistry();
-            realRegistry.RegisterModule<IUnitTestedModule2, UnitTestedModule2>();
+//            mockRegistry = new StandardRegistry();
+//            mockRegistry.Register<IUnitTestedModule2>(() => module2Mock.Object);
+//        }
 
-            var module2Mock = new Mock<IUnitTestedModule2>();
-            module2Mock.SetupGet(x => x.MainComponent2).Returns(Mock.Of<IMainComponent2>());
-            module2Mock.Setup(x => x.CreateMainComponent2()).Returns(Mock.Of<IMainComponent2>());
+//        [Test]
+//        public void CreateMock_OfUnitTestedModules()
+//        {
+//            Mock.Of<IUnitTestedModule>();
+//            Mock.Of<IUnitTestedModule2>();
+//        }
 
-            mockRegistry = new StandardRegistry();
-            mockRegistry.Register<IUnitTestedModule2>(() => module2Mock.Object);
-        }
+//        [Test]
+//        public void Resolve_PropertyInjectionWithComponentAndRealRegistry_Succeeds()
+//        {
+//            testedModule.Registry = realRegistry;
 
-        [Test]
-        public void CreateMock_OfUnitTestedModules()
-        {
-            Mock.Of<IUnitTestedModule>();
-            Mock.Of<IUnitTestedModule2>();
-        }
+//            testedModule.PerformPropertyInjectionWithComponent();
+//            testedModule.Resolve();
 
-        [Test]
-        public void Resolve_PropertyInjectionWithComponentAndRealRegistry_Succeeds()
-        {
-            testedModule.Registry = realRegistry;
-
-            testedModule.PerformPropertyInjectionWithComponent();
-            testedModule.Resolve();
-
-            AssertInjectionsCorrect();
-        }
+//            AssertInjectionsCorrect();
+//        }
 
 
-        [Test]
-        public void Resolve_PropertyInjectionWithComponentAndMockRegistry_Succeeds()
-        {
-            testedModule.Registry = mockRegistry;
+//        [Test]
+//        public void Resolve_PropertyInjectionWithComponentAndMockRegistry_Succeeds()
+//        {
+//            testedModule.Registry = mockRegistry;
 
-            testedModule.PerformPropertyInjectionWithComponent();
-            testedModule.Resolve();
+//            testedModule.PerformPropertyInjectionWithComponent();
+//            testedModule.Resolve();
 
-            AssertInjectionsCorrect();
-        }
+//            AssertInjectionsCorrect();
+//        }
 
-        [Test]
-        public void Resolve_MethodInjectionWithComponentAndRealRegistry_Succeeds()
-        {
-            testedModule.Registry = realRegistry;
+//        [Test]
+//        public void Resolve_MethodInjectionWithComponentAndRealRegistry_Succeeds()
+//        {
+//            testedModule.Registry = realRegistry;
 
-            testedModule.PerformMethodInjectionWithComponent();
-            testedModule.Resolve();
+//            testedModule.PerformMethodInjectionWithComponent();
+//            testedModule.Resolve();
 
-            AssertInjectionsCorrect();
-        }
+//            AssertInjectionsCorrect();
+//        }
 
 
 
-        [Test]
-        public void Resolve_MethodInjectionWithComponentAndMockRegistry_Succeeds()
-        {
-            testedModule.Registry = mockRegistry;
+//        [Test]
+//        public void Resolve_MethodInjectionWithComponentAndMockRegistry_Succeeds()
+//        {
+//            testedModule.Registry = mockRegistry;
 
-            testedModule.PerformMethodInjectionWithComponent();
-            testedModule.Resolve();
+//            testedModule.PerformMethodInjectionWithComponent();
+//            testedModule.Resolve();
 
-            AssertInjectionsCorrect();
-        }
+//            AssertInjectionsCorrect();
+//        }
 
-        [Test]
-        public void Resolve_ConstructorInjectionWithComponentAndRealRegistry_Succeeds()
-        {
-            testedModule.Registry = realRegistry;
+//        [Test]
+//        public void Resolve_ConstructorInjectionWithComponentAndRealRegistry_Succeeds()
+//        {
+//            testedModule.Registry = realRegistry;
 
-            testedModule.PerformConstructorInjectionWithComponent();
-            testedModule.Resolve();
+//            testedModule.PerformConstructorInjectionWithComponent();
+//            testedModule.Resolve();
 
-            AssertInjectionsCorrect();
-        }
+//            AssertInjectionsCorrect();
+//        }
         
-        [Test]
-        public void Resolve_ConstructorInjectionWithComponentAndMockRegistry_Succeeds()
-        {
-            testedModule.Registry = mockRegistry;
+//        [Test]
+//        public void Resolve_ConstructorInjectionWithComponentAndMockRegistry_Succeeds()
+//        {
+//            testedModule.Registry = mockRegistry;
 
-            testedModule.PerformConstructorInjectionWithComponent();
-            testedModule.Resolve();
+//            testedModule.PerformConstructorInjectionWithComponent();
+//            testedModule.Resolve();
 
-            AssertInjectionsCorrect();
-        }
-
-
-
-        [Test]
-        public void Resolve_PropertyInjectionWithFactoryAndRealRegistry_Succeeds()
-        {
-            testedModule.Registry = realRegistry;
-
-            testedModule.PerformPropertyInjectionWithFactory();
-            testedModule.Resolve();
-
-            AssertInjectionsCorrect(false);
-        }
-
-
-        [Test]
-        public void Resolve_PropertyInjectionWithFactoryAndMockRegistry_Succeeds()
-        {
-            testedModule.Registry = mockRegistry;
-
-            testedModule.PerformPropertyInjectionWithFactory();
-            testedModule.Resolve();
-
-            AssertInjectionsCorrect(false);
-        }
-
-        [Test]
-        public void Resolve_MethodInjectionWithFactoryAndRealRegistry_Succeeds()
-        {
-            testedModule.Registry = realRegistry;
-
-            testedModule.PerformMethodInjectionWithFactory();
-            testedModule.Resolve();
-
-            AssertInjectionsCorrect(false);
-        }
+//            AssertInjectionsCorrect();
+//        }
 
 
 
-        [Test]
-        public void Resolve_MethodInjectionWithFactoryAndMockRegistry_Succeeds()
-        {
-            testedModule.Registry = mockRegistry;
+//        [Test]
+//        public void Resolve_PropertyInjectionWithFactoryAndRealRegistry_Succeeds()
+//        {
+//            testedModule.Registry = realRegistry;
 
-            testedModule.PerformMethodInjectionWithFactory();
-            testedModule.Resolve();
+//            testedModule.PerformPropertyInjectionWithFactory();
+//            testedModule.Resolve();
 
-            AssertInjectionsCorrect(false);
-        }
+//            AssertInjectionsCorrect(false);
+//        }
 
-        [Test]
-        public void Resolve_ConstructorInjectionWithFactoryAndRealRegistry_Succeeds()
-        {
-            testedModule.Registry = realRegistry;
 
-            testedModule.PerformConstructorInjectionWithFactory();
-            testedModule.Resolve();
+//        [Test]
+//        public void Resolve_PropertyInjectionWithFactoryAndMockRegistry_Succeeds()
+//        {
+//            testedModule.Registry = mockRegistry;
 
-            AssertInjectionsCorrect(false);
-        }
+//            testedModule.PerformPropertyInjectionWithFactory();
+//            testedModule.Resolve();
 
-        [Test]
-        public void Resolve_ConstructorInjectionWithFactoryAndMockRegistry_Succeeds()
-        {
-            testedModule.Registry = mockRegistry;
+//            AssertInjectionsCorrect(false);
+//        }
 
-            testedModule.PerformConstructorInjectionWithFactory();
-            testedModule.Resolve();
+//        [Test]
+//        public void Resolve_MethodInjectionWithFactoryAndRealRegistry_Succeeds()
+//        {
+//            testedModule.Registry = realRegistry;
 
-            AssertInjectionsCorrect(false);
-        }
+//            testedModule.PerformMethodInjectionWithFactory();
+//            testedModule.Resolve();
 
-        [Test]
-        public void Resolve_SimpleConstructAfterSettingInstanceFromExternal_ExternalSetWins()
-        {
-            var externalComponent = new MainComponent1();
+//            AssertInjectionsCorrect(false);
+//        }
 
-            testedModule.Registry = mockRegistry;
-            testedModule.MainComponent1 = externalComponent;
 
-            testedModule.SimpleConstructWithoutInjection();
-            testedModule.Resolve();
 
-            Assert.AreSame(externalComponent, testedModule.MainComponent1);
-        }
+//        [Test]
+//        public void Resolve_MethodInjectionWithFactoryAndMockRegistry_Succeeds()
+//        {
+//            testedModule.Registry = mockRegistry;
 
-        [Test]
-        public void Resolve_SimpleConstructAfterSettingPrerequisiteFromExternal_ExternalSetWins()
-        {
-            var externalComponent = new MainComponent2();
+//            testedModule.PerformMethodInjectionWithFactory();
+//            testedModule.Resolve();
 
-            testedModule.Registry = mockRegistry;
-            testedModule.ZMainComponent2 = externalComponent;
+//            AssertInjectionsCorrect(false);
+//        }
 
-            testedModule.SimpleConstructWithoutInjection();
-            testedModule.Resolve();
+//        [Test]
+//        public void Resolve_ConstructorInjectionWithFactoryAndRealRegistry_Succeeds()
+//        {
+//            testedModule.Registry = realRegistry;
 
-            Assert.AreSame(externalComponent, testedModule.ZMainComponent2);
-            Assert.AreSame(externalComponent, testedModule.MainComponent1.MainComponent2);
-        }
+//            testedModule.PerformConstructorInjectionWithFactory();
+//            testedModule.Resolve();
 
-        private void AssertInjectionsCorrect(bool sameInstance = true)
-        {
-            Assert.IsNotNull(testedModule.RegistryModule);
-            Assert.IsNotNull(testedModule.MainComponent1);
-            Assert.IsNotNull(testedModule.MainComponent1.MainComponent2);
+//            AssertInjectionsCorrect(false);
+//        }
 
-            if (sameInstance)
-            {
-                Assert.AreSame(testedModule.RegistryModule.MainComponent2, testedModule.MainComponent1.MainComponent2);
-            }
-        }
-    }
-}
+//        [Test]
+//        public void Resolve_ConstructorInjectionWithFactoryAndMockRegistry_Succeeds()
+//        {
+//            testedModule.Registry = mockRegistry;
+
+//            testedModule.PerformConstructorInjectionWithFactory();
+//            testedModule.Resolve();
+
+//            AssertInjectionsCorrect(false);
+//        }
+
+//        [Test]
+//        public void Resolve_SimpleConstructAfterSettingInstanceFromExternal_ExternalSetWins()
+//        {
+//            var externalComponent = new MainComponent1();
+
+//            testedModule.Registry = mockRegistry;
+//            testedModule.MainComponent1 = externalComponent;
+
+//            testedModule.SimpleConstructWithoutInjection();
+//            testedModule.Resolve();
+
+//            Assert.AreSame(externalComponent, testedModule.MainComponent1);
+//        }
+
+//        [Test]
+//        public void Resolve_SimpleConstructAfterSettingPrerequisiteFromExternal_ExternalSetWins()
+//        {
+//            var externalComponent = new MainComponent2();
+
+//            testedModule.Registry = mockRegistry;
+//            testedModule.ZMainComponent2 = externalComponent;
+
+//            testedModule.SimpleConstructWithoutInjection();
+//            testedModule.Resolve();
+
+//            Assert.AreSame(externalComponent, testedModule.ZMainComponent2);
+//            Assert.AreSame(externalComponent, testedModule.MainComponent1.MainComponent2);
+//        }
+
+//        private void AssertInjectionsCorrect(bool sameInstance = true)
+//        {
+//            Assert.IsNotNull(testedModule.RegistryModule);
+//            Assert.IsNotNull(testedModule.MainComponent1);
+//            Assert.IsNotNull(testedModule.MainComponent1.MainComponent2);
+
+//            if (sameInstance)
+//            {
+//                Assert.AreSame(testedModule.RegistryModule.MainComponent2, testedModule.MainComponent1.MainComponent2);
+//            }
+//        }
+//    }
+//}

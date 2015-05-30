@@ -2,7 +2,6 @@
 
 using ModuleInject.Decoration;
 using ModuleInject.Interfaces;
-using ModuleInject.Modules;
 using ModuleInject.Injection;
 
 namespace Test.ModuleInject.Modules.TestModules

@@ -1,8 +1,6 @@
 ﻿using System.Linq;
 
 using ModuleInject.Decoration;
-using ModuleInject.Modules;
-using ModuleInject.Modules.Fluent;
 using ModuleInject.Injection;
 using ModuleInject.Interfaces.Injection;
 

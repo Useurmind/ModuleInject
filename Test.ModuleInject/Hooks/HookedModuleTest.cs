@@ -2,7 +2,6 @@
 using ModuleInject.Decoration;
 using ModuleInject.Interfaces;
 using ModuleInject.Modularity.Registry;
-using ModuleInject.Modules.Fluent;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;

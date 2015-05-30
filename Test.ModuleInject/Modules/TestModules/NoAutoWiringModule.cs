@@ -5,7 +5,6 @@ using Microsoft.Practices.Unity;
 using ModuleInject.Decoration;
 using ModuleInject.Injection;
 using ModuleInject.Interfaces;
-using ModuleInject.Modules;
 
 namespace Test.ModuleInject.Modules.TestModules
 {

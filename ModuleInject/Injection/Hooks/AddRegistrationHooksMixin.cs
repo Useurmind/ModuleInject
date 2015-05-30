@@ -2,7 +2,6 @@
 using ModuleInject.Interfaces.Fluent;
 using ModuleInject.Interfaces.Hooks;
 using ModuleInject.Interfaces.Injection;
-using ModuleInject.Modules.Fluent;
 using System;
 using System.Collections.Generic;
 using System.Linq;

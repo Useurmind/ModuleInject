@@ -1,8 +1,7 @@
 ﻿using System.Linq;
 
 using ModuleInject.Decoration;
-using ModuleInject.Modules;
-using ModuleInject.Modules.Fluent;
+using ModuleInject.Injection;
 
 using NUnit.Framework;
 
@@ -15,34 +14,29 @@ namespace Test.ModuleInject.Modules
     {
         private TestModule testModule;
 
-        private class TestModule : InjectionModule<IEmptyModule, TestModule>, IEmptyModule
+        private class TestModule : InjectionModule<TestModule>, IEmptyModule
         {
             [PrivateComponent]
-            public IMainComponent1 Component { get; set; }
+            public IMainComponent1 Component { get { return this.Get<IMainComponent1>(); } }
 
             [PrivateComponent]
-            public IMainComponent2 ZPrerequisiteComponent { get; set; }
-
-            public TestModule()
-            {
-                this.RegisterPrivateComponent(x => x.ZPrerequisiteComponent).Construct<MainComponent2>();
-            }
+            public IMainComponent2 ZPrerequisiteComponent { get { return GetSingleInstance<IMainComponent2>(m => new MainComponent2()); } }
 
             public void RegisterComponentWithPrerequisiteAndThisReferenceViaMethodInjection()
             {
-                this.RegisterPrivateComponent(x => x.Component).Construct<MainComponent1>()
-                                    .Inject((c, m) => c.Initialize(this.ZPrerequisiteComponent));
+                this.SingleInstance(x => x.Component).Construct<MainComponent1>()
+                                    .Inject((m, c) => c.Initialize(this.ZPrerequisiteComponent));
             }
 
             public void RegisterComponentWithPrerequisiteAndThisReferenceViaPropertyInjection()
             {
-                this.RegisterPrivateComponent(x => x.Component).Construct<MainComponent1>()
-                                    .Inject(m => this.ZPrerequisiteComponent).IntoProperty(c => c.MainComponent2);
+                this.SingleInstance(x => x.Component).Construct<MainComponent1>()
+                                    .Inject((m, c) => c.MainComponent2 = this.ZPrerequisiteComponent);
             }
 
             public void RegisterComponentWithPrerequisiteAndThisReferenceViaConstructorInjection()
             {
-                this.RegisterPrivateComponent(x => x.Component)
+                this.SingleInstance(x => x.Component)
                     .Construct(m => new MainComponent1(this.ZPrerequisiteComponent));
             }
         }
