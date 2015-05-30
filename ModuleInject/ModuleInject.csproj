@@ -81,10 +81,11 @@
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Injection\ConstructionContext.cs" />
+    <Compile Include="Injection\DisposeStrategy.cs" />
     <Compile Include="Injection\Hooks\AddRegistrationHooksMixin.cs" />
     <Compile Include="Injection\Hooks\DelegateRegistrationHook.cs" />
     <Compile Include="Injection\Hooks\InterfaceInjectorRegistrationHook.cs" />
-    <Compile Include="Injection\IInstantiationStrategy.cs" />
+    <Compile Include="Injection\InstantiationStrategy.cs" />
     <Compile Include="Injection\Injector.cs" />
     <Compile Include="Injection\InjectionModule.cs" />
     <Compile Include="Injection\InjectionRegister.cs" />

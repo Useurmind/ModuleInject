@@ -18,7 +18,7 @@ namespace ModuleInject.Interfaces.Injection
 		IInjectionRegister Register { get; }
 	}
 
-	public interface IInjectionRegister
+	public interface IInjectionRegister : IDisposable
 	{
 		Type ComponentInterface { get; }
 		Type ComponentType { get; }
@@ -51,9 +51,9 @@ namespace ModuleInject.Interfaces.Injection
 	{
 		void Inject(Action<TIContext, TIComponent> injectInInstance);
 
-		void Change(Func<TIContext, TIComponent, TIComponent> changeInstance);
+		//void Change(Func<TIContext, TIComponent, TIComponent> changeInstance);
 
-		void Change(Func<TIComponent, TIComponent> changeInstance);
+		//void Change(Func<TIComponent, TIComponent> changeInstance);
 
 		void AddMeta<T>(T metaData);
 	}

@@ -104,6 +104,7 @@
     <Compile Include="Hooks\InterfaceInjectorRegistrationHookTest.cs" />
     <Compile Include="Injection\InjectionRegisterTest.cs" />
     <Compile Include="Injection\BasicInjectionModuleTest.cs" />
+    <Compile Include="Injection\RememberAndDisposeStrategyTest.cs" />
     <Compile Include="Injection\SingleInstanceInstantiationStrategyTest.cs" />
     <Compile Include="Modularity\ModuleTest.cs" />
     <Compile Include="Modules\AfterResolveModuleTest.cs" />
