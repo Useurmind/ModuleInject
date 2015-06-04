@@ -80,16 +80,17 @@
       <DependentUpon>Errors.resx</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Injection\ConstructionContext.cs" />
+    <Compile Include="Injection\Fluent\StartContext.cs" />
     <Compile Include="Injection\DisposeStrategy.cs" />
     <Compile Include="Injection\Hooks\AddRegistrationHooksMixin.cs" />
     <Compile Include="Injection\Hooks\DelegateRegistrationHook.cs" />
     <Compile Include="Injection\Hooks\InterfaceInjectorRegistrationHook.cs" />
+    <Compile Include="Injection\InjectionRegisterExtensions.cs" />
     <Compile Include="Injection\InstantiationStrategy.cs" />
     <Compile Include="Injection\Injector.cs" />
     <Compile Include="Injection\InjectionModule.cs" />
     <Compile Include="Injection\InjectionRegister.cs" />
-    <Compile Include="Injection\SourceOf.cs" />
+    <Compile Include="Injection\Fluent\SourceOf.cs" />
     <Compile Include="Modularity\Module.cs" />
     <Compile Include="Modularity\RegistryResolver.cs" />
     <Compile Include="Modularity\Registry\AggregateRegistry.cs" />

@@ -10,14 +10,24 @@ namespace ModuleInject.Injection
     {
         private object context;
         private IInstantiationStrategy instantiationStrategy;
+        private IDisposeStrategy disposeStrategy;
         private Func<object, object> constructInstance;
         private IList<Action<object, object>> injectInInstanceList;
         private IList<Func<object, object, object>> changeInstanceList;
         private IList<Action<ObjectResolvedContext>> resolvedHandlers;
         private ISet<object> metaData;
 
-        public InjectionRegister(Type contextType, Type componentInterface, Type componentType)
+        public InjectionRegister(string componentName, Type contextType, Type componentInterface) : this(componentName, contextType, componentInterface, null)
         {
+        }
+
+        public InjectionRegister(Type contextType, Type componentInterface, Type componentType) :this(null, contextType, componentInterface, componentType)
+        {
+        }
+
+        public InjectionRegister(string componentName, Type contextType, Type componentInterface, Type componentType)
+        {
+            this.ComponentName = componentName;
             this.ContextType = contextType;
             this.ComponentInterface = componentInterface;
             this.ComponentType = componentType;
@@ -28,14 +38,19 @@ namespace ModuleInject.Injection
             this.resolvedHandlers = new List<Action<ObjectResolvedContext>>();
         }
 
+        public string ComponentName { get; private set; }
         public Type ComponentInterface { get; private set; }
-        public Type ComponentType { get; private set; }
+        public Type ComponentType { get; set; }
         public Type ContextType { get; private set; }
 
         public IEnumerable<object> MetaData { get { return this.metaData; } }
         public IInstantiationStrategy GetInstantiationStrategy()
         {
             return instantiationStrategy;
+        }
+        public IDisposeStrategy GetDisposeStrategy()
+        {
+            return disposeStrategy;
         }
 
         public void SetContext(object context)
@@ -46,6 +61,11 @@ namespace ModuleInject.Injection
         public void InstantiationStrategy(IInstantiationStrategy instantiationStrategy)
         {
             this.instantiationStrategy = instantiationStrategy;
+        }
+
+        public void DisposeStrategy(IDisposeStrategy disposeStrategy)
+        {
+            this.disposeStrategy = disposeStrategy;
         }
 
         public void Construct(Func<object, object> constructInstance)
@@ -90,12 +110,16 @@ namespace ModuleInject.Injection
             {
                 injectInInstance(this.context, instance);
             }
+            
+            disposeStrategy?.OnInstance(instance);
 
             object usedInstance = instance;
 
             foreach (var changeInstance in changeInstanceList)
             {
                 usedInstance = changeInstance(this.context, usedInstance);
+
+                disposeStrategy?.OnInstance(usedInstance);
             }
 
             if (this.resolvedHandlers.Count > 0)
@@ -120,7 +144,7 @@ namespace ModuleInject.Injection
         {
             if (disposing)
             {
-                instantiationStrategy.Dispose();
+                disposeStrategy.Dispose();
             }
         }
 
@@ -186,6 +210,11 @@ namespace ModuleInject.Injection
 
         private void CheckTypes(IInjectionRegister injectionRegister)
         {
+            if(injectionRegister.ComponentType == null)
+            {
+                injectionRegister.ComponentType = typeof(TComponent);
+            }
+
             if (injectionRegister.ContextType != typeof(TContext) ||
                 injectionRegister.ComponentInterface != typeof(TIComponent) ||
                 injectionRegister.ComponentType != typeof(TComponent))
@@ -207,9 +236,15 @@ namespace ModuleInject.Injection
             this.Register.InstantiationStrategy(instantiationStrategy.Strategy);
         }
 
+        public void DisposeStrategy(IDisposeStrategy disposeStrategy)
+        {
+            this.Register.DisposeStrategy(disposeStrategy);
+        }
+
         public void Construct(Func<TContext, TComponent> constructInstance)
         {
             this.Register.Construct(ctx => constructInstance((TContext)ctx));
+            this.Register.ComponentType = typeof(TComponent);
         }
 
         public void Inject(Action<TContext, TComponent> injectInInstance)
@@ -238,7 +273,7 @@ namespace ModuleInject.Injection
         }
     }
 
-    public static class InjectionRegisterExtensions
+    public static class InjectionRegister3Extensions
     {
         public static IInjectionRegister<TContext, TIComponent, TComponent> AddInterfaceInjector<TContext, TIComponent, TComponent, TIContext, TIComponent2>(
             this IInjectionRegister<TContext, TIComponent, TComponent> injectionRegister,

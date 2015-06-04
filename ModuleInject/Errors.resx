@@ -120,6 +120,9 @@
   <data name="ComponentRegistrationContext_InterceptionNotActivated" xml:space="preserve">
     <value>Interception was not activated on the module with type '{0}'. Activate interception in the module before adding a behaviour to components.</value>
   </data>
+  <data name="Construction_NoDisposeStrategySetForDisposableType" xml:space="preserve">
+    <value>The component of name '{0}' and type '{1}' in module '{2}' has no dispose strategy defined despite it being derived from IDisposable.</value>
+  </data>
   <data name="DependencyInjectionContext_IntoPropertyExpressionNotWritable" xml:space="preserve">
     <value>The property '{0}' of type '{1}' has no setter defined.</value>
   </data>
@@ -156,6 +159,9 @@ The properties are: '{1}'</value>
   </data>
   <data name="InjectionModule_PropertyNotQualifiedForPrivateRegistration" xml:space="preserve">
     <value>The property '{0}' of module with type '{1}' is not qualified to be a private component. Either it is a public component or it was not marked with the PrivateComponentAttribute.</value>
+  </data>
+  <data name="InjectionRegister_TypeMismatch" xml:space="preserve">
+    <value>The types '{0}', '{1}' of the injection register do not match the given types '{2}', '{3}'.</value>
   </data>
   <data name="MemberChainEvaluator_MemberChainNotContinuous" xml:space="preserve">
     <value>The expression '{0}' is not a continuous chain of member accesses.</value>

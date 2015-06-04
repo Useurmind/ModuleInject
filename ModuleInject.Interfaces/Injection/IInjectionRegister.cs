@@ -7,6 +7,7 @@ namespace ModuleInject.Interfaces.Injection
 {
 	public class ObjectResolvedContext
 	{
+        public string ComponentName { get; set; }
 		public Type ContextType { get; set; }
 		public Type ComponentInterface { get; set; }
 		public Type ComponentType { get; set; }
@@ -20,19 +21,24 @@ namespace ModuleInject.Interfaces.Injection
 
 	public interface IInjectionRegister : IDisposable
 	{
+        string ComponentName { get; }
 		Type ComponentInterface { get; }
-		Type ComponentType { get; }
+		Type ComponentType { get; set; }
 		Type ContextType { get; }
 
 		IEnumerable<object> MetaData { get; }
 
 		IInstantiationStrategy GetInstantiationStrategy();
 
-		void SetContext(object context);
+        IDisposeStrategy GetDisposeStrategy();
+
+        void SetContext(object context);
 
 		void InstantiationStrategy(IInstantiationStrategy instantiationStrategy);
 
-		void Construct(Func<object, object> constructInstance);
+        void DisposeStrategy(IDisposeStrategy disposeStrategy);
+
+        void Construct(Func<object, object> constructInstance);
 
 		void Inject(Action<object, object> injectInInstance);
 
@@ -64,7 +70,9 @@ namespace ModuleInject.Interfaces.Injection
 
 		void InstantiationStrategy(IInstantiationStrategy<TIComponent> instantiationStrategy);
 
-		void Construct(Func<TContext, TComponent> constructInstance);
+        void DisposeStrategy(IDisposeStrategy disposeStrategy);
+
+        void Construct(Func<TContext, TComponent> constructInstance);
 
 		void Inject(Action<TContext, TComponent> injectInInstance);
 

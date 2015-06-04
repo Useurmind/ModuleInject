@@ -111,6 +111,7 @@
     <Compile Include="Modules\ConstructorInjectionModuleTest.cs" />
     <Compile Include="Modules\CustomActionModuleTest.cs" />
     <Compile Include="Modules\DerivedModuleTest.cs" />
+    <Compile Include="Modules\DisposeTest.cs" />
     <Compile Include="Modules\FactoryModuleTest.cs" />
     <Compile Include="Modules\InjectorModuleTest.cs" />
     <Compile Include="Modules\MethodCallModuleTest.cs" />

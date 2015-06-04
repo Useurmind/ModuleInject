@@ -9,8 +9,6 @@ namespace ModuleInject.Injection
     public class DelegateInstantiationStrategy : IInstantiationStrategy
     {
         private Func<Func<object>, object> getInstance;
-        private IDisposeStrategy disposeStrategy;
-
         public DelegateInstantiationStrategy(Func<Func<object>, object> getInstance)
         {
             this.getInstance = getInstance;
@@ -19,26 +17,7 @@ namespace ModuleInject.Injection
         public object GetInstance(Func<object> createInstance)
         {
             var instance = getInstance(createInstance);
-            disposeStrategy.OnInstance(instance);
             return instance;
-        }
-
-        public void SetDisposeStrategy(IDisposeStrategy disposeStrategy)
-        {
-            this.disposeStrategy = disposeStrategy;
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                disposeStrategy.Dispose();
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
         }
     }
 
@@ -54,11 +33,6 @@ namespace ModuleInject.Injection
             });
         }
 
-        public void SetDisposeStrategy(IDisposeStrategy disposeStrategy)
-        {
-            Strategy.SetDisposeStrategy(disposeStrategy);
-        }
-
         public abstract T GetInstance(Func<T> createInstance);
     }
 
@@ -68,7 +42,6 @@ namespace ModuleInject.Injection
 
         public SingleInstanceInstantiationStrategy()
         {
-            SetDisposeStrategy(new RememberAndDisposeStrategy());
         }
 
         public override T GetInstance(Func<T> createInstance)
@@ -85,7 +58,6 @@ namespace ModuleInject.Injection
     {
         public FactoryInstantiationStrategy()
         {
-            SetDisposeStrategy(new FireAndForgetStrategy());
         }
 
         public override T GetInstance(Func<T> createInstance)

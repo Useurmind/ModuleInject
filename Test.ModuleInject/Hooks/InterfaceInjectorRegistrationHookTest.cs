@@ -83,7 +83,7 @@ namespace Test.ModuleInject.Hooks
         public void AppliesToComponent_ForSimpleImplemetingComponent_ReturnsTrue()
         {
             var hook = new InterfaceInjectorRegistrationHook<IHookedModule, IHookedComponent>(null);
-            var injectionRegister = new InjectionRegister(typeof(TestModule1), typeof(IHookedComponent), typeof(TestComponent1));
+            var injectionRegister = new InjectionRegister(null, typeof(TestModule1), typeof(IHookedComponent), typeof(TestComponent1));
 
 			injectionRegister.SetContext(new TestModule1());
 			injectionRegister.AddMeta("asd");

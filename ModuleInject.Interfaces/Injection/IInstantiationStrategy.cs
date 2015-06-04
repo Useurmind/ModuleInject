@@ -5,11 +5,9 @@ using System.Text;
 
 namespace ModuleInject.Interfaces.Injection
 {
-	public interface IInstantiationStrategy : IDisposable
+	public interface IInstantiationStrategy
 	{
 		object GetInstance(Func<object> createInstance);
-
-        void SetDisposeStrategy(IDisposeStrategy disposeStrategy);
 	}
 
     public interface IDisposeStrategy : IDisposable
@@ -17,7 +15,12 @@ namespace ModuleInject.Interfaces.Injection
         void OnInstance(object instance);
     }
 
-	public interface IInstantiationStrategy<T>
+    public interface IDisposeStrategy<T> : IDisposable
+    {
+        void OnInstance(T instance);
+    }
+
+    public interface IInstantiationStrategy<T>
 	{
 		IInstantiationStrategy Strategy { get; }
 
