@@ -124,6 +124,22 @@ namespace ModuleInject.Injection
             }
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if(disposing)
+            {
+                if(!this.IsDisposed)
+                {
+                    foreach (var injectionRegister in this.injectionRegisters)
+                    {
+                        injectionRegister.Dispose();
+                    }
+                }
+            }
+
+            base.Dispose(disposing);
+        }
+
         private void TryAddRegistrationHooks()
         {
             foreach (var injectionRegister in this.injectionRegisters)
@@ -274,7 +290,7 @@ namespace ModuleInject.Injection
             }
         }
 
-        void TryAddModuleResolveHook(IInjectionRegister injectionRegister)
+        private void TryAddModuleResolveHook(IInjectionRegister injectionRegister)
         {
             var moduleTypeName = typeof(IModule).Name;
             var isModule = injectionRegister.ComponentType.GetInterface(moduleTypeName) != null;

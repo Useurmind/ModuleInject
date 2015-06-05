@@ -36,8 +36,8 @@ namespace ModuleInject.Common.Disposing
             {
                 this.FireDisposing();
 
-                this.IsDisposed = true;
                 this.Dispose(true);
+                this.IsDisposed = true;
 
                 this.FireDisposed();
             }

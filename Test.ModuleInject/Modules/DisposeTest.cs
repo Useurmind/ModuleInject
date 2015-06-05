@@ -96,7 +96,7 @@ namespace Test.ModuleInject.Modules
             var createdDisposableComponent2 = module.CreateDisposableCompontent2();
             var createdNonDisposableComponent = module.CreateNonDisposableCompontent();
 
-            module.Dispose();
+            module.Dispose(); 
             module.Dispose();
 
             Assert.IsTrue(disposableComponent1.IsDisposed);

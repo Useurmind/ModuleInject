@@ -8,32 +8,32 @@ namespace ModuleInject.Injection
 {
     public class DelegateInstantiationStrategy : IInstantiationStrategy
     {
-        private Func<Func<object>, object> getInstance;
+        private Func<Func<object>, object> getInstanceFunc;
+
         public DelegateInstantiationStrategy(Func<Func<object>, object> getInstance)
         {
-            this.getInstance = getInstance;
+            this.getInstanceFunc = getInstance;
         }
-
+        
         public object GetInstance(Func<object> createInstance)
         {
-            var instance = getInstance(createInstance);
+            var instance = getInstanceFunc(createInstance);
             return instance;
         }
     }
 
-    public abstract class InstantiationStrategy<T> : IInstantiationStrategy<T>
+    public abstract class InstantiationStrategy<T> : IInstantiationStrategy<T>, IInstantiationStrategy
     {
-        public IInstantiationStrategy Strategy { get; private set; }
-
         public InstantiationStrategy()
         {
-            this.Strategy = new DelegateInstantiationStrategy(createInstance =>
-            {
-                return GetInstance(() => (T)createInstance());
-            });
         }
 
         public abstract T GetInstance(Func<T> createInstance);
+
+        object IInstantiationStrategy.GetInstance(Func<object> createInstance)
+        {
+            return this.GetInstance(() => (T)createInstance());
+        }
     }
 
     public class SingleInstanceInstantiationStrategy<T> : InstantiationStrategy<T>

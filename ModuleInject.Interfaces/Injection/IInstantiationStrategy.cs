@@ -20,10 +20,8 @@ namespace ModuleInject.Interfaces.Injection
         void OnInstance(T instance);
     }
 
-    public interface IInstantiationStrategy<T>
+    public interface IInstantiationStrategy<T> : IInstantiationStrategy
 	{
-		IInstantiationStrategy Strategy { get; }
-
 		T GetInstance(Func<T> createInstance);
 	}
 }

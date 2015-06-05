@@ -3,10 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ModuleInject.Common.Disposing;
 
 namespace ModuleInject.Injection
 {
-    public class InjectionRegister : IInjectionRegister
+    public class InjectionRegister : DisposableExtBase, IInjectionRegister
     {
         private object context;
         private IInstantiationStrategy instantiationStrategy;
@@ -140,18 +141,12 @@ namespace ModuleInject.Injection
             return usedInstance;
         }
         
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (disposing)
-            {
-                disposeStrategy.Dispose();
+            {                
+                disposeStrategy?.Dispose();
             }
-        }
-
-
-        public void Dispose()
-        {
-            Dispose(true);
         }
     }
 
@@ -233,7 +228,7 @@ namespace ModuleInject.Injection
 
         public void InstantiationStrategy(IInstantiationStrategy<TIComponent> instantiationStrategy)
         {
-            this.Register.InstantiationStrategy(instantiationStrategy.Strategy);
+            this.Register.InstantiationStrategy(instantiationStrategy);
         }
 
         public void DisposeStrategy(IDisposeStrategy disposeStrategy)

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Test.Performance.ModuleInject.Components;
+using ModuleInject.Interfaces;
 
 namespace Test.Performance.ModuleInject
 {
@@ -41,7 +42,7 @@ namespace Test.Performance.ModuleInject
             container = builder.Build();
         }
 
-        protected override void OnRegistryResolved(global::ModuleInject.Interfaces.IRegistry usedRegistry)
+        protected override void OnRegistryResolved(IRegistry usedRegistry)
         {
             Component1 = container.ResolveNamed<ITestComponent1>("Component1");
             Component2 = container.ResolveNamed<ITestComponent1>("Component2");
@@ -53,6 +54,16 @@ namespace Test.Performance.ModuleInject
             Component8 = container.ResolveNamed<ITestComponent1>("Component8");
             Component9 = container.ResolveNamed<ITestComponent1>("Component9");
             Component10 = container.ResolveNamed<ITestComponent1>("Component10");
+        }
+
+        public void Resolve()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Resolve(IRegistry parentRegistry)
+        {
+            throw new NotImplementedException();
         }
     }
 }

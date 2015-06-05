@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ModuleInject.Common.Disposing;
 using ModuleInject.Interfaces.Injection;
 
 namespace ModuleInject.Injection
 {
-    public abstract class DisposeStrategy : IDisposeStrategy
+    public abstract class DisposeStrategy : DisposableExtBase, IDisposeStrategy
     {
-        private bool isDisposed = false;
         private ISet<IDisposable> disposables;
 
         public DisposeStrategy()
@@ -27,9 +27,9 @@ namespace ModuleInject.Injection
 
         public abstract void OnInstance(object instance);
         
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
-            if (!isDisposed)
+            if (!IsDisposed)
             {
                 if (disposing)
                 {
@@ -38,14 +38,9 @@ namespace ModuleInject.Injection
                         disposable.Dispose();
                     }
                 }
-
-                isDisposed = true;
             }
-        }
 
-        public void Dispose()
-        {
-            Dispose(true);
+            base.Dispose(disposing);
         }
     }
 

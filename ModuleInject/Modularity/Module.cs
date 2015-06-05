@@ -8,13 +8,14 @@ using ModuleInject.Interfaces;
 using ModuleInject.Modularity.Registry;
 using ModuleInject.Injection.Hooks;
 using ModuleInject.Interfaces.Hooks;
+using ModuleInject.Common.Disposing;
 
 namespace ModuleInject.Modularity
 {
     /// <summary>
     /// Base class for all modules
     /// </summary>
-    public abstract class Module : IModule, IDisposable, IAddRegistrationHooksMixin
+    public abstract class Module : DisposableExtBase, IModule, IDisposable, IAddRegistrationHooksMixin
     {
         private IRegistry registry;
 
@@ -175,21 +176,14 @@ namespace ModuleInject.Modularity
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             this.registry.Dispose();
+
+            base.Dispose(disposing);
         }
     }
 }

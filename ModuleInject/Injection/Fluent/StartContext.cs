@@ -26,7 +26,7 @@ namespace ModuleInject.Injection
 
         public IDisposeStrategyContext<TModule, TIComponent> InstantiateWith(IInstantiationStrategy<TIComponent> instantiationStrategy)
         {
-            this.Register.InstantiationStrategy(instantiationStrategy.Strategy);
+            this.Register.InstantiationStrategy(instantiationStrategy);
             return this;
         }
 
