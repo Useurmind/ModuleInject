@@ -159,17 +159,6 @@ namespace ModuleInject.Injection
 
         public IInjectionRegister Register { get; private set; }
 
-        // this is dangerous, because if TIComponent is not derivable from 
-        //public void Change(Func<TIComponent, TIComponent> changeInstance)
-        //{
-        //	this.Register.Change(comp => changeInstance((TIComponent)comp));
-        //}
-
-        //public void Change(Func<TIContext, TIComponent, TIComponent> changeInstance)
-        //{
-        //	this.Register.Change((ctx, comp) => changeInstance((TIContext)ctx, (TIComponent)comp));
-        //}
-
         public void Inject(Action<TIContext, TIComponent> injectInInstance)
         {
             this.Register.Inject((ctx, comp) => injectInInstance((TIContext)ctx, (TIComponent)comp));
@@ -178,6 +167,27 @@ namespace ModuleInject.Injection
         public void AddMeta<T>(T metaData)
         {
             this.Register.AddMeta(metaData);
+        }
+    }
+
+    public class ExactInterfaceInjectionRegister<TIContext, TIComponent> : 
+        InterfaceInjectionRegister<TIContext, TIComponent>, 
+        IExactInterfaceInjectionRegister<TIContext, TIComponent>
+    {
+        public ExactInterfaceInjectionRegister(IInjectionRegister injectionRegister) : base(injectionRegister)
+        {
+            // TODO: 
+            // injectionRegister.CheckTypesDerive<TIContext, TIComponent>();
+        }
+        
+        public void Change(Func<TIComponent, TIComponent> changeInstance)
+        {
+            this.Register.Change(comp => changeInstance((TIComponent)comp));
+        }
+
+        public void Change(Func<TIContext, TIComponent, TIComponent> changeInstance)
+        {
+            this.Register.Change((ctx, comp) => changeInstance((TIContext)ctx, (TIComponent)comp));
         }
     }
 

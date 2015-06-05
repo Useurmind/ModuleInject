@@ -26,5 +26,18 @@ namespace ModuleInject.Injection
                     componentInterface.Name);
             }
         }
+
+        //public static void CheckTypesDerive(this IInjectionRegister injectionRegister, Type moduleType, Type componentInterface)
+        //{
+        //    if (injectionRegister.ContextType != moduleType ||
+        //        injectionRegister.ComponentInterface != componentInterface)
+        //    {
+        //        ExceptionHelper.ThrowFormatException(Errors.InjectionRegister_TypeMismatch,
+        //            injectionRegister.ContextType.Name,
+        //            injectionRegister.ComponentInterface.Name,
+        //            moduleType.Name,
+        //            componentInterface.Name);
+        //    }
+        //}
     }
 }

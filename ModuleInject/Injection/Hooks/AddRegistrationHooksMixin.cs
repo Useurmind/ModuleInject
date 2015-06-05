@@ -1,5 +1,4 @@
 ﻿using ModuleInject.Interfaces;
-using ModuleInject.Interfaces.Fluent;
 using ModuleInject.Interfaces.Hooks;
 using ModuleInject.Interfaces.Injection;
 using System;

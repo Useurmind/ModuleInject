@@ -47,5 +47,17 @@ namespace Test.ModuleInject.Modules
             Assert.AreEqual(this._module.Component2, this._module.Component1.MainComponent2);
             Assert.AreEqual(this._module.Component22, this._module.Component1.MainComponent22);
         }
+
+        [TestCase]
+        public void Resolve_GetWrappedComponent_EverythingIsCorrect()
+        {
+            this._module.Resolve();
+
+            var wrappedComponent = _module.WrappedComponent as MainComponent2Wrapper;
+
+            Assert.IsNotNull(wrappedComponent);
+            Assert.AreEqual(2, wrappedComponent.IntProperty);
+            Assert.AreSame(_module.Component2, wrappedComponent.WrappedComponent);
+        }
     }
 }

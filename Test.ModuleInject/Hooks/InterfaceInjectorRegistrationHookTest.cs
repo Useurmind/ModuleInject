@@ -1,7 +1,6 @@
 ﻿using ModuleInject.Injection;
 using ModuleInject.Injection.Hooks;
 using ModuleInject.Interfaces;
-using ModuleInject.Interfaces.Fluent;
 using ModuleInject.Interfaces.Injection;
 using ModuleInject.Modularity;
 using Moq;

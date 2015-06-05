@@ -53,18 +53,40 @@ namespace ModuleInject.Interfaces.Injection
 		object GetInstance();
 	}
 
+    /// <summary>
+    /// This register is used for injectors that match any interface implemented by context and component.
+    /// Allowing any interfaces of the component disallows for changing instances because the returned type is not necessarily correct.
+    /// The interface the component is registered with does not necessarily match <see cref="TIComponent"/>.
+    /// Therefore, you could easily return components with wrong types.
+    /// </summary>
+    /// <typeparam name="TIContext">One of the interfaces of the context.</typeparam>
+    /// <typeparam name="TIComponent">One of the interfaces of the component</typeparam>
 	public interface IInterfaceInjectionRegister<TIContext, TIComponent> : IWrapInjectionRegister
 	{
 		void Inject(Action<TIContext, TIComponent> injectInInstance);
 
-		//void Change(Func<TIContext, TIComponent, TIComponent> changeInstance);
-
-		//void Change(Func<TIComponent, TIComponent> changeInstance);
-
 		void AddMeta<T>(T metaData);
 	}
 
-	public interface IInjectionRegister<TContext, TIComponent, TComponent> : IWrapInjectionRegister
+    /// <summary>
+    /// This register is used in injectors that match any interface of the context but match exactly the interface with
+    /// which the component is registered in the context.
+    /// This allows for exchaning the instance with a new instance of the correct interface.
+    /// </summary>
+    /// <typeparam name="TIContext">One of the interfaces of the context.</typeparam>
+    /// <typeparam name="TIComponent">The interface of the component with which it is registered in the context.</typeparam>
+    public interface IExactInterfaceInjectionRegister<TIContext, TIComponent> : IWrapInjectionRegister
+    {
+        void Inject(Action<TIContext, TIComponent> injectInInstance);
+
+        void Change(Func<TIContext, TIComponent, TIComponent> changeInstance);
+
+        void Change(Func<TIComponent, TIComponent> changeInstance);
+
+        void AddMeta<T>(T metaData);
+    }
+
+    public interface IInjectionRegister<TContext, TIComponent, TComponent> : IWrapInjectionRegister
 	{
 		void SetContext(TContext context);
 
