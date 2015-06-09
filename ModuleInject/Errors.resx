@@ -129,6 +129,12 @@
   <data name="DependencyInjectionContext_NoMemberAccessInTargetExpression" xml:space="preserve">
     <value>The target given to the IntoProperty method does not describe a property.</value>
   </data>
+  <data name="InjectionContainer_ComponentAlreadyRegistered" xml:space="preserve">
+    <value>The component with name '{0}' and type '{1}' is already registered in the injection container.</value>
+  </data>
+  <data name="InjectionContainer_ComponentNotRegistered" xml:space="preserve">
+    <value>The component with name '{0}' and type '{1}' is not registered in the injection container.</value>
+  </data>
   <data name="InjectionModule_AlreadyResolved" xml:space="preserve">
     <value>The module with type '{0}' was already resolved. Please avoid multiple resolutions of the same module.</value>
   </data>

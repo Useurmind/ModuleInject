@@ -36,13 +36,23 @@ namespace ModuleInject.Injection
         }
     }
 
+    public class SingleInstanceInstantiationStrategy : IInstantiationStrategy
+    {
+        private object instance;
+
+        public object GetInstance(Func<object> createInstance)
+        {
+            if (instance == null)
+            {
+                instance = createInstance();
+            }
+            return instance;
+        }
+    }
+
     public class SingleInstanceInstantiationStrategy<T> : InstantiationStrategy<T>
     {
         private T instance;
-
-        public SingleInstanceInstantiationStrategy()
-        {
-        }
 
         public override T GetInstance(Func<T> createInstance)
         {

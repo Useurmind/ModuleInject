@@ -99,6 +99,7 @@
     <Compile Include="Modularity\Registry\MefRegistryBase.cs" />
     <Compile Include="Modularity\Registry\RegistrationEntry.cs" />
     <Compile Include="Modularity\Registry\RegistryBase.cs" />
+    <Compile Include="Modularity\Registry\InjectionContainer.cs" />
     <Compile Include="Modularity\Registry\StandardRegistry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\LinqHelper.cs" />
@@ -128,14 +129,6 @@
     <ProjectReference Include="..\ModuleInject.Common\ModuleInject.Common.csproj">
       <Project>{4c6ea330-ad9a-4a0e-8869-7b7ec1d8db13}</Project>
       <Name>ModuleInject.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ModuleInject.Container.Interface\ModuleInject.Container.Interface.csproj">
-      <Project>{2be60231-ead7-4330-b40e-fc21e97bac66}</Project>
-      <Name>ModuleInject.Container.Interface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ModuleInject.Container\ModuleInject.Container.csproj">
-      <Project>{6a423006-aae9-4c5a-b168-6a2d7f7fcd71}</Project>
-      <Name>ModuleInject.Container</Name>
     </ProjectReference>
     <ProjectReference Include="..\ModuleInject.Interfaces\ModuleInject.Interfaces.csproj">
       <Project>{f220afe2-9601-4f1b-9c4b-4ca04089073b}</Project>

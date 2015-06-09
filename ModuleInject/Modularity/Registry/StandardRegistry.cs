@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using ModuleInject.Container;
-using ModuleInject.Container.Interface;
 using ModuleInject.Interfaces.Hooks;
 using ModuleInject.Interfaces;
 using ModuleInject.Injection.Hooks;
+using ModuleInject.Interfaces.Injection;
+using ModuleInject.Injection;
 
 namespace ModuleInject.Modularity.Registry
 {
@@ -17,33 +17,32 @@ namespace ModuleInject.Modularity.Registry
     {
         private const string componentName = "a";
         private ISet<IRegistrationHook> registrationHooks;
-
-        protected IDependencyContainer Container { get; private set; }
-
+        private ISimpleInjectionContainer container;
+        
         public StandardRegistry()
         {
-            this.Container = new DependencyContainer();
+            this.container = new InjectionContainer();
             this.registrationHooks = new HashSet<IRegistrationHook>();
         }
 
         public override bool IsRegistered(Type type)
         {
-            return this.Container.IsRegistered(componentName, type);
+            return this.container.IsRegistered(type);
         }
 
         public override object GetComponent(Type type)
         {
-            return this.Container.Resolve(componentName, type);
+            return this.container.GetComponent(type);
         }
 
         public virtual void Register<T>(Func<T> factoryFunc)
         {
-            this.Container.Register(componentName, typeof(T), depCont => (object)factoryFunc());
+            this.container.Register(typeof(T), () => factoryFunc());
         }
 
         protected virtual void Register(Type type, object instance)
         {
-            this.Container.Register(componentName, type, instance);
+            this.container.Register(type, () => instance);
         }
 
         /// <summary>
@@ -58,6 +57,16 @@ namespace ModuleInject.Modularity.Registry
         public override IEnumerable<IRegistrationHook> GetRegistrationHooks()
         {
             return this.registrationHooks;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if(disposing)
+            {
+                this.container.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
     }
 

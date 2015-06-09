@@ -97,6 +97,24 @@ namespace ModuleInject {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The component with name &apos;{0}&apos; and type &apos;{1}&apos; is already registered in the injection container. ähnelt.
+        /// </summary>
+        internal static string InjectionContainer_ComponentAlreadyRegistered {
+            get {
+                return ResourceManager.GetString("InjectionContainer_ComponentAlreadyRegistered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The component with name &apos;{0}&apos; and type &apos;{1}&apos; is not registered in the injection container. ähnelt.
+        /// </summary>
+        internal static string InjectionContainer_ComponentNotRegistered {
+            get {
+                return ResourceManager.GetString("InjectionContainer_ComponentNotRegistered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die The module with type &apos;{0}&apos; was already resolved. Please avoid multiple resolutions of the same module. ähnelt.
         /// </summary>
         internal static string InjectionModule_AlreadyResolved {

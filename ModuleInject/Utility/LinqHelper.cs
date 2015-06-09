@@ -11,8 +11,6 @@ namespace ModuleInject.Utility
     using ModuleInject.Common.Exceptions;
     using ModuleInject.Common.Linq;
     using ModuleInject.Common.Utility;
-    using ModuleInject.Container.Interface;
-    using ModuleInject.Container.Resolving;
 
     public static class LinqHelper
     {
