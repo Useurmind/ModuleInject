@@ -6,16 +6,6 @@ using System.Text;
 
 namespace ModuleInject.Injection
 {
-	public interface IInterfaceInjector<TIContext, TIComponent>
-	{
-		void InjectInto(IInterfaceInjectionRegister<TIContext, TIComponent> injectionRegister);
-    }
-
-    public interface IExactInterfaceInjector<TIContext, TIComponent>
-    {
-        void InjectInto(IExactInterfaceInjectionRegister<TIContext, TIComponent> injectionRegister);
-    }
-
     public class InterfaceInjector<TIContext, TIComponent> : IInterfaceInjector<TIContext, TIComponent>
 	{
 		private Action<IInterfaceInjectionRegister<TIContext, TIComponent>> _injectInto;

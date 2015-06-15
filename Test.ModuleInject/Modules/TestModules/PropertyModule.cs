@@ -161,7 +161,7 @@ namespace Test.ModuleInject.Modules.TestModules
 
         public IMainComponent2 PrivateInstanceComponent { get { return GetSingleInstance(m => new MainComponent2()); } }
         
-        [RegistryComponent]
+        [FromRegistry]
         public ISubModule SubModule { get; set; }
 
         public PropertyModule()

@@ -19,7 +19,7 @@ namespace Test.ModuleInject.Modules.TestModules
         
         public IMainComponent2 MainComponent2 { get { return Get<IMainComponent2>(); } }
         
-        [RegistryComponent]
+        [FromRegistry]
         public ISubModule SubModule { get; set; }
 
         public MethodCallModule()

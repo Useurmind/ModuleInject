@@ -14,7 +14,7 @@ using ModuleInject.Utility;
 namespace ModuleInject.Modularity
 {
     /// <summary>
-    /// Finds all properties of the module marked with the <see cref="RegistryComponentAttribute"/>
+    /// Finds all properties of the module marked with the <see cref="FromRegistryAttribute"/>
     /// and tries to retrieve them from the registry given to it.
     /// If the properties contain modules they are resolved too with the given registry.
     /// </summary>
@@ -41,7 +41,7 @@ namespace ModuleInject.Modularity
                                .Where(
                                     p =>
                                     {
-                                        bool isRegistry = p.HasCustomAttribute<RegistryComponentAttribute>();
+                                        bool isRegistry = p.HasCustomAttribute<FromRegistryAttribute>();
                                         return isRegistry;
                                     });
 

@@ -1,7 +1,7 @@
 ﻿Dependency Resolution
 ---------------------
 
-###Automatic Dependency Injection
+### Automatic Dependency Injection
 
 Many DI containers out there support one or all of the following features:
  
@@ -14,7 +14,7 @@ The automatic constructor injection hides the DI structure completely. It may be
 
 The attribute based injection is just to focused on a special use case of a class. Only because many classes are used in a single scenario does not mean that it should be bound to that scenario (unit tests are always a second one). And usually you want the flexibility to use classes in several circumstances where you inject different dependencies to alter their behavior. Attribute based injection can limit your flexibility because you can only define one set of attributes on a given class.
 
-###Explicit Dependency Injection
+### Explicit Dependency Injection
 
 Many of the containers that are in common use today are just to fat for their purpose. In most cases you want to statically inject some dependencies into some class instance. For example:
 
@@ -50,19 +50,17 @@ You can now see what is hidden in the comment I inserted. The constructor of `Se
 
 However it is, you just gave up some of your flexibility just to get rid of some strings that weren't there when you started implementing your container. And you wanted to implement your container to gain some flexibility. Weird...
 
-####Being explicit in ModuleInject
+#### Being explicit in ModuleInject
 
 So where does ModuleInject come into play here. In the end you don't gain anything for free. You always have to pay a price. With the standard DI container you get automatic features that will reduce your implemented code but will hide some of your logic and reduce your flexibility compared to plain old C# code (POCC).
 
-So to be honest ModuleInject will increase the amount of code you write to perform a very simple injection. You need a module, you need a module interface, you need properties and factory methods that will be connected to the registrations. In most cases just a few more line. But only if you have all of this you can finally register and connect the components of your application.
+So to be honest ModuleInject will increase the amount of code you write to perform a very simple injection. You need a module, you need a module interface, you need properties and factory methods that will be connected to the registrations. In most cases just a few more lines. But only if you have all of this you can finally register and connect the components of your application.
 
 The following code could then be written, which does the same as the code in the examples above:
 
-    RegisterPublicProperty(x => x.Service1)
-        .Construct(m => new ServiceClass1(m.Service2));
+    public IServiceClass1 Service1 { get { return GetSingleInstance(m => new ServiceClass1(m.Service2)); } }
 
-    RegisterPublicProperty(x => x.Service2)
-        .Construct<ServiceClass2>();
+    public IServiceClass2 Service2 { get { return GetSingleInstance<ServiceClass2>(); } }
 
 Some things to notice:
 
@@ -74,60 +72,27 @@ The strings are replaced by properties and methods which provide a completely di
 
 Because all registrations look similar by using the same keywords. Developers know exactly what happens in the code once they are accustomed to ModuleInject. The limited and explicit registration syntax provides a structure which can be searched for and understood very fast, once you understand ModuleInject. At the same time the syntax tries to give you all the freedom and flexibility you need.
 
-####Expressions vs. Actions
+#### Injection through actions
 
 Look at the code from the example above:
 
-    RegisterPublicProperty(x => x.Service1)
-        .Construct(m => new ServiceClass1(m.Service2));
+    public IServiceClass1 Service1 { get { return GetSingleInstance(m => new ServiceClass1(m.Service2)); } }
 
-The construct call has a signature with the following argument type.
+The used overload of the `GetSingleInstance` call takes a lambda expression with the following signature.
 
-    Expression<Func<TModule, TComponent>>
+    Func<TModule, TComponent>
 
-In that expression `TModule` is the type of your module and `TComponent` is the type of the registered component.
+In that expression `TModule` is the type of your module and `TComponent` is the type of the registered component. Wth this, in the lambda expression you have access to the module in which the component is registered (here via the argument `m`). This is a pure performance optimization because lambdas without closures are commonly faster than lambas with closures.
 
-So why is this an expression and not a simple `Func` that just returns the correct component? The answer is simple: you cannot analyze the content of a `Func`. 
+Interestingly, using these types of funcs automatically takes care of resolving the dependency chain in the correct order. This is because you automatically resolve the components you need when accessing the properties and methods of the module that is given in the lambda expression.
 
-In the expression you have access to the module in which the component is registered (here via the argument `m`). ModuleInject will look at the expression and find all members of the module that are used in it. These members will be marked as prerequisites of the registered component. All prerequisites of a component are resolved before the component is resolved. (here `m.Service2` is the only prerequisite).
+#### Module Resolution Process
 
-Truth be told, there are alternative possibilities for the syntax, e.g.:
+In ModuleInject each module has a method `Resolve`. Calling the this method mainly serves the purpose of applying the registries that are applied throughout the module tree. Only after calling `Resolve` all submodules taken from the registry via the `FromRegistryAttribute` are available to the resolved module.
 
-    // ModuleInject
-    .Construct(m => new ServiceClass1(m.Service2));
+This process does not guarantee that all dependencies from submodules and the module itself are fully resolved when they are used inside an lambda expression for injection into a component. All components registered via the registration API are resolved on the fly and only when requested.
 
-    // plain func with ugly strings
-    .Construct(m =>  new ServiceClass1(m.Resolve<ServiceClass2>("Service2")));
-
-    // automatic without strings, non explicit, less flexible
-    .Construct(m =>  new ServiceClass1(m.Resolve<ServiceClass2>()));
-
-    // we just moved the expression into 
-    // the resolve call
-    // task: find an even longer syntax...
-    .Construct(m =>  new ServiceClass1(m.Resolve<ServiceClass2>(m2 => m2.Service2)));
-
-To summarize, expressions seem like a good compromise.
-
-####Module Resolution Process
-
-In ModuleInject a module is always resolved as a whole. You call the method `Resolve` on a module and it will automatically resolve all its components and all submodules (modules used inside the module).
-
-The steps are as follows:
-
- - Create and resolve instances of submodules with the `PrivateComponentAttribute` or the `PublicComponentAttribute`.
- - Get from the registry and resolve instances of submodules with the `RegistryComponentAttribute`.
- - Resolve all components of the module.
-
-Resolving a component looks as follows:
-
- - Cancel if component is already resolved.
- - Resolve all prerequisites of the component.
- - Resolve the component itself.
-
-This process assures that all dependencies from submodules and the module itself are fully resolved when they are used inside an expression for injection into a component.
-
-####Summary
+#### Summary
 
 So what does ModuleInject provide?
 

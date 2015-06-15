@@ -11,7 +11,7 @@ namespace ModuleInject.Decoration
     /// and an error is thrown if the registry does not contain a matching registration.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
-    public sealed class RegistryComponentAttribute : Attribute
+    public sealed class FromRegistryAttribute : Attribute
     {
 
     }

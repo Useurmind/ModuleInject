@@ -18,10 +18,10 @@ namespace Test.ModuleInject.Modules.TestModules
         
         public IMainComponent1 MainComponent1 { get { return Get<IMainComponent1>(); } }
         
-        [RegistryComponent]
+        [FromRegistry]
         public IPropertyModule PrivatePropertyModule { get; set; }
 
-        [RegistryComponent]
+        [FromRegistry]
         private IPropertyModule PrivatePrivatePropertyModule { get; set; }
         
         public void RegisterComponentFromPublicSubmodule()

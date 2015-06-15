@@ -5,9 +5,8 @@ In ModuleInject every class that fullfills the `IModule` interface can be used a
 
 This also leads to the fact that you can mock submodules if you keep the invariants of the `IModule` interface in mind:
 
- - If `IsResolved` is true, all component properties of the public interface are filled.
+ - If `IsResolved` is true, you can request any components or factories of the module.
  - Calling `Resolve` leads to `IsResolved` being true.
- - Component factories of the public interface, `GetComponent` and `GetComponent<T>` always return instances according to the registrations in the module.
 
 You can for example use Moq to create a mock for the following module interface:
 
@@ -32,8 +31,6 @@ The creation of the mock would look like this:
 How you introduce the mock into the tested module can vary depending on the use case.
 
  - If the mocked module comes from a registry, you can set one in the test that contains the mocked module.
- - If the mocked module comes from a (C#-)public property you can set that property in the test.
-   (ModuleInject will not Resolve component properties that are already set)
  - Else you have to provide some means to inject it in the tests.
 
 Example code for introduction via a registry:

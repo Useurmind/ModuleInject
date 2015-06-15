@@ -26,7 +26,7 @@ namespace Test.ModuleInject.Modularity
         {
             public IMainComponent1 MainComponent1 { get; private set; }
 
-            [RegistryComponent]
+            [FromRegistry]
             private IPropertyModule PropertyModule { get; set; }
 
             public TestModule()
