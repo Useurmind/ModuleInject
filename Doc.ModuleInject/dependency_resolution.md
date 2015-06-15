@@ -88,7 +88,7 @@ Interestingly, using these types of funcs automatically takes care of resolving 
 
 #### Module Resolution Process
 
-In ModuleInject each module has a method `Resolve`. Calling the this method mainly serves the purpose of applying the registries that are applied throughout the module tree. Only after calling `Resolve` all submodules taken from the registry via the `FromRegistryAttribute` are available to the resolved module.
+In ModuleInject each module has a method `Resolve`. Calling this method mainly serves the purpose of applying the registries that are applied throughout the module tree. Only after calling `Resolve` all submodules taken from the registry via the `FromRegistryAttribute` are available to the resolved module.
 
 This process does not guarantee that all dependencies from submodules and the module itself are fully resolved when they are used inside an lambda expression for injection into a component. All components registered via the registration API are resolved on the fly and only when requested.
 

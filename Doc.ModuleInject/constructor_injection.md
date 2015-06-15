@@ -29,7 +29,7 @@ So here we defined a component with a dependency that is injected via the constr
             // use non-default constructor and inject module component into it
             return GetSingleInstance<IConstructorComponent>(module => 
             {
-                new ConstructorComponent(module.ComponentToInject)
+                return new ConstructorComponent(module.ComponentToInject)
             }); 
         }
     }
