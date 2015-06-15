@@ -148,6 +148,24 @@ namespace ModuleInject.Injection
                 disposeStrategy?.Dispose();
             }
         }
+
+        public override bool Equals(object obj)
+        {
+            var otherInjectionRegister = obj as InjectionRegister;
+            if(otherInjectionRegister == null)
+            {
+                return false;
+            }
+
+            return otherInjectionRegister == this;
+        }
+
+        private static int nextHashCode = 0;
+        private int hashCode = nextHashCode++;
+        public override int GetHashCode()
+        {
+            return hashCode;
+        }
     }
 
     public class InterfaceInjectionRegister<TIContext, TIComponent> : IInterfaceInjectionRegister<TIContext, TIComponent>
