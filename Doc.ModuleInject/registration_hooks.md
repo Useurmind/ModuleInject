@@ -54,7 +54,7 @@ There are shortcuts for adding such hooks:
     registry.AddRegistrationHook<IHookedComponent, IHookedModule>(ctx => 
     {
         // registration pattern here
-        ctx.Inject(...).IntoProperty(...);
+        ctx.Inject(...);
     });
 
 ### Registration hooks and performance

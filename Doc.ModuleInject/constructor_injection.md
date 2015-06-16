@@ -63,4 +63,4 @@ The syntax shown above is a short form for the following syntax:
         }
     }
 
-Using this form you also have access to other parts of the fluent API (e.g. Inject, Change, etc.). In this form the argument of the lambda expression given to the `GetSingleInstance` method is not the module. The argument `cc` is a so called `ConstructionContext` which is part of the fluent syntax. It offers the `Construct` method which offers several overloads. Here an overload is shown that takes a lambda expression taking the module itself as argument and returning the constructed instance.
+Using this form you also have access to other parts of the fluent API (e.g. Inject, Change, etc.). In this form the argument of the lambda expression given to the `GetSingleInstance` method is not the module. The argument `cc` is a so called `IConstructionContext` which is part of the fluent syntax. It offers the `Construct` method which offers several overloads. Here an overload is shown that takes a lambda expression taking the module itself as argument and returning the constructed instance.

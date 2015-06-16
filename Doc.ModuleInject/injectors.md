@@ -89,11 +89,11 @@ Looks pretty much the same for all three of them. So how do we solve this duplic
 
 Well, let's try using an injector:
 
-    public class DebugLogInjector :  InterfaceInjector<IHaveLogComponent, IInjectorComponent> 
+    public class DebugLogInjector : InterfaceInjector<IHaveLogComponent, IInjectorComponent> 
     {
-        public void InjectInto(IInterfaceInjectionRegister<IHaveLogComponent, IInjectorComponent> register)
+        public void InjectInto(IInterfaceModificationContext<IHaveLogComponent, IInjectorComponent> context)
 		{
-			register.Inject((m, c) => c.Log = m.LogComponent);
+			context.Inject((m, c) => c.Log = m.LogComponent);
 		}
     }
 
