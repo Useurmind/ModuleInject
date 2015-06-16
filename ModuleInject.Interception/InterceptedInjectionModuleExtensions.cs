@@ -22,8 +22,8 @@ namespace ModuleInject.Interception
                 return interceptedRegisters;
             }
         }
-        public static ISourceOf<TContext, TIComponent, TComponent> AddBehaviour<TContext, TIComponent, TComponent>(
-            this ISourceOf<TContext, TIComponent, TComponent> sourceOf,
+        public static IModificationContext<TContext, TIComponent, TComponent> AddBehaviour<TContext, TIComponent, TComponent>(
+            this IModificationContext<TContext, TIComponent, TComponent> sourceOf,
             IInterceptionBehaviour interceptionBehaviour)
         {
             //IInterfaceInterceptor interceptor = null;

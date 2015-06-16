@@ -43,23 +43,4 @@ namespace ModuleInject.Injection
             base.Dispose(disposing);
         }
     }
-
-    public class RememberAndDisposeStrategy : DisposeStrategy
-    {
-        public override void OnInstance(object instance)
-        {
-            this.AddInstance(instance);
-        }
-    }
-
-    public class FireAndForgetStrategy : IDisposeStrategy
-    {
-        public void Dispose()
-        {
-        }
-
-        public void OnInstance(object instance)
-        {
-        }
-    }
 }

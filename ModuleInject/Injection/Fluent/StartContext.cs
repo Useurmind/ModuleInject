@@ -36,17 +36,17 @@ namespace ModuleInject.Injection
             return this;
         }
 
-        public ISourceOf<TModule, TIComponent, TComponent> Construct<TComponent>()
+        public IModificationContext<TModule, TIComponent, TComponent> Construct<TComponent>()
             where TComponent : TIComponent, new()
         {
             return this.Construct<TComponent>(m => new TComponent());
         }
 
-        public ISourceOf<TModule, TIComponent, TComponent> Construct<TComponent>(Func<TModule, TComponent> constructInstance)
+        public IModificationContext<TModule, TIComponent, TComponent> Construct<TComponent>(Func<TModule, TComponent> constructInstance)
             where TComponent : TIComponent
         {
             var typedInjectionRegister = new InjectionRegister<TModule, TIComponent, TComponent>(this.Register);
-            var source = new SourceOf<TModule, TIComponent, TComponent>(typedInjectionRegister);
+            var source = new ModificationContext<TModule, TIComponent, TComponent>(typedInjectionRegister);
 
             typedInjectionRegister.Construct(constructInstance);
 

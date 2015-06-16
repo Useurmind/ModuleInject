@@ -168,47 +168,6 @@ namespace ModuleInject.Injection
         }
     }
 
-    public class InterfaceInjectionRegister<TIContext, TIComponent> : IInterfaceInjectionRegister<TIContext, TIComponent>
-    {
-        public InterfaceInjectionRegister(IInjectionRegister injectionRegister)
-        {
-            this.Register = injectionRegister;
-        }
-
-        public IInjectionRegister Register { get; private set; }
-
-        public void Inject(Action<TIContext, TIComponent> injectInInstance)
-        {
-            this.Register.Inject((ctx, comp) => injectInInstance((TIContext)ctx, (TIComponent)comp));
-        }
-
-        public void AddMeta<T>(T metaData)
-        {
-            this.Register.AddMeta(metaData);
-        }
-    }
-
-    public class ExactInterfaceInjectionRegister<TIContext, TIComponent> : 
-        InterfaceInjectionRegister<TIContext, TIComponent>, 
-        IExactInterfaceInjectionRegister<TIContext, TIComponent>
-    {
-        public ExactInterfaceInjectionRegister(IInjectionRegister injectionRegister) : base(injectionRegister)
-        {
-            // TODO: 
-            // injectionRegister.CheckTypesDerive<TIContext, TIComponent>();
-        }
-        
-        public void Change(Func<TIComponent, TIComponent> changeInstance)
-        {
-            this.Register.Change(comp => changeInstance((TIComponent)comp));
-        }
-
-        public void Change(Func<TIContext, TIComponent, TIComponent> changeInstance)
-        {
-            this.Register.Change((ctx, comp) => changeInstance((TIContext)ctx, (TIComponent)comp));
-        }
-    }
-
     public class InjectionRegister<TContext, TIComponent, TComponent> : IInjectionRegister<TContext, TIComponent, TComponent>
         where TComponent : TIComponent
         where TContext : class
@@ -304,7 +263,7 @@ namespace ModuleInject.Injection
             where TComponent : TIComponent, TIComponent2
             where TContext : TIContext
         {
-            var interfaceInjectionRegister = new InterfaceInjectionRegister<TIContext, TIComponent2>(injectionRegister.Register);
+            var interfaceInjectionRegister = new InterfaceModificationContext<TIContext, TIComponent2>(injectionRegister.Register);
 
             injector.InjectInto(interfaceInjectionRegister);
 

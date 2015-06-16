@@ -53,16 +53,26 @@
     <Compile Include="Disposing\IDisposableExt.cs" />
     <Compile Include="Hooks\IRegistrationHook.cs" />
     <Compile Include="IModule.cs" />
-    <Compile Include="Injection\IInjectionRegister.cs" />
-    <Compile Include="Injection\IInstantiationStrategy.cs" />
+    <Compile Include="Injection\Fluent\IConstructionContext.cs" />
+    <Compile Include="Injection\Fluent\IDisposeStrategyContext.cs" />
+    <Compile Include="Injection\Fluent\IInstantiationStrategyContext.cs" />
+    <Compile Include="Injection\Fluent\IModificationContext.cs" />
+    <Compile Include="Injection\Fluent\IExactInterfaceModificationContext.cs" />
+    <Compile Include="Injection\Fluent\IInterfaceModificationContext.cs" />
+    <Compile Include="Injection\Lifetime\IDisposeStrategy.cs" />
+    <Compile Include="Injection\Register\IInjectionRegister.cs" />
+    <Compile Include="Injection\Lifetime\IInstantiationStrategy.cs" />
     <Compile Include="Injection\IInterfaceInjector.cs" />
-    <Compile Include="Injection\ISourceOf.cs" />
+    <Compile Include="Injection\Fluent\ISourceOf.cs" />
+    <Compile Include="Injection\Register\IWrapInjectionRegister.cs" />
+    <Compile Include="Injection\Register\ObjectResolvedContext.cs" />
     <Compile Include="IRegistry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ModuleInject.snk" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

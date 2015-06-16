@@ -109,7 +109,7 @@ namespace Test.ModuleInject.Hooks
         [Test]
         public void Execute__InjectIntoCalled()
         {
-            IInterfaceInjectionRegister<IHookedModule, IHookedComponent> usedContext = null;
+            IInterfaceModificationContext<IHookedModule, IHookedComponent> usedContext = null;
             var injector = new InterfaceInjector<IHookedModule, IHookedComponent>(ctx => usedContext = ctx);
             var injectionRegisterMock = new Mock<IInjectionRegister>();
             var hook = new InterfaceInjectorRegistrationHook<IHookedModule, IHookedComponent>(injector);

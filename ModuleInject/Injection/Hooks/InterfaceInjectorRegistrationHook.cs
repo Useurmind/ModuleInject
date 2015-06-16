@@ -37,7 +37,7 @@ namespace ModuleInject.Injection.Hooks
 
 		public void Execute(IInjectionRegister injectionRegister)
 		{
-			var interfaceInjectionRegister = new InterfaceInjectionRegister<TIModule, TIComponent>(injectionRegister);
+			var interfaceInjectionRegister = new InterfaceModificationContext<TIModule, TIComponent>(injectionRegister);
 
 			injector.InjectInto(interfaceInjectionRegister);
 		}

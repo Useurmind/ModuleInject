@@ -31,7 +31,7 @@ namespace ModuleInject.Injection.Hooks
         /// <param name="injectInto">The action that contains the injection pattern for the component.</param>
         public static void AddRegistrationHook<TIModule, TIComponent>(
             this IAddRegistrationHooksMixin hookedInstance,
-            Action<IInterfaceInjectionRegister<TIModule, TIComponent>> injectInto)
+            Action<IInterfaceModificationContext<TIModule, TIComponent>> injectInto)
             where TIComponent : class
             where TIModule : class
         {

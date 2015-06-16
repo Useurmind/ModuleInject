@@ -7,11 +7,11 @@ namespace ModuleInject.Interfaces.Injection
 {
     public interface IInterfaceInjector<TIContext, TIComponent>
     {
-        void InjectInto(IInterfaceInjectionRegister<TIContext, TIComponent> injectionRegister);
+        void InjectInto(IInterfaceModificationContext<TIContext, TIComponent> injectionRegister);
     }
 
     public interface IExactInterfaceInjector<TIContext, TIComponent>
     {
-        void InjectInto(IExactInterfaceInjectionRegister<TIContext, TIComponent> injectionRegister);
+        void InjectInto(IExactInterfaceModificationContext<TIContext, TIComponent> injectionRegister);
     }
 }

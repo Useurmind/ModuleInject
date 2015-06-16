@@ -6,12 +6,7 @@ using System.Text;
 
 namespace ModuleInject.Injection
 {
-    public abstract class SourceOf<T> : ISourceOf<T>
-    {
-        public abstract T Get();
-    }
-
-    public class SourceOf<TContext, TIComponent, TComponent> : SourceOf<TIComponent>, IWrapInjectionRegister, ISourceOf<TContext, TIComponent, TComponent>
+    public class ModificationContext<TContext, TIComponent, TComponent> : ISourceOf<TIComponent>, IWrapInjectionRegister, IModificationContext<TContext, TIComponent, TComponent>
         where TComponent : TIComponent
     {
         private readonly IInjectionRegister<TContext, TIComponent, TComponent> injectionRegister;
@@ -24,31 +19,31 @@ namespace ModuleInject.Injection
             }
         }
 
-        public SourceOf(IInjectionRegister<TContext, TIComponent, TComponent> injectionRegister)
+        public ModificationContext(IInjectionRegister<TContext, TIComponent, TComponent> injectionRegister)
         {
             this.injectionRegister = injectionRegister;
         }
 
-        public ISourceOf<TContext, TIComponent, TComponent> Change(Func<TContext, TIComponent, TIComponent> changeInstance)
+        public IModificationContext<TContext, TIComponent, TComponent> Change(Func<TContext, TIComponent, TIComponent> changeInstance)
         {
             this.injectionRegister.Change(changeInstance);
             return this;
         }
 
-        public ISourceOf<TContext, TIComponent, TComponent> Inject(Action<TContext, TComponent> injectInInstance)
+        public IModificationContext<TContext, TIComponent, TComponent> Inject(Action<TContext, TComponent> injectInInstance)
         {
             this.injectionRegister.Inject(injectInInstance);
             return this;
         }
 
-        public ISourceOf<TContext, TIComponent, TComponent> AddMeta<T>(T metaData)
+        public IModificationContext<TContext, TIComponent, TComponent> AddMeta<T>(T metaData)
         {
             this.injectionRegister.AddMeta(metaData);
 
             return this;
         }
 
-        public override TIComponent Get()
+        public TIComponent Get()
         {
             return injectionRegister.GetInstance();
         }
@@ -56,24 +51,24 @@ namespace ModuleInject.Injection
 
     public static class SourceOfExtensions
     {
-        public static ISourceOf<TContext, TIComponent, TComponent> AddInjector<TContext, TIComponent, TComponent, TIContext, TIComponent2>(
-            this ISourceOf<TContext, TIComponent, TComponent> source,
+        public static IModificationContext<TContext, TIComponent, TComponent> AddInjector<TContext, TIComponent, TComponent, TIContext, TIComponent2>(
+            this IModificationContext<TContext, TIComponent, TComponent> source,
             IInterfaceInjector<TIContext, TIComponent2> injector)
         where TComponent : TIComponent, TIComponent2
             where TContext : TIContext
         {
-            var interfaceInjectionRegister = new InterfaceInjectionRegister<TIContext, TIComponent2>(source.Register);
+            var interfaceInjectionRegister = new InterfaceModificationContext<TIContext, TIComponent2>(source.Register);
             injector.InjectInto(interfaceInjectionRegister);
             return source;
         }
 
-        public static ISourceOf<TContext, TIComponent, TComponent> AddInjector<TContext, TIComponent, TComponent, TIContext>(
-            this ISourceOf<TContext, TIComponent, TComponent> source,
+        public static IModificationContext<TContext, TIComponent, TComponent> AddInjector<TContext, TIComponent, TComponent, TIContext>(
+            this IModificationContext<TContext, TIComponent, TComponent> source,
             IExactInterfaceInjector<TIContext, TIComponent> injector)
         where TComponent : TIComponent
             where TContext : TIContext
         {
-            var interfaceInjectionRegister = new ExactInterfaceInjectionRegister<TIContext, TIComponent>(source.Register);
+            var interfaceInjectionRegister = new ExactInterfaceModificationContext<TIContext, TIComponent>(source.Register);
             injector.InjectInto(interfaceInjectionRegister);
             return source;
         }
