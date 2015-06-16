@@ -9,7 +9,7 @@ namespace ModuleInject.Injection
 
     public abstract class InstantiationStrategy<T> : IInstantiationStrategy<T>, IInstantiationStrategy
     {
-        public InstantiationStrategy()
+        protected InstantiationStrategy()
         {
         }
 

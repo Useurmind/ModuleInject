@@ -70,10 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Decoration\NonModulePropertyAttribute.cs" />
-    <Compile Include="Decoration\PrivateComponentAttribute.cs" />
-    <Compile Include="Decoration\PrivateFactoryAttribute.cs" />
-    <Compile Include="Decoration\RegistryComponentAttribute.cs" />
+    <Compile Include="Modularity\FromRegistryAttribute.cs" />
     <Compile Include="Errors.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

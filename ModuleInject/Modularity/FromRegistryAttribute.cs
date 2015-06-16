@@ -1,9 +1,8 @@
 using System.Linq;
+using System;
 
-namespace ModuleInject.Decoration
+namespace ModuleInject.Modularity
 {
-    using System;
-
     /// <summary>
     /// States that a component is taken from the registry of the module.
     /// For this type of component no registration is allowed in the module.

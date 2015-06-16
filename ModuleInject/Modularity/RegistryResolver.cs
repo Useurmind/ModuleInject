@@ -2,7 +2,6 @@
 
 using ModuleInject.Common.Exceptions;
 using ModuleInject.Common.Linq;
-using ModuleInject.Decoration;
 using ModuleInject.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -37,7 +36,7 @@ namespace ModuleInject.Modularity
         public void Resolve()
         {
             var submodulePropertyInfos =
-                this.moduleType.GetModuleComponentPropertiesRecursive(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, false)
+                this.moduleType.GetModuleComponentPropertiesRecursive(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                                .Where(
                                     p =>
                                     {

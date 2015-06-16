@@ -9,7 +9,7 @@ using ModuleInject.Interfaces;
 
 namespace Test.Performance.ModuleInject
 {
-    public class TestAutofacModule : global::ModuleInject.Modularity.Module, ITestModule
+    public class TestAutofacModule : global::ModuleInject.Interfaces.IModule, ITestModule
     {
         private IContainer container;
 
@@ -23,6 +23,14 @@ namespace Test.Performance.ModuleInject
         public ITestComponent1 Component8 { get; set; }
         public ITestComponent1 Component9 { get; set; }
         public ITestComponent1 Component10 { get; set; }
+
+        public bool IsResolved
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
         public TestAutofacModule()
         {
@@ -42,7 +50,7 @@ namespace Test.Performance.ModuleInject
             container = builder.Build();
         }
 
-        protected override void OnRegistryResolved(IRegistry usedRegistry)
+        protected void OnRegistryResolved(IRegistry usedRegistry)
         {
             Component1 = container.ResolveNamed<ITestComponent1>("Component1");
             Component2 = container.ResolveNamed<ITestComponent1>("Component2");

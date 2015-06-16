@@ -1,13 +1,13 @@
 ﻿using System.Linq;
+using System;
+
+using ModuleInject.Interfaces.Disposing;
 
 namespace ModuleInject.Common.Disposing
 {
-    using System;
-
-    using ModuleInject.Interfaces.Disposing;
 
     /// <summary>
-    /// The disposable ext base.
+    /// Base class for creating classes with extended disposable functionality.
     /// </summary>
     public class DisposableExtBase : IDisposableExt
     {

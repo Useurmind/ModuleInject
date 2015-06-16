@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 
-using ModuleInject.Decoration;
 using ModuleInject.Injection;
 using ModuleInject.Interfaces;
+using ModuleInject.Modularity;
 using ModuleInject.Modularity.Registry;
 
 namespace Test.ModuleInject.Modules.TestModules

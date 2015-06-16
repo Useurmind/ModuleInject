@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 
-using ModuleInject.Decoration;
 using ModuleInject.Injection;
 
 using NUnit.Framework;
@@ -16,10 +15,8 @@ namespace Test.ModuleInject.Modules
 
         private class TestModule : InjectionModule<TestModule>, IEmptyModule
         {
-            [PrivateComponent]
             public IMainComponent1 Component { get { return this.Get<IMainComponent1>(); } }
-
-            [PrivateComponent]
+            
             public IMainComponent2 ZPrerequisiteComponent { get { return GetSingleInstance<IMainComponent2>(m => new MainComponent2()); } }
 
             public void RegisterComponentWithPrerequisiteAndThisReferenceViaMethodInjection()

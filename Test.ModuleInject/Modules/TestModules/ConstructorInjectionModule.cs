@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 
-using ModuleInject.Decoration;
 using ModuleInject.Interfaces;
 using ModuleInject.Injection;
 
@@ -35,8 +34,7 @@ namespace Test.ModuleInject.Modules.TestModules
 				}
 			} }
         public IMainComponent2 MainComponent3 { get { return GetSingleInstance<MainComponent2>(); } }
-
-        [PrivateComponent]
+        
         public IMainComponent2 MainComponent2 { get { return GetSingleInstance<MainComponent2>(); } }
 
         public void RegisterWithDefaultConstructor()

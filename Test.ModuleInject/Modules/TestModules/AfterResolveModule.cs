@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using ModuleInject.Decoration;
 using ModuleInject.Interfaces;
 using ModuleInject.Injection;
 using ModuleInject.Interfaces.Injection;

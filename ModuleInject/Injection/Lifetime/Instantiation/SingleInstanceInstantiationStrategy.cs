@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ModuleInject.Common.Utility;
 
 namespace ModuleInject.Injection
 {
@@ -14,6 +15,7 @@ namespace ModuleInject.Injection
         {
             if (instance == null)
             {
+                CommonFunctions.CheckNullArgument(nameof(createInstance), createInstance);
                 instance = createInstance();
             }
             return instance;

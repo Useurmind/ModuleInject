@@ -20,7 +20,7 @@ namespace ModuleInject.Common.Linq
 
         public static Method Get<TObject, TMethodReturn>(Expression<Func<TObject, TMethodReturn>> methodExpression)
         {
-            CommonFunctions.CheckNullArgument("methodExpression", methodExpression);
+            CommonFunctions.CheckNullArgument(nameof(methodExpression), methodExpression);
 
             CheckExpression(methodExpression);
 
@@ -31,7 +31,7 @@ namespace ModuleInject.Common.Linq
 
         public static Method Get<TObject>(Expression<Action<TObject>> methodExpression)
         {
-            CommonFunctions.CheckNullArgument("methodExpression", methodExpression);
+            CommonFunctions.CheckNullArgument(nameof(methodExpression), methodExpression);
 
             CheckExpression(methodExpression);
 
@@ -67,7 +67,7 @@ namespace ModuleInject.Common.Linq
 
         public static implicit operator string(Method method)
         {
-            CommonFunctions.CheckNullArgument("method", method);
+            CommonFunctions.CheckNullArgument(nameof(method), method);
 
             return method.ToString();
         }

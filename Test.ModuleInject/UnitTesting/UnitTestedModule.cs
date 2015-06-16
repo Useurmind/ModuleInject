@@ -6,13 +6,13 @@ using System.Text;
 using ModuleInject.Modularity.Registry;
 using Test.ModuleInject.Modules.TestModules;
 using global::ModuleInject;
-using global::ModuleInject.Decoration;
 using global::ModuleInject.Injection;
 using global::ModuleInject.Interfaces;
 
 using Moq;
 
 using NUnit.Framework;
+using ModuleInject.Modularity;
 
 namespace Test.ModuleInject.UnitTesting
 {

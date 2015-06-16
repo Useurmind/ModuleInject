@@ -7,7 +7,6 @@ using System.Text;
 
 using ModuleInject.Common.Exceptions;
 using ModuleInject.Common.Linq;
-using ModuleInject.Decoration;
 using ModuleInject.Interfaces;
 
 namespace ModuleInject.Utility

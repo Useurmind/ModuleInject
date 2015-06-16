@@ -147,6 +147,8 @@ namespace ModuleInject.Injection
             {                
                 disposeStrategy?.Dispose();
             }
+
+            base.Dispose(disposing);
         }
 
         public override bool Equals(object obj)

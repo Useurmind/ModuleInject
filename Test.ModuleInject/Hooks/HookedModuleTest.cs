@@ -1,5 +1,4 @@
 ﻿using ModuleInject.Common.Linq;
-using ModuleInject.Decoration;
 using ModuleInject.Interfaces;
 using ModuleInject.Modularity.Registry;
 using NUnit.Framework;

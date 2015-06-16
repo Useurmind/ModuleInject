@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 
-using ModuleInject.Decoration;
 using ModuleInject.Interfaces;
 using ModuleInject.Injection;
 
@@ -95,8 +94,7 @@ namespace Test.ModuleInject.Modules.TestModules
 				return c;
 			});
 		}
-
-		[PrivateFactory]
+        
 		public IMainComponent2 CreatePrivateComponent2()
 		{
 			return GetFactory<MainComponent2>();

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ModuleInject.Common.Utility;
 
 namespace ModuleInject.Injection
 {
@@ -57,6 +58,8 @@ namespace ModuleInject.Injection
         where TComponent : TIComponent, TIComponent2
             where TContext : TIContext
         {
+            CommonFunctions.CheckNullArgument(nameof(source), source);
+            CommonFunctions.CheckNullArgument(nameof(injector), injector);
             var interfaceInjectionRegister = new InterfaceModificationContext<TIContext, TIComponent2>(source.Register);
             injector.InjectInto(interfaceInjectionRegister);
             return source;

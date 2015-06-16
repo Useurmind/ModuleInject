@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using ModuleInject.Decoration;
 using ModuleInject.Interfaces;
 using ModuleInject.Modularity;
 using ModuleInject.Modularity.Registry;

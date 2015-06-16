@@ -2,7 +2,6 @@
 
 using Microsoft.Practices.Unity;
 
-using ModuleInject.Decoration;
 using ModuleInject.Injection;
 using ModuleInject.Interfaces;
 
@@ -39,8 +38,7 @@ namespace Test.ModuleInject.Modules.TestModules
     public class NoAutoWiringModule : InjectionModule<NoAutoWiringModule>, INoAutoWiringModule
     {
         public IAutoWiringClass PrivateAutoWiringComponent { get { return GetSingleInstance(m => new AutoWiringClass()); } }
-
-        [PrivateComponent]
+        
         public IMainComponent2 PrivateComponent { get { return GetSingleInstance(m => new MainComponent2()); } }
     }
 }

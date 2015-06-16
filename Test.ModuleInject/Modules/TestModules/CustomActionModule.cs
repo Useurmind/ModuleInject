@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 
-using ModuleInject.Decoration;
 using ModuleInject.Injection;
 using ModuleInject.Interfaces.Injection;
 
