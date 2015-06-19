@@ -43,7 +43,7 @@ namespace Test.ModuleInject.Hooks
 
 			public SubTestModule1()
 			{
-				hookedComponent = SingleInstance<ITestComponent1>()
+				hookedComponent = CreateSingleInstance<ITestComponent1>()
 					.Construct<TestComponent1>()
 					.AddMeta<string>(this.GetProperty(x => x.HookedComponent));
 			}
@@ -60,7 +60,7 @@ namespace Test.ModuleInject.Hooks
 
 			public SubTestModule2()
 			{
-				hookedComponent = SingleInstance<ITestComponent1>()
+				hookedComponent = CreateSingleInstance<ITestComponent1>()
 					.Construct<TestComponent1>()
 					.AddMeta<string>(this.GetProperty(x => x.HookedComponent));
 			}
@@ -113,22 +113,22 @@ namespace Test.ModuleInject.Hooks
 
 			public TestModule()
 			{
-				hookedSubModule = SingleInstance<SubTestModule1>().Construct<SubTestModule1>()
+				hookedSubModule = CreateSingleInstance<SubTestModule1>().Construct<SubTestModule1>()
 					.AddMeta<string>(this.GetProperty(x => x.HookedSubModule));
-				nonHookedSubModule = SingleInstance<SubTestModule2>().Construct<SubTestModule2>()
+				nonHookedSubModule = CreateSingleInstance<SubTestModule2>().Construct<SubTestModule2>()
 					.AddMeta<string>(this.GetProperty(x => x.NonHookedSubModule));
-				publicHookedComponent = SingleInstance<ITestComponent1>().Construct<TestComponent1>()
+				publicHookedComponent = CreateSingleInstance<ITestComponent1>().Construct<TestComponent1>()
 					.AddMeta<string>(this.GetProperty(x => x.PublicHookedComponent));
-				privateHookedComponent = SingleInstance<ITestComponent1>().Construct<TestComponent1>()
+				privateHookedComponent = CreateSingleInstance<ITestComponent1>().Construct<TestComponent1>()
 					.AddMeta<string>(this.GetProperty(x => x.PrivateHookedComponent));
-				privateNonHookedComponent = SingleInstance<ITestComponent2>().Construct<TestComponent2>()
+				privateNonHookedComponent = CreateSingleInstance<ITestComponent2>().Construct<TestComponent2>()
 					.AddMeta<string>(this.GetProperty(x => x.PrivateNonHookedComponent));
 
-				hookedComponentPrivateFactory = Factory<ITestComponent1>().Construct<TestComponent1>()
+				hookedComponentPrivateFactory = CreateFactory<ITestComponent1>().Construct<TestComponent1>()
 					.AddMeta<string>(this.GetMethod(x => x.GetHookedComponentPrivate()));
-				nonHookedComponentPrivateFactory = Factory<ITestComponent2>().Construct<TestComponent2>()
+				nonHookedComponentPrivateFactory = CreateFactory<ITestComponent2>().Construct<TestComponent2>()
 					.AddMeta<string>(this.GetMethod(x => x.GetNonHookedComponentPrivate()));
-				hookedComponentPublicFactory = Factory<ITestComponent1>().Construct<TestComponent1>()
+				hookedComponentPublicFactory = CreateFactory<ITestComponent1>().Construct<TestComponent1>()
 					.AddMeta<string>(this.GetMethod(x => x.GetHookedComponentPublic()));
 			}
 

@@ -59,6 +59,7 @@
     <Compile Include="Injection\Fluent\IModificationContext.cs" />
     <Compile Include="Injection\Fluent\IExactInterfaceModificationContext.cs" />
     <Compile Include="Injection\Fluent\IInterfaceModificationContext.cs" />
+    <Compile Include="Injection\IInjectionModule.cs" />
     <Compile Include="Injection\Lifetime\IDisposeStrategy.cs" />
     <Compile Include="Injection\Register\IInjectionRegister.cs" />
     <Compile Include="Injection\Lifetime\IInstantiationStrategy.cs" />

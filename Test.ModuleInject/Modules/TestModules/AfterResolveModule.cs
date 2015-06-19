@@ -33,11 +33,8 @@ namespace Test.ModuleInject.Modules.TestModules
 		{
 			get
 			{
-				return GetSingleInstance<IMainComponent1>(cc =>
-				{
-					cc.Construct(m => new MainComponent1())
-					.Inject((module, comp) => comp.Initialize(module.MainComponent2));
-				});
+				return GetSingleInstance<IMainComponent1, MainComponent1>((module, comp) => 
+                    comp.Initialize(module.MainComponent2));
 			}
 		}
 		public IList<IMainComponent1> MainComponent1List

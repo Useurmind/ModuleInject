@@ -9,6 +9,7 @@ namespace ModuleInject.Injection
 {
     public static class InjectionRegisterExtensions
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public static void CheckTypes<TModule, TIComponent>(this IInjectionRegister injectionRegister)
         {
             injectionRegister.CheckTypes(typeof(TModule), typeof(TIComponent));

@@ -20,14 +20,14 @@ namespace Test.ModuleInject.Modules.TestModules
 
 		public void RegisterWithClosure_ConstructFromType()
 		{
-			mainComponent1 = SingleInstance<IMainComponent1>()
+			mainComponent1 = CreateSingleInstance<IMainComponent1>()
 				.Construct<MainComponent1>()
 				.Inject((m, c) => c.MainComponent2 = this.MainComponent2);
 		}
 
 		public void RegisterInInterfaceInjector_ConstructFromInstance()
 		{
-			mainComponent1 = SingleInstance<IMainComponent1>()
+			mainComponent1 = CreateSingleInstance<IMainComponent1>()
 				 .Construct<MainComponent1>()
 				 .AddInjector(new InterfaceInjector<IEmptyModule, IMainComponent1>(
 					(context) =>

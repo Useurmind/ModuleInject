@@ -47,28 +47,28 @@ namespace Test.ModuleInject.Modules.TestModules
 
 		public PureInterfaceInjectionModule()
         {
-			mainComponent2 = SingleInstance<IMainComponent2>().Construct<MainComponent2>();
+			mainComponent2 = CreateSingleInstance<IMainComponent2>().Construct<MainComponent2>();
 
             this.RegisterComponentWithInjector();
         }
 
         public void RegisterComponentWithInjector()
         {
-			mainComponent1 = SingleInstance<IMainComponent1>()
+			mainComponent1 = CreateSingleInstance<IMainComponent1>()
 				.Construct<MainComponent1>()
 				.AddInjector(new PureInterfaceInjector());
         }
 
         public void RegisterInstanceWithInjector()
         {
-			mainComponent1 = SingleInstance<IMainComponent1>()
+			mainComponent1 = CreateSingleInstance<IMainComponent1>()
 				.Construct(m => new MainComponent1())
 				.AddInjector(new PureInterfaceInjector());
         }
 
         public void RegisterFactoryWithInjector()
         {
-			mainComponent1Factory = Factory<IMainComponent1>()
+			mainComponent1Factory = CreateFactory<IMainComponent1>()
 				.Construct<MainComponent1>()
 				.AddInjector(new PureInterfaceInjector());
         }

@@ -70,6 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Injection\InjectionModuleCore.cs" />
     <Compile Include="Modularity\FromRegistryAttribute.cs" />
     <Compile Include="Errors.Designer.cs">
       <AutoGen>True</AutoGen>

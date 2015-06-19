@@ -61,14 +61,14 @@ namespace Test.ModuleInject.Modules.TestModules
 
         public InjectorModule()
         {
-			component2 = SingleInstance<IMainComponent2>().Construct<MainComponent2>();
-			component22 = SingleInstance<IMainComponent2>().Construct<MainComponent2>();
-			component23 = SingleInstance<IMainComponent2>().Construct<MainComponent2>();
+			component2 = CreateSingleInstance<IMainComponent2>().Construct<MainComponent2>();
+			component22 = CreateSingleInstance<IMainComponent2>().Construct<MainComponent2>();
+			component23 = CreateSingleInstance<IMainComponent2>().Construct<MainComponent2>();
         }
 
         public void RegisterClassInjectorWithPropertyValueAndInitialize1()
         {
-			component1 = SingleInstance<IMainComponent1>()
+			component1 = CreateSingleInstance<IMainComponent1>()
 				.Construct<MainComponent1>()
 				.AddInjector(new InterfaceInjector<InjectorModule, MainComponent1>(context =>
 				{
@@ -86,7 +86,7 @@ namespace Test.ModuleInject.Modules.TestModules
 
         public void RegisterInterfaceInjectorWithPropertyValueAndInitialize1()
         {
-			component1 = SingleInstance<IMainComponent1>()
+			component1 = CreateSingleInstance<IMainComponent1>()
 				.Construct<MainComponent1>()
 				.AddInjector(new ExactInterfaceInjector<IInjectorModule, IMainComponent1>(context =>
 				{

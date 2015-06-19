@@ -9,6 +9,7 @@ namespace ModuleInject.Injection
 {
     public class FireAndForgetStrategy : IDisposeStrategy
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly", Justification = "Nothing happens here.")]
         public void Dispose()
         {
         }

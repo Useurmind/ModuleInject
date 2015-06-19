@@ -120,16 +120,16 @@ namespace Test.Performance.ModuleInject
 
         public TestInjectionModuleV2()
         {
-            component1 = SingleInstance<ITestComponent1>().Construct<TestComponent1>();
-            component2 = SingleInstance<ITestComponent1>().Construct<TestComponent1>();
-            component3 = SingleInstance<ITestComponent1>().Construct<TestComponent1>();
-            component4 = SingleInstance<ITestComponent1>().Construct<TestComponent1>();
-            component5 = SingleInstance<ITestComponent1>().Construct<TestComponent1>();
-            component6 = SingleInstance<ITestComponent1>().Construct<TestComponent1>();
-            component7 = SingleInstance<ITestComponent1>().Construct<TestComponent1>();
-            component8 = SingleInstance<ITestComponent1>().Construct<TestComponent1>();
-            component9 = SingleInstance<ITestComponent1>().Construct<TestComponent1>();
-            component10 = SingleInstance<ITestComponent1>().Construct<TestComponent1>();
+            component1 = CreateSingleInstance<ITestComponent1>().Construct<TestComponent1>();
+            component2 = CreateSingleInstance<ITestComponent1>().Construct<TestComponent1>();
+            component3 = CreateSingleInstance<ITestComponent1>().Construct<TestComponent1>();
+            component4 = CreateSingleInstance<ITestComponent1>().Construct<TestComponent1>();
+            component5 = CreateSingleInstance<ITestComponent1>().Construct<TestComponent1>();
+            component6 = CreateSingleInstance<ITestComponent1>().Construct<TestComponent1>();
+            component7 = CreateSingleInstance<ITestComponent1>().Construct<TestComponent1>();
+            component8 = CreateSingleInstance<ITestComponent1>().Construct<TestComponent1>();
+            component9 = CreateSingleInstance<ITestComponent1>().Construct<TestComponent1>();
+            component10 = CreateSingleInstance<ITestComponent1>().Construct<TestComponent1>();
         }
     }
 
@@ -296,16 +296,16 @@ namespace Test.Performance.ModuleInject
 
 		public TestInjectionModuleV2NamedSourcesWithStrings()
 		{
-			SingleInstance2<ITestComponent1>("Component1").Construct<TestComponent1>();
-			SingleInstance2<ITestComponent1>("Component2").Construct<TestComponent1>();
-			SingleInstance2<ITestComponent1>("Component3").Construct<TestComponent1>();
-			SingleInstance2<ITestComponent1>("Component4").Construct<TestComponent1>();
-			SingleInstance2<ITestComponent1>("Component5").Construct<TestComponent1>();
-			SingleInstance2<ITestComponent1>("Component6").Construct<TestComponent1>();
-			SingleInstance2<ITestComponent1>("Component7").Construct<TestComponent1>();
-			SingleInstance2<ITestComponent1>("Component8").Construct<TestComponent1>();
-			SingleInstance2<ITestComponent1>("Component9").Construct<TestComponent1>();
-			SingleInstance2<ITestComponent1>("Component10").Construct<TestComponent1>();
+			SingleInstance<ITestComponent1>("Component1").Construct<TestComponent1>();
+			SingleInstance<ITestComponent1>("Component2").Construct<TestComponent1>();
+			SingleInstance<ITestComponent1>("Component3").Construct<TestComponent1>();
+			SingleInstance<ITestComponent1>("Component4").Construct<TestComponent1>();
+			SingleInstance<ITestComponent1>("Component5").Construct<TestComponent1>();
+			SingleInstance<ITestComponent1>("Component6").Construct<TestComponent1>();
+			SingleInstance<ITestComponent1>("Component7").Construct<TestComponent1>();
+			SingleInstance<ITestComponent1>("Component8").Construct<TestComponent1>();
+			SingleInstance<ITestComponent1>("Component9").Construct<TestComponent1>();
+			SingleInstance<ITestComponent1>("Component10").Construct<TestComponent1>();
 		}
 	}
 
