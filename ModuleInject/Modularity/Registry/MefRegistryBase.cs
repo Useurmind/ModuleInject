@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !NET_35
+using System;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
@@ -44,7 +45,7 @@ namespace ModuleInject.Modularity.Registry
             this.aggregateCatalog.Catalogs.Add(catalog);
         }
 
-        internal void Compose()
+        public void Compose()
         {
             if (!this.isComposed)
             {
@@ -60,3 +61,4 @@ namespace ModuleInject.Modularity.Registry
         }
     }
 }
+#endif

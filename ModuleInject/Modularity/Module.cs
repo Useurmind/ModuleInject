@@ -21,7 +21,7 @@ namespace ModuleInject.Modularity
 
         private bool isResolved;
         private bool isResolving;
-        private ISet<IRegistrationHook> registrationHooks;
+        private HashSet<IRegistrationHook> registrationHooks;
 
         /// <summary>
         /// Gets the registrations hooks that are registered for application in this module only.

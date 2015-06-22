@@ -9,7 +9,7 @@ namespace ModuleInject.Injection
 {
     public abstract class DisposeStrategy : DisposableExtBase, IDisposeStrategy
     {
-        private ISet<IDisposable> disposables;
+        private HashSet<IDisposable> disposables;
 
         public DisposeStrategy()
         {

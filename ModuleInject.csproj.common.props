@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- empty groups force Visual Studio to not create default configurations, 3.5 currently not possible -->
+  <!--<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug 3.5|Any CPU' ">
+  </PropertyGroup>-->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug 4.0|Any CPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug 4.5|Any CPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug 4.5.1|Any CPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug 4.5.1|Any CPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug 4.5.2|Any CPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug 4.6|Any CPU' ">
+  </PropertyGroup>
+  
+  <!--<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release 3.5|Any CPU' ">
+  </PropertyGroup>-->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release 4.0|Any CPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release 4.5|Any CPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release 4.5.1|Any CPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release 4.5.1|Any CPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release 4.5.2|Any CPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release 4.6|Any CPU' ">
+  </PropertyGroup>
+
+
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug 4.0</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>$(MSBuildProjectName)</RootNamespace>
+    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\ModuleInject.snk</AssemblyOriginatorKeyFile>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+  
+  <!--<PropertyGroup Condition="$(Configuration.Contains('3.5'))">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>	
+	<DefineConstants>NET_35</DefineConstants>
+  </PropertyGroup>-->
+  
+  <PropertyGroup Condition="$(Configuration.Contains('4.0'))">
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+	<DefineConstants>NET_4</DefineConstants>	
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="$(Configuration.Contains('4.5'))">
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>	
+	<DefineConstants>NET_45</DefineConstants>	
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="$(Configuration.Contains('4.5.1'))">
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>	
+	<DefineConstants>NET_451</DefineConstants>	
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="$(Configuration.Contains('4.5.2'))">
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>	
+	<DefineConstants>NET_452</DefineConstants>	
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="$(Configuration.Contains('4.6'))">
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>	
+	<DefineConstants>NET_46</DefineConstants>	
+  </PropertyGroup>
+  
+  <ItemGroup Condition="$(Configuration.Contains('4.0'))">
+	<Reference Include="System.IO">
+      <HintPath>..\packages\Microsoft.Bcl.1.1.10\lib\net40\System.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime">
+      <HintPath>..\packages\Microsoft.Bcl.1.1.10\lib\net40\System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks">
+      <HintPath>..\packages\Microsoft.Bcl.1.1.10\lib\net40\System.Threading.Tasks.dll</HintPath>
+    </Reference>	
+  </ItemGroup>
+  
+  <ItemGroup Condition="!$(Configuration.Contains('4.0')) And !$(Configuration.Contains('3.5'))">
+	<Reference Include="System.IO">
+    </Reference>
+    <Reference Include="System.Runtime">
+    </Reference>
+    <Reference Include="System.Threading.Tasks">
+    </Reference>	
+  </ItemGroup>
+  
+  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="$(Configuration.Contains('Release'))">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+</Project>

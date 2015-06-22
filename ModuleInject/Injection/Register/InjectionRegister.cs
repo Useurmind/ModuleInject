@@ -16,7 +16,7 @@ namespace ModuleInject.Injection
         private IList<Action<object, object>> injectInInstanceList;
         private IList<Func<object, object, object>> changeInstanceList;
         private IList<Action<ObjectResolvedContext>> resolvedHandlers;
-        private ISet<object> metaData;
+        private HashSet<object> metaData;
 
         public InjectionRegister(string componentName, Type contextType, Type componentInterface) : this(componentName, contextType, componentInterface, null)
         {

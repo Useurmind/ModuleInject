@@ -23,7 +23,7 @@ namespace ModuleInject.Utility
     /// - x.Method1().Property3
     /// - (Type1)x.Property1
     /// x must be a ParameterExpression.
-    internal class MemberChainEvaluator : ExpressionVisitor
+    public class MemberChainEvaluator : ExpressionVisitor
     {
         private string _memberPath;
         private IList<Expression> _memberExpressions;
@@ -84,7 +84,7 @@ namespace ModuleInject.Utility
 
                         throw new ModuleInjectException("Invalid expression in member chain.");
                     });
-                    _memberPath = string.Join(".", propertyNames);
+                    _memberPath = string.Join(".", propertyNames.ToArray());
                 }
                 return _memberPath;
             }

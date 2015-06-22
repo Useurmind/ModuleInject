@@ -32,7 +32,7 @@ namespace ModuleInject.Modularity.Registry
         /// </remarks>
         /// <param name="otherRegistry">The other registry module.</param>
         /// <returns></returns>
-        internal static IRegistry Merge(this IRegistry registry, IRegistry otherRegistry)
+        public static IRegistry Merge(this IRegistry registry, IRegistry otherRegistry)
         {
             var emptyRegistry1 = registry as EmptyRegistry;
             var emptyRegistry2 = otherRegistry as EmptyRegistry;

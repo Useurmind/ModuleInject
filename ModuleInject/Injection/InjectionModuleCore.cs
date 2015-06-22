@@ -10,15 +10,20 @@ using ModuleInject.Modularity;
 
 namespace ModuleInject.Injection
 {
+    /// <summary>
+    /// This is internal functionality of the <see cref="InjectionModule{TModule}"/> class.
+    /// Do NOT use this to derive modules.
+    /// </summary>
+    /// <typeparam name="TModule"></typeparam>
     public abstract class InjectionModuleCore<TModule> : Module
     {
-        private ISet<IInjectionRegister> injectionRegisters;
+        private HashSet<IInjectionRegister> injectionRegisters;
         private IDictionary<string, IInjectionRegister> namedInjectionRegisters;
 
         private IRegistry usedRegistry;
         private IEnumerable<IRegistrationHook> allRegistrationHooks;
 
-        protected InjectionModuleCore()
+        internal InjectionModuleCore()
         {
             this.injectionRegisters = new HashSet<IInjectionRegister>();
             this.namedInjectionRegisters = new Dictionary<string, IInjectionRegister>();

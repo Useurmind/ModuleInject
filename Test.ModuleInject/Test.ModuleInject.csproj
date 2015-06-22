@@ -1,74 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\ModuleInject.csproj.common.props" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{62D1AB2E-4638-4D35-AC0D-454FD1CE9B13}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Test.ModuleInject</RootNamespace>
-    <AssemblyName>Test.ModuleInject</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Test.ModuleInject.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NuGet Package|AnyCPU'">
-    <OutputPath>bin\NuGet Package\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Unity.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Configuration">
-      <HintPath>..\packages\Unity.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Interception, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Unity.Interception.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.Interception.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Interception.Configuration">
-      <HintPath>..\packages\Unity.Interception.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.Interception.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Moq">
+    <Reference Include="Moq" Condition="!$(Configuration.Contains('3.5'))">
       <HintPath>..\packages\Moq.4.2.1402.2112\lib\net40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq" Condition="$(Configuration.Contains('3.5'))">
+      <HintPath>..\packages\Moq.4.2.1402.2112\lib\net35\Moq.dll</HintPath>
     </Reference>
     <Reference Include="nunit.core">
       <HintPath>..\packages\NUnitTestAdapter.WithFramework.1.2\lib\nunit.core.dll</HintPath>
@@ -116,7 +58,6 @@
     <Compile Include="Modules\FactoryModuleTest.cs" />
     <Compile Include="Modules\InjectorModuleTest.cs" />
     <Compile Include="Modules\MethodCallModuleTest.cs" />
-    <Compile Include="Modules\NoAutoWiringModuleTest.cs" />
     <Compile Include="Modules\PrerequisiteTest.cs" />
     <Compile Include="Modules\PropertyInjectionModuleTest.cs" />
     <Compile Include="Modules\PropertyModuleTest.cs" />
@@ -136,7 +77,6 @@
     <Compile Include="Modules\TestModules\MainComponent1.cs" />
     <Compile Include="Modules\TestModules\MainComponent2.cs" />
     <Compile Include="Modules\TestModules\MethodCallModule.cs" />
-    <Compile Include="Modules\TestModules\NoAutoWiringModule.cs" />
     <Compile Include="Modules\TestModules\PropertyInjectionModule.cs" />
     <Compile Include="Modules\TestModules\PropertyModule.cs" />
     <Compile Include="Modules\TestModules\PureInterfaceInjectionModule.cs" />
@@ -153,7 +93,6 @@
     <Compile Include="UnitTesting\UnitTestedModule.cs" />
     <Compile Include="Utility\LinqHelperTest.cs" />
     <Compile Include="Utility\MemberChainEvaluatorTest.cs" />
-    <Compile Include="Utility\ParameterMemberAccessEvaluatorTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -176,8 +115,8 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\ModuleInject.csproj.common.after.props" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

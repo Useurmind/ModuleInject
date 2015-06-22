@@ -520,32 +520,32 @@ namespace Test.Performance.ModuleInject
 
         public TestUnityModule()
         {
-            container = new UnityContainer();
+            //container = new UnityContainer();
 
-            container.RegisterType<ITestComponent1, TestComponent1>("Component1");
-            container.RegisterType<ITestComponent1, TestComponent1>("Component2");
-            container.RegisterType<ITestComponent1, TestComponent1>("Component3");
-            container.RegisterType<ITestComponent1, TestComponent1>("Component4");
-            container.RegisterType<ITestComponent1, TestComponent1>("Component5");
-            container.RegisterType<ITestComponent1, TestComponent1>("Component6");
-            container.RegisterType<ITestComponent1, TestComponent1>("Component7");
-            container.RegisterType<ITestComponent1, TestComponent1>("Component8");
-            container.RegisterType<ITestComponent1, TestComponent1>("Component9");
-            container.RegisterType<ITestComponent1, TestComponent1>("Component10");
+            //container.RegisterType<ITestComponent1, TestComponent1>("Component1");
+            //container.RegisterType<ITestComponent1, TestComponent1>("Component2");
+            //container.RegisterType<ITestComponent1, TestComponent1>("Component3");
+            //container.RegisterType<ITestComponent1, TestComponent1>("Component4");
+            //container.RegisterType<ITestComponent1, TestComponent1>("Component5");
+            //container.RegisterType<ITestComponent1, TestComponent1>("Component6");
+            //container.RegisterType<ITestComponent1, TestComponent1>("Component7");
+            //container.RegisterType<ITestComponent1, TestComponent1>("Component8");
+            //container.RegisterType<ITestComponent1, TestComponent1>("Component9");
+            //container.RegisterType<ITestComponent1, TestComponent1>("Component10");
         }
 
         protected override void OnRegistryResolved(IRegistry usedRegistry)
         {
-            Component1 = container.Resolve<ITestComponent1>("Component1");
-            Component2 = container.Resolve<ITestComponent1>("Component2");
-            Component3 = container.Resolve<ITestComponent1>("Component3");
-            Component4 = container.Resolve<ITestComponent1>("Component4");
-            Component5 = container.Resolve<ITestComponent1>("Component5");
-            Component6 = container.Resolve<ITestComponent1>("Component6");
-            Component7 = container.Resolve<ITestComponent1>("Component7");
-            Component8 = container.Resolve<ITestComponent1>("Component8");
-            Component9 = container.Resolve<ITestComponent1>("Component9");
-            Component10 = container.Resolve<ITestComponent1>("Component10");
+            //Component1 = container.Resolve<ITestComponent1>("Component1");
+            //Component2 = container.Resolve<ITestComponent1>("Component2");
+            //Component3 = container.Resolve<ITestComponent1>("Component3");
+            //Component4 = container.Resolve<ITestComponent1>("Component4");
+            //Component5 = container.Resolve<ITestComponent1>("Component5");
+            //Component6 = container.Resolve<ITestComponent1>("Component6");
+            //Component7 = container.Resolve<ITestComponent1>("Component7");
+            //Component8 = container.Resolve<ITestComponent1>("Component8");
+            //Component9 = container.Resolve<ITestComponent1>("Component9");
+            //Component10 = container.Resolve<ITestComponent1>("Component10");
         }
     }
 }
