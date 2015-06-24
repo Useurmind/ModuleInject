@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project InitialTargets="PrintVersion" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<!-- version information for building nuget packages -->
+  <!-- using semantic versioning 2.0.0, see http://semver.org/ -->
+  <PropertyGroup>
+    <!-- increase with breaking changes -->
+	<MajorVersion>2</MajorVersion>
+	<!-- increase with non-breaking extensions -->
+	<MinorVersion>0</MinorVersion>
+	<!-- increase with bugfixes -->
+	<PatchVersion>0</PatchVersion>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+	<CompleteVersion>$(MajorVersion).$(MinorVersion).$(PatchVersion)</CompleteVersion>
+  </PropertyGroup>
+  
+  <Target Name="PrintVersion">
+	<Message Text="Complete version is: $(CompleteVersion)" />
+  </Target>
+</Project>

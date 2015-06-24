@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project InitialTargets="PrintProjects" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  
+  <ItemGroup>
+	<PackedProjects Include="ModuleInject" />
+	<PackedProjects Include="ModuleInject.Interfaces" />
+	<PackedProjects Include="ModuleInject.Interception" />
+  </ItemGroup>
+  
+  <Target Name="PrintProjects">
+	<Message Text="Packet projects: @(PackedProjects)" />
+  </Target>
+</Project>
