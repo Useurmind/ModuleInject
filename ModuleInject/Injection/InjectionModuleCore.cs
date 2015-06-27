@@ -18,6 +18,8 @@ namespace ModuleInject.Injection
     public abstract class InjectionModuleCore<TModule> : Module
     {
         private HashSet<IInjectionRegister> injectionRegisters;
+
+        // TODO: IMPORTANT -> refactor to type and string keying
         private IDictionary<string, IInjectionRegister> namedInjectionRegisters;
 
         private IRegistry usedRegistry;

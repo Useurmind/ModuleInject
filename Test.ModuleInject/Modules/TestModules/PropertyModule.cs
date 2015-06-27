@@ -159,7 +159,7 @@ namespace Test.ModuleInject.Modules.TestModules
 
         public IMainComponent2 PrivateComponent { get { return GetSingleInstance<MainComponent2>(); } }
 
-        public IMainComponent2 PrivateInstanceComponent { get { return GetSingleInstance(m => new MainComponent2()); } }
+        public IMainComponent2 PrivateInstanceComponent { get { return GetSingleInstanceConstructed(m => new MainComponent2()); } }
         
         [FromRegistry]
         public ISubModule SubModule { get; set; }

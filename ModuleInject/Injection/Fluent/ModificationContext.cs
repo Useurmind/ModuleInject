@@ -58,8 +58,8 @@ namespace ModuleInject.Injection
         where TComponent : TIComponent, TIComponent2
             where TContext : TIContext
         {
-            CommonFunctions.CheckNullArgument(nameof(source), source);
-            CommonFunctions.CheckNullArgument(nameof(injector), injector);
+            CommonFunctions.CheckNullArgument("source", source);
+            CommonFunctions.CheckNullArgument("injector", injector);
             var interfaceInjectionRegister = new InterfaceModificationContext<TIContext, TIComponent2>(source.Register);
             injector.InjectInto(interfaceInjectionRegister);
             return source;

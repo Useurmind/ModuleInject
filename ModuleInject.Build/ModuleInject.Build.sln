@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.22823.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{1BAC562B-70E3-4242-92BE-F8C8797016D1}"
+	ProjectSection(SolutionItems) = preProject
+		..\build.targets = ..\build.targets
+		common.project.after.props = common.project.after.props
+		common.project.props = common.project.props
+		common.props = common.props
+		..\ModuleInject.sln = ..\ModuleInject.sln
+		..\nupack.targets = ..\nupack.targets
+		..\nupush.targets = ..\nupush.targets
+		projects.props = projects.props
+		..\test.targets = ..\test.targets
+		version.props = version.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projects", "Projects", "{5E1DAEF7-0332-4DC6-A525-668FD2C36908}"
+	ProjectSection(SolutionItems) = preProject
+		..\ModuleInject.Common\ModuleInject.Common.csproj = ..\ModuleInject.Common\ModuleInject.Common.csproj
+		..\ModuleInject\ModuleInject.csproj = ..\ModuleInject\ModuleInject.csproj
+		..\ModuleInject.Interception\ModuleInject.Interception.csproj = ..\ModuleInject.Interception\ModuleInject.Interception.csproj
+		..\ModuleInject.Interfaces\ModuleInject.Interfaces.csproj = ..\ModuleInject.Interfaces\ModuleInject.Interfaces.csproj
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{50083155-79C8-4716-BF6C-F177D4B028CE}"
+	ProjectSection(SolutionItems) = preProject
+		..\Doc.ModuleInject\Doc.ModuleInject.csproj = ..\Doc.ModuleInject\Doc.ModuleInject.csproj
+		..\Test.ModuleInject.Common\Test.ModuleInject.Common.csproj = ..\Test.ModuleInject.Common\Test.ModuleInject.Common.csproj
+		..\Test.ModuleInject\Test.ModuleInject.csproj = ..\Test.ModuleInject\Test.ModuleInject.csproj
+		..\Test.ModuleInject.Interception\Test.ModuleInject.Interception.csproj = ..\Test.ModuleInject.Interception\Test.ModuleInject.Interception.csproj
+		..\Test.Performance.ModuleInject\Test.Performance.ModuleInject.csproj = ..\Test.Performance.ModuleInject\Test.Performance.ModuleInject.csproj
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{50083155-79C8-4716-BF6C-F177D4B028CE} = {5E1DAEF7-0332-4DC6-A525-668FD2C36908}
+	EndGlobalSection
+EndGlobal

@@ -15,7 +15,7 @@ namespace ModuleInject.Injection
         {
             if (instance == null)
             {
-                CommonFunctions.CheckNullArgument(nameof(createInstance), createInstance);
+                CommonFunctions.CheckNullArgument("createInstance", createInstance);
                 instance = createInstance();
             }
             return instance;

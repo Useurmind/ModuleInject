@@ -111,8 +111,11 @@ namespace ModuleInject.Injection
             {
                 injectInInstance(this.context, instance);
             }
-            
-            disposeStrategy?.OnInstance(instance);
+
+            if (disposeStrategy != null)
+            {
+                disposeStrategy.OnInstance(instance);
+            }
 
             object usedInstance = instance;
 
@@ -120,7 +123,10 @@ namespace ModuleInject.Injection
             {
                 usedInstance = changeInstance(this.context, usedInstance);
 
-                disposeStrategy?.OnInstance(usedInstance);
+                if (disposeStrategy != null)
+                {
+                    disposeStrategy.OnInstance(usedInstance);
+                }
             }
 
             if (this.resolvedHandlers.Count > 0)
@@ -143,9 +149,9 @@ namespace ModuleInject.Injection
         
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
+            if (disposing && disposeStrategy != null)
             {                
-                disposeStrategy?.Dispose();
+                disposeStrategy.Dispose();
             }
 
             base.Dispose(disposing);

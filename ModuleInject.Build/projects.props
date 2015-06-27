@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project InitialTargets="PrintProjects" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<ItemGroup>
+		<MainProjects Include="ModuleInject.Common">
+			<ProjectPath>%(Identity)</ProjectPath>
+			<ProjectFile>%(ProjectPath)\%(Identity).csproj</ProjectFile>
+		</MainProjects>
+		<MainProjects Include="ModuleInject">
+			<ProjectPath>%(Identity)</ProjectPath>
+			<ProjectFile>%(ProjectPath)\%(Identity).csproj</ProjectFile>
+		</MainProjects>
+		<MainProjects Include="ModuleInject.Interfaces">
+			<ProjectPath>%(Identity)</ProjectPath>
+			<ProjectFile>%(ProjectPath)\%(Identity).csproj</ProjectFile>
+		</MainProjects>
+		<MainProjects Include="ModuleInject.Interception">
+			<ProjectPath>%(Identity)</ProjectPath>
+			<ProjectFile>%(ProjectPath)\%(Identity).csproj</ProjectFile>
+		</MainProjects>
+	</ItemGroup>
+
+	<ItemGroup>
+		<TestProjects Include="Test.ModuleInject.Common">
+			<ProjectPath>%(Identity)</ProjectPath>
+			<ProjectFile>%(ProjectPath)\%(Identity).csproj</ProjectFile>
+		</TestProjects>
+		<TestProjects Include="Test.ModuleInject">
+			<ProjectPath>%(Identity)</ProjectPath>
+			<ProjectFile>%(ProjectPath)\%(Identity).csproj</ProjectFile>
+		</TestProjects>
+		<TestProjects Include="Test.ModuleInject.Interception">
+			<ProjectPath>%(Identity)</ProjectPath>
+			<ProjectFile>%(ProjectPath)\%(Identity).csproj</ProjectFile>
+		</TestProjects>
+	</ItemGroup>
+
+	<ItemGroup>
+		<AllProjects Include="@(MainProjects)"></AllProjects>
+		<AllProjects Include="@(TestProjects)"></AllProjects>
+	</ItemGroup>
+	
+
+	<ItemGroup>
+		<!--<Configurations Include="Debug 4.0"></Configurations>-->
+		<Configurations Include="Debug 4.5"></Configurations>
+		<Configurations Include="Debug 4.5.1"></Configurations>
+		<Configurations Include="Debug 4.5.2"></Configurations>
+		<!--<Configurations Include="Debug 4.6"></Configurations>-->
+
+		<!--<Configurations Include="Release 4.0"></Configurations>-->
+		<Configurations Include="Release 4.5"></Configurations>
+		<Configurations Include="Release 4.5.1"></Configurations>
+		<Configurations Include="Release 4.5.2"></Configurations>
+		<!--<Configurations Include="Release 4.6"></Configurations>-->
+	</ItemGroup>
+
+	<Target Name="PrintProjects">
+		<Message Text="Main projects: @(MainProjects)" />
+		<Message Text="Test projects: @(TestProjects)" />
+		<Message Text="Project configurations: @(Configurations)" />
+	</Target>
+</Project>

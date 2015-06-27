@@ -50,7 +50,7 @@ namespace Test.ModuleInject.Modules.TestModules
 		{
 			get
 			{
-				return GetSingleInstance(m =>
+				return GetSingleInstanceConstructed(m =>
 				{
 					var c = new MainComponent1()
 					{
@@ -83,7 +83,7 @@ namespace Test.ModuleInject.Modules.TestModules
 
 		public IMainComponent1 CreatePrivateComponent1()
 		{
-			return this.GetFactory(m =>
+			return this.GetFactoryConstructed(m =>
 			{
 				var c = new MainComponent1()
 				{

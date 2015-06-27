@@ -29,7 +29,7 @@ namespace Test.ModuleInject.Modules.TestModules
         {
             get
             {
-                return GetSingleInstance(m => new MainComponent2()
+                return GetSingleInstanceConstructed(m => new MainComponent2()
                 {
                     SubComponent2 = m.SubComponent2
                 });

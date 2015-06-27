@@ -30,7 +30,7 @@ namespace ModuleInject.Common.Linq
 
         public static Property Get(Expression propertyExpression)
         {
-            CommonFunctions.CheckNullArgument(nameof(propertyExpression), propertyExpression);
+            CommonFunctions.CheckNullArgument("propertyExpression", propertyExpression);
 
             CheckExpression(propertyExpression);
 
@@ -73,7 +73,7 @@ namespace ModuleInject.Common.Linq
 
         public static implicit operator string (Property property)
         {
-            CommonFunctions.CheckNullArgument(nameof(property), property);
+            CommonFunctions.CheckNullArgument("property", property);
 
             return property.ToString();
         }

@@ -21,7 +21,7 @@ namespace Test.ModuleInject.Modules.TestModules
 		{
 			get
 			{
-				return GetSingleInstance<MainComponent1>(m =>
+				return GetSingleInstanceConstructed<MainComponent1>(m =>
 				{
 					var c = new MainComponent1();
 					c.Initialize(m.MainComponent2);
@@ -33,7 +33,7 @@ namespace Test.ModuleInject.Modules.TestModules
 		{
 			get
 			{
-				return GetSingleInstance<IMainComponent1, MainComponent1>((module, comp) => 
+				return GetSingleInstanceInjected<IMainComponent1, MainComponent1>((module, comp) => 
                     comp.Initialize(module.MainComponent2));
 			}
 		}
@@ -41,7 +41,7 @@ namespace Test.ModuleInject.Modules.TestModules
 		{
 			get
 			{
-				return GetSingleInstance(m => new List<IMainComponent1>() {
+				return GetSingleInstanceConstructed(m => new List<IMainComponent1>() {
 					m.MainComponent1,
 					m.CreateMainComponent1(),
 					m.CreateMainComponent1()

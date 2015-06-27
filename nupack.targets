@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<Project DefaultTargets="Specs" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="version.props" />
-  <Import Project="projects.props" />
+<Project DefaultTargets="Specs" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Import Project="ModuleInject.Build\common.props" />
+  <Import Project="$(ProjectBuildPath)version.props" />
+  <Import Project="$(ProjectBuildPath)projects.props" />
   <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" />
   
   <ItemGroup>
@@ -9,33 +10,33 @@
   </ItemGroup>
   
   <Target Name="Specs">
+	  
 	<ItemGroup>
-		<NuSpecFiles Include="%(PackedProjects.Identity)">
-			<PackedProject>%(PackedProjects.Identity)</PackedProject>
-			<Path>%(PackedProjects.Identity)\%(PackedProjects.Identity).nuspec</Path>
+		<NuSpecFiles Include="%(MainProjects.Identity)">
+			<PackedProject>%(MainProjects.Identity)</PackedProject>
+			<Path>%(MainProjects.Identity)\%(MainProjects.Identity).nuspec</Path>
 		</NuSpecFiles>
 	</ItemGroup>
+	  
 	<PropertyGroup>
-		<PackedProject>%(PackedProjects.Identity)</PackedProject>
-		<NuSpecFile>%(PackedProjects.Identity)\%(PackedProjects.Identity).nuspec</NuSpecFile>
+		<PackedProject>%(MainProjects.Identity)</PackedProject>
+		<NuSpecFile>%(MainProjects.Identity)\%(MainProjects.Identity).nuspec</NuSpecFile>
 	</PropertyGroup>
 	
 	<Message Text="Creating nuspec files: @(NuSpecFiles)" />
 	<Delete Files="@(NuSpecFiles)"/>
+	  
 	<Message Text="Copying template..." />
     <Copy SourceFiles="@(NuSpecTemplate)" DestinationFiles="%(NuSpecFiles.Path)"/>
+	  
 	<Message Text="Updating version..." />
 	<FileUpdate Files="%(NuSpecFiles.Path)" 
 			   Regex="\@completeVersion\@" 
 			   ReplacementText="$(CompleteVersion)" />
+	  
 	<Message Text="Updating title" />
 	<FileUpdate Files="%(NuSpecFiles.Path)" 
 			   Regex="\@title\@" 
 			   ReplacementText="%(NuSpecFiles.PackedProject)" />
-  </Target>
-  
-  <Target Name="Pack">
-    <Message Text="Building msbuildintro" />
-    <MSBuild Projects="msbuildintro.csproj" Targets="Build" />
   </Target>
 </Project>
