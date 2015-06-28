@@ -331,13 +331,13 @@ namespace ModuleInject.Injection
             Action<IInstantiationStrategyContext<TModule, TIComponent>> registerComponent,
             [CallerMemberName]string componentName = null)
         {
-            if (!this.HasRegistration(componentName))
+            if (!this.HasRegistration<TIComponent>(componentName))
             {
                 var constructionContext = this.SourceOf<TIComponent>(componentName);
                 registerComponent(constructionContext);
             }
 
-            return (TIComponent)Get(componentName);
+            return Get<TIComponent>(componentName);
         }
 
         /// <summary>
@@ -352,18 +352,7 @@ namespace ModuleInject.Injection
 
             var componentName = GetComponentName(componentMember);
 
-            return (TIComponent)Get(componentName.Name);
-        }
-
-        /// <summary>
-        /// Retrieve a named component from the module which is already registered.
-        /// </summary>
-        /// <typeparam name="TIComponent"></typeparam>
-        /// <param name="componentName"></param>
-        /// <returns></returns>
-        protected TIComponent Get<TIComponent>([CallerMemberName]string componentName = null)
-        {
-            return (TIComponent)Get(componentName);
+            return Get<TIComponent>(componentName.Name);
         }
 
         private System.Reflection.MemberInfo GetComponentName<TIComponent>(Expression<Func<TModule, TIComponent>> componentMember)

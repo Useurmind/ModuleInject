@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using ModuleInject.Common.Exceptions;
+using ModuleInject.Common.Utility;
 using ModuleInject.Interfaces;
 using ModuleInject.Interfaces.Hooks;
 using ModuleInject.Interfaces.Injection;
@@ -18,9 +20,8 @@ namespace ModuleInject.Injection
     public abstract class InjectionModuleCore<TModule> : Module
     {
         private HashSet<IInjectionRegister> injectionRegisters;
-
-        // TODO: IMPORTANT -> refactor to type and string keying
-        private IDictionary<string, IInjectionRegister> namedInjectionRegisters;
+        
+        private DoubleKeyDictionary<Type, string, IInjectionRegister> namedInjectionRegisters;
 
         private IRegistry usedRegistry;
         private IEnumerable<IRegistrationHook> allRegistrationHooks;
@@ -28,7 +29,7 @@ namespace ModuleInject.Injection
         internal InjectionModuleCore()
         {
             this.injectionRegisters = new HashSet<IInjectionRegister>();
-            this.namedInjectionRegisters = new Dictionary<string, IInjectionRegister>();
+            this.namedInjectionRegisters = new DoubleKeyDictionary<Type, string, IInjectionRegister>();
         }
         protected override void OnRegistryResolved(IRegistry usedRegistry)
         {
@@ -58,7 +59,7 @@ namespace ModuleInject.Injection
                     this.TryAddModuleResolveHook(injectionRegister);
                 }
 
-                this.namedInjectionRegisters.Add(injectionRegister.ComponentName, injectionRegister);
+                this.namedInjectionRegisters.Add(injectionRegister.ComponentInterface, injectionRegister.ComponentName, injectionRegister);
             }
         }
 
@@ -128,25 +129,44 @@ namespace ModuleInject.Injection
             }
         }
 
-        protected bool HasRegistration(string componentName)
+        protected bool HasRegistration<TIComponent>([CallerMemberName]string componentName = null)
         {
-            return this.namedInjectionRegisters.ContainsKey(componentName);
+            return HasRegistration(typeof(TIComponent), componentName);
         }
 
-        protected object Get(string componentName)
+        protected bool HasRegistration(Type componentInterface, [CallerMemberName]string componentName = null)
         {
+            return this.namedInjectionRegisters.Contains(componentInterface, componentName);
+        }
+
+        /// <summary>
+        /// Retrieve a named component from the module which is already registered.
+        /// </summary>
+        /// <typeparam name="TIComponent"></typeparam>
+        /// <param name="componentName"></param>
+        /// <returns></returns>
+        protected TIComponent Get<TIComponent>([CallerMemberName]string componentName = null)
+        {
+            return (TIComponent)Get(typeof(TIComponent), componentName);
+        }
+
+        protected object Get(Type componentInterface, [CallerMemberName]string componentName = null)
+        {
+            // TODO: make null component name valid for cases where only one registration for a type is given
+
             // this must be available during resolution now, because of lambda expression
             if (!this.IsResolving && !this.IsResolved)
             {
                 ExceptionHelper.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_CreateInstanceBeforeResolve, componentName);
             }
 
-            if (!this.namedInjectionRegisters.ContainsKey(componentName))
+            IInjectionRegister injectionRegister = null;
+            if (!this.namedInjectionRegisters.TryGetValue(componentInterface, componentName, out injectionRegister))
             {
                 ExceptionHelper.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_ComponentNotRegistered, componentName);
             }
 
-            return this.namedInjectionRegisters[componentName].GetInstance();
+            return injectionRegister.GetInstance();
         }
     }
 }
