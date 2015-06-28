@@ -41,7 +41,7 @@ First, we will have a look at how to do this without injectors.
         { 
             get 
             {
-                return GetSingleInstance<IInjectorComponent>(m => new InjectorComponent() {
+                return GetSingleInstanceWithConstruct<IInjectorComponent>(m => new InjectorComponent() {
                     Log = m.LogComponent
                 });
             }
@@ -58,7 +58,7 @@ That is how to do it. Pretty straight forward. But now let's assume we have seve
         { 
             get 
             {
-                return GetSingleInstance<IInjectorComponent>(m => new InjectorComponent() {
+                return GetSingleInstanceWithConstruct<IInjectorComponent>(m => new InjectorComponent() {
                     Log = m.LogComponent
                 });
             }
@@ -68,7 +68,7 @@ That is how to do it. Pretty straight forward. But now let's assume we have seve
         { 
             get 
             {
-                return GetSingleInstance<IInjectorComponent>(m => new InjectorComponent() {
+                return GetSingleInstanceWithConstruct<IInjectorComponent>(m => new InjectorComponent() {
                     Log = m.LogComponent
                 });
             }
@@ -78,7 +78,7 @@ That is how to do it. Pretty straight forward. But now let's assume we have seve
         { 
             get 
             {
-                return GetSingleInstance<IInjectorComponent>(m => new InjectorComponent() {
+                return GetSingleInstanceWithConstruct<IInjectorComponent>(m => new InjectorComponent() {
                     Log = m.LogComponent
                 });
             }

@@ -145,7 +145,7 @@ namespace ModuleInject.Injection
             [CallerMemberName]string componentName = null)
             where TComponent : new()
         {
-            return GetFactoryConstructed(m => new TComponent(), componentName);
+            return GetFactoryWithConstruct(m => new TComponent(), componentName);
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace ModuleInject.Injection
             [CallerMemberName]string componentName = null)
             where TComponent : TIComponent, new()
         {
-            return GetFactoryConstructed<TIComponent>(m => new TComponent(), componentName);
+            return GetFactoryWithConstruct<TIComponent>(m => new TComponent(), componentName);
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace ModuleInject.Injection
         /// <param name="construct"></param>
         /// <param name="componentName"></param>
         /// <returns></returns>
-        protected TIComponent GetFactoryConstructed<TIComponent>(
+        protected TIComponent GetFactoryWithConstruct<TIComponent>(
             Func<TModule, TIComponent> construct,
             [CallerMemberName]string componentName = null)
         {
@@ -194,7 +194,7 @@ namespace ModuleInject.Injection
         /// <param name="construct"></param>
         /// <param name="componentName"></param>
         /// <returns></returns>
-        protected TIComponent GetFactoryInjected<TIComponent, TComponent>(
+        protected TIComponent GetFactoryWithInject<TIComponent, TComponent>(
             Action<TModule, TComponent> inject,
             [CallerMemberName]string componentName = null)
             where TComponent : TIComponent, new()
@@ -237,7 +237,7 @@ namespace ModuleInject.Injection
         protected TComponent GetSingleInstance<TComponent>([CallerMemberName]string componentName = null)
             where TComponent : new()
         {
-            return GetSingleInstanceConstructed(m => new TComponent(), componentName);
+            return GetSingleInstanceWithConstruct(m => new TComponent(), componentName);
         }
 
         /// <summary>
@@ -253,7 +253,7 @@ namespace ModuleInject.Injection
             [CallerMemberName]string componentName = null)
             where TComponent : TIComponent, new()
         {
-            return GetSingleInstanceConstructed<TIComponent>(m => new TComponent(), componentName);
+            return GetSingleInstanceWithConstruct<TIComponent>(m => new TComponent(), componentName);
         }
 
         /// <summary>
@@ -265,7 +265,7 @@ namespace ModuleInject.Injection
         /// <param name="construct"></param>
         /// <param name="componentName"></param>
         /// <returns></returns>
-        protected TIComponent GetSingleInstanceConstructed<TIComponent>(
+        protected TIComponent GetSingleInstanceWithConstruct<TIComponent>(
             Func<TModule, TIComponent> construct,
             [CallerMemberName]string componentName = null)
         {
@@ -286,7 +286,7 @@ namespace ModuleInject.Injection
         /// <param name="inject"></param>
         /// <param name="componentName"></param>
         /// <returns></returns>
-        protected TIComponent GetSingleInstanceInjected<TIComponent, TComponent>(
+        protected TIComponent GetSingleInstanceWithInject<TIComponent, TComponent>(
             Action<TModule, TComponent> inject,
             [CallerMemberName]string componentName = null)
             where TComponent : TIComponent, new()

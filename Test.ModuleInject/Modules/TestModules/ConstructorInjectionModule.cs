@@ -26,9 +26,9 @@ namespace Test.ModuleInject.Modules.TestModules
 					case 1:
 						return GetSingleInstance<MainComponent1>();
 					case 2:
-						return GetSingleInstanceConstructed(m => new MainComponent1(m.MainComponent2));
+						return GetSingleInstanceWithConstruct(m => new MainComponent1(m.MainComponent2));
 					case 3:
-						return GetSingleInstanceConstructed(m => new MainComponent1(m.MainComponent3));
+						return GetSingleInstanceWithConstruct(m => new MainComponent1(m.MainComponent3));
 					default:
 						return null;
 				}

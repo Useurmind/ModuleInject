@@ -58,7 +58,7 @@ So to be honest ModuleInject will increase the amount of code you write to perfo
 
 The following code could then be written, which does the same as the code in the examples above:
 
-    public IServiceClass1 Service1 { get { return GetSingleInstance(m => new ServiceClass1(m.Service2)); } }
+    public IServiceClass1 Service1 { get { return GetSingleInstanceWithConstruct(m => new ServiceClass1(m.Service2)); } }
 
     public IServiceClass2 Service2 { get { return GetSingleInstance<ServiceClass2>(); } }
 
@@ -76,9 +76,9 @@ Because all registrations look similar by using the same keywords. Developers kn
 
 Look at the code from the example above:
 
-    public IServiceClass1 Service1 { get { return GetSingleInstance(m => new ServiceClass1(m.Service2)); } }
+    public IServiceClass1 Service1 { get { return GetSingleInstanceWithConstruct(m => new ServiceClass1(m.Service2)); } }
 
-The used overload of the `GetSingleInstance` call takes a lambda expression with the following signature.
+The used `GetSingleInstanceWithConstruct` call takes a lambda expression with the following signature.
 
     Func<TModule, TComponent>
 

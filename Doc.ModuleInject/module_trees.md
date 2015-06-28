@@ -23,7 +23,7 @@ No problem and no headache at all.
         { 
             get 
             {
-                return GetSingleInstance<IComponent>(m => new Component() {
+                return GetSingleInstanceWithConstruct<IComponent>(m => new Component() {
                     SomeSubComponent = m.SubModule.SubComponent
                 });
             }
@@ -58,7 +58,7 @@ With this registry you could resolve the submodule in aboves `ParentModule` as f
         { 
             get 
             {
-                return GetSingleInstance<IComponent>(m => new Component() {
+                return GetSingleInstanceWithConstruct<IComponent>(m => new Component() {
                     SomeSubComponent = m.SubModule.SubComponent
                 });
             }

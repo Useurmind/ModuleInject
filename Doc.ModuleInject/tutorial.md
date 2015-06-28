@@ -132,7 +132,7 @@ Basically, we make the greeting string configurable via dependency injection. Wi
         { 
             get
             {
-                return GetSingleInstance(m => new NameComponent() {
+                return GetSingleInstanceWithConstruct(m => new NameComponent() {
                     NameToGreet = "ModuleInject"
                 });
             } 
@@ -143,7 +143,7 @@ Basically, we make the greeting string configurable via dependency injection. Wi
         {
             get
             {
-                return GetSingleInstance(m => new PrintComponent() {
+                return GetSingleInstanceWithConstruct(m => new PrintComponent() {
                     NameProvider = m.NameComponent
                 });   
             }
@@ -226,7 +226,7 @@ The PrintComponent does now implement writing to a given `ILog` component before
         {
             get
             {
-                return GetSingleInstance(m => new PrintComponent() {
+                return GetSingleInstanceWithConstruct(m => new PrintComponent() {
                     NameProvider = m.NameComponent,
                     Log = m.LogModule.Log
                 });   

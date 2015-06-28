@@ -22,7 +22,7 @@ Given we want to create a new instance of `Component1` each time we need an inst
         { 
             get
             {
-                return GetSingleInstance<IComponent2>(m => new Component2() {
+                return GetSingleInstanceWithConstruct<IComponent2>(m => new Component2() {
                     Comp1 = m.CreateComponent1()
                 });
             } 
@@ -32,7 +32,7 @@ Given we want to create a new instance of `Component1` each time we need an inst
         { 
             get
             {
-                return GetSingleInstance<IComponent2>(m => new Component2() {
+                return GetSingleInstanceWithConstruct<IComponent2>(m => new Component2() {
                     Comp1 = m.CreateComponent1()
                 });
             } 

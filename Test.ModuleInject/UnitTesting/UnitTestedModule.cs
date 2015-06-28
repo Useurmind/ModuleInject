@@ -29,7 +29,7 @@ namespace Test.ModuleInject.UnitTesting
 
         public IMainComponent2 CreateMainComponent2()
         {
-            return this.GetFactoryConstructed(x => new MainComponent2());
+            return this.GetFactoryWithConstruct(x => new MainComponent2());
         }
     }
 

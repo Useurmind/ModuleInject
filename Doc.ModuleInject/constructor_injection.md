@@ -27,7 +27,7 @@ So here we defined a component with a dependency that is injected via the constr
         get 
         { 
             // use non-default constructor and inject module component into it
-            return GetSingleInstance<IConstructorComponent>(module => 
+            return GetSingleInstanceWithConstruct<IConstructorComponent>(module => 
             {
                 return new ConstructorComponent(module.ComponentToInject)
             }); 
@@ -43,7 +43,7 @@ So here we defined a component with a dependency that is injected via the constr
         }
     }
 
-In this example you first register a private component which should be injected. After that the public component is registered which requires the private component as a dependency. By calling the proper overload of `GetSingleInstance` the module is told to not use the default constructor but instead use the given lambda expression for construction. The input for the provided lambda is the module itself. You can use this reference to the module to feed the dependencies into the constructor of the component.
+In this example you first register a private component which should be injected. After that the public component is registered which requires the private component as a dependency. By calling `GetSingleInstanceWithConstruct` the module is told to not use the default constructor but instead use the given lambda expression for construction. The input for the provided lambda is the module itself. You can use this reference to the module to feed the dependencies into the constructor of the component.
 
 Note that every valid lambda can be used for defining the construction process. For example, you can also use an initializer list for property injection in the same lambda expression as the constructor.
 
