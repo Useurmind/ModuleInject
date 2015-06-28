@@ -1,15 +1,30 @@
 ﻿<?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
-  <metadata>
-    <id>$id$</id>
-    <version>2.0.0</version>
-    <title>ModuleInject</title>
-    <authors>$author$</authors>
-    <owners>$author$</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>$description$</description>
-    <copyright>Copyright © 2015 Jochen Grün</copyright>
-    <projectUrl>https://github.com/Useurmind/ModuleInject</projectUrl>
-    <licenseUrl>https://github.com/Useurmind/ModuleInject/blob/master/LICENSE.txt</licenseUrl>
-  </metadata>
+	<metadata>
+		<id>$id$</id>
+		<version>2.0.0</version>
+		<title>ModuleInject</title>
+		<authors>$author$</authors>
+		<owners>$author$</owners>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>$description$</description>
+		<copyright>Copyright © 2015 Jochen Grün</copyright>
+		<projectUrl>https://github.com/Useurmind/ModuleInject</projectUrl>
+		<licenseUrl>https://github.com/Useurmind/ModuleInject/blob/master/LICENSE.txt</licenseUrl>
+		<tags>Dependency Injection Inversion of Control IoC Container Modularity Module Interception</tags>
+	</metadata>
+	<files>
+		<file src="bin\Release 4.0\ModuleInject.dll" target="lib\net40\ModuleInject.dll" />
+		<file src="bin\Release 4.0\ModuleInject.pdb" target="lib\net40\ModuleInject.pdb" />
+		<file src="bin\Release 4.0\ModuleInject.xml" target="lib\net40\ModuleInject.xml" />
+		<file src="bin\Release 4.5\ModuleInject.dll" target="lib\net45\ModuleInject.dll" />
+		<file src="bin\Release 4.5\ModuleInject.pdb" target="lib\net45\ModuleInject.pdb" />
+		<file src="bin\Release 4.5\ModuleInject.xml" target="lib\net45\ModuleInject.xml" />
+		<file src="bin\Release 4.5.1\ModuleInject.dll" target="lib\net451\ModuleInject.dll" />
+		<file src="bin\Release 4.5.1\ModuleInject.pdb" target="lib\net451\ModuleInject.pdb" />
+		<file src="bin\Release 4.5.1\ModuleInject.xml" target="lib\net451\ModuleInject.xml" />
+		<file src="bin\Release 4.5.2\ModuleInject.dll" target="lib\net452\ModuleInject.dll" />
+		<file src="bin\Release 4.5.2\ModuleInject.pdb" target="lib\net452\ModuleInject.pdb" />
+		<file src="bin\Release 4.5.2\ModuleInject.xml" target="lib\net452\ModuleInject.xml" />
+	</files>
 </package>

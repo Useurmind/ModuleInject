@@ -75,7 +75,8 @@
 		<AssemblyName>$(MSBuildProjectName)</AssemblyName>
 		<FileAlignment>512</FileAlignment>
 		<OutputPath>bin\$(Configuration)\</OutputPath>
-		<IntermediateOutputPath>bin\$(Configuration)\</IntermediateOutputPath>
+		<IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+		<DocumentationFile>$(OutputPath)\$(MSBuildProjectName).xml</DocumentationFile>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="$(Configuration.Contains('Debug'))">

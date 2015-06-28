@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{1BAC562B
 		common.project.after.props = common.project.after.props
 		common.project.props = common.project.props
 		common.props = common.props
+		ModuleInject.nuspec.template = ModuleInject.nuspec.template
 		..\ModuleInject.sln = ..\ModuleInject.sln
 		..\nupack.targets = ..\nupack.targets
 		..\nupush.targets = ..\nupush.targets

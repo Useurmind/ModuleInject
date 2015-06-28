@@ -10,6 +10,7 @@
 				Importance="high"/>
 	</Target>
 
+	<!-- strange is: sometimes it must be activated, sometimes it shouldn't be active -->
 	<!--<Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" 
 			Condition="'$(BclBuildImported)' == '' And $(Configuration.Contains('4.0'))">
 		<Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />

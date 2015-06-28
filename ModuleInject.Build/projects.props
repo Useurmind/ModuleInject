@@ -42,13 +42,13 @@
 	
 
 	<ItemGroup>
-		<!--<Configurations Include="Debug 4.0"></Configurations>-->
+		<Configurations Include="Debug 4.0"></Configurations>
 		<Configurations Include="Debug 4.5"></Configurations>
 		<Configurations Include="Debug 4.5.1"></Configurations>
 		<Configurations Include="Debug 4.5.2"></Configurations>
 		<!--<Configurations Include="Debug 4.6"></Configurations>-->
 
-		<!--<Configurations Include="Release 4.0"></Configurations>-->
+		<Configurations Include="Release 4.0"></Configurations>
 		<Configurations Include="Release 4.5"></Configurations>
 		<Configurations Include="Release 4.5.1"></Configurations>
 		<Configurations Include="Release 4.5.2"></Configurations>

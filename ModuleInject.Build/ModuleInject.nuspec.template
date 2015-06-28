@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+	<metadata>
+		<id>$id$</id>
+		<version>@completeVersion@</version>
+		<title>@title@</title>
+		<authors>$author$</authors>
+		<owners>$author$</owners>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>$description$</description>
+		<copyright>Copyright © 2015 Jochen Grün</copyright>
+		<projectUrl>https://github.com/Useurmind/ModuleInject</projectUrl>
+		<licenseUrl>https://github.com/Useurmind/ModuleInject/blob/master/LICENSE.txt</licenseUrl>
+		<tags>Dependency Injection Inversion of Control IoC Container Modularity Module Interception</tags>
+	</metadata>
+	<files>
+		<file src="bin\Release 4.0\@assemblyName@.dll" target="lib\net40\@assemblyName@.dll" />
+		<file src="bin\Release 4.0\@assemblyName@.pdb" target="lib\net40\@assemblyName@.pdb" />
+		<file src="bin\Release 4.0\@assemblyName@.xml" target="lib\net40\@assemblyName@.xml" />
+		<file src="bin\Release 4.5\@assemblyName@.dll" target="lib\net45\@assemblyName@.dll" />
+		<file src="bin\Release 4.5\@assemblyName@.pdb" target="lib\net45\@assemblyName@.pdb" />
+		<file src="bin\Release 4.5\@assemblyName@.xml" target="lib\net45\@assemblyName@.xml" />
+		<file src="bin\Release 4.5.1\@assemblyName@.dll" target="lib\net451\@assemblyName@.dll" />
+		<file src="bin\Release 4.5.1\@assemblyName@.pdb" target="lib\net451\@assemblyName@.pdb" />
+		<file src="bin\Release 4.5.1\@assemblyName@.xml" target="lib\net451\@assemblyName@.xml" />
+		<file src="bin\Release 4.5.2\@assemblyName@.dll" target="lib\net452\@assemblyName@.dll" />
+		<file src="bin\Release 4.5.2\@assemblyName@.pdb" target="lib\net452\@assemblyName@.pdb" />
+		<file src="bin\Release 4.5.2\@assemblyName@.xml" target="lib\net452\@assemblyName@.xml" />
+	</files>
+</package>

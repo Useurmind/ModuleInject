@@ -1,42 +1,52 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Project DefaultTargets="Specs" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<Import Project="ModuleInject.Build\common.props" />
-  <Import Project="$(ProjectBuildPath)version.props" />
-  <Import Project="$(ProjectBuildPath)projects.props" />
-  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" />
-  
-  <ItemGroup>
-	<NuSpecTemplate Include=".\ModuleInject.nuspec.template"></NuSpecTemplate>
-  </ItemGroup>
-  
-  <Target Name="Specs">
-	  
+	<Import Project="$(ProjectBuildPath)version.props" />
+	<Import Project="$(ProjectBuildPath)projects.props" />
+	<Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" />
+
 	<ItemGroup>
-		<NuSpecFiles Include="%(MainProjects.Identity)">
-			<PackedProject>%(MainProjects.Identity)</PackedProject>
-			<Path>%(MainProjects.Identity)\%(MainProjects.Identity).nuspec</Path>
-		</NuSpecFiles>
+		<NuSpecTemplate Include="$(ProjectBuildPath)ModuleInject.nuspec.template"></NuSpecTemplate>
 	</ItemGroup>
-	  
-	<PropertyGroup>
-		<PackedProject>%(MainProjects.Identity)</PackedProject>
-		<NuSpecFile>%(MainProjects.Identity)\%(MainProjects.Identity).nuspec</NuSpecFile>
-	</PropertyGroup>
-	
-	<Message Text="Creating nuspec files: @(NuSpecFiles)" />
-	<Delete Files="@(NuSpecFiles)"/>
-	  
-	<Message Text="Copying template..." />
-    <Copy SourceFiles="@(NuSpecTemplate)" DestinationFiles="%(NuSpecFiles.Path)"/>
-	  
-	<Message Text="Updating version..." />
-	<FileUpdate Files="%(NuSpecFiles.Path)" 
-			   Regex="\@completeVersion\@" 
-			   ReplacementText="$(CompleteVersion)" />
-	  
-	<Message Text="Updating title" />
-	<FileUpdate Files="%(NuSpecFiles.Path)" 
-			   Regex="\@title\@" 
-			   ReplacementText="%(NuSpecFiles.PackedProject)" />
-  </Target>
+
+	<Target Name="Specs">
+
+		<ItemGroup>
+			<NuSpecFiles Include="@(MainProjects)">
+				<NuspecPath>%(MainProjects.Identity)\%(MainProjects.Identity).nuspec</NuspecPath>
+			</NuSpecFiles>
+		</ItemGroup>
+
+		<PropertyGroup>
+			<PackedProject>%(MainProjects.Identity)</PackedProject>
+			<NuSpecFile>%(MainProjects.Identity)\%(MainProjects.Identity).nuspec</NuSpecFile>
+		</PropertyGroup>
+
+		<Message Text="Creating nuspec files: @(NuSpecFiles)" />
+		<Delete Files="@(NuSpecFiles)"/>
+
+		<Message Text="Copying template..." />
+		<Copy SourceFiles="@(NuSpecTemplate)" DestinationFiles="%(NuSpecFiles.NuspecPath)"/>
+
+		<Message Text="Updating version..." />
+		<FileUpdate Files="%(NuSpecFiles.NuspecPath)"
+				   Regex="\@completeVersion\@"
+				   ReplacementText="$(CompleteVersion)" />
+
+		<Message Text="Updating title" />
+		<FileUpdate Files="%(NuSpecFiles.NuspecPath)"
+				   Regex="\@title\@"
+				   ReplacementText="%(NuSpecFiles.Identity)" />
+
+		<Message Text="Updating assembly name" />
+		<FileUpdate Files="%(NuSpecFiles.NuspecPath)"
+				   Regex="\@assemblyName\@"
+				   ReplacementText="%(NuSpecFiles.Identity)" />
+
+		<Message Text="Packing nuget packages" />
+		<NuGetPack File="%(NuSpecFiles.ProjectFile)" 
+				   BasePath="%(NuSpecFiles.ProjectPath)"
+				   OutputDirectory="$(NuGetPackagePath)"
+				   ></NuGetPack>
+	</Target>
 </Project>
