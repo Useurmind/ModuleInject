@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projects", "Projects", "{5E
 	ProjectSection(SolutionItems) = preProject
 		..\ModuleInject.Common\ModuleInject.Common.csproj = ..\ModuleInject.Common\ModuleInject.Common.csproj
 		..\ModuleInject\ModuleInject.csproj = ..\ModuleInject\ModuleInject.csproj
+		..\ModuleInject.Interception.Castle\ModuleInject.Interception.Castle.csproj = ..\ModuleInject.Interception.Castle\ModuleInject.Interception.Castle.csproj
 		..\ModuleInject.Interception\ModuleInject.Interception.csproj = ..\ModuleInject.Interception\ModuleInject.Interception.csproj
 		..\ModuleInject.Interfaces\ModuleInject.Interfaces.csproj = ..\ModuleInject.Interfaces\ModuleInject.Interfaces.csproj
 	EndProjectSection
@@ -31,6 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{50083155
 		..\Doc.ModuleInject\Doc.ModuleInject.csproj = ..\Doc.ModuleInject\Doc.ModuleInject.csproj
 		..\Test.ModuleInject.Common\Test.ModuleInject.Common.csproj = ..\Test.ModuleInject.Common\Test.ModuleInject.Common.csproj
 		..\Test.ModuleInject\Test.ModuleInject.csproj = ..\Test.ModuleInject\Test.ModuleInject.csproj
+		..\Test.ModuleInject.Interception.Castle\Test.ModuleInject.Interception.Castle.csproj = ..\Test.ModuleInject.Interception.Castle\Test.ModuleInject.Interception.Castle.csproj
 		..\Test.ModuleInject.Interception\Test.ModuleInject.Interception.csproj = ..\Test.ModuleInject.Interception\Test.ModuleInject.Interception.csproj
 		..\Test.Performance.ModuleInject\Test.Performance.ModuleInject.csproj = ..\Test.Performance.ModuleInject\Test.Performance.ModuleInject.csproj
 	EndProjectSection

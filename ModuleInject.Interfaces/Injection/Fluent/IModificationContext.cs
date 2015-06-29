@@ -6,6 +6,7 @@ using System.Text;
 namespace ModuleInject.Interfaces.Injection
 {
     public interface IModificationContext<TContext, TIComponent, TComponent> : IWrapInjectionRegister, ISourceOf<TIComponent>
+            where TComponent : TIComponent
     {
         IModificationContext<TContext, TIComponent, TComponent> Change(Func<TContext, TIComponent, TIComponent> changeInstance);
 

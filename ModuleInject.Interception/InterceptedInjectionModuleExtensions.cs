@@ -25,6 +25,7 @@ namespace ModuleInject.Interception
         public static IModificationContext<TContext, TIComponent, TComponent> AddBehaviour<TContext, TIComponent, TComponent>(
             this IModificationContext<TContext, TIComponent, TComponent> sourceOf,
             IInterceptionBehaviour interceptionBehaviour)
+            where TComponent : TIComponent
         {
             //IInterfaceInterceptor interceptor = null;
             //if(!interceptedRegisters.TryGetValue(sourceOf.Register, out interceptor))
