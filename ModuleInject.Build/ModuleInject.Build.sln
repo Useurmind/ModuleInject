@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.22823.1
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{1BAC562B-70E3-4242-92BE-F8C8797016D1}"
 	ProjectSection(SolutionItems) = preProject
@@ -37,11 +37,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{50083155
 		..\Test.Performance.ModuleInject\Test.Performance.ModuleInject.csproj = ..\Test.Performance.ModuleInject\Test.Performance.ModuleInject.csproj
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{21CA400C-9F18-48FC-8FEA-E9536B2C8686}"
+	ProjectSection(SolutionItems) = preProject
+		..\Example.ModuleInject.Wpf\Example.ModuleInject.Wpf.csproj = ..\Example.ModuleInject.Wpf\Example.ModuleInject.Wpf.csproj
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{50083155-79C8-4716-BF6C-F177D4B028CE} = {5E1DAEF7-0332-4DC6-A525-668FD2C36908}
+		{21CA400C-9F18-48FC-8FEA-E9536B2C8686} = {5E1DAEF7-0332-4DC6-A525-668FD2C36908}
 	EndGlobalSection
 EndGlobal

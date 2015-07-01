@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.22823.1
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModuleInject", "ModuleInject\ModuleInject.csproj", "{53221937-AEFF-477F-B132-91A5449C9738}"
 EndProject
@@ -35,6 +35,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModuleInject.Interception.Castle", "ModuleInject.Interception.Castle\ModuleInject.Interception.Castle.csproj", "{106D1057-E88F-474E-A0BC-8E35258E273C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.ModuleInject.Interception.Castle", "Test.ModuleInject.Interception.Castle\Test.ModuleInject.Interception.Castle.csproj", "{C7F78570-2370-42A1-B629-B79777BD5D37}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{F6CD4987-64C7-462D-BB6A-5765ACB4C9E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.ModuleInject.Wpf", "Example.ModuleInject.Wpf\Example.ModuleInject.Wpf.csproj", "{7AF79BF4-272D-4C2B-A58F-113D52FFD720}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -223,6 +227,22 @@ Global
 		{C7F78570-2370-42A1-B629-B79777BD5D37}.Release 4.5.2|Any CPU.Build.0 = Release 4.5.2|Any CPU
 		{C7F78570-2370-42A1-B629-B79777BD5D37}.Release 4.5|Any CPU.ActiveCfg = Release 4.5|Any CPU
 		{C7F78570-2370-42A1-B629-B79777BD5D37}.Release 4.5|Any CPU.Build.0 = Release 4.5|Any CPU
+		{7AF79BF4-272D-4C2B-A58F-113D52FFD720}.Debug 4.0|Any CPU.ActiveCfg = Debug 4.0|Any CPU
+		{7AF79BF4-272D-4C2B-A58F-113D52FFD720}.Debug 4.0|Any CPU.Build.0 = Debug 4.0|Any CPU
+		{7AF79BF4-272D-4C2B-A58F-113D52FFD720}.Debug 4.5.1|Any CPU.ActiveCfg = Debug 4.5.1|Any CPU
+		{7AF79BF4-272D-4C2B-A58F-113D52FFD720}.Debug 4.5.1|Any CPU.Build.0 = Debug 4.5.1|Any CPU
+		{7AF79BF4-272D-4C2B-A58F-113D52FFD720}.Debug 4.5.2|Any CPU.ActiveCfg = Debug 4.5.2|Any CPU
+		{7AF79BF4-272D-4C2B-A58F-113D52FFD720}.Debug 4.5.2|Any CPU.Build.0 = Debug 4.5.2|Any CPU
+		{7AF79BF4-272D-4C2B-A58F-113D52FFD720}.Debug 4.5|Any CPU.ActiveCfg = Debug 4.5|Any CPU
+		{7AF79BF4-272D-4C2B-A58F-113D52FFD720}.Debug 4.5|Any CPU.Build.0 = Debug 4.5|Any CPU
+		{7AF79BF4-272D-4C2B-A58F-113D52FFD720}.Release 4.0|Any CPU.ActiveCfg = Release 4.0|Any CPU
+		{7AF79BF4-272D-4C2B-A58F-113D52FFD720}.Release 4.0|Any CPU.Build.0 = Release 4.0|Any CPU
+		{7AF79BF4-272D-4C2B-A58F-113D52FFD720}.Release 4.5.1|Any CPU.ActiveCfg = Release 4.5.1|Any CPU
+		{7AF79BF4-272D-4C2B-A58F-113D52FFD720}.Release 4.5.1|Any CPU.Build.0 = Release 4.5.1|Any CPU
+		{7AF79BF4-272D-4C2B-A58F-113D52FFD720}.Release 4.5.2|Any CPU.ActiveCfg = Release 4.5.2|Any CPU
+		{7AF79BF4-272D-4C2B-A58F-113D52FFD720}.Release 4.5.2|Any CPU.Build.0 = Release 4.5.2|Any CPU
+		{7AF79BF4-272D-4C2B-A58F-113D52FFD720}.Release 4.5|Any CPU.ActiveCfg = Release 4.5|Any CPU
+		{7AF79BF4-272D-4C2B-A58F-113D52FFD720}.Release 4.5|Any CPU.Build.0 = Release 4.5|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -239,6 +259,7 @@ Global
 		{43B6C010-714D-45A4-B0FC-575373923E92} = {8861F23C-BDD2-4A55-8F42-CA9E38C3B6E0}
 		{106D1057-E88F-474E-A0BC-8E35258E273C} = {680704D6-8901-4D30-9BF1-7B011C5EE4A1}
 		{C7F78570-2370-42A1-B629-B79777BD5D37} = {8861F23C-BDD2-4A55-8F42-CA9E38C3B6E0}
+		{7AF79BF4-272D-4C2B-A58F-113D52FFD720} = {F6CD4987-64C7-462D-BB6A-5765ACB4C9E4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.Interception.2.1.505.2\lib\NET35
