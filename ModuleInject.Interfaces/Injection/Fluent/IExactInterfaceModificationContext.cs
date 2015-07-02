@@ -14,12 +14,33 @@ namespace ModuleInject.Interfaces.Injection
     /// <typeparam name="TIComponent">The interface of the component with which it is registered in the context.</typeparam>
     public interface IExactInterfaceModificationContext<TIContext, TIComponent> : IWrapInjectionRegister
     {
+        /// <summary>
+        /// Perform injection into a component.
+        /// </summary>
+        /// <param name="injectInInstance">An action that will perform the injection.</param>
+        /// <returns>A context for performing the next steps in fluent registration.</returns>
         IExactInterfaceModificationContext<TIContext, TIComponent> Inject(Action<TIContext, TIComponent> injectInInstance);
 
+        /// <summary>
+        /// Change the actual instance that is returned (e.g. for decoration).
+        /// </summary>
+        /// <param name="changeInstance">The func that will perform the instance switch.</param>
+        /// <returns>A context for performing the
         IExactInterfaceModificationContext<TIContext, TIComponent> Change(Func<TIContext, TIComponent, TIComponent> changeInstance);
 
+        /// <summary>
+        /// Change the actual instance that is returned (e.g. for decoration).
+        /// </summary>
+        /// <param name="changeInstance">The func that will perform the instance switch.</param>
+        /// <returns>A context for performing the
         IExactInterfaceModificationContext<TIContext, TIComponent> Change(Func<TIComponent, TIComponent> changeInstance);
 
+        /// <summary>
+        /// Add a meta data tag to the component registration.
+        /// This meta data can for example be used to differentiate instances in a registration hook.
+        /// Can be retrieved from <see cref="IInjectionRegister "/> instances.
+        /// </summary>
+        /// <returns>A context for performing the next steps in fluent registration.</returns>
         IExactInterfaceModificationContext<TIContext, TIComponent> AddMeta<T>(T metaData);
     }
 }

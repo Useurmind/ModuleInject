@@ -31,16 +31,19 @@ namespace ModuleInject.Injection.Hooks
             this.execute = execute;
         }
 
+        /// <inheritdoc />
         public bool AppliesToModule(IModule module)
         {
             return this.appliesToModule(module);
         }
 
+        /// <inheritdoc />
 		public bool AppliesToRegistration(IInjectionRegister injectionRegister)
 		{
 			return this.appliesToRegistration(injectionRegister);
 		}
 
+        /// <inheritdoc />
 		public void Execute(IInjectionRegister injectionRegister)
 		{
 			this.execute(injectionRegister);

@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace ModuleInject.Modularity.Registry
 {
+    /// <summary>
+    /// USed instead of null. Makes life easier.
+    /// </summary>
     public class EmptyRegistry : RegistryBase
     {
         public override bool IsRegistered(Type type)

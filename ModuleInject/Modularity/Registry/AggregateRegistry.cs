@@ -6,6 +6,9 @@ using ModuleInject.Interfaces.Hooks;
 
 namespace ModuleInject.Modularity.Registry
 {
+    /// <summary>
+    /// Used internally for distributing registries and aggregating their registrations throughout the module tree.
+    /// </summary>
     public class AggregateRegistry : RegistryBase
     {
         private IList<IRegistry> aggregatedRegistries;

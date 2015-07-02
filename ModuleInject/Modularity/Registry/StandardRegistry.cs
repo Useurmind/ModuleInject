@@ -18,28 +18,40 @@ namespace ModuleInject.Modularity.Registry
         private const string componentName = "a";
         private ISet<IRegistrationHook> registrationHooks;
         private ISimpleInjectionContainer container;
-        
+
         public StandardRegistry()
         {
             this.container = new InjectionContainer();
             this.registrationHooks = new HashSet<IRegistrationHook>();
         }
 
+        /// <inheritdoc />
         public override bool IsRegistered(Type type)
         {
             return this.container.IsRegistered(type);
         }
 
+        /// <inheritdoc />
         public override object GetComponent(Type type)
         {
             return this.container.GetComponent(type);
         }
 
+        /// <summary>
+        /// Register an instance under the given type.
+        /// </summary>
+        /// <typeparam name="T">The type which serves as key for the registration.</typeparam>
+        /// <param name="factoryFunc">Func that returns the instance on resolution.</param>
         public virtual void Register<T>(Func<T> factoryFunc)
         {
             this.container.Register(typeof(T), () => factoryFunc());
         }
 
+        /// <summary>
+        /// Register an instance under the given type.
+        /// </summary>
+        /// <param name="type">The type which serves as key for the registration.</param>
+        /// <param name="instance">The instance to register.</param>
         protected virtual void Register(Type type, object instance)
         {
             this.container.Register(type, () => instance);
@@ -54,6 +66,7 @@ namespace ModuleInject.Modularity.Registry
             this.registrationHooks.Add(registrationHook);
         }
 
+        /// <inheritdoc />
         public override IEnumerable<IRegistrationHook> GetRegistrationHooks()
         {
             return this.registrationHooks;
@@ -61,7 +74,7 @@ namespace ModuleInject.Modularity.Registry
 
         protected override void Dispose(bool disposing)
         {
-            if(disposing)
+            if (disposing)
             {
                 this.container.Dispose();
             }
@@ -70,5 +83,5 @@ namespace ModuleInject.Modularity.Registry
         }
     }
 
-   
+
 }

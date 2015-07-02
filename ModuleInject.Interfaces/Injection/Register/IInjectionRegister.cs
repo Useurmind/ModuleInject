@@ -71,13 +71,25 @@ namespace ModuleInject.Interfaces.Injection
         /// <summary>
         /// Set the construct function.
         /// </summary>
-        /// <param name="constructInstance"></param>
+        /// <param name="constructInstance">First argument is the module, return value is the component instance.</param>
         void Construct(Func<object, object> constructInstance);
 
+        /// <summary>
+        /// Perform an action when a new instance is created.
+        /// </summary>
+        /// <param name="injectInInstance">First argument is the module, second the component instance.</param>
         void Inject(Action<object, object> injectInInstance);
 
+        /// <summary>
+        /// Switch the originally constructed component against another instance (e.g. for decoration).
+        /// </summary>
+        /// <param name="changeInstance">First argument is the module, second the component instance, return value is the switched instance.</param>
         void Change(Func<object, object, object> changeInstance);
 
+        /// <summary>
+        /// Switch the originally constructed component against another instance (e.g. for decoration).
+        /// </summary>
+        /// <param name="changeInstance">First argument is the component instance, return value is the switched instance.</param>
         void Change(Func<object, object> changeInstance);
 
         /// <summary>

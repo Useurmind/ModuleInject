@@ -10,6 +10,10 @@ using ModuleInject.Common.Linq;
 
 namespace ModuleInject.Modularity.Registry
 {
+    /// <summary>
+    /// Allows to load modules into a registry via MEF.
+    /// See <see cref="Test.ModuleInject.Registry.RegistryBaseDerivate"/> for an example of how to apply this class.
+    /// </summary>
     public abstract class MefRegistryBase : StandardRegistry
     {
         private CompositionContainer compositionContainer;
@@ -24,18 +28,24 @@ namespace ModuleInject.Modularity.Registry
             this.isComposed = false;
         }
 
+        /// <inheritdoc />
         public override bool IsRegistered(Type type)
         {
             this.Compose();
             return base.IsRegistered(type);
         }
 
+        /// <inheritdoc />
         public override object GetComponent(Type type)
         {
             this.Compose();
             return base.GetComponent(type);
         }
 
+        /// <summary>
+        /// Add a catalog that should be scanned for modules to import.
+        /// </summary>
+        /// <param name="catalog">The catalog.</param>
         protected void AddCatalog(ComposablePartCatalog catalog)
         {
             if (this.isComposed)
@@ -45,6 +55,9 @@ namespace ModuleInject.Modularity.Registry
             this.aggregateCatalog.Catalogs.Add(catalog);
         }
 
+        /// <summary>
+        /// Perform resolution of the imported modules via MEF.
+        /// </summary>
         public void Compose()
         {
             if (!this.isComposed)

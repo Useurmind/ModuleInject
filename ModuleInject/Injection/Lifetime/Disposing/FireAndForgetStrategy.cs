@@ -7,6 +7,9 @@ using ModuleInject.Interfaces.Injection;
 
 namespace ModuleInject.Injection
 {
+    /// <summary>
+    /// Does nothing in fact. You could even state null instead of it...
+    /// </summary>
     public class FireAndForgetStrategy : IDisposeStrategy
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly", Justification = "Nothing happens here.")]
@@ -14,6 +17,7 @@ namespace ModuleInject.Injection
         {
         }
 
+        /// <inheritdoc />
         public void OnInstance(object instance)
         {
         }

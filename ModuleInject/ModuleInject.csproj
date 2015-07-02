@@ -11,6 +11,7 @@
     <Reference Include="System.ComponentModel.Composition" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Injection\Hooks\InterfaceInjectorRegistrationHook - Kopieren.cs" />
     <Compile Include="Injection\InjectionModuleCore.cs" />
     <Compile Include="Modularity\FromRegistryAttribute.cs" />
     <Compile Include="Errors.Designer.cs">
@@ -20,11 +21,10 @@
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Injection\Fluent\StartContext.cs" />
-    <Compile Include="Injection\Lifetime\Instantiation\DelegateInstantiationStrategy.cs" />
     <Compile Include="Injection\Lifetime\Disposing\DisposeStrategy.cs" />
     <Compile Include="Injection\Hooks\AddRegistrationHooksMixin.cs" />
     <Compile Include="Injection\Hooks\DelegateRegistrationHook.cs" />
-    <Compile Include="Injection\Hooks\InterfaceInjectorRegistrationHook.cs" />
+    <Compile Include="Injection\Hooks\ExactInterfaceInjectorRegistrationHook.cs" />
     <Compile Include="Injection\Lifetime\Instantiation\FactoryInstantiationStrategy.cs" />
     <Compile Include="Injection\Lifetime\Disposing\FireAndForgetStrategy.cs" />
     <Compile Include="Injection\Lifetime\Disposing\RememberAndDisposeStrategy.cs" />
@@ -43,7 +43,6 @@
     <Compile Include="Modularity\Registry\EmptyRegistry.cs" />
     <Compile Include="Modularity\Registry\IRegistryExtensions.cs" />
     <Compile Include="Modularity\Registry\MefRegistryBase.cs" />
-    <Compile Include="Modularity\Registry\RegistrationEntry.cs" />
     <Compile Include="Modularity\Registry\RegistryBase.cs" />
     <Compile Include="Modularity\Registry\InjectionContainer.cs" />
     <Compile Include="Modularity\Registry\StandardRegistry.cs" />

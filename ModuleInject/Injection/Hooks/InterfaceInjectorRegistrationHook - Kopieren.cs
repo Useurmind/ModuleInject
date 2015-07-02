@@ -24,22 +24,24 @@ namespace ModuleInject.Injection.Hooks
         {
             this.injector = injector;
         }
-
+        /// <inheritdoc />
 		public bool AppliesToModule(IModule module)
 		{
 			return (module as TIModule) != null;
 		}
-		
-		public bool AppliesToRegistration(IInjectionRegister injectionRegister)
+
+        /// <inheritdoc />
+        public bool AppliesToRegistration(IInjectionRegister injectionRegister)
 		{
 			return injectionRegister.ComponentType.GetInterfaces().Contains(typeof(TIComponent));
 		}
 
-		public void Execute(IInjectionRegister injectionRegister)
+        /// <inheritdoc />
+        public void Execute(IInjectionRegister injectionRegister)
 		{
-			var interfaceInjectionRegister = new InterfaceModificationContext<TIModule, TIComponent>(injectionRegister);
+			var injectionContext = new InterfaceModificationContext<TIModule, TIComponent>(injectionRegister);
 
-			injector.InjectInto(interfaceInjectionRegister);
+			injector.InjectInto(injectionContext);
 		}
     }
 }

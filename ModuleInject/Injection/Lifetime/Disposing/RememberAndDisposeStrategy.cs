@@ -9,6 +9,7 @@ namespace ModuleInject.Injection
 {
     public class RememberAndDisposeStrategy : DisposeStrategy
     {
+        /// <inheritdoc />
         public override void OnInstance(object instance)
         {
             this.AddInstance(instance);

@@ -8,7 +8,7 @@ using System.Text;
 namespace ModuleInject.Interfaces.Hooks
 {
 	/// <summary>
-	/// Interface for hooks that are executed when a component/factory is registered.
+	/// Interface for hooks that are executed when a component is registered.
 	/// </summary>
 	public interface IRegistrationHook
 	{

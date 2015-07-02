@@ -175,7 +175,7 @@ namespace ModuleInject.Injection
             return hashCode;
         }
     }
-
+    
     public class InjectionRegister<TContext, TIComponent, TComponent> : IInjectionRegister<TContext, TIComponent, TComponent>
         where TComponent : TIComponent
         where TContext : class

@@ -15,9 +15,18 @@ namespace ModuleInject.Interfaces.Injection
     /// <typeparam name="TIComponent">One of the interfaces of the component</typeparam>
 	public interface IInterfaceModificationContext<TIContext, TIComponent> : IWrapInjectionRegister
     {
+        /// <summary>
+        /// Perform injection into a component.
+        /// </summary>
+        /// <param name="injectInInstance">An action that will perform the injection.</param>
         /// <returns>A context for performing the next steps in fluent registration.</returns>
         IInterfaceModificationContext<TIContext, TIComponent> Inject(Action<TIContext, TIComponent> injectInInstance);
 
+        /// <summary>
+        /// Add a meta data tag to the component registration.
+        /// This meta data can for example be used to differentiate instances in a registration hook.
+        /// Can be retrieved from <see cref="IInjectionRegister "/> instances.
+        /// </summary>
         /// <returns>A context for performing the next steps in fluent registration.</returns>
         IInterfaceModificationContext<TIContext, TIComponent> AddMeta<T>(T metaData);
 	}

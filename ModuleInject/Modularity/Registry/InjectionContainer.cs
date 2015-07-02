@@ -10,6 +10,9 @@ using ModuleInject.Interfaces.Injection;
 
 namespace ModuleInject.Modularity.Registry
 {
+    /// <summary>
+    /// Only for internal usage.
+    /// </summary>
     public interface ISimpleInjectionContainer : IDisposable
     {
         bool IsRegistered(Type type);
@@ -19,6 +22,9 @@ namespace ModuleInject.Modularity.Registry
         void Register(Type type, Func<object> factoryFunc);
     }
 
+    /// <summary>
+    /// Only for internal usage.
+    /// </summary>
     public interface IInjectionContainer : IDisposable
     {
         bool IsRegistered(Type type, string name);
@@ -28,6 +34,9 @@ namespace ModuleInject.Modularity.Registry
         void Register(Type type, string name, Func<object> factoryFunc);
     }
 
+    /// <summary>
+    /// Only for internal usage.
+    /// </summary>
     public class InjectionContainer : DisposableExtBase, ISimpleInjectionContainer, IInjectionContainer
     {
         private DoubleKeyDictionary<Type, string, IInjectionRegister> registeredComponents;

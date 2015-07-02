@@ -9,7 +9,7 @@ using ModuleInject.Interfaces.Hooks;
 namespace ModuleInject.Modularity.Registry
 {
     /// <summary>
-    /// Internal interface for a <see cref="StandardRegistry"/>.
+    /// Interface for a <see cref="StandardRegistry"/>.
     /// </summary>
     /// <remarks>
     /// Registries are meant to distribute top level modules whose interface is unique but which are required 
