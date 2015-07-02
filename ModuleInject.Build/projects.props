@@ -14,7 +14,7 @@
 			<ProjectPath>%(Identity)</ProjectPath>
 			<ProjectFile>%(ProjectPath)\%(Identity).csproj</ProjectFile>
 		</MainProjects>
-		<MainProjects Include="ModuleInject.Interception">
+		<MainProjects Include="ModuleInject.Interception.Castle">
 			<ProjectPath>%(Identity)</ProjectPath>
 			<ProjectFile>%(ProjectPath)\%(Identity).csproj</ProjectFile>
 		</MainProjects>
@@ -29,7 +29,7 @@
 			<ProjectPath>%(Identity)</ProjectPath>
 			<ProjectFile>%(ProjectPath)\%(Identity).csproj</ProjectFile>
 		</TestProjects>
-		<TestProjects Include="Test.ModuleInject.Interception">
+		<TestProjects Include="Test.ModuleInject.Interception.Castle">
 			<ProjectPath>%(Identity)</ProjectPath>
 			<ProjectFile>%(ProjectPath)\%(Identity).csproj</ProjectFile>
 		</TestProjects>
