@@ -31,6 +31,9 @@ namespace ModuleInject.Injection
             this.injectionRegisters = new HashSet<IInjectionRegister>();
             this.namedInjectionRegisters = new DoubleKeyDictionary<Type, string, IInjectionRegister>();
         }
+
+
+        /// <inheritdoc />
         protected override void OnRegistryResolved(IRegistry usedRegistry)
         {
             this.usedRegistry = usedRegistry;
@@ -43,10 +46,20 @@ namespace ModuleInject.Injection
             TryAddModuleResolveHooks();
         }
 
+        /// <summary>
+        /// Function that can be overwritten to hook into the resolution process.
+        /// Called once a component is resolved.
+        /// </summary>
+        /// <param name="context">A context that describes what has been resolved.</param>
         protected virtual void OnComponentResolved(ObjectResolvedContext context)
         {
         }
 
+        /// <summary>
+        /// This is called to register <see cref="IInjectionRegister"/> instances with the module.
+        /// Automatically called for everything created through the (Get)SourceOf, (Get)Factory, and (Get)SingleInstance sort of methods.
+        /// </summary>
+        /// <param name="injectionRegister">The injection register to register.</param>
         public void RegisterInjectionRegister(IInjectionRegister injectionRegister)
         {
             injectionRegister.OnResolve(context => this.OnComponentResolved(context));
@@ -63,6 +76,10 @@ namespace ModuleInject.Injection
             }
         }
 
+        /// <summary>
+        /// Dispose all registered injection registers.
+        /// </summary>
+        /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -129,11 +146,23 @@ namespace ModuleInject.Injection
             }
         }
 
+        /// <summary>
+        /// Check if a registration is already present for the given type and component name.
+        /// </summary>
+        /// <typeparam name="TIComponent">The type of the component to check.</typeparam>
+        /// <param name="componentName">The name of the component to check.</param>
+        /// <returns>True if yes.</returns>
         protected bool HasRegistration<TIComponent>([CallerMemberName]string componentName = null)
         {
             return HasRegistration(typeof(TIComponent), componentName);
         }
 
+        /// <summary>
+        /// Check if a registration is already present for the given type and component name.
+        /// </summary>
+        /// <param name="componentInterface">The type of the component to check.</param>
+        /// <param name="componentName">The name of the component to check.</param>
+        /// <returns>True if yes.</returns>
         protected bool HasRegistration(Type componentInterface, [CallerMemberName]string componentName = null)
         {
             return this.namedInjectionRegisters.Contains(componentInterface, componentName);
@@ -142,22 +171,36 @@ namespace ModuleInject.Injection
         /// <summary>
         /// Retrieve a named component from the module which is already registered.
         /// </summary>
-        /// <typeparam name="TIComponent"></typeparam>
-        /// <param name="componentName"></param>
-        /// <returns></returns>
+        /// <typeparam name="TIComponent">The type of the component to retrieve.</typeparam>
+        /// <param name="componentName">The name of the component to retrieve.</param>
+        /// <returns>An instance of the component.</returns>
         protected TIComponent Get<TIComponent>([CallerMemberName]string componentName = null)
         {
             return (TIComponent)Get(typeof(TIComponent), componentName);
         }
 
-        protected object Get(Type componentInterface, [CallerMemberName]string componentName = null)
+        /// <summary>
+        /// Retrieve a named component from the module which is already registered.
+        /// </summary>
+        /// <param name="componentInterface">The type of the component to retrieve.</param>
+        /// <param name="componentName">The name of the component to retrieve.</param>
+        /// <returns>An instance of the component.</returns>
+        protected object Get(Type componentInterface, string componentName = null)
         {
-            // TODO: make null component name valid for cases where only one registration for a type is given
-
             // this must be available during resolution now, because of lambda expression
             if (!this.IsResolving && !this.IsResolved)
             {
                 ExceptionHelper.ThrowPropertyAndTypeException<TModule>(Errors.InjectionModule_CreateInstanceBeforeResolve, componentName);
+            }
+
+            if(string.IsNullOrEmpty(componentName))
+            {
+                var registeredUnderType = this.namedInjectionRegisters.GetAll(componentInterface);
+                if(registeredUnderType.Count() > 1)
+                {
+                    ExceptionHelper.ThrowFormatException(Errors.InjectionModule_MultipleRegistrationsUnderInterface, componentInterface.Name, typeof(TModule).Name);
+                }
+                return registeredUnderType.First().GetInstance();
             }
 
             IInjectionRegister injectionRegister = null;

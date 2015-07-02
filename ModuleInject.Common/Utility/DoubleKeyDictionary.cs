@@ -5,6 +5,12 @@ namespace ModuleInject.Common.Utility
     using System.Collections;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Two-level dictionary with two keys.
+    /// </summary>
+    /// <typeparam name="TKey1">Type of the first key.</typeparam>
+    /// <typeparam name="TKey2">Type of the second key.</typeparam>
+    /// <typeparam name="TValue">Type of the value stored.</typeparam>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldHaveCorrectSuffix"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "This is really a dictionary.")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "This is really a dictionary.")]
     public class DoubleKeyDictionary<TKey1, TKey2, TValue> : IEnumerable<DoubleKeyDictionaryItem<TKey1, TKey2, TValue>>
@@ -12,6 +18,9 @@ namespace ModuleInject.Common.Utility
         private Dictionary<TKey1, Dictionary<TKey2, TValue>> _dictionary;
         private IList<DoubleKeyDictionaryItem<TKey1, TKey2, TValue>> _items;
 
+        /// <summary>
+        /// Returns the overall number of stored values.
+        /// </summary>
         public int Count { get { return this._items.Count; } }
 
         public DoubleKeyDictionary()
@@ -20,6 +29,12 @@ namespace ModuleInject.Common.Utility
             this._items = new List<DoubleKeyDictionaryItem<TKey1, TKey2, TValue>>();
         }
 
+        /// <summary>
+        /// Adds a value under a key combination.
+        /// </summary>
+        /// <param name="key1">The first key.</param>
+        /// <param name="key2">The second key.</param>
+        /// <param name="value">The value.</param>
         public void Add(TKey1 key1, TKey2 key2, TValue value)
         {
             var secondLevel = this.GetSecondLevel(key1, true);
@@ -29,6 +44,12 @@ namespace ModuleInject.Common.Utility
             this._items.Add(new DoubleKeyDictionaryItem<TKey1, TKey2, TValue>(key1, key2, value));
         }
 
+        /// <summary>
+        /// Check if a value is stored under a key combination.
+        /// </summary>
+        /// <param name="key1">The first key.</param>
+        /// <param name="key2">The second key.</param>
+        /// <returns>True if yes.</returns>
         public bool Contains(TKey1 key1, TKey2 key2)
         {
             TValue value = default(TValue);

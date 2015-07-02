@@ -25,8 +25,8 @@ namespace ModuleInject.Injection
         /// <summary>
         /// Register a nameless component with the module and preset instantiation strategy to factory.
         /// </summary>
-        /// <typeparam name="TIComponent"></typeparam>
-        /// <returns></returns>
+        /// <typeparam name="TIComponent">The interface of the component.</typeparam>
+        /// <returns>A fluent context to perform further registration steps.</returns>
         protected IDisposeStrategyContext<TModule, TIComponent> CreateFactory<TIComponent>()
         {
             return CreateSourceOf<TIComponent>()
@@ -36,8 +36,8 @@ namespace ModuleInject.Injection
         /// <summary>
         /// Register a nameless component with the module and preset instantiation strategy to single instance.
         /// </summary>
-        /// <typeparam name="TIComponent"></typeparam>
-        /// <returns></returns>
+        /// <typeparam name="TIComponent">The interface of the component.</typeparam>
+        /// <returns>A fluent context to perform further registration steps.</returns>
         protected IDisposeStrategyContext<TModule, TIComponent> CreateSingleInstance<TIComponent>()
         {
             return CreateSourceOf<TIComponent>()
@@ -47,8 +47,8 @@ namespace ModuleInject.Injection
         /// <summary>
         /// Register a nameless component with the module (no presets).
         /// </summary>
-        /// <typeparam name="TIComponent"></typeparam>
-        /// <returns></returns>
+        /// <typeparam name="TIComponent">The interface of the component.</typeparam>
+        /// <returns>A fluent context to perform further registration steps.</returns>
         protected IInstantiationStrategyContext<TModule, TIComponent> CreateSourceOf<TIComponent>()
         {
             return SourceOf<TIComponent>((string)null);
@@ -57,9 +57,9 @@ namespace ModuleInject.Injection
         /// <summary>
         /// Register a named component with the module and preset instantiation strategy to factory.
         /// </summary>
-        /// <typeparam name="TIComponent"></typeparam>
-        /// <param name="componentMember"></param>
-        /// <returns></returns>
+        /// <typeparam name="TIComponent">The interface of the component.</typeparam>
+        /// <param name="componentMember">An expression describing the member for which a component should be registered (member name will be component name).</param>
+        /// <returns>A fluent context to perform further registration steps.</returns>
         protected IDisposeStrategyContext<TModule, TIComponent> Factory<TIComponent>(Expression<Func<TModule, TIComponent>> componentMember)
         {
             return SourceOf<TIComponent>(componentMember)
@@ -69,9 +69,9 @@ namespace ModuleInject.Injection
         /// <summary>
         /// Register a named component with the module and preset instantiation strategy to single instance.
         /// </summary>
-        /// <typeparam name="TIComponent"></typeparam>
-        /// <param name="componentMember"></param>
-        /// <returns></returns>
+        /// <typeparam name="TIComponent">The interface of the component.</typeparam>
+        /// <param name="componentMember">An expression describing the member for which a component should be registered (member name will be component name).</param>
+        /// <returns>A fluent context to perform further registration steps.</returns>
         protected IDisposeStrategyContext<TModule, TIComponent> SingleInstance<TIComponent>(Expression<Func<TModule, TIComponent>> componentMember)
         {
             return SourceOf<TIComponent>(componentMember)
@@ -81,9 +81,9 @@ namespace ModuleInject.Injection
         /// <summary>
         /// Register a named component with the module and preset instantiation strategy to factory.
         /// </summary>
-        /// <typeparam name="TIComponent"></typeparam>
-        /// <param name="componentName"></param>
-        /// <returns></returns>
+        /// <typeparam name="TIComponent">The interface of the component.</typeparam>
+        /// <param name="componentName">The name of the component to register.</param>
+        /// <returns>A fluent context to perform further registration steps.</returns>
         protected IDisposeStrategyContext<TModule, TIComponent> Factory<TIComponent>([CallerMemberName]string componentName = null)
         {
             return SourceOf<TIComponent>(componentName)
@@ -93,9 +93,9 @@ namespace ModuleInject.Injection
         /// <summary>
         /// Register a named component with the module and preset instantiation strategy to single instance.
         /// </summary>
-        /// <typeparam name="TIComponent"></typeparam>
-        /// <param name="componentName"></param>
-        /// <returns></returns>
+        /// <typeparam name="TIComponent">The interface of the component.</typeparam>
+        /// <param name="componentName">The name of the component to register.</param>
+        /// <returns>A fluent context to perform further registration steps.</returns>
         protected IDisposeStrategyContext<TModule, TIComponent> SingleInstance<TIComponent>([CallerMemberName]string componentName = null)
         {
             return SourceOf<TIComponent>(componentName)
@@ -105,9 +105,9 @@ namespace ModuleInject.Injection
         /// <summary>
         /// Register a named component with the module (no presets).
         /// </summary>
-        /// <typeparam name="TIComponent"></typeparam>
-        /// <param name="componentMember"></param>
-        /// <returns></returns>
+        /// <typeparam name="TIComponent">The interface of the component.</typeparam>
+        /// <param name="componentMember">An expression describing the member for which a component should be registered (member name used as component name).</param>
+        /// <returns>A fluent context to perform further registration steps.</returns>
         protected IInstantiationStrategyContext<TModule, TIComponent> SourceOf<TIComponent>(Expression<Func<TModule, TIComponent>> componentMember)
         {
             var componentName = GetComponentName(componentMember);
@@ -119,9 +119,9 @@ namespace ModuleInject.Injection
         /// <summary>
         /// Register a named component with the module (no presets).
         /// </summary>
-        /// <typeparam name="TIComponent"></typeparam>
-        /// <param name="componentName"></param>
-        /// <returns></returns>
+        /// <typeparam name="TIComponent">The interface of the component.</typeparam>
+        /// <param name="componentName">The name of the component to register.</param>
+        /// <returns>A fluent context to perform further registration steps.</returns>
         protected IInstantiationStrategyContext<TModule, TIComponent> SourceOf<TIComponent>(string componentName)
         {
             IInjectionRegister injectionRegister = new InjectionRegister(componentName, typeof(TModule), typeof(TIComponent));
@@ -138,9 +138,9 @@ namespace ModuleInject.Injection
         /// Instantiation strategy preset to factory.
         /// Shortcut for simple construction without interface.
         /// </summary>
-        /// <typeparam name="TComponent"></typeparam>
-        /// <param name="componentName"></param>
-        /// <returns></returns>
+        /// <typeparam name="TComponent">The type of the component.</typeparam>
+        /// <param name="componentName">The name of the component to register.</param>
+        /// <returns>An instance of the component.</returns>
         protected TComponent GetFactory<TComponent>(
             [CallerMemberName]string componentName = null)
             where TComponent : new()
@@ -153,10 +153,10 @@ namespace ModuleInject.Injection
         /// Instantiation strategy preset to factory.
         /// Shortcut for simple construction with interface and type.
         /// </summary>
-        /// <typeparam name="TIComponent"></typeparam>
-        /// <typeparam name="TComponent"></typeparam>
-        /// <param name="componentName"></param>
-        /// <returns></returns>
+        /// <typeparam name="TIComponent">The interface of the component.</typeparam>
+        /// <typeparam name="TComponent">The type of the component.</typeparam>
+        /// <param name="componentName">The name of the component to register.</param>
+        /// <returns>An instance of the component.</returns>
         protected TIComponent GetFactory<TIComponent, TComponent>(
             [CallerMemberName]string componentName = null)
             where TComponent : TIComponent, new()
@@ -169,10 +169,10 @@ namespace ModuleInject.Injection
         /// Instantiation strategy preset to factory.
         /// Shortcut for constructor / property initializer injection.
         /// </summary>
-        /// <typeparam name="TIComponent"></typeparam>
-        /// <param name="construct"></param>
-        /// <param name="componentName"></param>
-        /// <returns></returns>
+        /// <typeparam name="TIComponent">The interface of the component.</typeparam>
+        /// <param name="construct">A function creating an instance of the component.</param>
+        /// <param name="componentName">The name of the component to register.</param>
+        /// <returns>An instance of the component.</returns>
         protected TIComponent GetFactoryWithConstruct<TIComponent>(
             Func<TModule, TIComponent> construct,
             [CallerMemberName]string componentName = null)
@@ -189,11 +189,11 @@ namespace ModuleInject.Injection
         /// Instantiation strategy preset to factory.
         /// Shortcut for fast method injection.
         /// </summary>
-        /// <typeparam name="TIComponent"></typeparam>
-        /// <typeparam name="TComponent"></typeparam>
-        /// <param name="construct"></param>
-        /// <param name="componentName"></param>
-        /// <returns></returns>
+        /// <typeparam name="TIComponent">The interface of the component.</typeparam>
+        /// <typeparam name="TComponent">The type of the component.</typeparam>
+        /// <param name="inject">An action performing injection into an instance of the component.</param>
+        /// <param name="componentName">The name of the component to register.</param>
+        /// <returns>An instance of the component.</returns>
         protected TIComponent GetFactoryWithInject<TIComponent, TComponent>(
             Action<TModule, TComponent> inject,
             [CallerMemberName]string componentName = null)
@@ -211,10 +211,10 @@ namespace ModuleInject.Injection
         /// Instantiation strategy preset to factory.
         /// Shortcut for registration with full fluent API.
         /// </summary>
-        /// <typeparam name="TIComponent"></typeparam>
-        /// <param name="registerComponent"></param>
-        /// <param name="componentName"></param>
-        /// <returns></returns>
+        /// <typeparam name="TIComponent">The interface of the component.</typeparam>
+        /// <param name="registerComponent">An action performing the fluent registration of the component.</param>
+        /// <param name="componentName">The name of the component to register.</param>
+        /// <returns>An instance of the component.</returns>
         protected TIComponent GetFactory<TIComponent>(
             Action<IConstructionContext<TModule, TIComponent>> registerComponent,
             [CallerMemberName]string componentName = null)
@@ -231,9 +231,9 @@ namespace ModuleInject.Injection
         /// Instantiation strategy preset to single instance.
         /// Shortcut for simple construction without interface.
         /// </summary>
-        /// <typeparam name="TComponent"></typeparam>
-        /// <param name="componentName"></param>
-        /// <returns></returns>
+        /// <typeparam name="TComponent">The type of the component.</typeparam>
+        /// <param name="componentName">The name of the component to register.</param>
+        /// <returns>An instance of the component.</returns>
         protected TComponent GetSingleInstance<TComponent>([CallerMemberName]string componentName = null)
             where TComponent : new()
         {
@@ -245,10 +245,10 @@ namespace ModuleInject.Injection
         /// Instantiation strategy preset to single instance.
         /// Shortcut for simple construction with interface and type.
         /// </summary>
-        /// <typeparam name="TIComponent"></typeparam>
-        /// <typeparam name="TComponent"></typeparam>
-        /// <param name="componentName"></param>
-        /// <returns></returns>
+        /// <typeparam name="TIComponent">The interface of the component.</typeparam>
+        /// <typeparam name="TComponent">The type of the component.</typeparam>
+        /// <param name="componentName">The name of the component to register.</param>
+        /// <returns>An instance of the component.</returns>
         protected TIComponent GetSingleInstance<TIComponent, TComponent>(
             [CallerMemberName]string componentName = null)
             where TComponent : TIComponent, new()
@@ -261,10 +261,10 @@ namespace ModuleInject.Injection
         /// Instantiation strategy preset to single instance.
         /// Shortcut for constructor/property initializer injection.
         /// </summary>
-        /// <typeparam name="TIComponent"></typeparam>
-        /// <param name="construct"></param>
-        /// <param name="componentName"></param>
-        /// <returns></returns>
+        /// <typeparam name="TIComponent">The interface of the component.</typeparam>
+        /// <param name="construct">A function creating an instance of the component.</param>
+        /// <param name="componentName">The name of the component to register.</param>
+        /// <returns>An instance of the component.</returns>
         protected TIComponent GetSingleInstanceWithConstruct<TIComponent>(
             Func<TModule, TIComponent> construct,
             [CallerMemberName]string componentName = null)
@@ -281,11 +281,11 @@ namespace ModuleInject.Injection
         /// Instantiation strategy preset to single instance.
         /// Shortcut for fast method injection.
         /// </summary>
-        /// <typeparam name="TIComponent"></typeparam>
-        /// <typeparam name="TComponent"></typeparam>
-        /// <param name="inject"></param>
-        /// <param name="componentName"></param>
-        /// <returns></returns>
+        /// <typeparam name="TIComponent">The interface of the component.</typeparam>
+        /// <typeparam name="TComponent">The type of the component.</typeparam>
+        /// <param name="inject">An action performing injection into the component.</param>
+        /// <param name="componentName">The name of the component to register.</param>
+        /// <returns>An instance of the component.</returns>
         protected TIComponent GetSingleInstanceWithInject<TIComponent, TComponent>(
             Action<TModule, TComponent> inject,
             [CallerMemberName]string componentName = null)
@@ -303,10 +303,10 @@ namespace ModuleInject.Injection
         /// Instantiation strategy preset to single instance.
         /// Shortcut for full construction with fluent language.
         /// </summary>
-        /// <typeparam name="TIComponent"></typeparam>
-        /// <param name="registerComponent"></param>
-        /// <param name="componentName"></param>
-        /// <returns></returns>
+        /// <typeparam name="TIComponent">The interface of the component.</typeparam>
+        /// <param name="registerComponent">An action performing fluent registration of the component.</param>
+        /// <param name="componentName">The name of the component to register.</param>
+        /// <returns>An instance of the component.</returns>
         protected TIComponent GetSingleInstance<TIComponent>(
             Action<IConstructionContext<TModule, TIComponent>> registerComponent,
             [CallerMemberName]string componentName = null)
@@ -323,10 +323,10 @@ namespace ModuleInject.Injection
         /// No presets, full fluent API workflow.
         /// Most general getter function with complete fluent registration workflow.
         /// </summary>
-        /// <typeparam name="TIComponent"></typeparam>
-        /// <param name="registerComponent"></param>
-        /// <param name="componentName"></param>
-        /// <returns></returns>
+        /// <typeparam name="TIComponent">The interface of the component.</typeparam>
+        /// <param name="registerComponent">An action performing fluent registration of the component.</param>
+        /// <param name="componentName">The name of the component to register.</param>
+        /// <returns>An instance of the component.</returns>
         protected TIComponent GetSourceOf<TIComponent>(
             Action<IInstantiationStrategyContext<TModule, TIComponent>> registerComponent,
             [CallerMemberName]string componentName = null)
@@ -343,9 +343,9 @@ namespace ModuleInject.Injection
         /// <summary>
         /// Retrieve a named component from the module which is already registered.
         /// </summary>
-        /// <typeparam name="TIComponent"></typeparam>
-        /// <param name="componentMember"></param>
-        /// <returns></returns>
+        /// <typeparam name="TIComponent">The interface of the component.</typeparam>
+        /// <param name="componentMember">An expression describing the member for which to retrieve a component (member name used as component name).</param>
+        /// <returns>An instance of the component.</returns>
         protected TIComponent Get<TIComponent>(Expression<Func<TModule, TIComponent>> componentMember)
         {
             CommonFunctions.CheckNullArgument("componentMember", componentMember);

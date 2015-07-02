@@ -14,9 +14,11 @@ namespace ModuleInject.Interfaces.Injection
     /// <typeparam name="TIContext">One of the interfaces of the context.</typeparam>
     /// <typeparam name="TIComponent">One of the interfaces of the component</typeparam>
 	public interface IInterfaceModificationContext<TIContext, TIComponent> : IWrapInjectionRegister
-	{
+    {
+        /// <returns>A context for performing the next steps in fluent registration.</returns>
         IInterfaceModificationContext<TIContext, TIComponent> Inject(Action<TIContext, TIComponent> injectInInstance);
 
+        /// <returns>A context for performing the next steps in fluent registration.</returns>
         IInterfaceModificationContext<TIContext, TIComponent> AddMeta<T>(T metaData);
 	}
 }

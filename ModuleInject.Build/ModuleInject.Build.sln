@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{1BAC562B-70E3-4242-92BE-F8C8797016D1}"
 	ProjectSection(SolutionItems) = preProject
@@ -35,6 +35,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{50083155
 		..\Test.ModuleInject\Test.ModuleInject.csproj = ..\Test.ModuleInject\Test.ModuleInject.csproj
 		..\Test.ModuleInject.Interception.Castle\Test.ModuleInject.Interception.Castle.csproj = ..\Test.ModuleInject.Interception.Castle\Test.ModuleInject.Interception.Castle.csproj
 		..\Test.ModuleInject.Interception\Test.ModuleInject.Interception.csproj = ..\Test.ModuleInject.Interception\Test.ModuleInject.Interception.csproj
+		..\Test.ModuleInject.Wpf\Test.ModuleInject.Wpf.csproj = ..\Test.ModuleInject.Wpf\Test.ModuleInject.Wpf.csproj
 		..\Test.Performance.ModuleInject\Test.Performance.ModuleInject.csproj = ..\Test.Performance.ModuleInject\Test.Performance.ModuleInject.csproj
 	EndProjectSection
 EndProject

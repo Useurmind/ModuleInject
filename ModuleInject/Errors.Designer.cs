@@ -188,6 +188,15 @@ namespace ModuleInject {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Multiple registrations were found for the type &apos;{0}&apos; in module of type &apos;{1}&apos;. Therefore, you can not get a component of that interface without its name. ähnelt.
+        /// </summary>
+        internal static string InjectionModule_MultipleRegistrationsUnderInterface {
+            get {
+                return ResourceManager.GetString("InjectionModule_MultipleRegistrationsUnderInterface", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die The expression &apos;{1}&apos; describes neither a property or method of the module with type &apos;{0}&apos;. ähnelt.
         /// </summary>
         internal static string InjectionModule_NeitherPropertyNorMethodExpression {

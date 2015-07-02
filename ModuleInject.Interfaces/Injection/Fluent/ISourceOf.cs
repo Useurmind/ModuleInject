@@ -5,6 +5,10 @@ using System.Text;
 
 namespace ModuleInject.Interfaces.Injection
 {
+    /// <summary>
+    /// Simple interface that represents a source of a component.
+    /// </summary>
+    /// <typeparam name="TIComponent">The interface of the component that the source produces.</typeparam>
 	public interface ISourceOf<TIComponent>
 	{
 		/// <summary>

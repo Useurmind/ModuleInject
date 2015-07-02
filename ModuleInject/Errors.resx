@@ -160,6 +160,9 @@ The properties are: '{1}'</value>
   <data name="InjectionModule_ModulesMustHaveAnInterface" xml:space="preserve">
     <value>The module with type '{0}' does not possess an interface. Please provide one in the generic parameters of InjectionModule and implement it in your module.</value>
   </data>
+  <data name="InjectionModule_MultipleRegistrationsUnderInterface" xml:space="preserve">
+    <value>Multiple registrations were found for the type '{0}' in module of type '{1}'. Therefore, you can not get a component of that interface without its name.</value>
+  </data>
   <data name="InjectionModule_NeitherPropertyNorMethodExpression" xml:space="preserve">
     <value>The expression '{1}' describes neither a property or method of the module with type '{0}'.</value>
   </data>
