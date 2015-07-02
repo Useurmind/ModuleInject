@@ -25,6 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projects", "Projects", "{5E
 		..\ModuleInject.Interception.Castle\ModuleInject.Interception.Castle.csproj = ..\ModuleInject.Interception.Castle\ModuleInject.Interception.Castle.csproj
 		..\ModuleInject.Interception\ModuleInject.Interception.csproj = ..\ModuleInject.Interception\ModuleInject.Interception.csproj
 		..\ModuleInject.Interfaces\ModuleInject.Interfaces.csproj = ..\ModuleInject.Interfaces\ModuleInject.Interfaces.csproj
+		..\ModuleInject.Wpf\ModuleInject.Wpf.csproj = ..\ModuleInject.Wpf\ModuleInject.Wpf.csproj
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{50083155-79C8-4716-BF6C-F177D4B028CE}"

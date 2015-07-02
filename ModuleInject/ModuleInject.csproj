@@ -57,7 +57,6 @@
     <Compile Include="Utility\ResolverUtility.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ModuleInject.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
