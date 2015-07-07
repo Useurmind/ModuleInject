@@ -1,0 +1,131 @@
+﻿body {
+    background-color: rgb(241, 205, 176);
+    font-family: trebuchet ms;
+}
+
+#page-div {
+    width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#column-container-div {
+    width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#column1-div {
+    position: relative;
+    background-image: url(../images/NavigationBoxComplete.svg);
+    background-repeat: no-repeat;
+    height: 563px;
+}
+
+#column2-div {
+    width: 903px;
+    position: relative;
+}
+
+#content-div {
+    padding-top: 20px;
+    padding: 5px;
+    margin-top: 25px;
+    margin-left: 25px;
+    margin-right: 25px;
+    min-height: 900px;
+    width: 840px;
+    position: relative;
+    z-index: 2;
+}
+
+#content-bg-top-edge {
+    width: 903px;
+    height: 72px;
+    background-image: url(../images/CenterBoxTopEdge.svg);
+    background-repeat: no-repeat;
+    position: absolute;
+    z-index: 1;
+}
+
+#content-bg-rest {
+    background-image: url(../images/CenterBoxMiddlePart.svg);
+    background-repeat: repeat-y;
+    width: 903px;
+    height: 100%;
+    position: absolute;
+    top: 72px;
+    z-index: 1;
+}
+
+.column-div {
+    float: left;
+    margin: 10px;
+}
+
+#header-div {
+    margin-left: 185px;
+    height: 150px;
+    top: 10px;
+    left: 180px;
+    background-image: url(../images/TitleBoxFull.svg);
+    background-repeat: no-repeat;
+    background-position-x: 225px;
+}
+
+#navigation-div {
+    margin: 5px;
+    width: 360px;
+    padding: 5px;
+    position: relative;
+    z-index: 2;
+}
+
+/*#navigation-bg-top-edge {
+    width: 379px;
+    height: 25px;
+    background-image: url(../images/NavigationBoxTopEdge.svg);
+    background-repeat: no-repeat;
+    position: absolute;
+    z-index: 1;
+}
+
+#navigation-bg-rest {
+    background-image: url(../images/NavigationBoxMiddlePart.svg);
+    background-repeat: repeat-y;
+    width: 379px;
+    height: 300px;
+    position: absolute;
+    top: 25px;
+    z-index: 1;
+}*/
+
+.center-block {
+    width: 900px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#content-div img {
+    max-width: 820px;
+}
+
+li > a.menu-item-link {
+    font-family: trebuchet ms;
+}
+
+h1 {
+    font-family: trebuchet ms;
+}
+
+h2 {
+    font-family: trebuchet ms;
+}
+
+h3 {
+    font-family: trebuchet ms;
+}
+
+h4 {
+    font-family: trebuchet ms;
+}

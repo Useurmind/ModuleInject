@@ -261,20 +261,13 @@
 				<path d="M7.14 368.16 L17.01 343.5 L0 361.36 L7.14 368.16 Z" class="st20"/>
 			</g>
 		</g>
-		<g id="shape32-99" v:mID="32" v:groupContext="shape" transform="translate(299.785,-190.409)">
-			<title>Sheet.32</title>
-			<desc>[PrivateComponent]</desc>
-			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
-			<v:textRect cx="76" cy="358.164" width="152.01" height="20"/>
-			<rect x="0" y="348.164" width="152" height="20" class="st21"/>
-			<text x="26.4" y="361.76" class="st22" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>[PrivateComponent]</text>		</g>
 		<g id="shape34-102" v:mID="34" v:groupContext="shape" transform="translate(110.312,-190.409)">
 			<title>Sheet.34</title>
-			<desc>[RegistryComponent]</desc>
+			<desc>[FromRegistry]</desc>
 			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
 			<v:textRect cx="76" cy="358.164" width="152" height="20"/>
 			<rect x="0" y="348.164" width="152" height="20" class="st21"/>
-			<text x="23.94" y="361.76" class="st22" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>[RegistryComponent]</text>		</g>
+			<text x="23.94" y="361.76" class="st22" v:langID="1031"><v:paragraph v:horizAlign="1"/><v:tabList/>[FromRegistry]</text>		</g>
 		<g id="shape36-105" v:mID="36" v:groupContext="shape" transform="translate(129.619,-14.9232)">
 			<title>Rectangle.36</title>
 			<desc>ModuleA</desc>
