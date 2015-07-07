@@ -13,6 +13,7 @@
 		</ItemGroup>
 
 		<Message Text="Pushing packages: %(NuGetPackages.PackagePath)"></Message>
+		<NuGetPush File="%(NuGetPackages.PackagePath)"></NuGetPush>
 
 		<Message Text="Updating version..." />
 		<IncrementVersionNumber VersionFilePath="$(ProjectBuildPath)version.props"></IncrementVersionNumber>
