@@ -5,42 +5,39 @@ Module inject provides a (partly fluent) API that tries to make the process of d
 
 The API has several phases:
 
- - Registration
+ - Instantiation
+ - Disposing
  - Construction
  - Modification
 
-### Registration phase
+### Instantiation
 
-In this phase a property or method of the module is registered as a component (factory).
+In this phase you define which kind of strategy should be used to create instances of the component, e.g. single instance or factory. You can define arbitrary strategies but for single instances and factories the InjectionModule class provides shortcut functions that skip this step.
 
-#### Components vs. component factories
+### Disposing
 
-Mo
+In this phase you define which kind of dispose strategy should be used to dispose instances of the component. You can skip this step if you are satisfied with no dispose strategy or the defaults that are applied.
+The defaults are:
 
-Components are singletons in the scope of a module and only constructed once. That is why they are stored inside of properties of the module which reflect the idea behind the components best. By default, their lifetime is managed by the module. Therefore, they are disposed together with the module they are contained in. 
+ - SingleInstance: Instances are remembered and disposed with the module.
+ - Factory: Instances are forgot and never disposed (consumer is repsonsible for disposing).
+ - Pure SourceOf: No default dispose strategy (means null).
 
-Factories create components when requested. To reflect this behaviour they are implemented via methods of a module. By default, the lifetime of components that are created through factories lies in the hands of the requester of the component. The module will forget the created component after it was created.
-
-#### Public vs. private
-
-Public components and factories are part of the interface of a module which makes them available to other modules. In contrast a private component or factory is not part of the interface and therefore is usually not available to other modules. The public and private scheme of ModuleInject does not correspond to the access modifier scheme of C#. Private components can have a public access modifier.
-
-### Construction phase
+### Construction
 
 In the construction phase you define how an instance of the component is created. You can specify different construction processes which give you some flexibility when creating components.
 
  - Creation from type.
- - Creation from expression.
- - Setting a fixed instance.
+ - Creation from func.
 
-Creation from a type is the shortest possible notation that can be used when a default constructor should be used. The creation from an expression can be used for constructor injection scenarios with a non-default constructor. When setting a fixed instance you can construct an object as you like and give it to the container for dependency injection.
+Creation from a type is the shortest possible notation that can be used when a default constructor should be used. The creation from a func can be used for constructor injection scenarios with a non-default constructor or for applying property initializer syntax. You can inject fixed instances by using a closure in the construct func.
 
 ### Modification phase
 
-This phase is the most complex and gives you several possibilities to modify the constructed instance. Among other things you can:
+This phase allows you to perform further modifications of the registered component. You can:
 
- - Call methods on the instance.
- - Set properties on the instance.
- - Perform custom actions on the instance.
- - Use standard injection code in the form of so called injectors.
- - Apply a dynamic proxy in the form of a behaviour.
+ - Execute actions that are performed when constructing an instance (e.g. for method injection).
+ - Change the instance that is returned (e.g. for decoration).
+ - Add meta data to the component (e.g. for easy recognition in registration hooks).
+ 
+Also, there can be further extensions depending on the loaded extensions. For example, you can add interceptors when including ModuleInject.Interception.Castle.
