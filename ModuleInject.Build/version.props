@@ -8,7 +8,7 @@
 	<!-- increase with non-breaking extensions -->
 	<MinorVersion>0</MinorVersion>
 	<!-- increase with bugfixes -->
-	<PatchVersion>0</PatchVersion>
+	<PatchVersion>1</PatchVersion>
   </PropertyGroup>
   
   <PropertyGroup>
