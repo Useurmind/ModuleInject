@@ -24,3 +24,4 @@ This is where this framework can come in to save the day. Here are some facts ab
 * Supports factory methods in modules.
 * Supports injectors which encapsulate code for recurring initializations.
 * Supports module detection via MEF.
+* Supports dynamic proxies (e.g. via Castle Dynamic Proxies).

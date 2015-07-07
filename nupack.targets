@@ -44,9 +44,10 @@
 				   ReplacementText="%(NuSpecFiles.Identity)" />
 
 		<Message Text="Packing nuget packages" />
-		<NuGetPack File="%(NuSpecFiles.ProjectFile)" 
+		<Exec Command="nuget.exe pack %(NuSpecFiles.ProjectFile) -BasePath %(NuSpecFiles.ProjectPath) -OutputDirectory $(NuGetPackagePath) -IncludeReferencedProjects"></Exec>
+		<!--<NuGetPack File="%(NuSpecFiles.ProjectFile)" 
 				   BasePath="%(NuSpecFiles.ProjectPath)"
 				   OutputDirectory="$(NuGetPackagePath)"
-				   ></NuGetPack>
+				   IncludeReferencedProjects="true"></NuGetPack>-->
 	</Target>
 </Project>

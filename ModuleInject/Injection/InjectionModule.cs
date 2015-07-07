@@ -342,6 +342,7 @@ namespace ModuleInject.Injection
 
         /// <summary>
         /// Retrieve a named component from the module which is already registered.
+        /// IMPORTANT: It must already be registered, e.g. by calling a form of SourceOf or at least once GetSourceOf for this component.
         /// </summary>
         /// <typeparam name="TIComponent">The interface of the component.</typeparam>
         /// <param name="componentMember">An expression describing the member for which to retrieve a component (member name used as component name).</param>

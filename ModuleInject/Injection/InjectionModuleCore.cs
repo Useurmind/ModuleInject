@@ -170,6 +170,7 @@ namespace ModuleInject.Injection
 
         /// <summary>
         /// Retrieve a named component from the module which is already registered.
+        /// IMPORTANT: It must already be registered, e.g. by calling a form of SourceOf or at least once GetSourceOf for this component.
         /// </summary>
         /// <typeparam name="TIComponent">The type of the component to retrieve.</typeparam>
         /// <param name="componentName">The name of the component to retrieve.</param>
@@ -181,9 +182,10 @@ namespace ModuleInject.Injection
 
         /// <summary>
         /// Retrieve a named component from the module which is already registered.
+        /// IMPORTANT: It must already be registered, e.g. by calling a form of SourceOf or at least once GetSourceOf for this component.
         /// </summary>
         /// <param name="componentInterface">The type of the component to retrieve.</param>
-        /// <param name="componentName">The name of the component to retrieve.</param>
+        /// <param name="componentName">The name of the component to retrieve, can be null but then type must be unique.</param>
         /// <returns>An instance of the component.</returns>
         protected object Get(Type componentInterface, string componentName = null)
         {
