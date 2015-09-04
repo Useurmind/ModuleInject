@@ -18,6 +18,7 @@
     <Compile Include="Linq\CommonLinq.cs" />
     <Compile Include="Linq\Method.cs" />
     <Compile Include="Linq\Property.cs" />
+    <Compile Include="Linq\MemberComparer.cs" />
     <Compile Include="Linq\ReflectionExtensions.cs" />
     <Compile Include="Linq\TypeExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -42,7 +43,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-	<Import Project="$(ProjectBuildPath)common.project.after.props" />
+  <Import Project="$(ProjectBuildPath)common.project.after.props" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -47,6 +47,10 @@
     <Compile Include="Modularity\Registry\InjectionContainer.cs" />
     <Compile Include="Modularity\Registry\StandardRegistry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Provider\ProviderFactory\ModuleServiceProviderExtensions.cs" />
+    <Compile Include="Provider\ProviderFactory\ServiceProviderFactoryExtensions.cs" />
+    <Compile Include="Provider\ServiceProvider.cs" />
+    <Compile Include="Provider\ServiceSources\PropertyServiceSource.cs" />
     <Compile Include="Utility\LinqHelper.cs" />
     <Compile Include="Utility\MemberChainEvaluator.cs" />
     <Compile Include="Utility\MemberChecker.cs" />

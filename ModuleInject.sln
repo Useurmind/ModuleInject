@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.22823.1
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModuleInject", "ModuleInject\ModuleInject.csproj", "{53221937-AEFF-477F-B132-91A5449C9738}"
 EndProject
@@ -246,7 +246,6 @@ Global
 		{7AF79BF4-272D-4C2B-A58F-113D52FFD720}.Debug 4.5.2|Any CPU.ActiveCfg = Debug 4.5.2|Any CPU
 		{7AF79BF4-272D-4C2B-A58F-113D52FFD720}.Debug 4.5.2|Any CPU.Build.0 = Debug 4.5.2|Any CPU
 		{7AF79BF4-272D-4C2B-A58F-113D52FFD720}.Debug 4.5|Any CPU.ActiveCfg = Debug 4.5|Any CPU
-		{7AF79BF4-272D-4C2B-A58F-113D52FFD720}.Debug 4.5|Any CPU.Build.0 = Debug 4.5|Any CPU
 		{7AF79BF4-272D-4C2B-A58F-113D52FFD720}.Release 4.0|Any CPU.ActiveCfg = Release 4.0|Any CPU
 		{7AF79BF4-272D-4C2B-A58F-113D52FFD720}.Release 4.0|Any CPU.Build.0 = Release 4.0|Any CPU
 		{7AF79BF4-272D-4C2B-A58F-113D52FFD720}.Release 4.5.1|Any CPU.ActiveCfg = Release 4.5.1|Any CPU
@@ -262,7 +261,6 @@ Global
 		{171901F0-8EBF-48A1-81ED-9328A55E2ABD}.Debug 4.5.2|Any CPU.ActiveCfg = Debug 4.5.2|Any CPU
 		{171901F0-8EBF-48A1-81ED-9328A55E2ABD}.Debug 4.5.2|Any CPU.Build.0 = Debug 4.5.2|Any CPU
 		{171901F0-8EBF-48A1-81ED-9328A55E2ABD}.Debug 4.5|Any CPU.ActiveCfg = Debug 4.5|Any CPU
-		{171901F0-8EBF-48A1-81ED-9328A55E2ABD}.Debug 4.5|Any CPU.Build.0 = Debug 4.5|Any CPU
 		{171901F0-8EBF-48A1-81ED-9328A55E2ABD}.Release 4.0|Any CPU.ActiveCfg = Release 4.0|Any CPU
 		{171901F0-8EBF-48A1-81ED-9328A55E2ABD}.Release 4.0|Any CPU.Build.0 = Release 4.0|Any CPU
 		{171901F0-8EBF-48A1-81ED-9328A55E2ABD}.Release 4.5.1|Any CPU.ActiveCfg = Release 4.5.1|Any CPU

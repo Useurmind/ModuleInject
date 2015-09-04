@@ -208,6 +208,12 @@ The properties are: '{1}'</value>
   <data name="ServiceLocator_MultipleRegistrationsFound" xml:space="preserve">
     <value>There are multiple registrations of type '{1}' in the service locator.</value>
   </data>
+  <data name="ServiceProvider_AlreadyContainsThisServiceType" xml:space="preserve">
+    <value>A service of type '{0}' is already registered in this service provider.</value>
+  </data>
+  <data name="ServiceProvider_DoesNotContainThisServiceType" xml:space="preserve">
+    <value>A service of type '{0}' is not registered in this service provider.</value>
+  </data>
   <data name="TypeExtensions_NoPropertySetterFound" xml:space="preserve">
     <value>The property '{0}' of type  '{1}' does not have a setter anywhere in the module inheritance chain.</value>
   </data>
