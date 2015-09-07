@@ -9,13 +9,53 @@ using ModuleInject.Provider.ServiceSources;
 
 namespace ModuleInject.Provider.ProviderFactory
 {
+    public interface IAllPropertiesContext
+    {
+        IAllPropertiesContext ExceptProperty(string propertyName);
+
+        IAllPropertiesContext ExceptPropertiesFrom(Type type, bool recursive = false);
+
+        void Extract();
+    }
+
+    public class AllPropertiesContext : IAllPropertiesContext
+    {
+        private FromInstanceContext fromInstance;
+
+        public AllPropertiesContext(FromInstanceContext fromInstance)
+        {
+            this.fromInstance = fromInstance;
+        }
+        public IAllPropertiesContext ExceptProperty(string propertyName)
+        {
+            fromInstance.FilterProperties(props => props.Where(p => p.Name != propertyName));
+            return this;
+        }
+
+        public IAllPropertiesContext ExceptPropertiesFrom(Type type, bool recursive = false)
+        {
+            var bindingFlags = BindingFlags.Instance | BindingFlags.Public;
+            if (!recursive)
+            {
+                bindingFlags |= BindingFlags.DeclaredOnly;
+            }
+
+            var exceptProperties = type.GetProperties(bindingFlags);
+
+            fromInstance.FilterProperties(props => props.Except(exceptProperties, new PropertyNameComparer()));
+
+            return this;
+        }
+
+        public void Extract()
+        {
+            fromInstance.Extract();
+        }
+    }
+
     public interface IFromInstanceContext
     {
-        IFromInstanceContext ExceptProperty(string propertyName);
-
-        IFromInstanceContext ExceptPropertiesFrom(Type type, bool recursive = false);
-
-        IFromInstanceContext AddAllProperties();
+        IAllPropertiesContext AddAllProperties();
 
         void Extract();
 
@@ -38,32 +78,13 @@ namespace ModuleInject.Provider.ProviderFactory
             this.instance = instance;
         }
 
-        public IFromInstanceContext AddAllProperties()
+        public IAllPropertiesContext AddAllProperties()
         {
             properties = instance.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
 
-            return this;
+            return new AllPropertiesContext(this);
         }
-        public IFromInstanceContext ExceptProperty(string propertyName)
-        {
-            FilterProperties(props => props.Where(p => p.Name != propertyName));
-            return this;
-        }
-
-        public IFromInstanceContext ExceptPropertiesFrom(Type type, bool recursive = false)
-        {
-            var bindingFlags = BindingFlags.Instance | BindingFlags.Public;
-            if(!recursive)
-            {
-                bindingFlags |= BindingFlags.DeclaredOnly;
-            }
-
-            var exceptProperties = type.GetProperties(bindingFlags);
-
-            FilterProperties(props => props.Except(exceptProperties, new PropertyNameComparer()));
-
-            return this;
-        }
+        
 
         public void FilterProperties(Func<IEnumerable<PropertyInfo>, IEnumerable<PropertyInfo>> filterProperties)
         {
@@ -89,14 +110,14 @@ namespace ModuleInject.Provider.ProviderFactory
 
     public static class AllPropertiesContextExtensions
     {
-        public static IFromInstanceContext ExceptProperty<TInstance, TProperty>(
-            this IFromInstanceContext context,
+        public static IAllPropertiesContext ExceptProperty<TInstance, TProperty>(
+            this IAllPropertiesContext context,
             Expression<Func<TInstance, TProperty>> propertyExpression)
         {
             return context.ExceptProperty((string)Property.Get(propertyExpression));
         }
 
-        public static IFromInstanceContext ExceptPropertiesFrom<TExcept>(this IFromInstanceContext context, bool recursive=false)
+        public static IAllPropertiesContext ExceptPropertiesFrom<TExcept>(this IAllPropertiesContext context, bool recursive=false)
         {
             return context.ExceptPropertiesFrom(typeof(TExcept), recursive);
         }

@@ -10,7 +10,7 @@ namespace ModuleInject.Provider.ProviderFactory
 {
     public static class ModuleServiceProviderExtensions
     {
-        public static IFromInstanceContext FromModule<TModule>(this ServiceProvider serviceProvider, TModule module)
+        public static IAllPropertiesContext FromModule<TModule>(this ServiceProvider serviceProvider, TModule module)
             where TModule : InjectionModule<TModule>
         {
             return new FromInstanceContext(serviceProvider, module)
