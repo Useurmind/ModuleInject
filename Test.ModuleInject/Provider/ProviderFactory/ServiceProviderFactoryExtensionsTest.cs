@@ -47,7 +47,7 @@ namespace Test.ModuleInject.Provider.ProviderFactory
         {
             serviceProvider.FromInstance(instance)
                 .AddAllProperties()
-                .ExceptProperty("Service1")
+                .Where(x => x.Name != "Service1")
                 .Extract();
 
             Assert.IsFalse(serviceProvider.HasService<IService1>());
@@ -61,7 +61,7 @@ namespace Test.ModuleInject.Provider.ProviderFactory
         {
             serviceProvider.FromInstance(instance)
                 .AddAllProperties()
-                .ExceptPropertiesFrom<BaseClass>()
+                .ExceptFrom<BaseClass>()
                 .Extract();
 
             Assert.IsFalse(serviceProvider.HasService<IService1>());
@@ -75,8 +75,8 @@ namespace Test.ModuleInject.Provider.ProviderFactory
         {
             serviceProvider.FromInstance(instance)
                 .AddAllProperties()
-                .ExceptProperty("Service4")
-                .ExceptPropertiesFrom<BaseClass>()
+                .Where(x => x.Name != "Service4")
+                .ExceptFrom<BaseClass>()
                 .Extract();
 
             Assert.IsFalse(serviceProvider.HasService<IService1>());
@@ -90,7 +90,7 @@ namespace Test.ModuleInject.Provider.ProviderFactory
         {
             serviceProvider.FromInstance(instance)
                 .AddAllProperties()
-                .ExceptPropertiesFrom<ChildClass>()
+                .ExceptFrom<ChildClass>()
                 .Extract();
             
             Assert.AreSame(instance.Service1, serviceProvider.GetService<IService1>());
@@ -104,7 +104,91 @@ namespace Test.ModuleInject.Provider.ProviderFactory
         {
             serviceProvider.FromInstance(instance)
                 .AddAllProperties()
-                .ExceptPropertiesFrom<ChildClass>(true)
+                .ExceptFrom<ChildClass>(true)
+                .Extract();
+
+            Assert.IsFalse(serviceProvider.HasService<IService1>());
+            Assert.IsFalse(serviceProvider.HasService<IService2>());
+            Assert.IsFalse(serviceProvider.HasService<IService3>());
+            Assert.IsFalse(serviceProvider.HasService<IService4>());
+        }
+        
+        [Test]
+        public void AddAllGetMethods_AddsAllMethods()
+        {
+            serviceProvider.FromInstance(instance)
+                .AddAllGetMethods()
+                .Extract();
+
+            Assert.AreSame(instance.Service1, serviceProvider.GetService<IService1>());
+            Assert.AreSame(instance.Service2, serviceProvider.GetService<IService2>());
+            Assert.AreSame(instance.Service3, serviceProvider.GetService<IService3>());
+            Assert.AreSame(instance.Service4, serviceProvider.GetService<IService4>());
+        }
+
+        [Test]
+        public void AddAllGetMethods_ExceptOne_ExceptedMethodNotAdded()
+        {
+            serviceProvider.FromInstance(instance)
+                .AddAllGetMethods()
+                .Where(x => x.Name != "GetService1")
+                .Extract();
+
+            Assert.IsFalse(serviceProvider.HasService<IService1>());
+            Assert.AreSame(instance.Service2, serviceProvider.GetService<IService2>());
+            Assert.AreSame(instance.Service3, serviceProvider.GetService<IService3>());
+            Assert.AreSame(instance.Service4, serviceProvider.GetService<IService4>());
+        }
+
+        [Test]
+        public void AddAllGetMethods_ExceptBaseType_ExceptedMethodsNotAdded()
+        {
+            serviceProvider.FromInstance(instance)
+                .AddAllGetMethods()
+                .ExceptFrom<BaseClass>()
+                .Extract();
+
+            Assert.IsFalse(serviceProvider.HasService<IService1>());
+            Assert.IsFalse(serviceProvider.HasService<IService2>());
+            Assert.AreSame(instance.Service3, serviceProvider.GetService<IService3>());
+            Assert.AreSame(instance.Service4, serviceProvider.GetService<IService4>());
+        }
+
+        [Test]
+        public void AddAllGetMethods_ExceptOneAndBaseType_ExceptedMethodsNotAdded()
+        {
+            serviceProvider.FromInstance(instance)
+                .AddAllGetMethods()
+                .Where(x => x.Name != "GetService4")
+                .ExceptFrom<BaseClass>()
+                .Extract();
+
+            Assert.IsFalse(serviceProvider.HasService<IService1>());
+            Assert.IsFalse(serviceProvider.HasService<IService2>());
+            Assert.AreSame(instance.Service3, serviceProvider.GetService<IService3>());
+            Assert.IsFalse(serviceProvider.HasService<IService4>());
+        }
+
+        [Test]
+        public void AddAllGetMethods_ExceptNonRecursive_OnlyTopmostRemoved()
+        {
+            serviceProvider.FromInstance(instance)
+                .AddAllGetMethods()
+                .ExceptFrom<ChildClass>()
+                .Extract();
+
+            Assert.AreSame(instance.Service1, serviceProvider.GetService<IService1>());
+            Assert.AreSame(instance.Service2, serviceProvider.GetService<IService2>());
+            Assert.IsFalse(serviceProvider.HasService<IService3>());
+            Assert.IsFalse(serviceProvider.HasService<IService4>());
+        }
+
+        [Test]
+        public void AddAllGetMethods_ExceptRecursive_AllRemoved()
+        {
+            serviceProvider.FromInstance(instance)
+                .AddAllGetMethods()
+                .ExceptFrom<ChildClass>(true)
                 .Extract();
 
             Assert.IsFalse(serviceProvider.HasService<IService1>());
@@ -124,6 +208,8 @@ namespace Test.ModuleInject.Provider.ProviderFactory
 
             IService2 Service2 { get; set; }
 
+            IService1 GetService1();
+            IService2 GetService2();
         }
 
         private class BaseClass : IBaseClass
@@ -131,6 +217,9 @@ namespace Test.ModuleInject.Provider.ProviderFactory
             public IService1 Service1 { get; set; }
 
             public IService2 Service2 { get; set; }
+
+            public IService1 GetService1() { return Service1; }
+            public IService2 GetService2() { return Service2; }
         }
 
         private interface IChildClass
@@ -138,6 +227,16 @@ namespace Test.ModuleInject.Provider.ProviderFactory
             IService3 Service3 { get; set; }
 
             IService4 Service4 { get; set; }
+
+            IService3 GetService3();
+            IService4 GetService4();
+            IService3 GetService3(int a, float b);
+
+            IService3 GetService3WithArgs(int a);
+
+            void NonGetterNoArgs();
+
+            void NonGetterWithArgs(int a);
         }
 
         private class ChildClass : BaseClass, IChildClass
@@ -145,6 +244,21 @@ namespace Test.ModuleInject.Provider.ProviderFactory
             public IService3 Service3 { get; set; }
 
             public IService4 Service4 { get; set; }
+
+            public ChildClass()
+            {
+            }
+
+            public IService3 GetService3() { return Service3; }
+            public IService4 GetService4() { return Service4; }
+
+            public IService3 GetService3(int a, float b) { return Service3; }
+
+            public IService3 GetService3WithArgs(int a) { return Service3; }
+
+            public void NonGetterNoArgs() { }
+
+            public void NonGetterWithArgs(int a) { }
         }
     }
 }
