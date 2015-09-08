@@ -15,5 +15,12 @@ namespace ModuleInject.Provider.ProviderFactory
         {
             return new FromInstanceContext(serviceProvider, instance);
         }
+
+        public static ServiceProvider AddServiceSource<TService>(this ServiceProvider serviceProvider, Func<TService> createService)
+        {
+            serviceProvider.AddServiceSource(new LambdaServiceSource<TService>(createService));
+
+            return serviceProvider;
+        }
     }
 }

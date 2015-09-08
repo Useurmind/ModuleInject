@@ -53,6 +53,7 @@
     <Compile Include="Provider\ProviderFactory\ModuleServiceProviderExtensions.cs" />
     <Compile Include="Provider\ProviderFactory\ServiceProviderFactoryExtensions.cs" />
     <Compile Include="Provider\ServiceProvider.cs" />
+    <Compile Include="Provider\ServiceSources\LambdaServiceSource.cs" />
     <Compile Include="Provider\ServiceSources\MethodServiceSource.cs" />
     <Compile Include="Provider\ServiceSources\PropertyServiceSource.cs" />
     <Compile Include="Utility\LinqHelper.cs" />

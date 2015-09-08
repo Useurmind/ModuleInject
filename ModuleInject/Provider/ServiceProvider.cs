@@ -24,7 +24,7 @@ namespace ModuleInject.Provider
         /// Add a source for a service.
         /// </summary>
         /// <param name="serviceSource">The source of the service.</param>
-        public void AddServiceSource(ISourceOfService serviceSource)
+        public ServiceProvider AddServiceSource(ISourceOfService serviceSource)
         {
             if(HasService(serviceSource.Type))
             {
@@ -32,6 +32,8 @@ namespace ModuleInject.Provider
             }
 
             serviceSources.Add(serviceSource.Type, serviceSource);
+
+            return this;
         }
 
         public bool HasService<T>()

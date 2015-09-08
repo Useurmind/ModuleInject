@@ -92,7 +92,7 @@ namespace Test.ModuleInject.Provider.ProviderFactory
                 .AddAllProperties()
                 .ExceptFrom<ChildClass>()
                 .Extract();
-            
+
             Assert.AreSame(instance.Service1, serviceProvider.GetService<IService1>());
             Assert.AreSame(instance.Service2, serviceProvider.GetService<IService2>());
             Assert.IsFalse(serviceProvider.HasService<IService3>());
@@ -112,7 +112,7 @@ namespace Test.ModuleInject.Provider.ProviderFactory
             Assert.IsFalse(serviceProvider.HasService<IService3>());
             Assert.IsFalse(serviceProvider.HasService<IService4>());
         }
-        
+
         [Test]
         public void AddAllGetMethods_AddsAllMethods()
         {
@@ -195,6 +195,18 @@ namespace Test.ModuleInject.Provider.ProviderFactory
             Assert.IsFalse(serviceProvider.HasService<IService2>());
             Assert.IsFalse(serviceProvider.HasService<IService3>());
             Assert.IsFalse(serviceProvider.HasService<IService4>());
+        }
+
+        [Test]
+        public void AddLambdaSource_CorrectlyAdded()
+        {
+            var service1 = Mock.Of<IService1>();
+
+            serviceProvider.AddServiceSource<IService1>(() => service1);
+
+            var result = serviceProvider.GetService<IService1>();
+
+            Assert.AreSame(service1, result);
         }
 
         public interface IService1 { }

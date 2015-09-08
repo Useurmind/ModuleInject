@@ -10,12 +10,13 @@ namespace ModuleInject.Provider.ProviderFactory
 {
     public static class ModuleServiceProviderExtensions
     {
-        public static IAllPropertiesContext FromModule<TModule>(this ServiceProvider serviceProvider, TModule module)
+        public static void FromModule<TModule>(this ServiceProvider serviceProvider, TModule module)
             where TModule : InjectionModule<TModule>
         {
-            return new FromInstanceContext(serviceProvider, module)
+            new FromInstanceContext(serviceProvider, module)
                 .AddAllProperties()
-                .ExceptFrom<InjectionModule<TModule>>(true);
+                .ExceptFrom<InjectionModule<TModule>>(true)
+                .Extract();
         }
     }
 }
