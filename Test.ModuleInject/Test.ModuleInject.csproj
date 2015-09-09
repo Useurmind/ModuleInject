@@ -54,6 +54,7 @@
     <Compile Include="Modules\TestModules\UseSubmoduleModule.cs" />
     <Compile Include="Modules\UseSubmoduleModuleTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Provider\ProviderFactory\ModuleServiceProviderExtensionsTest.cs" />
     <Compile Include="Provider\ProviderFactory\ServiceProviderFactoryExtensionsTest.cs" />
     <Compile Include="Provider\ServiceSources\PropertyServiceSourceTest.cs" />
     <Compile Include="Registry\MefRegistryBaseTest.cs" />

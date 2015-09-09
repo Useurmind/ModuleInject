@@ -21,6 +21,17 @@ namespace ModuleInject.Provider
         }
 
         /// <summary>
+        /// Returns the number of registered services.
+        /// </summary>
+        public int NumberOfServices
+        {
+            get
+            {
+                return serviceSources.Count;
+            }
+        }
+
+        /// <summary>
         /// Add a source for a service.
         /// </summary>
         /// <param name="serviceSource">The source of the service.</param>

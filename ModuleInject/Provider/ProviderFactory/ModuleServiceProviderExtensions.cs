@@ -16,6 +16,9 @@ namespace ModuleInject.Provider.ProviderFactory
             new FromInstanceContext(serviceProvider, module)
                 .AddAllProperties()
                 .ExceptFrom<InjectionModule<TModule>>(true)
+                .Extract()
+                .AddAllGetMethods()
+                .ExceptFrom<InjectionModule<TModule>>(true)
                 .Extract();
         }
     }
