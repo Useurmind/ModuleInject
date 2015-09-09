@@ -7,6 +7,10 @@ using ModuleInject.Interfaces.Provider;
 
 namespace ModuleInject.Provider.ServiceSources
 {
+    /// <summary>
+    /// A service source that encapsulates a <see cref="MethodInfo"/> and the corresponding instance
+    /// to invoke it on.
+    /// </summary>
     public class MethodServiceSource : ISourceOfService
     {
         private object instance;

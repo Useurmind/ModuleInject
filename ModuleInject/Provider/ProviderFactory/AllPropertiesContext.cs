@@ -8,13 +8,28 @@ using ModuleInject.Provider.ServiceSources;
 
 namespace ModuleInject.Provider.ProviderFactory
 {
+    /// <summary>
+    /// This context is used to filter and add the properties of an instance as a service source to a service provider.
+    /// </summary>
     public interface IAllPropertiesContext
     {
+        /// <summary>
+        /// From all remaining properties only keep the ones that fullfill the given predicate.
+        /// </summary>
         /// <param name="filter">Should return true for all properties that should be included.</param>
         IAllPropertiesContext Where(Func<PropertyInfo, bool> filter);
 
-        IAllPropertiesContext ExceptFrom(Type type, bool recursive = false);
+        /// <summary>
+        /// Exclude the properties that are declared on the given type (or further up the inheritance chain).
+        /// </summary>
+        /// <param name="type">The type from which properties should be excluded.</param>
+        /// <param name="inherited">If set to true all properties up the inheritance chain starting from the given type are excluded.</param>
+        IAllPropertiesContext ExceptFrom(Type type, bool inherited = false);
 
+        /// <summary>
+        /// Confirm that the chosen set of properties should be added to the service provider.
+        /// </summary>
+        /// <returns></returns>
         IFromInstanceContext Extract();
     }
 
@@ -40,10 +55,10 @@ namespace ModuleInject.Provider.ProviderFactory
             return this;
         }
 
-        public IAllPropertiesContext ExceptFrom(Type type, bool recursive = false)
+        public IAllPropertiesContext ExceptFrom(Type type, bool inherited = false)
         {
             var bindingFlags = BindingFlags.Instance | BindingFlags.Public;
-            if (!recursive)
+            if (!inherited)
             {
                 bindingFlags |= BindingFlags.DeclaredOnly;
             }
@@ -67,9 +82,14 @@ namespace ModuleInject.Provider.ProviderFactory
 
     public static class AllPropertiesContextExtensions
     {
-        public static IAllPropertiesContext ExceptFrom<TExcept>(this IAllPropertiesContext context, bool recursive = false)
+        /// <summary>
+        /// Exclude the properties that are declared on the given type (or further up the inheritance chain).
+        /// </summary>
+        /// <typeparam name="TExcept">The type from which properties should be excluded.</typeparam>
+        /// <param name="inherited">If set to true all properties up the inheritance chain starting from the given type are excluded.</param>
+        public static IAllPropertiesContext ExceptFrom<TExcept>(this IAllPropertiesContext context, bool inherited = false)
         {
-            return context.ExceptFrom(typeof(TExcept), recursive);
+            return context.ExceptFrom(typeof(TExcept), inherited);
         }
     }
 }

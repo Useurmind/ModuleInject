@@ -8,13 +8,33 @@ using ModuleInject.Provider.ServiceSources;
 
 namespace ModuleInject.Provider.ProviderFactory
 {
+    /// <summary>
+    /// This context is used to filter and add the get methods of an instance as a service source to a service provider.
+    /// </summary>
+    /// <remarks>
+    /// "Get methods" are methods that
+    /// - have no parameters
+    /// - have a non void return type
+    /// </remarks>
     public interface IAllGetMethodsContext
     {
+        /// <summary>
+        /// From all remaining methods only keep the ones that fullfill the given predicate.
+        /// </summary>
         /// <param name="filter">Should return true for all methods that should be included.</param>
         IAllGetMethodsContext Where(Func<MethodInfo, bool> filter);
 
-        IAllGetMethodsContext ExceptFrom(Type type, bool recursive = false);
+        /// <summary>
+        /// Exclude the get methods that are declared on the given type (or further up the inheritance chain).
+        /// </summary>
+        /// <param name="type">The type from which get methods should be excluded.</param>
+        /// <param name="inherited">If set to true all get methods up the inheritance chain starting from the given type are excluded.</param>
+        IAllGetMethodsContext ExceptFrom(Type type, bool inherited = false);
 
+        /// <summary>
+        /// Confirm that the chosen set of get methods should be added to the service provider.
+        /// </summary>
+        /// <returns></returns>
         IFromInstanceContext Extract();
     }
 
@@ -40,10 +60,10 @@ namespace ModuleInject.Provider.ProviderFactory
             return this;
         }
 
-        public IAllGetMethodsContext ExceptFrom(Type type, bool recursive = false)
+        public IAllGetMethodsContext ExceptFrom(Type type, bool inherited = false)
         {
             var bindingFlags = BindingFlags.Instance | BindingFlags.Public;
-            if (!recursive)
+            if (!inherited)
             {
                 bindingFlags |= BindingFlags.DeclaredOnly;
             }
@@ -67,9 +87,14 @@ namespace ModuleInject.Provider.ProviderFactory
 
     public static class AllGetMethodsContextExtensions
     {
-        public static IAllGetMethodsContext ExceptFrom<TExcept>(this IAllGetMethodsContext context, bool recursive = false)
+        /// <summary>
+        /// Exclude the get methods that are declared on the given type (or further up the inheritance chain).
+        /// </summary>
+        /// <typeparam name="TExcept">The type from which get methods should be excluded.</typeparam>
+        /// <param name="inherited">If set to true all get methods up the inheritance chain starting from the given type are excluded.</param>
+        public static IAllGetMethodsContext ExceptFrom<TExcept>(this IAllGetMethodsContext context, bool inherited = false)
         {
-            return context.ExceptFrom(typeof(TExcept), recursive);
+            return context.ExceptFrom(typeof(TExcept), inherited);
         }
     }
 }

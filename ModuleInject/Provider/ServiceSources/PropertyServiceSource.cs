@@ -7,6 +7,10 @@ using ModuleInject.Interfaces.Provider;
 
 namespace ModuleInject.Provider.ServiceSources
 {
+    /// <summary>
+    /// A service source that encapsulates a <see cref="PropertyInfo"/> and the corresponding instance
+    /// to invoke it on.
+    /// </summary>
     public class PropertyServiceSource : ISourceOfService
     {
         private object instance;
@@ -25,7 +29,7 @@ namespace ModuleInject.Provider.ServiceSources
                 return propertyInfo.PropertyType;
             }
         }
-                
+
         public object Get()
         {
             return propertyInfo.GetValue(instance);

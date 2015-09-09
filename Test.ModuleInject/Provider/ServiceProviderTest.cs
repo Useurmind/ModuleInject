@@ -42,20 +42,22 @@ namespace Test.ModuleInject.Provider
         }
 
         [Test]
-        [ExpectedException(typeof(ModuleInjectException))]
-        public void GetService_MissingRegistration_ThrowsException()
+        public void GetService_MissingRegistration_ReturnsNull()
         {
             serviceProvider.AddServiceSource(SourceOf<ICloneable>());
             serviceProvider.AddServiceSource(SourceOf<IAsyncResult>());
 
-            serviceProvider.GetService<IAppDomainSetup>();
+            var result = serviceProvider.GetService<IAppDomainSetup>();
+
+            Assert.IsNull(result);
         }
 
         [Test]
-        [ExpectedException(typeof(ModuleInjectException))]
-        public void GetService_NoRegistration_ThrowsException()
+        public void GetService_NoRegistration_ReturnsNull()
         {
-            serviceProvider.GetService<ICloneable>();
+            var result = serviceProvider.GetService<ICloneable>();
+
+            Assert.IsNull(result);
         }
 
         private static ISourceOfService SourceOf<TService>()

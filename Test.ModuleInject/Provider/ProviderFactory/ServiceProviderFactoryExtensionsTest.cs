@@ -33,7 +33,7 @@ namespace Test.ModuleInject.Provider.ProviderFactory
         public void AddAllProperties_AddsAllProperties()
         {
             serviceProvider.FromInstance(instance)
-                .AddAllProperties()
+                .AllProperties()
                 .Extract();
 
             Assert.AreSame(instance.Service1, serviceProvider.GetService<IService1>());
@@ -46,7 +46,7 @@ namespace Test.ModuleInject.Provider.ProviderFactory
         public void AddAllProperties_ExceptOne_ExceptedPropertyNotAdded()
         {
             serviceProvider.FromInstance(instance)
-                .AddAllProperties()
+                .AllProperties()
                 .Where(x => x.Name != "Service1")
                 .Extract();
 
@@ -60,7 +60,7 @@ namespace Test.ModuleInject.Provider.ProviderFactory
         public void AddAllProperties_ExceptBaseType_ExceptedPropertiesNotAdded()
         {
             serviceProvider.FromInstance(instance)
-                .AddAllProperties()
+                .AllProperties()
                 .ExceptFrom<BaseClass>()
                 .Extract();
 
@@ -74,7 +74,7 @@ namespace Test.ModuleInject.Provider.ProviderFactory
         public void AddAllProperties_ExceptOneAndBaseType_ExceptedPropertiesNotAdded()
         {
             serviceProvider.FromInstance(instance)
-                .AddAllProperties()
+                .AllProperties()
                 .Where(x => x.Name != "Service4")
                 .ExceptFrom<BaseClass>()
                 .Extract();
@@ -89,7 +89,7 @@ namespace Test.ModuleInject.Provider.ProviderFactory
         public void AddAllProperties_ExceptNonRecursive_OnlyTopmostRemoved()
         {
             serviceProvider.FromInstance(instance)
-                .AddAllProperties()
+                .AllProperties()
                 .ExceptFrom<ChildClass>()
                 .Extract();
 
@@ -103,7 +103,7 @@ namespace Test.ModuleInject.Provider.ProviderFactory
         public void AddAllProperties_ExceptRecursive_AllRemoved()
         {
             serviceProvider.FromInstance(instance)
-                .AddAllProperties()
+                .AllProperties()
                 .ExceptFrom<ChildClass>(true)
                 .Extract();
 
@@ -117,7 +117,7 @@ namespace Test.ModuleInject.Provider.ProviderFactory
         public void AddAllGetMethods_AddsAllMethods()
         {
             serviceProvider.FromInstance(instance)
-                .AddAllGetMethods()
+                .AllGetMethods()
                 .Extract();
 
             Assert.AreSame(instance.Service1, serviceProvider.GetService<IService1>());
@@ -130,7 +130,7 @@ namespace Test.ModuleInject.Provider.ProviderFactory
         public void AddAllGetMethods_ExceptOne_ExceptedMethodNotAdded()
         {
             serviceProvider.FromInstance(instance)
-                .AddAllGetMethods()
+                .AllGetMethods()
                 .Where(x => x.Name != "GetService1")
                 .Extract();
 
@@ -144,7 +144,7 @@ namespace Test.ModuleInject.Provider.ProviderFactory
         public void AddAllGetMethods_ExceptBaseType_ExceptedMethodsNotAdded()
         {
             serviceProvider.FromInstance(instance)
-                .AddAllGetMethods()
+                .AllGetMethods()
                 .ExceptFrom<BaseClass>()
                 .Extract();
 
@@ -158,7 +158,7 @@ namespace Test.ModuleInject.Provider.ProviderFactory
         public void AddAllGetMethods_ExceptOneAndBaseType_ExceptedMethodsNotAdded()
         {
             serviceProvider.FromInstance(instance)
-                .AddAllGetMethods()
+                .AllGetMethods()
                 .Where(x => x.Name != "GetService4")
                 .ExceptFrom<BaseClass>()
                 .Extract();
@@ -173,7 +173,7 @@ namespace Test.ModuleInject.Provider.ProviderFactory
         public void AddAllGetMethods_ExceptNonRecursive_OnlyTopmostRemoved()
         {
             serviceProvider.FromInstance(instance)
-                .AddAllGetMethods()
+                .AllGetMethods()
                 .ExceptFrom<ChildClass>()
                 .Extract();
 
@@ -187,7 +187,7 @@ namespace Test.ModuleInject.Provider.ProviderFactory
         public void AddAllGetMethods_ExceptRecursive_AllRemoved()
         {
             serviceProvider.FromInstance(instance)
-                .AddAllGetMethods()
+                .AllGetMethods()
                 .ExceptFrom<ChildClass>(true)
                 .Extract();
 

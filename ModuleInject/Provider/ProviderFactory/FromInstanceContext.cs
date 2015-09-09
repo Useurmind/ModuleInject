@@ -7,11 +7,22 @@ using ModuleInject.Provider.ServiceSources;
 
 namespace ModuleInject.Provider.ProviderFactory
 {
+    /// <summary>
+    /// This context is used to start adding properties or methods as service sources to a service provider.
+    /// </summary>
     public interface IFromInstanceContext
     {
-        IAllPropertiesContext AddAllProperties();
+        /// <summary>
+        /// Choose all properties for addition as service sources.
+        /// </summary>
+        /// <returns>A context narrow down the set of added properties.</returns>
+        IAllPropertiesContext AllProperties();
 
-        IAllGetMethodsContext AddAllGetMethods();
+        /// <summary>
+        /// Choose all get methods for addition as service sources.
+        /// </summary>
+        /// <returns>A context narrow down the set of added methods.</returns>
+        IAllGetMethodsContext AllGetMethods();
     }
 
     public class FromInstanceContext : IFromInstanceContext
@@ -28,12 +39,12 @@ namespace ModuleInject.Provider.ProviderFactory
             this.instance = instance;
         }
 
-        public IAllPropertiesContext AddAllProperties()
+        public IAllPropertiesContext AllProperties()
         {
             return new AllPropertiesContext(this);
         }
 
-        public IAllGetMethodsContext AddAllGetMethods()
+        public IAllGetMethodsContext AllGetMethods()
         {
             return new AllGetMethodsContext(this);
         }

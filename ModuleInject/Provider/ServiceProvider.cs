@@ -8,7 +8,7 @@ using ModuleInject.Interfaces.Provider;
 namespace ModuleInject.Provider
 {
     /// <summary>
-    /// Allows to register different sources that this service provider returns.
+    /// Allows to register different sources of services that this service provider calls to return services.
     /// Each service type can only be registered once.
     /// </summary>
     public class ServiceProvider : IServiceProvider
@@ -47,11 +47,21 @@ namespace ModuleInject.Provider
             return this;
         }
 
-        public bool HasService<T>()
+        /// <summary>
+        /// Is a service of the given type registered.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service to check for.</typeparam>
+        /// <returns>True if the service is registered, else false.</returns>
+        public bool HasService<TService>()
         {
-            return HasService(typeof(T));
+            return HasService(typeof(TService));
         }
 
+        /// <summary>
+        /// Is a service of the given type registered.
+        /// </summary>
+        /// <param name="type">The type of the service to check for.</param>
+        /// <returns>True if the service is registered, else false.</returns>
         public bool HasService(Type type)
         {
             return serviceSources.ContainsKey(type);
@@ -60,11 +70,11 @@ namespace ModuleInject.Provider
         /// <summary>
         /// Get a service of the given type.
         /// </summary>
-        /// <typeparam name="T">The type of the service.</typeparam>
+        /// <typeparam name="TService">The type of the service.</typeparam>
         /// <returns>The service instance.</returns>
-        public T GetService<T>()
+        public TService GetService<TService>()
         {
-            return (T)GetService(typeof(T));
+            return (TService)GetService(typeof(TService));
         }
 
         /// <summary>
@@ -77,7 +87,9 @@ namespace ModuleInject.Provider
             ISourceOfService sourceOfService = null;
             if(!serviceSources.TryGetValue(serviceType, out sourceOfService))
             {
-                ExceptionHelper.ThrowFormatException(Errors.ServiceProvider_DoesNotContainThisServiceType, serviceType.Name);
+                // service provider must return null if no service is registered
+                return null;                
+                //ExceptionHelper.ThrowFormatException(Errors.ServiceProvider_DoesNotContainThisServiceType, serviceType.Name);
             }
 
             return sourceOfService.Get();
