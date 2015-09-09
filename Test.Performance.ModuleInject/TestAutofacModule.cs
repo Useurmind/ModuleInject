@@ -65,12 +65,12 @@ namespace Test.Performance.ModuleInject
 
         public void Resolve()
         {
-            throw new NotImplementedException();
+            
         }
 
         public void Resolve(IRegistry parentRegistry)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

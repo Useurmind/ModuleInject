@@ -18,7 +18,9 @@ namespace Test.Performance.ModuleInject
 			TestModuleType<TestInjectionModuleV2NamedSourcesAllInGet>();
 			TestModuleType<TestManualModule>();
             TestModuleType<TestAutofacModule>();
-            TestModuleType<TestUnityModule>();
+
+            // Unity does not complete very fast
+            //TestModuleType<TestUnityModule>();
 
             Console.ReadLine();
         }
