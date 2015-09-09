@@ -13,6 +13,7 @@
  * [Registration hooks](registration_hooks.md)
  * [Dependency resolution](dependency_resolution.md)
  * [No container injection](nocontainer_injection.md) 
+ * [Service provider](service_provider.md) 
  * [Unit testing](unit_testing.md)
 
 <!---* [Interceptors](interceptors.md)--->

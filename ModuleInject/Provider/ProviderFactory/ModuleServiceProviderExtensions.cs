@@ -18,7 +18,7 @@ namespace ModuleInject.Provider.ProviderFactory
         /// <typeparam name="TModule">The type of the module whose properties and methods should be added.</typeparam>
         /// <param name="serviceProvider">The service provider to add the properties and methods as service sources to.</param>
         /// <param name="module">The module from which the properties and methods should be extracted.</param>
-        public static void FromModule<TModule>(this ServiceProvider serviceProvider, TModule module)
+        public static void FromModuleExtractAll<TModule>(this ServiceProvider serviceProvider, TModule module)
             where TModule : InjectionModule<TModule>
         {
             new FromInstanceContext(serviceProvider, module)

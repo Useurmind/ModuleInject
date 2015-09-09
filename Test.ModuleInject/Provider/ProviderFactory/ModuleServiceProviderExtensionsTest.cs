@@ -26,7 +26,7 @@ namespace Test.ModuleInject.Provider.ProviderFactory
         {
             var module = new TestBaseModule1();
 
-            serviceProvider.FromModule(module);
+            serviceProvider.FromModuleExtractAll(module);
 
             Assert.AreEqual(2, serviceProvider.NumberOfServices);
             Assert.AreSame(module.Service1, serviceProvider.GetService<IService1>());
@@ -38,7 +38,7 @@ namespace Test.ModuleInject.Provider.ProviderFactory
         {
             var module = new TestDerivedModule();
 
-            serviceProvider.FromModule(module);
+            serviceProvider.FromModuleExtractAll(module);
 
             Assert.AreEqual(5, serviceProvider.NumberOfServices);
             Assert.AreSame(module.Service1, serviceProvider.GetService<IService1>());

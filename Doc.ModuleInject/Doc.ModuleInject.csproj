@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<Import Project="..\ModuleInject.Build\common.project.props" />
+  <Import Project="..\ModuleInject.Build\common.project.props" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <ProductVersion>
@@ -17,7 +17,6 @@
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
   </PropertyGroup>
-  
   <ItemGroup>
     <Content Include="css\humanity\images\animated-overlay.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -215,6 +214,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="registration_hooks.md" />
+    <Content Include="service_provider.md" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
