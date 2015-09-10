@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ModuleInject.Injection;
+using ModuleInject.Modularity;
 using ModuleInject.Provider;
 using ModuleInject.Provider.ProviderFactory;
 using Moq;
@@ -61,6 +62,9 @@ namespace Test.ModuleInject.Provider.ProviderFactory
 
             public IService1 Service1 { get; set; } = Mock.Of<IService1>();
 
+            [FromRegistry]
+            public IService1 Service1FromRegistry { get; set; }
+
             public IService2 GetService2() { return service2; }
         }
 
@@ -70,6 +74,9 @@ namespace Test.ModuleInject.Provider.ProviderFactory
         private class TestDerivedModule : TestBaseModule<TestDerivedModule>
         {
             private IService3 service3 = Mock.Of<IService3>();
+
+            [FromRegistry]
+            public IService4 Service4FromRegistry { get; set; }
 
             public IService4 Service4 { get; set; } = Mock.Of<IService4>();
 

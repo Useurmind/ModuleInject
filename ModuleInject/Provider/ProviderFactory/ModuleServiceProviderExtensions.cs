@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using ModuleInject.Injection;
 using ModuleInject.Interfaces;
+using ModuleInject.Modularity;
 
 namespace ModuleInject.Provider.ProviderFactory
 {
@@ -13,7 +14,9 @@ namespace ModuleInject.Provider.ProviderFactory
         /// <summary>
         /// This methods extracts all properties and get methods from a module and adds them as service sources
         /// to a service provider.
-        /// Properties and methods starting from type <see cref="InjectionModule{T}" /> are excluded.
+        /// The following properties and methods are excluded:
+        /// - Properties filled from the registry (adorned with the <see cref="FromRegistryAttribute"/>).
+        /// - Ones starting from type <see cref="InjectionModule{T}" />.
         /// </summary>
         /// <typeparam name="TModule">The type of the module whose properties and methods should be added.</typeparam>
         /// <param name="serviceProvider">The service provider to add the properties and methods as service sources to.</param>
@@ -24,6 +27,7 @@ namespace ModuleInject.Provider.ProviderFactory
             new FromInstanceContext(serviceProvider, module)
                 .AllProperties()
                 .ExceptFrom<InjectionModule<TModule>>(true)
+                .Where(x => x.GetCustomAttribute<FromRegistryAttribute>() == null)
                 .Extract()
                 .AllGetMethods()
                 .ExceptFrom<InjectionModule<TModule>>(true)
