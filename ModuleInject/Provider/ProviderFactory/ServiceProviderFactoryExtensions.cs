@@ -19,7 +19,31 @@ namespace ModuleInject.Provider.ProviderFactory
         /// <returns>A context to further specify what to add.</returns>
         public static IFromInstanceContext FromInstance(this ServiceProvider serviceProvider, object instance)
         {
-            return new FromInstanceContext(serviceProvider, instance);
+            return new FromInstanceContext(serviceProvider, instance, instance.GetType());
+        }
+
+        /// <summary>
+        /// Start extracting properties and methods from a specific interface of the given instance as service sources.
+        /// </summary>
+        /// <param name="serviceProvider">The service provider to add the service sources to.</param>
+        /// <param name="instance">The instance from which the service sources should be extracted.</param>
+        /// <typeparam name="TInstanceInterface">The interface of the instance which should be available for extraction.</typeparam>
+        /// <returns>A context to further specify what to add.</returns>
+        public static IFromInstanceContext FromInstance<TInstanceInterface>(this ServiceProvider serviceProvider, object instance)
+        {
+            return new FromInstanceContext(serviceProvider, instance, typeof(TInstanceInterface));
+        }
+
+        /// <summary>
+        /// Start extracting properties and methods from a specific interface of the given instance as service sources.
+        /// </summary>
+        /// <param name="serviceProvider">The service provider to add the service sources to.</param>
+        /// <param name="instance">The instance from which the service sources should be extracted.</param>
+        /// <param name="instanceInterface">The interface of the instance which should be available for extraction.</param>
+        /// <returns>A context to further specify what to add.</returns>
+        public static IFromInstanceContext FromInstance(this ServiceProvider serviceProvider, object instance, Type instanceInterface)
+        {
+            return new FromInstanceContext(serviceProvider, instance, instanceInterface);
         }
 
         /// <summary>

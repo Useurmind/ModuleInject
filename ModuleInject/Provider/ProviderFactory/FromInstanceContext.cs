@@ -29,14 +29,19 @@ namespace ModuleInject.Provider.ProviderFactory
     {
         private readonly object instance;
         private readonly ServiceProvider serviceProvider;
-        
+        private readonly Type instanceType;
+
         public object Instance { get { return instance; } }
+
+        public Type InstanceType { get { return instanceType; } }
+
         public ServiceProvider ServiceProvider { get { return serviceProvider; } }
 
-        public FromInstanceContext(ServiceProvider serviceProvider, object instance)
+        public FromInstanceContext(ServiceProvider serviceProvider, object instance, Type instanceType)
         {
             this.serviceProvider = serviceProvider;
             this.instance = instance;
+            this.instanceType = instanceType;
         }
 
         public IAllPropertiesContext AllProperties()

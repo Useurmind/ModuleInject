@@ -46,7 +46,7 @@ namespace ModuleInject.Provider.ProviderFactory
         public AllGetMethodsContext(FromInstanceContext fromInstance)
         {
             this.fromInstance = fromInstance;
-            this.methods = fromInstance.Instance.GetType()
+            this.methods = fromInstance.InstanceType
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public)
                 .Where(x => x.ReturnType != typeof(void) && 
                             x.GetParameters().Length == 0 &&

@@ -198,6 +198,20 @@ namespace Test.ModuleInject.Provider.ProviderFactory
         }
 
         [Test]
+        public void AddAllMethodsAndProperties_FromConstrainedInterface_OnlyInterfaceAdded()
+        {
+            serviceProvider.FromInstance<IConstrainedChildClass>(instance)
+                .AllProperties()
+                .Extract()
+                .AllGetMethods()
+                .Extract();
+
+            Assert.AreEqual(2, serviceProvider.NumberOfServices);
+            Assert.AreSame(instance.Service3, serviceProvider.GetService<IService3>());
+            Assert.AreSame(instance.GetService4(), serviceProvider.GetService<IService4>());
+        }
+
+        [Test]
         public void AddLambdaSource_CorrectlyAdded()
         {
             var service1 = Mock.Of<IService1>();
@@ -251,7 +265,14 @@ namespace Test.ModuleInject.Provider.ProviderFactory
             void NonGetterWithArgs(int a);
         }
 
-        private class ChildClass : BaseClass, IChildClass
+        private interface IConstrainedChildClass
+        {
+            IService3 Service3 { get; set; }
+
+            IService4 GetService4();
+        }
+
+        private class ChildClass : BaseClass, IChildClass, IConstrainedChildClass
         {
             public IService3 Service3 { get; set; }
 

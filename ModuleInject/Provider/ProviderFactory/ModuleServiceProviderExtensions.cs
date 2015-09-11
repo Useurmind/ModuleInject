@@ -24,14 +24,14 @@ namespace ModuleInject.Provider.ProviderFactory
         public static void FromModuleExtractAll<TModule>(this ServiceProvider serviceProvider, TModule module)
             where TModule : InjectionModule<TModule>
         {
-            new FromInstanceContext(serviceProvider, module)
-                .AllProperties()
-                .ExceptFrom<InjectionModule<TModule>>(true)
-                .Where(x => x.GetCustomAttribute<FromRegistryAttribute>() == null)
-                .Extract()
-                .AllGetMethods()
-                .ExceptFrom<InjectionModule<TModule>>(true)
-                .Extract();
+            serviceProvider.FromInstance(module)
+                        .AllProperties()
+                        .ExceptFrom<InjectionModule<TModule>>(true)
+                        .Where(x => x.GetCustomAttribute<FromRegistryAttribute>() == null)
+                        .Extract()
+                        .AllGetMethods()
+                        .ExceptFrom<InjectionModule<TModule>>(true)
+                        .Extract();
         }
     }
 }

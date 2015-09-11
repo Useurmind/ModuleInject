@@ -41,7 +41,7 @@ namespace ModuleInject.Provider.ProviderFactory
         public AllPropertiesContext(FromInstanceContext fromInstance)
         {
             this.fromInstance = fromInstance;
-            properties = fromInstance.Instance.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+            properties = fromInstance.InstanceType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
         }
 
         /// <summary>
