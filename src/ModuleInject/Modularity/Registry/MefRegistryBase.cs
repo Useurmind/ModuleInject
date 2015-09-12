@@ -1,5 +1,4 @@
-﻿#if !NET_35
-using System;
+﻿using System;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
@@ -74,4 +73,3 @@ namespace ModuleInject.Modularity.Registry
         }
     }
 }
-#endif
