@@ -1,0 +1,20 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "ModuleInject Class Library",
+  "authors": [ "Jochen" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "frameworks": {
+    "net45": {
+      "frameworkAssemblies": {
+        "System.ComponentModel.Composition": "4.0.0.0"
+      }
+    }
+  },
+  "dependencies": {
+    "ModuleInject.Interfaces": "1.0.0-*",
+    "ModuleInject.Common": "1.0.0-*"
+  }
+}

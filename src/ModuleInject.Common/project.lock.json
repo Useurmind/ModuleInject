@@ -1,0 +1,16 @@
+{
+  "locked": false,
+  "version": -9996,
+  "targets": {
+    ".NETFramework,Version=v4.5": {},
+    "DNX,Version=v4.5.1": {}
+  },
+  "libraries": {},
+  "projectFileDependencyGroups": {
+    "": [
+      "ModuleInject.Interfaces >= 1.0.0-*"
+    ],
+    ".NETFramework,Version=v4.5": [],
+    "DNX,Version=v4.5.1": []
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "locked": false,
+  "version": -9996,
+  "targets": {
+    ".NETFramework,Version=v4.5": {}
+  },
+  "libraries": {},
+  "projectFileDependencyGroups": {
+    "": [
+      "ModuleInject.Interfaces >= 1.0.0-*",
+      "ModuleInject.Common >= 1.0.0-*"
+    ],
+    ".NETFramework,Version=v4.5": [
+      "fx/System.ComponentModel.Composition >= 4.0.0.0"
+    ]
+  }
+}

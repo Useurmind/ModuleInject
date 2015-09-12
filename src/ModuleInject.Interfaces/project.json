@@ -1,0 +1,13 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "ModuleInject.Interfaces Class Library",
+  "authors": [ "Jochen" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "frameworks": {
+    "net45": { },
+    "dnx451": { }
+  }
+}

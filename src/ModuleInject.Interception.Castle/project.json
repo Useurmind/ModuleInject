@@ -1,0 +1,19 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "ModuleInject.Interception.Castle Class Library",
+  "authors": [ "Jochen" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "frameworks": {
+    "net45": { },
+    "dnx451": { }
+  },
+  "dependencies": {
+    "ModuleInject.Interfaces": "1.0.0-*",
+    "ModuleInject.Common": "1.0.0-*",
+    "ModuleInject": "1.0.0-*",
+    "Castle.Core": "3.3.3"
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "locked": false,
+  "version": -9996,
+  "targets": {
+    ".NETFramework,Version=v4.5": {
+      "Moq/4.2.1507.0118": {
+        "compile": {
+          "lib/net40/Moq.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Moq.dll": {}
+        }
+      },
+      "NUnit/2.6.4": {
+        "compile": {
+          "lib/nunit.framework.dll": {}
+        },
+        "runtime": {
+          "lib/nunit.framework.dll": {}
+        }
+      },
+      "NUnit.Runners/2.6.4": {}
+    },
+    "DNX,Version=v4.5.1": {
+      "Moq/4.2.1507.0118": {
+        "compile": {
+          "lib/net40/Moq.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Moq.dll": {}
+        }
+      },
+      "NUnit/2.6.4": {
+        "compile": {
+          "lib/nunit.framework.dll": {}
+        },
+        "runtime": {
+          "lib/nunit.framework.dll": {}
+        }
+      },
+      "NUnit.Runners/2.6.4": {}
+    }
+  },
+  "libraries": {
+    "Moq/4.2.1507.0118": {
+      "sha512": "QfnD/kZcaV6mX1cWHta3yMn/d9ly9Q62yNmHQVArKaZcFcuFb4USYeHR/4XoA258WeJ2XfrGMPVQVIURRCoyNw==",
+      "files": [
+        "Moq.4.2.1507.0118.nupkg",
+        "Moq.4.2.1507.0118.nupkg.sha512",
+        "Moq.nuspec",
+        "lib/net35/Moq.dll",
+        "lib/net35/Moq.xml",
+        "lib/net40/Moq.dll",
+        "lib/net40/Moq.xml",
+        "lib/sl5/Moq.Silverlight.dll",
+        "lib/sl5/Moq.Silverlight.xml"
+      ]
+    },
+    "NUnit/2.6.4": {
+      "sha512": "cmSPvaCMRSP0DI19FP1Liw9DyJY3E/vOY1OrVaeJBZpZFWHkmT3fB9ngGWnZX/ftvA7zJEbghEaw3Yd+u4YFAw==",
+      "files": [
+        "license.txt",
+        "NUnit.2.6.4.nupkg",
+        "NUnit.2.6.4.nupkg.sha512",
+        "NUnit.nuspec",
+        "lib/nunit.framework.dll",
+        "lib/nunit.framework.xml"
+      ]
+    },
+    "NUnit.Runners/2.6.4": {
+      "sha512": "LZWCxtXCKTa1EV0vod/ovTzExhjEJ9yoLUiORzMydF7aSOHi+NfIuqaQ9QzBYE28qH0fDgqRNkvAO4u0UTFLxw==",
+      "files": [
+        "license.txt",
+        "NUnit.Runners.2.6.4.nupkg",
+        "NUnit.Runners.2.6.4.nupkg.sha512",
+        "NUnit.Runners.nuspec",
+        "tools/agent.conf",
+        "tools/agent.log.conf",
+        "tools/launcher.log.conf",
+        "tools/nunit-agent-x86.exe",
+        "tools/nunit-agent-x86.exe.config",
+        "tools/nunit-agent.exe",
+        "tools/nunit-agent.exe.config",
+        "tools/nunit-console-x86.exe",
+        "tools/nunit-console-x86.exe.config",
+        "tools/nunit-console.exe",
+        "tools/nunit-console.exe.config",
+        "tools/nunit-editor.exe",
+        "tools/nunit-x86.exe",
+        "tools/nunit-x86.exe.config",
+        "tools/nunit.exe",
+        "tools/nunit.exe.config",
+        "tools/nunit.framework.dll",
+        "tools/pnunit-agent.exe",
+        "tools/pnunit-agent.exe.config",
+        "tools/pnunit-launcher.exe",
+        "tools/pnunit-launcher.exe.config",
+        "tools/pnunit.framework.dll",
+        "tools/pnunit.tests.dll",
+        "tools/runpnunit.bat",
+        "tools/test.conf",
+        "tools/lib/log4net.dll",
+        "tools/lib/nunit-console-runner.dll",
+        "tools/lib/nunit-gui-runner.dll",
+        "tools/lib/nunit.core.dll",
+        "tools/lib/nunit.core.interfaces.dll",
+        "tools/lib/nunit.uiexception.dll",
+        "tools/lib/nunit.uikit.dll",
+        "tools/lib/nunit.util.dll",
+        "tools/lib/Images/Tree/Circles/Failure.jpg",
+        "tools/lib/Images/Tree/Circles/Ignored.jpg",
+        "tools/lib/Images/Tree/Circles/Inconclusive.jpg",
+        "tools/lib/Images/Tree/Circles/Skipped.jpg",
+        "tools/lib/Images/Tree/Circles/Success.jpg",
+        "tools/lib/Images/Tree/Classic/Failure.jpg",
+        "tools/lib/Images/Tree/Classic/Ignored.jpg",
+        "tools/lib/Images/Tree/Classic/Inconclusive.jpg",
+        "tools/lib/Images/Tree/Classic/Skipped.jpg",
+        "tools/lib/Images/Tree/Classic/Success.jpg",
+        "tools/lib/Images/Tree/Default/Failure.png",
+        "tools/lib/Images/Tree/Default/Ignored.png",
+        "tools/lib/Images/Tree/Default/Inconclusive.png",
+        "tools/lib/Images/Tree/Default/Skipped.png",
+        "tools/lib/Images/Tree/Default/Success.png",
+        "tools/lib/Images/Tree/Visual Studio/Failure.png",
+        "tools/lib/Images/Tree/Visual Studio/Ignored.png",
+        "tools/lib/Images/Tree/Visual Studio/Inconclusive.png",
+        "tools/lib/Images/Tree/Visual Studio/SeriousWarning.png",
+        "tools/lib/Images/Tree/Visual Studio/Skipped.png",
+        "tools/lib/Images/Tree/Visual Studio/Success.png"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "": [
+      "ModuleInject.Common >= 1.0.0-*",
+      "ModuleInject >= 1.0.0-*",
+      "ModuleInject.Interfaces >= 1.0.0-*",
+      "Moq >= 4.2.1507.118",
+      "NUnit >= 2.6.4",
+      "NUnit.Runners >= 2.6.4"
+    ],
+    ".NETFramework,Version=v4.5": [],
+    "DNX,Version=v4.5.1": []
+  }
+}
