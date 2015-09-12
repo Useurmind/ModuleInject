@@ -27,7 +27,7 @@ namespace ModuleInject.Provider.ProviderFactory
             serviceProvider.FromInstance(module)
                         .AllProperties()
                         .ExceptFrom<InjectionModule<TModule>>(true)
-                        .Where(x => x.GetCustomAttribute<FromRegistryAttribute>() == null)
+                        .Where(x => x.GetCustomAttributes(true).FirstOrDefault(attr => attr is FromRegistryAttribute) == null)
                         .Extract()
                         .AllGetMethods()
                         .ExceptFrom<InjectionModule<TModule>>(true)

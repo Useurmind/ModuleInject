@@ -7,10 +7,23 @@
   "licenseUrl": "",
 
   "frameworks": {
+    "net40": {
+      "frameworkAssemblies": {
+        "System.ComponentModel.Composition": "4.0.0.0"
+      },
+      "dependencies": {
+        "Microsoft.Bcl": "1.1.10"
+      }
+    },
     "net45": {
       "frameworkAssemblies": {
         "System.ComponentModel.Composition": "4.0.0.0"
       }
+    },
+    "dnx451": {
+      "frameworkAssemblies": {
+        "System.ComponentModel.Composition": "4.0.0.0"
+      }    
     }
   },
   "dependencies": {

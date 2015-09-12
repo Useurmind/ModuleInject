@@ -32,7 +32,7 @@ namespace ModuleInject.Provider.ServiceSources
 
         public object Get()
         {
-            return propertyInfo.GetValue(instance);
+            return propertyInfo.GetValue(instance, null);
         }
     }
 }

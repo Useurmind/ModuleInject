@@ -7,6 +7,7 @@
   "licenseUrl": "",
 
   "frameworks": {
+    "net40": {},
     "net45": { },
     "dnx451": { }
   },

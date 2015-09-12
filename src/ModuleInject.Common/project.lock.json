@@ -2,6 +2,11 @@
   "locked": false,
   "version": 1,
   "targets": {
+    ".NETFramework,Version=v4.0": {
+      "ModuleInject.Interfaces/1.0.0": {
+        "type": "project"
+      }
+    },
     ".NETFramework,Version=v4.5": {
       "ModuleInject.Interfaces/1.0.0": {
         "type": "project"
@@ -23,6 +28,7 @@
     "": [
       "ModuleInject.Interfaces >= 1.0.0-*"
     ],
+    ".NETFramework,Version=v4.0": [],
     ".NETFramework,Version=v4.5": [],
     "DNX,Version=v4.5.1": []
   }
