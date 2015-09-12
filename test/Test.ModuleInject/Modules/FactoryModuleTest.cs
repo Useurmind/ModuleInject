@@ -20,11 +20,13 @@ namespace Test.ModuleInject.Modules
         }
 
         [TestCase]
-        [ExpectedException(typeof(ModuleInjectException))]
         public void Resolve_Double_ExceptionThrown()
         {
-            this._module.Resolve();
-            this._module.Resolve();
+            Assert.Throws(typeof(ModuleInjectException), () =>
+            {
+                this._module.Resolve();
+                this._module.Resolve();
+            });
         }
 
         [TestCase]
@@ -180,17 +182,21 @@ namespace Test.ModuleInject.Modules
         }
 
         [TestCase]
-        [ExpectedException(typeof(ModuleInjectException))]
         public void CreateComponent1_BeforeModuleResolve_ThrowsException()
         {
-            this._module.CreateComponent1();
+            Assert.Throws(typeof(ModuleInjectException), () =>
+            {
+                this._module.CreateComponent1();
+            });
         }
 
         [TestCase]
-        [ExpectedException(typeof(ModuleInjectException))]
         public void CreateComponent2_BeforeModuleResolve_ThrowsException()
         {
-            this._module.CreateComponent2();
+            Assert.Throws(typeof(ModuleInjectException), () =>
+            {
+                this._module.CreateComponent2();
+            });
         }
     }
 }

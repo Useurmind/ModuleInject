@@ -19,12 +19,12 @@
           "lib/net40/Moq.dll": {}
         }
       },
-      "NUnit/2.6.4": {
+      "NUnit/3.0.0-beta-4": {
         "compile": {
-          "lib/nunit.framework.dll": {}
+          "lib/net45/nunit.framework.dll": {}
         },
         "runtime": {
-          "lib/nunit.framework.dll": {}
+          "lib/net45/nunit.framework.dll": {}
         }
       }
     },
@@ -45,12 +45,12 @@
           "lib/net40/Moq.dll": {}
         }
       },
-      "NUnit/2.6.4": {
+      "NUnit/3.0.0-beta-4": {
         "compile": {
-          "lib/nunit.framework.dll": {}
+          "lib/net45/nunit.framework.dll": {}
         },
         "runtime": {
-          "lib/nunit.framework.dll": {}
+          "lib/net45/nunit.framework.dll": {}
         }
       }
     }
@@ -93,15 +93,25 @@
         "lib/sl5/Moq.Silverlight.xml"
       ]
     },
-    "NUnit/2.6.4": {
-      "sha512": "cmSPvaCMRSP0DI19FP1Liw9DyJY3E/vOY1OrVaeJBZpZFWHkmT3fB9ngGWnZX/ftvA7zJEbghEaw3Yd+u4YFAw==",
+    "NUnit/3.0.0-beta-4": {
+      "sha512": "n2kVsrJM7IlvoDFUkUqyMB+1K3/rc/fUJ/Wr2uIap13AFlVoAKJRaegoXkBZg7CHkbVSDClpAWVFIeZPUFY6fg==",
       "files": [
-        "license.txt",
-        "NUnit.2.6.4.nupkg",
-        "NUnit.2.6.4.nupkg.sha512",
+        "CHANGES.txt",
+        "LICENSE.txt",
+        "NOTICES.txt",
+        "NUnit.3.0.0-beta-4.nupkg",
+        "NUnit.3.0.0-beta-4.nupkg.sha512",
         "NUnit.nuspec",
-        "lib/nunit.framework.dll",
-        "lib/nunit.framework.xml"
+        "lib/net20/nunit.framework.dll",
+        "lib/net20/nunit.framework.xml",
+        "lib/net40/nunit.framework.dll",
+        "lib/net40/nunit.framework.xml",
+        "lib/net45/nunit.framework.dll",
+        "lib/net45/nunit.framework.xml",
+        "lib/portable-net45+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/nunit.framework.dll",
+        "lib/portable-net45+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/nunit.framework.xml",
+        "lib/sl50/nunit.framework.dll",
+        "lib/sl50/nunit.framework.xml"
       ]
     }
   },
@@ -112,8 +122,8 @@
       "ModuleInject.Interception.Castle >= 1.0.0-*",
       "ModuleInject.Interfaces >= 1.0.0-*",
       "Moq >= 4.2.1507.118",
-      "NUnit >= 2.6.4",
-      "Castle.Core >= 3.3.3"
+      "Castle.Core >= 3.3.3",
+      "NUnit >= 3.0.0-beta-4"
     ],
     ".NETFramework,Version=v4.5": [],
     "DNX,Version=v4.5.1": []

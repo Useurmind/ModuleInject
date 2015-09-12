@@ -35,25 +35,29 @@ namespace Test.ModuleInject.Injection
         }
 
         [Test]
-        [ExpectedException(typeof(ModuleInjectException))]
         public void DoubleRegister_ExceptionThrown()
         {
             var type = typeof(object);
             var name = "asdrffgd";
             Func<object> factoryFunc = () => new object();
 
-            this.container.Register(type, name, factoryFunc);
-            this.container.Register(type, name, factoryFunc);
+            Assert.Throws(typeof(ModuleInjectException), () =>
+            {
+                this.container.Register(type, name, factoryFunc);
+                this.container.Register(type, name, factoryFunc);
+            });            
         }
 
         [Test]
-        [ExpectedException(typeof(ModuleInjectException))]
         public void GetComponent_NonRegisteredComponent_ExceptionThrown()
         {
             var type = typeof(object);
             var name = "asdrffgd";
 
-            this.container.GetComponent(type, name);
+            Assert.Throws(typeof(ModuleInjectException), () =>
+            {
+                this.container.GetComponent(type, name);
+            });
         }
 
         [Test]

@@ -34,11 +34,13 @@ namespace Test.ModuleInject.Provider
         }
 
         [Test]
-        [ExpectedException(typeof(ModuleInjectException))]
         public void AddServiceSource_Twice_ThrowsException()
         {
-            serviceProvider.AddServiceSource(SourceOf<ICloneable>());
-            serviceProvider.AddServiceSource(SourceOf<ICloneable>());
+            Assert.Throws(typeof(ModuleInjectException), () =>
+            {
+                serviceProvider.AddServiceSource(SourceOf<ICloneable>());
+                serviceProvider.AddServiceSource(SourceOf<ICloneable>());
+            });
         }
 
         [Test]

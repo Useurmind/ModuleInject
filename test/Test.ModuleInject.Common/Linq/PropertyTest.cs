@@ -42,12 +42,14 @@ namespace Test.ModuleInject.Common.Linq
         }
 
         [TestCase]
-        [ExpectedException(typeof(ModuleInjectException))]
         public void Get_MemberExpressionWithInvalidCastOfParameter_ErrorThrown()
         {
-            Property prop = Property.Get((TestClass m) => ((ITestClass2)m).StringProperty);
+            Assert.Throws(typeof(ModuleInjectException), () =>
+            {
+                Property prop = Property.Get((TestClass m) => ((ITestClass2)m).StringProperty);
 
-            Assert.IsNotNull(prop);
+                Assert.IsNotNull(prop);
+            });
         }
 
         [TestCase]
@@ -59,24 +61,30 @@ namespace Test.ModuleInject.Common.Linq
         }
 
         [TestCase]
-        [ExpectedException(typeof(ModuleInjectException))]
         public void Get_FunctionExpression_ThrowsException()
         {
-            Property prop = Property.Get((string s) => s.LongCount());
+            Assert.Throws(typeof(ModuleInjectException), () =>
+            {
+                Property prop = Property.Get((string s) => s.LongCount());
+            });
         }
 
         [TestCase]
-        [ExpectedException(typeof(ModuleInjectException))]
         public void Get_FieldExpression_ThrowsException()
         {
-            Property prop = Property.Get((TestClass x) => x._a);
+            Assert.Throws(typeof(ModuleInjectException), () =>
+            {
+                Property prop = Property.Get((TestClass x) => x._a);
+            });
         }
 
         [TestCase]
-        [ExpectedException(typeof(ModuleInjectException))]
         public void Get_SubPropertyExpression_ThrowsException()
         {
-            Property prop = Property.Get((TestClass x) => x.TestClass2.A);
+            Assert.Throws(typeof(ModuleInjectException), () =>
+            {
+                Property prop = Property.Get((TestClass x) => x.TestClass2.A);
+            });
         }
 
         [TestCase]

@@ -36,11 +36,13 @@ namespace Test.ModuleInject.Modules
         }
 
         [Test]
-        [ExpectedException(typeof(ModuleInjectException))]
         public void Resolve_NoRegistrySet_ExceptionForMissingSubmodule()
         {
-            this._module.RegisterComponentFromPublicSubmodule();
-            this._module.Resolve();
+            Assert.Throws(typeof(ModuleInjectException), () =>
+            {
+                this._module.RegisterComponentFromPublicSubmodule();
+                this._module.Resolve();
+            });
         }
 
         [Test]

@@ -14,6 +14,6 @@
     "ModuleInject.Common": "1.0.0-*",
     "ModuleInject.Interfaces": "1.0.0-*",
     "Moq": "4.2.1507.118",
-    "NUnit": "2.6.4"
+    "NUnit": "3.0.0-beta-4"
   }
 }
