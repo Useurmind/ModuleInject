@@ -7,13 +7,13 @@ using ModuleInject.Interfaces;
 using ModuleInject.Modularity;
 using ModuleInject.Modularity.Registry;
 
-using NUnit.Framework;
+using Xunit;
 
 using Test.ModuleInject.Modules.TestModules;
 
 namespace Test.ModuleInject.Modularity
 {
-    [TestFixture]
+    
     public class ModuleTest
     {
         private interface ITestModule : IModule
@@ -49,7 +49,7 @@ namespace Test.ModuleInject.Modularity
                 this.Registry = registry;
             }
 
-            [TestCase]
+            [Fact]
             public void Resolve_RegistyModuleResolvedCorrectly()
             {
                 var testModule = new TestModule();
@@ -58,11 +58,11 @@ namespace Test.ModuleInject.Modularity
 
                 testModule.Resolve();
 
-                Assert.IsNotNull(testModule.MainComponent1);
-                Assert.IsNotNull(propertyModule);
-                Assert.IsNotNull(subModule);
-                Assert.AreSame(subModule, propertyModule.SubModule);
-                Assert.AreSame(propertyModule.Component2, testModule.MainComponent1.MainComponent2);
+                Assert.NotNull(testModule.MainComponent1);
+                Assert.NotNull(propertyModule);
+                Assert.NotNull(subModule);
+                Assert.Same(subModule, propertyModule.SubModule);
+                Assert.Same(propertyModule.Component2, testModule.MainComponent1.MainComponent2);
             }
         }
     }

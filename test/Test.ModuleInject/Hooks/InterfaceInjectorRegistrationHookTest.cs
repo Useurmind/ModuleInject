@@ -4,7 +4,7 @@ using ModuleInject.Interfaces;
 using ModuleInject.Interfaces.Injection;
 using ModuleInject.Modularity;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,7 @@ using System.Text;
 
 namespace Test.ModuleInject.Hooks
 {
-    [TestFixture]
+    
     public class InterfaceInjectorRegistrationHookTest
     {
         private interface IHookedModule : IModule { }
@@ -48,37 +48,37 @@ namespace Test.ModuleInject.Hooks
         }
 
 
-        [Test]
+        [Fact]
         public void AppliesToModule_ForSimpleImplementingModule_ReturnsTrue()
         {
             var hook = new InterfaceInjectorRegistrationHook<IHookedModule, IHookedComponent>(null);
 
             var result = hook.AppliesToModule(new TestModule1());
 
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
 
-		[Test]
+		[Fact]
 		public void AppliesToModule_ForSimpleNonImplementingModule_ReturnsFalse()
 		{
 			var hook = new InterfaceInjectorRegistrationHook<IHookedModule, IHookedComponent>(null);
 
 			var result = hook.AppliesToModule(new TestModule2());
 
-			Assert.IsFalse(result);
+			Assert.False(result);
 		}
 
-		[Test]
+		[Fact]
         public void AppliesToModule_ForInheritingImplementingModule_ReturnsTrue()
         {
             var hook = new InterfaceInjectorRegistrationHook<IHookedModule, IHookedComponent>(null);
 
             var result = hook.AppliesToModule(new TestModule3());
 
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
 
-        [Test]
+        [Fact]
         public void AppliesToComponent_ForSimpleImplemetingComponent_ReturnsTrue()
         {
             var hook = new InterfaceInjectorRegistrationHook<IHookedModule, IHookedComponent>(null);
@@ -89,10 +89,10 @@ namespace Test.ModuleInject.Hooks
 
             var result = hook.AppliesToRegistration(injectionRegister);
 
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
 
-        [Test]
+        [Fact]
         public void AppliesToComponent_ForSimpleNonImplemetingComponent_ReturnsFalse()
         {
             var hook = new InterfaceInjectorRegistrationHook<IHookedModule, IHookedComponent>(null);
@@ -103,10 +103,10 @@ namespace Test.ModuleInject.Hooks
 
 			var result = hook.AppliesToRegistration(injectionRegister);
 
-            Assert.IsFalse(result);
+            Assert.False(result);
         }
 
-        [Test]
+        [Fact]
         public void Execute__InjectIntoCalled()
         {
             IInterfaceModificationContext<IHookedModule, IHookedComponent> usedContext = null;
@@ -116,8 +116,8 @@ namespace Test.ModuleInject.Hooks
 
             hook.Execute(injectionRegisterMock.Object);
 
-            Assert.IsNotNull(usedContext);
-            Assert.AreSame(injectionRegisterMock.Object, usedContext.Register);
+            Assert.NotNull(usedContext);
+            Assert.Same(injectionRegisterMock.Object, usedContext.Register);
         }
     }
 }

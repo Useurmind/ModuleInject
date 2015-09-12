@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NUnit.Framework;
 using ModuleInject.Interfaces;
 using ModuleInject.Injection;
 using Castle.DynamicProxy;
 using ModuleInject.Interception.Castle;
+using Xunit;
 
 namespace Test.ModuleInject.Interception.Castle
 {
-    [TestFixture]
     public class InterceptedInjectionModuleExtensionsTest
     {
-        [Test]
+        [Fact]
         public void InterceptSingleInstance_WithSingleInterceptor()
         {
             var module = new TestModule();
@@ -25,13 +24,13 @@ namespace Test.ModuleInject.Interception.Castle
 
             testComponent.DoSomething();
 
-            Assert.IsNotInstanceOf<TestComponent>(testComponent);
-            Assert.IsInstanceOf<TestInterceptor>(callStack.Pop());
-            Assert.IsInstanceOf<TestComponent>(callStack.Pop());
-            Assert.IsInstanceOf<TestInterceptor>(callStack.Pop());
+            Assert.IsNotType<TestComponent>(testComponent);
+            Assert.IsType<TestInterceptor>(callStack.Pop());
+            Assert.IsType<TestComponent>(callStack.Pop());
+            Assert.IsType<TestInterceptor>(callStack.Pop());
         }
 
-        [Test]
+        [Fact]
         public void InterceptSingleInstance_WithMultipleInterceptors()
         {
             var module = new TestModule();
@@ -44,21 +43,21 @@ namespace Test.ModuleInject.Interception.Castle
             testComponent.DoSomething();
 
             var interceptor1 = (TestInterceptor)callStack.Pop();
-            Assert.AreEqual(1, interceptor1.Number);
+            Assert.Equal(1, interceptor1.Number);
 
             var interceptor2 = (TestInterceptor)callStack.Pop();
-            Assert.AreEqual(2, interceptor2.Number);
+            Assert.Equal(2, interceptor2.Number);
 
-            Assert.IsInstanceOf<TestComponent>(callStack.Pop());
+            Assert.IsType<TestComponent>(callStack.Pop());
 
             interceptor2 = (TestInterceptor)callStack.Pop();
-            Assert.AreEqual(2, interceptor2.Number);
+            Assert.Equal(2, interceptor2.Number);
 
             interceptor1 = (TestInterceptor)callStack.Pop();
-            Assert.AreEqual(1, interceptor1.Number);
+            Assert.Equal(1, interceptor1.Number);
         }
 
-        [Test]
+        [Fact]
         public void InterceptFactory_WithSingleInterceptor()
         {
             var module = new TestModule();
@@ -79,11 +78,11 @@ namespace Test.ModuleInject.Interception.Castle
             var component1 = (TestComponent)callStack.Pop();
             var interceptor1Before = (TestInterceptor)callStack.Pop();
 
-            Assert.AreNotSame(testComponent1, testComponent2);
-            Assert.AreNotSame(component1, component2);
-            Assert.AreSame(interceptor1Before, interceptor1After);
-            Assert.AreSame(interceptor2Before, interceptor2After);
-            Assert.AreNotSame(interceptor1After, interceptor2After);
+            Assert.NotSame(testComponent1, testComponent2);
+            Assert.NotSame(component1, component2);
+            Assert.Same(interceptor1Before, interceptor1After);
+            Assert.Same(interceptor2Before, interceptor2After);
+            Assert.NotSame(interceptor1After, interceptor2After);
         }
 
         public interface ITestComponent

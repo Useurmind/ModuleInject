@@ -5,18 +5,17 @@ using System.Text;
 using ModuleInject.Provider;
 using ModuleInject.Provider.ProviderFactory;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 
 namespace Test.ModuleInject.Provider.ProviderFactory
 {
-    [TestFixture]
+    
     public class ServiceProviderFactoryExtensionsTest
     {
         private ServiceProvider serviceProvider;
         private ChildClass instance;
 
-        [SetUp]
-        public void Setup()
+        public ServiceProviderFactoryExtensionsTest()
         {
             instance = new ChildClass()
             {
@@ -29,20 +28,20 @@ namespace Test.ModuleInject.Provider.ProviderFactory
             serviceProvider = new ServiceProvider();
         }
 
-        [Test]
+        [Fact]
         public void AddAllProperties_AddsAllProperties()
         {
             serviceProvider.FromInstance(instance)
                 .AllProperties()
                 .Extract();
 
-            Assert.AreSame(instance.Service1, serviceProvider.GetService<IService1>());
-            Assert.AreSame(instance.Service2, serviceProvider.GetService<IService2>());
-            Assert.AreSame(instance.Service3, serviceProvider.GetService<IService3>());
-            Assert.AreSame(instance.Service4, serviceProvider.GetService<IService4>());
+            Assert.Same(instance.Service1, serviceProvider.GetService<IService1>());
+            Assert.Same(instance.Service2, serviceProvider.GetService<IService2>());
+            Assert.Same(instance.Service3, serviceProvider.GetService<IService3>());
+            Assert.Same(instance.Service4, serviceProvider.GetService<IService4>());
         }
 
-        [Test]
+        [Fact]
         public void AddAllProperties_ExceptOne_ExceptedPropertyNotAdded()
         {
             serviceProvider.FromInstance(instance)
@@ -50,13 +49,13 @@ namespace Test.ModuleInject.Provider.ProviderFactory
                 .Where(x => x.Name != "Service1")
                 .Extract();
 
-            Assert.IsFalse(serviceProvider.HasService<IService1>());
-            Assert.AreSame(instance.Service2, serviceProvider.GetService<IService2>());
-            Assert.AreSame(instance.Service3, serviceProvider.GetService<IService3>());
-            Assert.AreSame(instance.Service4, serviceProvider.GetService<IService4>());
+            Assert.False(serviceProvider.HasService<IService1>());
+            Assert.Same(instance.Service2, serviceProvider.GetService<IService2>());
+            Assert.Same(instance.Service3, serviceProvider.GetService<IService3>());
+            Assert.Same(instance.Service4, serviceProvider.GetService<IService4>());
         }
 
-        [Test]
+        [Fact]
         public void AddAllProperties_ExceptBaseType_ExceptedPropertiesNotAdded()
         {
             serviceProvider.FromInstance(instance)
@@ -64,13 +63,13 @@ namespace Test.ModuleInject.Provider.ProviderFactory
                 .ExceptFrom<BaseClass>()
                 .Extract();
 
-            Assert.IsFalse(serviceProvider.HasService<IService1>());
-            Assert.IsFalse(serviceProvider.HasService<IService2>());
-            Assert.AreSame(instance.Service3, serviceProvider.GetService<IService3>());
-            Assert.AreSame(instance.Service4, serviceProvider.GetService<IService4>());
+            Assert.False(serviceProvider.HasService<IService1>());
+            Assert.False(serviceProvider.HasService<IService2>());
+            Assert.Same(instance.Service3, serviceProvider.GetService<IService3>());
+            Assert.Same(instance.Service4, serviceProvider.GetService<IService4>());
         }
 
-        [Test]
+        [Fact]
         public void AddAllProperties_ExceptOneAndBaseType_ExceptedPropertiesNotAdded()
         {
             serviceProvider.FromInstance(instance)
@@ -79,13 +78,13 @@ namespace Test.ModuleInject.Provider.ProviderFactory
                 .ExceptFrom<BaseClass>()
                 .Extract();
 
-            Assert.IsFalse(serviceProvider.HasService<IService1>());
-            Assert.IsFalse(serviceProvider.HasService<IService2>());
-            Assert.AreSame(instance.Service3, serviceProvider.GetService<IService3>());
-            Assert.IsFalse(serviceProvider.HasService<IService4>());
+            Assert.False(serviceProvider.HasService<IService1>());
+            Assert.False(serviceProvider.HasService<IService2>());
+            Assert.Same(instance.Service3, serviceProvider.GetService<IService3>());
+            Assert.False(serviceProvider.HasService<IService4>());
         }
 
-        [Test]
+        [Fact]
         public void AddAllProperties_ExceptNonRecursive_OnlyTopmostRemoved()
         {
             serviceProvider.FromInstance(instance)
@@ -93,13 +92,13 @@ namespace Test.ModuleInject.Provider.ProviderFactory
                 .ExceptFrom<ChildClass>()
                 .Extract();
 
-            Assert.AreSame(instance.Service1, serviceProvider.GetService<IService1>());
-            Assert.AreSame(instance.Service2, serviceProvider.GetService<IService2>());
-            Assert.IsFalse(serviceProvider.HasService<IService3>());
-            Assert.IsFalse(serviceProvider.HasService<IService4>());
+            Assert.Same(instance.Service1, serviceProvider.GetService<IService1>());
+            Assert.Same(instance.Service2, serviceProvider.GetService<IService2>());
+            Assert.False(serviceProvider.HasService<IService3>());
+            Assert.False(serviceProvider.HasService<IService4>());
         }
 
-        [Test]
+        [Fact]
         public void AddAllProperties_ExceptRecursive_AllRemoved()
         {
             serviceProvider.FromInstance(instance)
@@ -107,26 +106,26 @@ namespace Test.ModuleInject.Provider.ProviderFactory
                 .ExceptFrom<ChildClass>(true)
                 .Extract();
 
-            Assert.IsFalse(serviceProvider.HasService<IService1>());
-            Assert.IsFalse(serviceProvider.HasService<IService2>());
-            Assert.IsFalse(serviceProvider.HasService<IService3>());
-            Assert.IsFalse(serviceProvider.HasService<IService4>());
+            Assert.False(serviceProvider.HasService<IService1>());
+            Assert.False(serviceProvider.HasService<IService2>());
+            Assert.False(serviceProvider.HasService<IService3>());
+            Assert.False(serviceProvider.HasService<IService4>());
         }
 
-        [Test]
+        [Fact]
         public void AddAllGetMethods_AddsAllMethods()
         {
             serviceProvider.FromInstance(instance)
                 .AllGetMethods()
                 .Extract();
 
-            Assert.AreSame(instance.Service1, serviceProvider.GetService<IService1>());
-            Assert.AreSame(instance.Service2, serviceProvider.GetService<IService2>());
-            Assert.AreSame(instance.Service3, serviceProvider.GetService<IService3>());
-            Assert.AreSame(instance.Service4, serviceProvider.GetService<IService4>());
+            Assert.Same(instance.Service1, serviceProvider.GetService<IService1>());
+            Assert.Same(instance.Service2, serviceProvider.GetService<IService2>());
+            Assert.Same(instance.Service3, serviceProvider.GetService<IService3>());
+            Assert.Same(instance.Service4, serviceProvider.GetService<IService4>());
         }
 
-        [Test]
+        [Fact]
         public void AddAllGetMethods_ExceptOne_ExceptedMethodNotAdded()
         {
             serviceProvider.FromInstance(instance)
@@ -134,13 +133,13 @@ namespace Test.ModuleInject.Provider.ProviderFactory
                 .Where(x => x.Name != "GetService1")
                 .Extract();
 
-            Assert.IsFalse(serviceProvider.HasService<IService1>());
-            Assert.AreSame(instance.Service2, serviceProvider.GetService<IService2>());
-            Assert.AreSame(instance.Service3, serviceProvider.GetService<IService3>());
-            Assert.AreSame(instance.Service4, serviceProvider.GetService<IService4>());
+            Assert.False(serviceProvider.HasService<IService1>());
+            Assert.Same(instance.Service2, serviceProvider.GetService<IService2>());
+            Assert.Same(instance.Service3, serviceProvider.GetService<IService3>());
+            Assert.Same(instance.Service4, serviceProvider.GetService<IService4>());
         }
 
-        [Test]
+        [Fact]
         public void AddAllGetMethods_ExceptBaseType_ExceptedMethodsNotAdded()
         {
             serviceProvider.FromInstance(instance)
@@ -148,13 +147,13 @@ namespace Test.ModuleInject.Provider.ProviderFactory
                 .ExceptFrom<BaseClass>()
                 .Extract();
 
-            Assert.IsFalse(serviceProvider.HasService<IService1>());
-            Assert.IsFalse(serviceProvider.HasService<IService2>());
-            Assert.AreSame(instance.Service3, serviceProvider.GetService<IService3>());
-            Assert.AreSame(instance.Service4, serviceProvider.GetService<IService4>());
+            Assert.False(serviceProvider.HasService<IService1>());
+            Assert.False(serviceProvider.HasService<IService2>());
+            Assert.Same(instance.Service3, serviceProvider.GetService<IService3>());
+            Assert.Same(instance.Service4, serviceProvider.GetService<IService4>());
         }
 
-        [Test]
+        [Fact]
         public void AddAllGetMethods_ExceptOneAndBaseType_ExceptedMethodsNotAdded()
         {
             serviceProvider.FromInstance(instance)
@@ -163,13 +162,13 @@ namespace Test.ModuleInject.Provider.ProviderFactory
                 .ExceptFrom<BaseClass>()
                 .Extract();
 
-            Assert.IsFalse(serviceProvider.HasService<IService1>());
-            Assert.IsFalse(serviceProvider.HasService<IService2>());
-            Assert.AreSame(instance.Service3, serviceProvider.GetService<IService3>());
-            Assert.IsFalse(serviceProvider.HasService<IService4>());
+            Assert.False(serviceProvider.HasService<IService1>());
+            Assert.False(serviceProvider.HasService<IService2>());
+            Assert.Same(instance.Service3, serviceProvider.GetService<IService3>());
+            Assert.False(serviceProvider.HasService<IService4>());
         }
 
-        [Test]
+        [Fact]
         public void AddAllGetMethods_ExceptNonRecursive_OnlyTopmostRemoved()
         {
             serviceProvider.FromInstance(instance)
@@ -177,13 +176,13 @@ namespace Test.ModuleInject.Provider.ProviderFactory
                 .ExceptFrom<ChildClass>()
                 .Extract();
 
-            Assert.AreSame(instance.Service1, serviceProvider.GetService<IService1>());
-            Assert.AreSame(instance.Service2, serviceProvider.GetService<IService2>());
-            Assert.IsFalse(serviceProvider.HasService<IService3>());
-            Assert.IsFalse(serviceProvider.HasService<IService4>());
+            Assert.Same(instance.Service1, serviceProvider.GetService<IService1>());
+            Assert.Same(instance.Service2, serviceProvider.GetService<IService2>());
+            Assert.False(serviceProvider.HasService<IService3>());
+            Assert.False(serviceProvider.HasService<IService4>());
         }
 
-        [Test]
+        [Fact]
         public void AddAllGetMethods_ExceptRecursive_AllRemoved()
         {
             serviceProvider.FromInstance(instance)
@@ -191,13 +190,13 @@ namespace Test.ModuleInject.Provider.ProviderFactory
                 .ExceptFrom<ChildClass>(true)
                 .Extract();
 
-            Assert.IsFalse(serviceProvider.HasService<IService1>());
-            Assert.IsFalse(serviceProvider.HasService<IService2>());
-            Assert.IsFalse(serviceProvider.HasService<IService3>());
-            Assert.IsFalse(serviceProvider.HasService<IService4>());
+            Assert.False(serviceProvider.HasService<IService1>());
+            Assert.False(serviceProvider.HasService<IService2>());
+            Assert.False(serviceProvider.HasService<IService3>());
+            Assert.False(serviceProvider.HasService<IService4>());
         }
 
-        [Test]
+        [Fact]
         public void AddAllMethodsAndProperties_FromConstrainedInterface_OnlyInterfaceAdded()
         {
             serviceProvider.FromInstance<IConstrainedChildClass>(instance)
@@ -206,12 +205,12 @@ namespace Test.ModuleInject.Provider.ProviderFactory
                 .AllGetMethods()
                 .Extract();
 
-            Assert.AreEqual(2, serviceProvider.NumberOfServices);
-            Assert.AreSame(instance.Service3, serviceProvider.GetService<IService3>());
-            Assert.AreSame(instance.GetService4(), serviceProvider.GetService<IService4>());
+            Assert.Equal(2, serviceProvider.NumberOfServices);
+            Assert.Same(instance.Service3, serviceProvider.GetService<IService3>());
+            Assert.Same(instance.GetService4(), serviceProvider.GetService<IService4>());
         }
 
-        [Test]
+        [Fact]
         public void AddLambdaSource_CorrectlyAdded()
         {
             var service1 = Mock.Of<IService1>();
@@ -220,7 +219,7 @@ namespace Test.ModuleInject.Provider.ProviderFactory
 
             var result = serviceProvider.GetService<IService1>();
 
-            Assert.AreSame(service1, result);
+            Assert.Same(service1, result);
         }
 
         public interface IService1 { }

@@ -7,46 +7,45 @@ using ModuleInject.Modularity;
 using ModuleInject.Provider;
 using ModuleInject.Provider.ProviderFactory;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 
 namespace Test.ModuleInject.Provider.ProviderFactory
 {
-    [TestFixture]
+    
     public class ModuleServiceProviderExtensionsTest
     {
         private ServiceProvider serviceProvider;
 
-        [SetUp]
-        public void Setup()
+        public ModuleServiceProviderExtensionsTest()
         {
             this.serviceProvider = new ServiceProvider();
         }
 
-        [Test]
+        [Fact]
         public void FromModule_BaseModule_CorrectlySetup()
         {
             var module = new TestBaseModule1();
 
             serviceProvider.FromModuleExtractAll(module);
 
-            Assert.AreEqual(2, serviceProvider.NumberOfServices);
-            Assert.AreSame(module.Service1, serviceProvider.GetService<IService1>());
-            Assert.AreSame(module.GetService2(), serviceProvider.GetService<IService2>());
+            Assert.Equal(2, serviceProvider.NumberOfServices);
+            Assert.Same(module.Service1, serviceProvider.GetService<IService1>());
+            Assert.Same(module.GetService2(), serviceProvider.GetService<IService2>());
         }
 
-        [Test]
+        [Fact]
         public void FromModule_DerivedModule_CorrectlySetup()
         {
             var module = new TestDerivedModule();
 
             serviceProvider.FromModuleExtractAll(module);
 
-            Assert.AreEqual(5, serviceProvider.NumberOfServices);
-            Assert.AreSame(module.Service1, serviceProvider.GetService<IService1>());
-            Assert.AreSame(module.GetService2(), serviceProvider.GetService<IService2>());
-            Assert.AreSame(module.Service4, serviceProvider.GetService<IService4>());
-            Assert.AreSame(module.Service5, serviceProvider.GetService<IService5>());
-            Assert.AreSame(module.GetService3(), serviceProvider.GetService<IService3>());
+            Assert.Equal(5, serviceProvider.NumberOfServices);
+            Assert.Same(module.Service1, serviceProvider.GetService<IService1>());
+            Assert.Same(module.GetService2(), serviceProvider.GetService<IService2>());
+            Assert.Same(module.Service4, serviceProvider.GetService<IService4>());
+            Assert.Same(module.Service5, serviceProvider.GetService<IService5>());
+            Assert.Same(module.GetService3(), serviceProvider.GetService<IService3>());
         }
 
         public interface IService1 { }

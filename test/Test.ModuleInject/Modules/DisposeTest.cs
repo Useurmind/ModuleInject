@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ModuleInject.Injection;
-using NUnit.Framework;
+using Xunit;
 
 namespace Test.ModuleInject.Modules
 {
-    [TestFixture]
+    
     public class DisposeTest
     {
         private interface IDisposableComponent1
@@ -82,7 +82,7 @@ namespace Test.ModuleInject.Modules
             }
         }
 
-        [Test]
+        [Fact]
         public void Dispose_AfterResolveAllComponents_DisposeWasCorrect()
         {
             var module = new DisposeTestModule();
@@ -99,14 +99,14 @@ namespace Test.ModuleInject.Modules
             module.Dispose(); 
             module.Dispose();
 
-            Assert.IsTrue(disposableComponent1.IsDisposed);
-            Assert.AreEqual(1, disposableComponent1.Disposes);
-            Assert.IsTrue(disposableComponent2.IsDisposed);
-            Assert.AreEqual(1, disposableComponent2.Disposes);
-            Assert.IsFalse(createdDisposableComponent1.IsDisposed);
-            Assert.AreEqual(0, createdDisposableComponent1.Disposes);
-            Assert.IsFalse(createdDisposableComponent2.IsDisposed);
-            Assert.AreEqual(0, createdDisposableComponent2.Disposes);
+            Assert.True(disposableComponent1.IsDisposed);
+            Assert.Equal(1, disposableComponent1.Disposes);
+            Assert.True(disposableComponent2.IsDisposed);
+            Assert.Equal(1, disposableComponent2.Disposes);
+            Assert.False(createdDisposableComponent1.IsDisposed);
+            Assert.Equal(0, createdDisposableComponent1.Disposes);
+            Assert.False(createdDisposableComponent2.IsDisposed);
+            Assert.Equal(0, createdDisposableComponent2.Disposes);
         }
     }
 }

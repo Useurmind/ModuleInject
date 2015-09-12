@@ -11,7 +11,7 @@ using global::ModuleInject.Interfaces;
 
 using Moq;
 
-using NUnit.Framework;
+using Xunit;
 using ModuleInject.Modularity;
 
 namespace Test.ModuleInject.UnitTesting
@@ -99,15 +99,14 @@ namespace Test.ModuleInject.UnitTesting
         }
     }
 
-    [TestFixture]
+    
     public class UnitTestedModuleTest
     {
         private UnitTestedModule testedModule;
         private StandardRegistry realRegistry;
         private StandardRegistry mockRegistry;
 
-        [SetUp]
-        public void Setup()
+        public UnitTestedModuleTest()
         {
             testedModule = new UnitTestedModule();
 
@@ -122,14 +121,14 @@ namespace Test.ModuleInject.UnitTesting
             mockRegistry.Register<IUnitTestedModule2>(() => module2Mock.Object);
         }
 
-        [Test]
+        [Fact]
         public void CreateMock_OfUnitTestedModules()
         {
             Mock.Of<IUnitTestedModule>();
             Mock.Of<IUnitTestedModule2>();
         }
 
-        [Test]
+        [Fact]
         public void Resolve_PropertyInjectionWithComponentAndRealRegistry_Succeeds()
         {
             testedModule.Registry = realRegistry;
@@ -141,7 +140,7 @@ namespace Test.ModuleInject.UnitTesting
         }
 
 
-        [Test]
+        [Fact]
         public void Resolve_PropertyInjectionWithComponentAndMockRegistry_Succeeds()
         {
             testedModule.Registry = mockRegistry;
@@ -152,7 +151,7 @@ namespace Test.ModuleInject.UnitTesting
             AssertInjectionsCorrect();
         }
 
-        [Test]
+        [Fact]
         public void Resolve_MethodInjectionWithComponentAndRealRegistry_Succeeds()
         {
             testedModule.Registry = realRegistry;
@@ -165,7 +164,7 @@ namespace Test.ModuleInject.UnitTesting
 
 
 
-        [Test]
+        [Fact]
         public void Resolve_MethodInjectionWithComponentAndMockRegistry_Succeeds()
         {
             testedModule.Registry = mockRegistry;
@@ -176,7 +175,7 @@ namespace Test.ModuleInject.UnitTesting
             AssertInjectionsCorrect();
         }
 
-        [Test]
+        [Fact]
         public void Resolve_ConstructorInjectionWithComponentAndRealRegistry_Succeeds()
         {
             testedModule.Registry = realRegistry;
@@ -187,7 +186,7 @@ namespace Test.ModuleInject.UnitTesting
             AssertInjectionsCorrect();
         }
 
-        [Test]
+        [Fact]
         public void Resolve_ConstructorInjectionWithComponentAndMockRegistry_Succeeds()
         {
             testedModule.Registry = mockRegistry;
@@ -200,7 +199,7 @@ namespace Test.ModuleInject.UnitTesting
 
 
 
-        [Test]
+        [Fact]
         public void Resolve_PropertyInjectionWithFactoryAndRealRegistry_Succeeds()
         {
             testedModule.Registry = realRegistry;
@@ -212,7 +211,7 @@ namespace Test.ModuleInject.UnitTesting
         }
 
 
-        [Test]
+        [Fact]
         public void Resolve_PropertyInjectionWithFactoryAndMockRegistry_Succeeds()
         {
             testedModule.Registry = mockRegistry;
@@ -223,7 +222,7 @@ namespace Test.ModuleInject.UnitTesting
             AssertInjectionsCorrect(false);
         }
 
-        [Test]
+        [Fact]
         public void Resolve_MethodInjectionWithFactoryAndRealRegistry_Succeeds()
         {
             testedModule.Registry = realRegistry;
@@ -236,7 +235,7 @@ namespace Test.ModuleInject.UnitTesting
 
 
 
-        [Test]
+        [Fact]
         public void Resolve_MethodInjectionWithFactoryAndMockRegistry_Succeeds()
         {
             testedModule.Registry = mockRegistry;
@@ -247,7 +246,7 @@ namespace Test.ModuleInject.UnitTesting
             AssertInjectionsCorrect(false);
         }
 
-        [Test]
+        [Fact]
         public void Resolve_ConstructorInjectionWithFactoryAndRealRegistry_Succeeds()
         {
             testedModule.Registry = realRegistry;
@@ -258,7 +257,7 @@ namespace Test.ModuleInject.UnitTesting
             AssertInjectionsCorrect(false);
         }
 
-        [Test]
+        [Fact]
         public void Resolve_ConstructorInjectionWithFactoryAndMockRegistry_Succeeds()
         {
             testedModule.Registry = mockRegistry;
@@ -269,7 +268,7 @@ namespace Test.ModuleInject.UnitTesting
             AssertInjectionsCorrect(false);
         }
 
-        //[Test]
+        //[Fact]
         //public void Resolve_SimpleConstructAfterSettingInstanceFromExternal_ExternalSetWins()
         //{
         //    var externalComponent = new MainComponent1();
@@ -280,10 +279,10 @@ namespace Test.ModuleInject.UnitTesting
         //    testedModule.SimpleConstructWithoutInjection();
         //    testedModule.Resolve();
 
-        //    Assert.AreSame(externalComponent, testedModule.MainComponent1);
+        //    Assert.Same(externalComponent, testedModule.MainComponent1);
         //}
 
-        //[Test]
+        //[Fact]
         //public void Resolve_SimpleConstructAfterSettingPrerequisiteFromExternal_ExternalSetWins()
         //{
         //    var externalComponent = new MainComponent2();
@@ -294,19 +293,19 @@ namespace Test.ModuleInject.UnitTesting
         //    testedModule.SimpleConstructWithoutInjection();
         //    testedModule.Resolve();
 
-        //    Assert.AreSame(externalComponent, testedModule.ZMainComponent2);
-        //    Assert.AreSame(externalComponent, testedModule.MainComponent1.MainComponent2);
+        //    Assert.Same(externalComponent, testedModule.ZMainComponent2);
+        //    Assert.Same(externalComponent, testedModule.MainComponent1.MainComponent2);
         //}
 
         private void AssertInjectionsCorrect(bool sameInstance = true)
         {
-            Assert.IsNotNull(testedModule.RegistryModule);
-            Assert.IsNotNull(testedModule.MainComponent1);
-            Assert.IsNotNull(testedModule.MainComponent1.MainComponent2);
+            Assert.NotNull(testedModule.RegistryModule);
+            Assert.NotNull(testedModule.MainComponent1);
+            Assert.NotNull(testedModule.MainComponent1.MainComponent2);
 
             if (sameInstance)
             {
-                Assert.AreSame(testedModule.RegistryModule.MainComponent2, testedModule.MainComponent1.MainComponent2);
+                Assert.Same(testedModule.RegistryModule.MainComponent2, testedModule.MainComponent1.MainComponent2);
             }
         }
     }

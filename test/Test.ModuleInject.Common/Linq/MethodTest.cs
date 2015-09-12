@@ -4,10 +4,8 @@ namespace Test.ModuleInject.Common.Linq
 {
     using global::ModuleInject.Common.Exceptions;
     using global::ModuleInject.Common.Linq;
+    using Xunit;
 
-    using NUnit.Framework;
-
-    [TestFixture]
     public class MethodTest
     {
         private interface ITestClass
@@ -28,34 +26,34 @@ namespace Test.ModuleInject.Common.Linq
             public int Func() { return 0; }
         }
 
-        [TestCase]
+        [Fact]
         public void Get_MethodWithCastOfParameter_ReturnsProperty()
         {
             Method method = Method.Get((TestClass m) => ((ITestClass)m).GetHashCode());
 
-            Assert.IsNotNull(method);
+            Assert.NotNull(method);
         }
 
-        [TestCase]
+        [Fact]
         public void Get_MethodWithInvalidCastOfParameter_ErrorThrown()
         {
             Assert.Throws(typeof(ModuleInjectException), () =>
             {
                 Method method = Method.Get((TestClass m) => ((ITestClass)m).StringProperty);
 
-                Assert.IsNotNull(method);
+                Assert.NotNull(method);
             });
         }
 
-        [TestCase]
+        [Fact]
         public void Get_MethodWithoutParameters_ReturnsMethod()
         {
             Method method = Method.Get((string s) => s.Clone());
 
-            Assert.IsNotNull(method);
+            Assert.NotNull(method);
         }
 
-        [TestCase]
+        [Fact]
         public void Get_PropertyExpression_ThrowsException()
         {
             Assert.Throws(typeof(ModuleInjectException), () =>
@@ -64,7 +62,7 @@ namespace Test.ModuleInject.Common.Linq
             });
         }
 
-        [TestCase]
+        [Fact]
         public void Get_FieldExpression_ThrowsException()
         {
             Assert.Throws(typeof(ModuleInjectException), () =>
@@ -73,7 +71,7 @@ namespace Test.ModuleInject.Common.Linq
             });
         }
 
-        [TestCase]
+        [Fact]
         public void Get_SubMethodExpression_ThrowsException()
         {
             Assert.Throws(typeof(ModuleInjectException), () =>
@@ -82,12 +80,12 @@ namespace Test.ModuleInject.Common.Linq
             });
         }
 
-        [TestCase]
+        [Fact]
         public void OperatorString_ValidMemberExpression_ReturnsCorrectName()
         {
             Method method = Method.Get((string s) => s.Clone());
 
-            Assert.AreEqual("Clone", (string)method);
+            Assert.Equal("Clone", (string)method);
         }
     }
 }

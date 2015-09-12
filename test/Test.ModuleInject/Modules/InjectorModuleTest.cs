@@ -1,63 +1,63 @@
 ﻿using System.Linq;
 
-using NUnit.Framework;
+using Xunit;
 
 using Test.ModuleInject.Modules.TestModules;
 
 namespace Test.ModuleInject.Modules
 {
-    [TestFixture]
+    
     public class InjectorModuleTest
     {
         private InjectorModule _module;
-        [SetUp]
-        public void Init()
+
+        public InjectorModuleTest()
         {
             this._module = new InjectorModule();
         }
 
-        [TestCase]
+        [Fact]
         public void Resolve_RegisterClassInjectorWithPropertyValueAndInitialize1_EverythingIsCorrect()
         {
             this._module.RegisterClassInjectorWithPropertyValueAndInitialize1();
 
             this._module.Resolve();
 
-            Assert.IsNotNull(this._module.Component1);
-            Assert.IsNotNull(this._module.Component1.MainComponent2);
-            Assert.IsNotNull(this._module.Component1.MainComponent22);
-            Assert.IsNotNull(this._module.Component1.MainComponent23);
+            Assert.NotNull(this._module.Component1);
+            Assert.NotNull(this._module.Component1.MainComponent2);
+            Assert.NotNull(this._module.Component1.MainComponent22);
+            Assert.NotNull(this._module.Component1.MainComponent23);
 
-            Assert.AreEqual(this._module.Component2, this._module.Component1.MainComponent2);
-            Assert.AreEqual(this._module.Component22, this._module.Component1.MainComponent22);
+            Assert.Equal(this._module.Component2, this._module.Component1.MainComponent2);
+            Assert.Equal(this._module.Component22, this._module.Component1.MainComponent22);
         }
 
-        [TestCase]
+        [Fact]
         public void Resolve_RegisterInterfaceInjectorWithPropertyValueAndInitialize1_EverythingIsCorrect()
         {
             this._module.RegisterInterfaceInjectorWithPropertyValueAndInitialize1();
 
             this._module.Resolve();
 
-            Assert.IsNotNull(this._module.Component1);
-            Assert.IsNotNull(this._module.Component1.MainComponent2);
-            Assert.IsNotNull(this._module.Component1.MainComponent22);
-            Assert.IsNotNull(this._module.Component1.MainComponent23);
+            Assert.NotNull(this._module.Component1);
+            Assert.NotNull(this._module.Component1.MainComponent2);
+            Assert.NotNull(this._module.Component1.MainComponent22);
+            Assert.NotNull(this._module.Component1.MainComponent23);
 
-            Assert.AreEqual(this._module.Component2, this._module.Component1.MainComponent2);
-            Assert.AreEqual(this._module.Component22, this._module.Component1.MainComponent22);
+            Assert.Equal(this._module.Component2, this._module.Component1.MainComponent2);
+            Assert.Equal(this._module.Component22, this._module.Component1.MainComponent22);
         }
 
-        [TestCase]
+        [Fact]
         public void Resolve_GetWrappedComponent_EverythingIsCorrect()
         {
             this._module.Resolve();
 
             var wrappedComponent = _module.WrappedComponent as MainComponent2Wrapper;
 
-            Assert.IsNotNull(wrappedComponent);
-            Assert.AreEqual(2, wrappedComponent.IntProperty);
-            Assert.AreSame(_module.Component2, wrappedComponent.WrappedComponent);
+            Assert.NotNull(wrappedComponent);
+            Assert.Equal(2, wrappedComponent.IntProperty);
+            Assert.Same(_module.Component2, wrappedComponent.WrappedComponent);
         }
     }
 }

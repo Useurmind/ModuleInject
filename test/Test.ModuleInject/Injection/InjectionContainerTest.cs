@@ -5,36 +5,37 @@ using System.Text;
 using ModuleInject.Common.Exceptions;
 using ModuleInject.Modularity.Registry;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 
 namespace Test.ModuleInject.Injection
 {
-    [TestFixture]
+    
     public class InjectionContainerTest
     {
         private InjectionContainer container;
 
-        [SetUp]
-        public void Setup()
+        public InjectionContainerTest()
         {
             this.container = new InjectionContainer();
         }
 
-        [TestCase(typeof(object), "")]
-        [TestCase(typeof(object), "fdghdfghjgf")]
+        [Theory]
+        [InlineData(typeof(object), "")]
+        [InlineData(typeof(object), "fdghdfghjgf")]
         public void TestRegisterObject(Type type, string name)
         {
             TestRegistration(type, name, () => new object());
         }
 
-        [TestCase(typeof(int), "")]
-        [TestCase(typeof(int), "asdfg")]
+        [Theory]
+        [InlineData(typeof(int), "")]
+        [InlineData(typeof(int), "asdfg")]
         public void TestRegisterInt(Type type, string name)
         {
             TestRegistration(type, name, () => 234435);
         }
 
-        [Test]
+        [Fact]
         public void DoubleRegister_ExceptionThrown()
         {
             var type = typeof(object);
@@ -48,7 +49,7 @@ namespace Test.ModuleInject.Injection
             });            
         }
 
-        [Test]
+        [Fact]
         public void GetComponent_NonRegisteredComponent_ExceptionThrown()
         {
             var type = typeof(object);
@@ -60,7 +61,7 @@ namespace Test.ModuleInject.Injection
             });
         }
 
-        [Test]
+        [Fact]
         public void Dispose_WithDisposableComponentResolved_ComponentDisposed()
         {
             var type = typeof(object);
@@ -74,7 +75,7 @@ namespace Test.ModuleInject.Injection
 
             this.container.Dispose();
 
-            Assert.AreSame(disposableMock.Object, mockObject);
+            Assert.Same(disposableMock.Object, mockObject);
             disposableMock.Verify(x => x.Dispose(), Times.Once);
         }
 
@@ -86,9 +87,9 @@ namespace Test.ModuleInject.Injection
             object instance1 = this.container.GetComponent(type, name);
             object instance2 = this.container.GetComponent(type, name);
 
-            Assert.IsTrue(isRegistered);
-            Assert.IsNotNull(instance1);
-            Assert.AreSame(instance1, instance2);
+            Assert.True(isRegistered);
+            Assert.NotNull(instance1);
+            Assert.Same(instance1, instance2);
         }
 
         public interface ITestDisposable : IDisposable { }

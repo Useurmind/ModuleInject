@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using ModuleInject.Injection;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 
 namespace Test.ModuleInject.Injection
 {
-    [TestFixture]
+    
     public class RememberAndDisposeStrategyTest
     {
-        [Test]
+        [Fact]
         public void AddInstancesAndDispose_AllDisposablesDisposed()
         {
             var disposableMock = new Mock<IDisposable>();

@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ModuleInject.Provider.ServiceSources;
-using NUnit.Framework;
+using Xunit;
 
 namespace Test.ModuleInject.Provider.ServiceSources
 {
-    [TestFixture]
+    
     public class PropertyServiceSourceTest
     {
-        [Test]
+        [Fact]
         public void Get_ReturnsProperty()
         {
             var instance = "hallo service source";
@@ -18,7 +18,7 @@ namespace Test.ModuleInject.Provider.ServiceSources
 
             var source = new PropertyServiceSource(instance, propertyInfo);
 
-            Assert.AreEqual(instance.Length, (int)source.Get());
+            Assert.Equal(instance.Length, (int)source.Get());
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using ModuleInject.Injection;
-using NUnit.Framework;
+using Xunit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Test.ModuleInject.Injection
 {
-	[TestFixture]
+	
 	public class InjectionRegisterTest
 	{
 		private interface ITestComponent
@@ -22,7 +22,7 @@ namespace Test.ModuleInject.Injection
 			public string StringProperty { get; set; }
 		}
 
-		[Test]
+		[Fact]
 		public void Create_Next_ReturnsNewInstanceEachTime()
 		{
 			object stubContext = null;
@@ -33,12 +33,12 @@ namespace Test.ModuleInject.Injection
 			var instance1 = injectionRegister.GetInstance();
 			var instance2 = injectionRegister.GetInstance();
 
-			Assert.IsNotNull(instance1);
-			Assert.IsNotNull(instance2);
-			Assert.AreNotSame(instance1, instance2);
+			Assert.NotNull(instance1);
+			Assert.NotNull(instance2);
+			Assert.NotSame(instance1, instance2);
 		}
 
-		[Test]
+		[Fact]
 		public void Inject_Next_ReturnsCorrectlyInjectedInstance()
 		{
 			string stringValue = "Adfadhsdfghfd";
@@ -56,12 +56,12 @@ namespace Test.ModuleInject.Injection
 
 			var instance = injectionRegister.GetInstance();
 
-			Assert.IsNotNull(instance);
-			Assert.AreEqual(5, instance.IntProperty);
-			Assert.AreEqual(stringValue, instance.StringProperty);
+			Assert.NotNull(instance);
+			Assert.Equal(5, instance.IntProperty);
+			Assert.Equal(stringValue, instance.StringProperty);
 		}
 
-		[Test]
+		[Fact]
 		public void Change_Next_ReturnsInstanceReturnedByChange()
 		{
 			object stubContext = null;
@@ -74,11 +74,11 @@ namespace Test.ModuleInject.Injection
 
 			var instance = injectionRegister.GetInstance();
 
-			Assert.IsNotNull(instance);
-			Assert.AreSame(changedComponent, instance);
+			Assert.NotNull(instance);
+			Assert.Same(changedComponent, instance);
 		}
 
-		[Test]
+		[Fact]
 		public void Next_ContextsInCreateInjectChangeAreInitialContext()
 		{
 			object stubContext = new object();
@@ -105,10 +105,10 @@ namespace Test.ModuleInject.Injection
 
 			var instance = injectionRegister.GetInstance();
 
-			Assert.IsNotNull(instance);
-			Assert.AreSame(stubContext, createContext);
-			Assert.AreSame(stubContext, injectContext);
-			Assert.AreSame(stubContext, changeContext);
+			Assert.NotNull(instance);
+			Assert.Same(stubContext, createContext);
+			Assert.Same(stubContext, injectContext);
+			Assert.Same(stubContext, changeContext);
 		}
 	}
 }

@@ -1,5 +1,5 @@
 ﻿using ModuleInject.Utility;
-using NUnit.Framework;
+using Xunit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace Test.ModuleInject.Utility
 {
     using global::ModuleInject.Common.Linq;
 
-    [TestFixture]
+    
     public class MemberChainEvaluatorTest
     {
         public class TestClass1
@@ -31,13 +31,12 @@ namespace Test.ModuleInject.Utility
 
         private MemberChainEvaluator _extractor;
 
-        [SetUp]
-        public void Init()
+        public MemberChainEvaluatorTest()
         {
             _extractor = new MemberChainEvaluator();
         }
 
-        [TestCase]
+        [Fact]
         public void Extract_ExpressionWithDepth1_ExtractsSingleMember()
         {
             string propertyName = Property.Get((TestClass2 x) => x.IntProperty);
@@ -45,16 +44,16 @@ namespace Test.ModuleInject.Utility
 
             IList<Expression> memberExps = _extractor.Extract(exp.Body);
 
-            Assert.AreEqual(1, memberExps.Count);
-            Assert.AreEqual(typeof(int), _extractor.MemberType);
-            Assert.AreEqual(typeof(int), _extractor.ReturnType);
-            Assert.AreEqual(typeof(TestClass2), _extractor.RootType);
-            Assert.AreEqual("x", _extractor.RootName);
-            Assert.AreEqual(propertyName, ((MemberExpression)memberExps[0]).Member.Name);
-            Assert.AreEqual(propertyName, _extractor.MemberPath);
+            Assert.Equal(1, memberExps.Count);
+            Assert.Equal(typeof(int), _extractor.MemberType);
+            Assert.Equal(typeof(int), _extractor.ReturnType);
+            Assert.Equal(typeof(TestClass2), _extractor.RootType);
+            Assert.Equal("x", _extractor.RootName);
+            Assert.Equal(propertyName, ((MemberExpression)memberExps[0]).Member.Name);
+            Assert.Equal(propertyName, _extractor.MemberPath);
         }
 
-        [TestCase]
+        [Fact]
         public void Extract_ExpressionWithDepth2_ExtractsAllMembers()
         {
             string propertyName1 = Property.Get((TestClass1 x) => x.TestClass2);
@@ -63,17 +62,17 @@ namespace Test.ModuleInject.Utility
 
             IList<Expression> memberExps = _extractor.Extract(exp.Body);
 
-            Assert.AreEqual(2, memberExps.Count);
-            Assert.AreEqual(typeof(int), _extractor.MemberType);
-            Assert.AreEqual(typeof(int), _extractor.ReturnType);
-            Assert.AreEqual(typeof(TestClass1), _extractor.RootType);
-            Assert.AreEqual("x", _extractor.RootName);
-            Assert.AreEqual(propertyName1, ((MemberExpression)memberExps[0]).Member.Name);
-            Assert.AreEqual(propertyName2, ((MemberExpression)memberExps[1]).Member.Name);
-            Assert.AreEqual(propertyName1 + "." + propertyName2, _extractor.MemberPath);
+            Assert.Equal(2, memberExps.Count);
+            Assert.Equal(typeof(int), _extractor.MemberType);
+            Assert.Equal(typeof(int), _extractor.ReturnType);
+            Assert.Equal(typeof(TestClass1), _extractor.RootType);
+            Assert.Equal("x", _extractor.RootName);
+            Assert.Equal(propertyName1, ((MemberExpression)memberExps[0]).Member.Name);
+            Assert.Equal(propertyName2, ((MemberExpression)memberExps[1]).Member.Name);
+            Assert.Equal(propertyName1 + "." + propertyName2, _extractor.MemberPath);
         }
 
-        [TestCase]
+        [Fact]
         public void Extract_ExpressionWithFunctionCall_CorrectExpressionsInList()
         {
             Expression<Func<TestClass1, int>> exp = (TestClass1 x) => x.IntFunction();
@@ -81,16 +80,16 @@ namespace Test.ModuleInject.Utility
 
             IList<Expression> memberExps = _extractor.Extract(exp.Body);
 
-            Assert.AreEqual(1, memberExps.Count);
-            Assert.AreEqual(typeof(int), _extractor.MemberType);
-            Assert.AreEqual(typeof(int), _extractor.ReturnType);
-            Assert.AreEqual(typeof(TestClass1), _extractor.RootType);
-            Assert.AreEqual("x", _extractor.RootName);
-            Assert.AreEqual(methodName1, ((MethodCallExpression)memberExps[0]).Method.Name);
-            Assert.AreEqual(methodName1, _extractor.MemberPath);
+            Assert.Equal(1, memberExps.Count);
+            Assert.Equal(typeof(int), _extractor.MemberType);
+            Assert.Equal(typeof(int), _extractor.ReturnType);
+            Assert.Equal(typeof(TestClass1), _extractor.RootType);
+            Assert.Equal("x", _extractor.RootName);
+            Assert.Equal(methodName1, ((MethodCallExpression)memberExps[0]).Method.Name);
+            Assert.Equal(methodName1, _extractor.MemberPath);
         }
 
-        [TestCase]
+        [Fact]
         public void Extract_ExpressionWithDualFunctionCall_CorrectExpressionsInList()
         {
             Expression<Func<TestClass1, int>> exp = (TestClass1 x) => x.TestClass2Function().IntFunction();
@@ -99,17 +98,17 @@ namespace Test.ModuleInject.Utility
 
             IList<Expression> memberExps = _extractor.Extract(exp.Body);
 
-            Assert.AreEqual(2, memberExps.Count);
-            Assert.AreEqual(typeof(int), _extractor.MemberType);
-            Assert.AreEqual(typeof(int), _extractor.ReturnType);
-            Assert.AreEqual(typeof(TestClass1), _extractor.RootType);
-            Assert.AreEqual("x", _extractor.RootName);
-            Assert.AreEqual(methodName1, ((MethodCallExpression)memberExps[0]).Method.Name);
-            Assert.AreEqual(methodName2, ((MethodCallExpression)memberExps[1]).Method.Name);
-            Assert.AreEqual(methodName1 + "." + methodName2, _extractor.MemberPath);
+            Assert.Equal(2, memberExps.Count);
+            Assert.Equal(typeof(int), _extractor.MemberType);
+            Assert.Equal(typeof(int), _extractor.ReturnType);
+            Assert.Equal(typeof(TestClass1), _extractor.RootType);
+            Assert.Equal("x", _extractor.RootName);
+            Assert.Equal(methodName1, ((MethodCallExpression)memberExps[0]).Method.Name);
+            Assert.Equal(methodName2, ((MethodCallExpression)memberExps[1]).Method.Name);
+            Assert.Equal(methodName1 + "." + methodName2, _extractor.MemberPath);
         }
 
-        [TestCase]
+        [Fact]
         public void Extract_ExpressionWithPropertyThenFunctionCall_CorrectExpressionsInList()
         {
             Expression<Func<TestClass1, int>> exp = (TestClass1 x) => x.TestClass2.IntFunction();
@@ -118,17 +117,17 @@ namespace Test.ModuleInject.Utility
 
             IList<Expression> memberExps = _extractor.Extract(exp.Body);
 
-            Assert.AreEqual(2, memberExps.Count);
-            Assert.AreEqual(typeof(int), _extractor.MemberType);
-            Assert.AreEqual(typeof(int), _extractor.ReturnType);
-            Assert.AreEqual(typeof(TestClass1), _extractor.RootType);
-            Assert.AreEqual("x", _extractor.RootName);
-            Assert.AreEqual(propertyName1, ((MemberExpression)memberExps[0]).Member.Name);
-            Assert.AreEqual(methodName2, ((MethodCallExpression)memberExps[1]).Method.Name);
-            Assert.AreEqual(propertyName1 + "." + methodName2, _extractor.MemberPath);
+            Assert.Equal(2, memberExps.Count);
+            Assert.Equal(typeof(int), _extractor.MemberType);
+            Assert.Equal(typeof(int), _extractor.ReturnType);
+            Assert.Equal(typeof(TestClass1), _extractor.RootType);
+            Assert.Equal("x", _extractor.RootName);
+            Assert.Equal(propertyName1, ((MemberExpression)memberExps[0]).Member.Name);
+            Assert.Equal(methodName2, ((MethodCallExpression)memberExps[1]).Method.Name);
+            Assert.Equal(propertyName1 + "." + methodName2, _extractor.MemberPath);
         }
 
-        [TestCase]
+        [Fact]
         public void Extract_ExpressionWithFunctionCallThenProperty_CorrectExpressionsInList()
         {
             Expression<Func<TestClass1, int>> exp = (TestClass1 x) => x.TestClass2Function().IntProperty;
@@ -137,17 +136,17 @@ namespace Test.ModuleInject.Utility
 
             IList<Expression> memberExps = _extractor.Extract(exp.Body);
 
-            Assert.AreEqual(2, memberExps.Count);
-            Assert.AreEqual(typeof(int), _extractor.MemberType);
-            Assert.AreEqual(typeof(int), _extractor.ReturnType);
-            Assert.AreEqual(typeof(TestClass1), _extractor.RootType);
-            Assert.AreEqual("x", _extractor.RootName);
-            Assert.AreEqual(methodName1, ((MethodCallExpression)memberExps[0]).Method.Name);
-            Assert.AreEqual(propertyName2, ((MemberExpression)memberExps[1]).Member.Name);
-            Assert.AreEqual(methodName1 + "." + propertyName2, _extractor.MemberPath);
+            Assert.Equal(2, memberExps.Count);
+            Assert.Equal(typeof(int), _extractor.MemberType);
+            Assert.Equal(typeof(int), _extractor.ReturnType);
+            Assert.Equal(typeof(TestClass1), _extractor.RootType);
+            Assert.Equal("x", _extractor.RootName);
+            Assert.Equal(methodName1, ((MethodCallExpression)memberExps[0]).Method.Name);
+            Assert.Equal(propertyName2, ((MemberExpression)memberExps[1]).Member.Name);
+            Assert.Equal(methodName1 + "." + propertyName2, _extractor.MemberPath);
         }
 
-        [TestCase]
+        [Fact]
         public void Extract_ExpressionWithPropertyAndCast_CorrectExpressionsInList()
         {
             Expression<Func<TestClass2, double>> exp = (TestClass2 x) => (double)x.IntProperty;
@@ -155,13 +154,13 @@ namespace Test.ModuleInject.Utility
 
             IList<Expression> memberExps = _extractor.Extract(exp.Body);
 
-            Assert.AreEqual(1, memberExps.Count);
-            Assert.AreEqual(typeof(int), _extractor.MemberType);
-            Assert.AreEqual(typeof(double), _extractor.ReturnType);
-            Assert.AreEqual(typeof(TestClass2), _extractor.RootType);
-            Assert.AreEqual("x", _extractor.RootName);
-            Assert.AreEqual(propertyName2, ((MemberExpression)memberExps[0]).Member.Name);
-            Assert.AreEqual( propertyName2, _extractor.MemberPath);
+            Assert.Equal(1, memberExps.Count);
+            Assert.Equal(typeof(int), _extractor.MemberType);
+            Assert.Equal(typeof(double), _extractor.ReturnType);
+            Assert.Equal(typeof(TestClass2), _extractor.RootType);
+            Assert.Equal("x", _extractor.RootName);
+            Assert.Equal(propertyName2, ((MemberExpression)memberExps[0]).Member.Name);
+            Assert.Equal( propertyName2, _extractor.MemberPath);
         }
     }
 }

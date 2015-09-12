@@ -2,13 +2,13 @@
 
 using ModuleInject.Common.Exceptions;
 
-using NUnit.Framework;
+using Xunit;
 
 using Test.ModuleInject.Modules.TestModules;
 
 namespace Test.ModuleInject.Modules
 {
-    [TestFixture]
+    
     public class RegistryUsingModuleTest
     {
         private RegistryUsingModule _module;
@@ -29,13 +29,12 @@ namespace Test.ModuleInject.Modules
             }
         }
 
-        [SetUp]
-        public void Setup()
+        public RegistryUsingModuleTest()
         {
             this._module = new RegistryUsingModule();
         }
 
-        [Test]
+        [Fact]
         public void Resolve_NoRegistrySet_ExceptionForMissingSubmodule()
         {
             Assert.Throws(typeof(ModuleInjectException), () =>
@@ -45,7 +44,7 @@ namespace Test.ModuleInject.Modules
             });
         }
 
-        [Test]
+        [Fact]
         public void Resolved_AfterApplyingRegistryWithSubmodule_SubmoduleIsResolved()
         {
             this._module.RegisterComponentFromPublicSubmodule();
@@ -54,11 +53,11 @@ namespace Test.ModuleInject.Modules
 
             var registryInstance = this._module.Registry.GetComponent(typeof(ISubModule));
 
-            Assert.IsNotNull(this.PropertyModule.SubModule);
-            Assert.AreSame(registryInstance, this.PropertyModule.SubModule);
+            Assert.NotNull(this.PropertyModule.SubModule);
+            Assert.Same(registryInstance, this.PropertyModule.SubModule);
         }
 
-        [Test]
+        [Fact]
         public void Resolved_AfterApplyingRegistry_RegistryComponentResolved()
         {
             this._module.RegisterComponentFromPublicSubmodule();
@@ -68,15 +67,15 @@ namespace Test.ModuleInject.Modules
             IPropertyModule registryInstance = (IPropertyModule)this._module.Registry.GetComponent(typeof(IPropertyModule));
             var registrySubInstance = this._module.Registry.GetComponent(typeof(ISubModule));
 
-            Assert.IsNotNull(this.PrivatePropertyModule);
-            Assert.AreSame(registryInstance, this.PrivatePropertyModule);
-            Assert.IsNotNull(this.PrivatePropertyModule.SubModule);
-            Assert.AreSame(registrySubInstance, this.PrivatePropertyModule.SubModule);
-            Assert.IsNotNull(this._module.MainComponent1);
-            Assert.AreSame(registryInstance.Component2, this._module.MainComponent1.MainComponent2);
+            Assert.NotNull(this.PrivatePropertyModule);
+            Assert.Same(registryInstance, this.PrivatePropertyModule);
+            Assert.NotNull(this.PrivatePropertyModule.SubModule);
+            Assert.Same(registrySubInstance, this.PrivatePropertyModule.SubModule);
+            Assert.NotNull(this._module.MainComponent1);
+            Assert.Same(registryInstance.Component2, this._module.MainComponent1.MainComponent2);
         }
 
-        [Test]
+        [Fact]
         public void Resolved_AfterRegisteringPrivateComponentAndApplyingRegistry_RegistryComponentWinsOVerRegistryComponent()
         {
             this._module.RegisterComponentFromPublicSubmodule();
@@ -87,13 +86,13 @@ namespace Test.ModuleInject.Modules
             var registryInstance = this._module.Registry.GetComponent(typeof(IPropertyModule));
             var registrySubInstance = this._module.Registry.GetComponent(typeof(ISubModule));
 
-            Assert.IsNotNull(this.PrivatePropertyModule);
-            Assert.AreNotSame(registryInstance, this.PrivatePropertyModule);
-            Assert.IsNotNull(this.PrivatePropertyModule.SubModule);
-            Assert.AreSame(registrySubInstance, this.PrivatePropertyModule.SubModule);
+            Assert.NotNull(this.PrivatePropertyModule);
+            Assert.NotSame(registryInstance, this.PrivatePropertyModule);
+            Assert.NotNull(this.PrivatePropertyModule.SubModule);
+            Assert.Same(registrySubInstance, this.PrivatePropertyModule.SubModule);
         }
         
-        [Test]
+        [Fact]
         public void Resolved_AfterRegisteringPropertyOfPrivateComponentFromPrivateSubmodule_ComponentOfSubmoduleInjected()
         {
             this._module.RegisterComponentFromPrivateSubmodule();
@@ -102,10 +101,10 @@ namespace Test.ModuleInject.Modules
 
             IPropertyModule registryInstance = (IPropertyModule)this._module.Registry.GetComponent(typeof(IPropertyModule));
 
-            Assert.AreSame(registryInstance.Component2, this._module.MainComponent1.MainComponent2);
+            Assert.Same(registryInstance.Component2, this._module.MainComponent1.MainComponent2);
         }
 
-        [Test]
+        [Fact]
         public void Dispose__RegistryIsDisposed()
         {
             this._module.RegisterComponentFromPublicSubmodule();
@@ -114,7 +113,7 @@ namespace Test.ModuleInject.Modules
 
             this._module.Dispose();
 
-            Assert.IsTrue(this._module.Registry.IsDisposed);
+            Assert.True(this._module.Registry.IsDisposed);
         }
     }
 }

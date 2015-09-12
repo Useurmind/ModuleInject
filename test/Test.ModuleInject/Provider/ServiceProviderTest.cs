@@ -6,22 +6,21 @@ using ModuleInject.Common.Exceptions;
 using ModuleInject.Interfaces.Provider;
 using ModuleInject.Provider;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 
 namespace Test.ModuleInject.Provider
 {
-    [TestFixture]
+    
     public class ServiceProviderTest
     {
         private ServiceProvider serviceProvider;
 
-        [SetUp]
-        public void Setup()
+        public ServiceProviderTest()
         {
             this.serviceProvider = new ServiceProvider();
         }
 
-        [Test]
+        [Fact]
         public void GetService_CorrectSetup_InstanceReturned()
         {
             serviceProvider.AddServiceSource(SourceOf<ICloneable>());
@@ -29,11 +28,11 @@ namespace Test.ModuleInject.Provider
 
             var result = serviceProvider.GetService<ICloneable>();
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ICloneable>(result);
+            Assert.NotNull(result);
+            Assert.IsAssignableFrom<ICloneable>(result);
         }
 
-        [Test]
+        [Fact]
         public void AddServiceSource_Twice_ThrowsException()
         {
             Assert.Throws(typeof(ModuleInjectException), () =>
@@ -43,7 +42,7 @@ namespace Test.ModuleInject.Provider
             });
         }
 
-        [Test]
+        [Fact]
         public void GetService_MissingRegistration_ReturnsNull()
         {
             serviceProvider.AddServiceSource(SourceOf<ICloneable>());
@@ -51,15 +50,15 @@ namespace Test.ModuleInject.Provider
 
             var result = serviceProvider.GetService<IAppDomainSetup>();
 
-            Assert.IsNull(result);
+            Assert.Null(result);
         }
 
-        [Test]
+        [Fact]
         public void GetService_NoRegistration_ReturnsNull()
         {
             var result = serviceProvider.GetService<ICloneable>();
 
-            Assert.IsNull(result);
+            Assert.Null(result);
         }
 
         private static ISourceOfService SourceOf<TService>()

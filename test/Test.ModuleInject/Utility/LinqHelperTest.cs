@@ -1,16 +1,15 @@
 ﻿using ModuleInject.Utility;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using Xunit;
 
 namespace Test.ModuleInject.Utility
 {
     using global::ModuleInject.Common.Linq;
-
-    [TestFixture]
+    
     public class LinqHelperTest
     {
         public class TestClass1
@@ -25,7 +24,7 @@ namespace Test.ModuleInject.Utility
             public int IntProperty { get; set; }
         }
 
-        [TestCase]
+        [Fact]
         public void GetMemberPathAndType_MemberExpressionDepth1_ReturnsPropertyNameAndType()
         {
             Expression<Func<TestClass2, int>> exp = x => x.IntProperty;
@@ -36,11 +35,11 @@ namespace Test.ModuleInject.Utility
 
             LinqHelper.GetMemberPathAndType(exp, out actualPath, out actualType);
 
-            Assert.AreEqual(expectedPath, actualPath);
-            Assert.AreEqual(typeof(int), actualType);
+            Assert.Equal(expectedPath, actualPath);
+            Assert.Equal(typeof(int), actualType);
         }
 
-        [TestCase]
+        [Fact]
         public void GetMemberPathAndType_MemberExpressionDepth1WithConvert_ReturnsPropertyNameAndType()
         {
             Expression<Func<TestClass1, ITestClass2>> exp = x => (ITestClass2)x.TestClass2;
@@ -51,11 +50,11 @@ namespace Test.ModuleInject.Utility
 
             LinqHelper.GetMemberPathAndType(exp, out actualPath, out actualType);
 
-            Assert.AreEqual(expectedPath, actualPath);
-            Assert.AreEqual(typeof(TestClass2), actualType);
+            Assert.Equal(expectedPath, actualPath);
+            Assert.Equal(typeof(TestClass2), actualType);
         }
 
-        [TestCase]
+        [Fact]
         public void GetMemberPathAndType_MethodExpressionDepth1_ReturnsMethodNameAndReturnType()
         {
             Expression<Func<TestClass1, int>> exp = x => x.GetHashCode();
@@ -66,11 +65,11 @@ namespace Test.ModuleInject.Utility
 
             LinqHelper.GetMemberPathAndType(exp, out actualPath, out actualType);
 
-            Assert.AreEqual(expectedPath, actualPath);
-            Assert.AreEqual(typeof(int), actualType);
+            Assert.Equal(expectedPath, actualPath);
+            Assert.Equal(typeof(int), actualType);
         }
 
-        [TestCase]
+        [Fact]
         public void GetMemberPath_MemberExpressionDepth1_ReturnsPropertyName()
         {
             Expression<Func<TestClass2, int>> exp = x => x.IntProperty;
@@ -78,10 +77,10 @@ namespace Test.ModuleInject.Utility
 
             string result = LinqHelper.GetMemberPath(exp);
 
-            Assert.AreEqual(expectedPath, result);
+            Assert.Equal(expectedPath, result);
         }
 
-        [TestCase]
+        [Fact]
         public void GetMemberPath_MemberExpressionDepth2_ReturnsCorrectPath()
         {
             Expression<Func<TestClass1, int>> exp = x => x.TestClass2.IntProperty;
@@ -90,10 +89,10 @@ namespace Test.ModuleInject.Utility
 
             string result = LinqHelper.GetMemberPath(exp);
 
-            Assert.AreEqual(expectedPath, result);
+            Assert.Equal(expectedPath, result);
         }
 
-        [TestCase]
+        [Fact]
         public void GetMemberPathWithDepth_MemberExpressionDepth1_ReturnsCorrectPathAndDepth1()
         {
             Expression<Func<TestClass2, int>> exp = x => x.IntProperty;
@@ -103,8 +102,8 @@ namespace Test.ModuleInject.Utility
             int actualDepth;
             string result = LinqHelper.GetMemberPath(exp, out actualDepth);
 
-            Assert.AreEqual(expectedPath, result);
-            Assert.AreEqual(expectedDepth, actualDepth);
+            Assert.Equal(expectedPath, result);
+            Assert.Equal(expectedDepth, actualDepth);
         }
     }
 }

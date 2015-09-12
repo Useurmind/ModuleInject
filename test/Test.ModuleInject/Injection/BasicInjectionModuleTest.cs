@@ -1,6 +1,6 @@
 ﻿using ModuleInject.Injection;
 using ModuleInject.Interfaces.Injection;
-using NUnit.Framework;
+using Xunit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Test.ModuleInject.Injection
 {
-	[TestFixture]
+	
 	public class BasicInjectionModuleTest
 	{
 		private interface ITestComponent
@@ -185,7 +185,7 @@ namespace Test.ModuleInject.Injection
 			}
 		}
 
-		[TestCase]
+		[Fact]
 		public void UseConstructorInjection_WorksCorrectly()
 		{
 			var testModule = new TestModule();
@@ -196,7 +196,7 @@ namespace Test.ModuleInject.Injection
 			AssertComponentsCorrectlyInjected(testModule);
 		}
 
-		[TestCase]
+		[Fact]
 		public void UsePropertyInjection_WorksCorrectly()
 		{
 			var testModule = new TestModule();
@@ -207,7 +207,7 @@ namespace Test.ModuleInject.Injection
 			AssertComponentsCorrectlyInjected(testModule);
 		}
 
-		[TestCase]
+		[Fact]
 		public void UseMethodInjection_WorksCorrectly()
 		{
 			var testModule = new TestModule();
@@ -218,7 +218,7 @@ namespace Test.ModuleInject.Injection
 			AssertComponentsCorrectlyInjected(testModule);
 		}
 
-		[TestCase]
+		[Fact]
 		public void ApplySingleWrapperAroundComponent_WorksCorrectly()
 		{
 			var testModule = new TestModule();
@@ -229,15 +229,15 @@ namespace Test.ModuleInject.Injection
 			var component1Wrapper = testModule.Component1 as TestComponentWrapper;
 			var component1 = component1Wrapper.WrappedComponent as TestComponent;
 
-			Assert.IsNotNull(component1Wrapper);
-			Assert.IsNotNull(component1);
-			Assert.AreEqual(1, component1Wrapper.Number);
-			Assert.IsInstanceOf<TestComponentWrapper>(component1Wrapper);
-			Assert.IsInstanceOf<TestComponent>(component1);
-			Assert.IsNotNull(component1.SubComponent1);
+			Assert.NotNull(component1Wrapper);
+			Assert.NotNull(component1);
+			Assert.Equal(1, component1Wrapper.Number);
+			Assert.IsType<TestComponentWrapper>(component1Wrapper);
+			Assert.IsType<TestComponent>(component1);
+			Assert.NotNull(component1.SubComponent1);
 		}
 
-		[TestCase]
+		[Fact]
 		public void ApplyMultipleWrapperAroundComponent_WorksCorrectly()
 		{
 			var testModule = new TestModule();
@@ -249,18 +249,18 @@ namespace Test.ModuleInject.Injection
 			var wrapper1 = wrapper2.WrappedComponent as TestComponentWrapper;
 			var component1 = wrapper1.WrappedComponent as TestComponent;
 
-			Assert.IsNotNull(wrapper2);
-			Assert.IsNotNull(wrapper1);
-			Assert.IsNotNull(component1);
-			Assert.IsInstanceOf<TestComponentWrapper>(wrapper2);
-			Assert.IsInstanceOf<TestComponentWrapper>(wrapper1);
-			Assert.IsInstanceOf<TestComponent>(component1);
-			Assert.AreEqual(2, wrapper2.Number);
-			Assert.AreEqual(1, wrapper1.Number);
-			Assert.IsNotNull(component1.SubComponent1);
+			Assert.NotNull(wrapper2);
+			Assert.NotNull(wrapper1);
+			Assert.NotNull(component1);
+			Assert.IsType<TestComponentWrapper>(wrapper2);
+			Assert.IsType<TestComponentWrapper>(wrapper1);
+			Assert.IsType<TestComponent>(component1);
+			Assert.Equal(2, wrapper2.Number);
+			Assert.Equal(1, wrapper1.Number);
+			Assert.NotNull(component1.SubComponent1);
 		}
 
-		[TestCase]
+		[Fact]
 		public void CombineAllPossibleStuff_WorksCorrectly()
 		{
 			var testModule = new TestModule();
@@ -272,37 +272,37 @@ namespace Test.ModuleInject.Injection
 			var wrapper1 = wrapper2.WrappedComponent as TestComponentWrapper;
 			var component1 = wrapper1.WrappedComponent as TestComponent;
 
-			Assert.IsNotNull(wrapper2);
-			Assert.IsNotNull(wrapper1);
-			Assert.IsNotNull(component1);
-			Assert.AreEqual(2, wrapper2.Number);
-			Assert.AreEqual(1, wrapper1.Number);
-			Assert.IsNotNull(component1.SubComponent1);
-			Assert.IsNotNull(component1.SubComponent2);
-			Assert.IsNotNull(component1.SubComponent3);
-			Assert.IsNotNull(component1.SubComponent1.SubSubComponent1);
-			Assert.IsNotNull(component1.SubComponent2.SubSubComponent1);
-			Assert.IsNotNull(component1.SubComponent3.SubSubComponent1);
-			Assert.AreNotEqual(component1.SubComponent1, component1.SubComponent2);
-			Assert.AreNotEqual(component1.SubComponent1, component1.SubComponent3);
-			Assert.AreNotEqual(component1.SubComponent2, component1.SubComponent3);
+			Assert.NotNull(wrapper2);
+			Assert.NotNull(wrapper1);
+			Assert.NotNull(component1);
+			Assert.Equal(2, wrapper2.Number);
+			Assert.Equal(1, wrapper1.Number);
+			Assert.NotNull(component1.SubComponent1);
+			Assert.NotNull(component1.SubComponent2);
+			Assert.NotNull(component1.SubComponent3);
+			Assert.NotNull(component1.SubComponent1.SubSubComponent1);
+			Assert.NotNull(component1.SubComponent2.SubSubComponent1);
+			Assert.NotNull(component1.SubComponent3.SubSubComponent1);
+			Assert.NotEqual(component1.SubComponent1, component1.SubComponent2);
+			Assert.NotEqual(component1.SubComponent1, component1.SubComponent3);
+			Assert.NotEqual(component1.SubComponent2, component1.SubComponent3);
 		}
 
 		private static void AssertComponentsCorrectlyInjected(TestModule testModule)
 		{
-			Assert.IsNotNull(testModule.Component1);
-			Assert.IsNotNull(testModule.SubSubComponent1);
-			Assert.IsNotNull(testModule.SubComponent1);
-			Assert.IsNotNull(testModule.Component1.SubComponent1);
-			Assert.IsNotNull(testModule.Component1.SubComponent1.SubSubComponent1);
+			Assert.NotNull(testModule.Component1);
+			Assert.NotNull(testModule.SubSubComponent1);
+			Assert.NotNull(testModule.SubComponent1);
+			Assert.NotNull(testModule.Component1.SubComponent1);
+			Assert.NotNull(testModule.Component1.SubComponent1.SubSubComponent1);
 
-			Assert.IsNotNull(testModule.Component2);
-			Assert.IsNotNull(testModule.SubSubComponent2);
-			Assert.IsNotNull(testModule.SubComponent2);
-			Assert.IsNotNull(testModule.Component2.SubComponent1);
+			Assert.NotNull(testModule.Component2);
+			Assert.NotNull(testModule.SubSubComponent2);
+			Assert.NotNull(testModule.SubComponent2);
+			Assert.NotNull(testModule.Component2.SubComponent1);
 
-			Assert.AreSame(testModule.Component2.SubComponent1, testModule.SubComponent2);
-			Assert.AreSame(testModule.Component2.SubComponent1.SubSubComponent1, testModule.SubSubComponent2);
+			Assert.Same(testModule.Component2.SubComponent1, testModule.SubComponent2);
+			Assert.Same(testModule.Component2.SubComponent1.SubSubComponent1, testModule.SubSubComponent2);
 		}
 	}
 }

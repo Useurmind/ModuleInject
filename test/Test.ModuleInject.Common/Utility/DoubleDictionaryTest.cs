@@ -1,23 +1,21 @@
 using System.Linq;
 
+using Xunit;
+
 namespace Test.ModuleInject.Common.Utility
 {
     using global::ModuleInject.Common.Utility;
 
-    using NUnit.Framework;
-
-    [TestFixture]
     public class DoubleDictionaryTest
     {
         private DoubleKeyDictionary<int, string, int> mDictionary;
 
-        [SetUp]
-        public void Init()
+        public DoubleDictionaryTest()
         {
             this.mDictionary = new DoubleKeyDictionary<int, string, int>();
         }
 
-        [TestCase]
+        [Fact]
         public void Add_SomeCombination_TryGetValueReturnsCombination()
         {
             int key1 = 2;
@@ -30,11 +28,11 @@ namespace Test.ModuleInject.Common.Utility
             this.mDictionary.Add(key1, key2, value);
             found = this.mDictionary.TryGetValue(key1, key2, out resultValue);
 
-            Assert.IsTrue(found);
-            Assert.AreEqual(value, resultValue);
+            Assert.True(found);
+            Assert.Equal(value, resultValue);
         }
 
-        [TestCase]
+        [Fact]
         public void Foreach_SomeElements_AllElementsFound()
         {
             int key11 = 1;
@@ -50,12 +48,12 @@ namespace Test.ModuleInject.Common.Utility
 
             foreach (var dictItem in this.mDictionary)
             {
-                Assert.IsTrue(dictItem.Key1 == key11 && dictItem.Key2 == key21 && dictItem.Value == value1
+                Assert.True(dictItem.Key1 == key11 && dictItem.Key2 == key21 && dictItem.Value == value1
                            || dictItem.Key1 == key12 && dictItem.Key2 == key22 && dictItem.Value == value2);
             }
         }
 
-        [TestCase]
+        [Fact]
         public void GetAll_SomeElements_ReturnsAllElements()
         {
             int value1 = 45;
@@ -68,10 +66,10 @@ namespace Test.ModuleInject.Common.Utility
 
             var values = mDictionary.GetAll();
 
-            Assert.AreEqual(3, values.Count());
-            Assert.IsTrue(values.Contains(value1));
-            Assert.IsTrue(values.Contains(value2));
-            Assert.IsTrue(values.Contains(value3));
+            Assert.Equal(3, values.Count());
+            Assert.True(values.Contains(value1));
+            Assert.True(values.Contains(value2));
+            Assert.True(values.Contains(value3));
         }
     }
 }

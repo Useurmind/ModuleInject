@@ -8,7 +8,7 @@ using ModuleInject.Modularity.Registry;
 
 namespace Test.ModuleInject.Registry
 {
-    using NUnit.Framework;
+    using Xunit;
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
 
@@ -41,67 +41,66 @@ namespace Test.ModuleInject.Registry
         }
     }
 
-    [TestFixture]
+    
     public class MefRegistryBaseTest
     {
         private RegistryBaseDerivate registry;
-
-        [SetUp]
-        public void Setup()
+        
+        public MefRegistryBaseTest()
         {
             this.registry = new RegistryBaseDerivate();
         }
 
-        [TestCase]
+        [Fact]
         public void Compose_ImportingParts_AllImportedPartsResolved()
         {
             this.registry.Compose();
 
-            Assert.IsNotNull(this.registry.ImportedPart);
+            Assert.NotNull(this.registry.ImportedPart);
         }
 
-        [TestCase]
+        [Fact]
         public void IsRegistered_ForImportedPart_ReturnsTrue()
         {
             bool result = this.registry.IsRegistered(typeof(ICanBeImported));
 
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
 
-        [TestCase]
+        [Fact]
         public void IsRegistered_ForRegisteredPart_ReturnsTrue()
         {
             bool result = this.registry.IsRegistered(typeof(ICanBeRegistered));
 
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
 
-        [TestCase]
+        [Fact]
         public void GetComponent_ForImportedPart_ReturnsImportedPartInstance()
         {
             object result = this.registry.GetComponent(typeof(ICanBeImported));
 
-            Assert.AreSame(this.registry.ImportedPart, result);
+            Assert.Same(this.registry.ImportedPart, result);
         }
 
-        [TestCase]
+        [Fact]
         public void GetComponent_ForRegisteredPart_ReturnsRegisteredPartInstance()
         {
             object result = this.registry.GetComponent(typeof(ICanBeRegistered));
 
-            Assert.AreSame(this.registry.RegisteredPart, result);
+            Assert.Same(this.registry.RegisteredPart, result);
         }
 
-        [TestCase]
+        [Fact]
         public void GetComponent_ForRegisteredPart_ReturnsAlwaysSameInstance()
         {
             var instance1 = registry.GetComponent(typeof(ICanBeRegistered));
             var instance2 = registry.GetComponent(typeof(ICanBeRegistered));
 
-            Assert.AreSame(instance1, instance2);
+            Assert.Same(instance1, instance2);
         }
 
-        [TestCase]
+        [Fact]
         public void Merge_TwoRegistries_ContainsAllRegistrations()
         {
             var registry1 = new RegistryBaseDerivate();
@@ -111,11 +110,11 @@ namespace Test.ModuleInject.Registry
 
             var mergedRegistry = registry1.Merge(registry2);
 
-            Assert.IsTrue(mergedRegistry.IsRegistered(typeof(ICanBeRegistered)));
-            Assert.IsTrue(mergedRegistry.IsRegistered(typeof(int)));
+            Assert.True(mergedRegistry.IsRegistered(typeof(ICanBeRegistered)));
+            Assert.True(mergedRegistry.IsRegistered(typeof(int)));
         }
 
-        [TestCase]
+        [Fact]
         public void Merge_TwoRegistries_OtherRegistryDoesNotOverrideFirstRegistry()
         {
             var registry1 = new RegistryBaseDerivate();
@@ -127,8 +126,8 @@ namespace Test.ModuleInject.Registry
             var instance2 = registry2.GetComponent(typeof(ICanBeRegistered));
             var mergedInstance = mergedRegistry.GetComponent(typeof(ICanBeRegistered));
 
-            Assert.AreNotSame(instance1, instance2);
-            Assert.AreSame(instance1, mergedInstance);
+            Assert.NotSame(instance1, instance2);
+            Assert.Same(instance1, mergedInstance);
         }
     }
 }

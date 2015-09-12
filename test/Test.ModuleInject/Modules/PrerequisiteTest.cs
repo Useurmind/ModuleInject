@@ -2,13 +2,13 @@
 
 using ModuleInject.Injection;
 
-using NUnit.Framework;
+using Xunit;
 
 using Test.ModuleInject.Modules.TestModules;
 
 namespace Test.ModuleInject.Modules
 {
-    [TestFixture]
+    
     public class PrerequisiteTest
     {
         private TestModule testModule;
@@ -38,43 +38,42 @@ namespace Test.ModuleInject.Modules
             }
         }
 
-        [SetUp]
-        public void Init()
+        public PrerequisiteTest()
         {
             this.testModule = new TestModule();
         }
 
-        [Test]
+        [Fact]
         public void RegisterComponentWithPrerequisiteAndThisReferenceViaMethodInjection_PrerequisiteResolvedCorrectly()
         {
             this.testModule.RegisterComponentWithPrerequisiteAndThisReferenceViaMethodInjection();
             this.testModule.Resolve();
 
-            Assert.IsNotNull(this.testModule.ZPrerequisiteComponent);
-            Assert.IsNotNull(this.testModule.Component);
-            Assert.AreSame(this.testModule.ZPrerequisiteComponent, this.testModule.Component.MainComponent2);
+            Assert.NotNull(this.testModule.ZPrerequisiteComponent);
+            Assert.NotNull(this.testModule.Component);
+            Assert.Same(this.testModule.ZPrerequisiteComponent, this.testModule.Component.MainComponent2);
         }
 
-        [Test]
+        [Fact]
         public void RegisterComponentWithPrerequisiteAndThisReferenceViaPropertyInjection_PrerequisiteResolvedCorrectly()
         {
             this.testModule.RegisterComponentWithPrerequisiteAndThisReferenceViaPropertyInjection();
             this.testModule.Resolve();
 
-            Assert.IsNotNull(this.testModule.ZPrerequisiteComponent);
-            Assert.IsNotNull(this.testModule.Component);
-            Assert.AreSame(this.testModule.ZPrerequisiteComponent, this.testModule.Component.MainComponent2);
+            Assert.NotNull(this.testModule.ZPrerequisiteComponent);
+            Assert.NotNull(this.testModule.Component);
+            Assert.Same(this.testModule.ZPrerequisiteComponent, this.testModule.Component.MainComponent2);
         }
 
-        [Test]
+        [Fact]
         public void RegisterComponentWithPrerequisiteAndThisReferenceViaConstructorInjection_PrerequisiteResolvedCorrectly()
         {
             this.testModule.RegisterComponentWithPrerequisiteAndThisReferenceViaConstructorInjection();
             this.testModule.Resolve();
 
-            Assert.IsNotNull(this.testModule.ZPrerequisiteComponent);
-            Assert.IsNotNull(this.testModule.Component);
-            Assert.AreSame(this.testModule.ZPrerequisiteComponent, this.testModule.Component.MainComponent2);
+            Assert.NotNull(this.testModule.ZPrerequisiteComponent);
+            Assert.NotNull(this.testModule.Component);
+            Assert.Same(this.testModule.ZPrerequisiteComponent, this.testModule.Component.MainComponent2);
         }
     }
 }

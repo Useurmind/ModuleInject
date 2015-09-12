@@ -1,31 +1,30 @@
 ﻿using System.Linq;
 
-using NUnit.Framework;
+using Xunit;
 
 using Test.ModuleInject.Modules.TestModules;
 
 namespace Test.ModuleInject.Modules
 {
-    [TestFixture]
+    
     public class DerivedModuleTest
     {
         private DerivedModule _derivedModule;
 
-        [SetUp]
-        public void Setup()
+        public DerivedModuleTest()
         {
             this._derivedModule = new DerivedModule();
         }
 
-        [TestCase]
+        [Fact]
         public void Resolve__CorrectlyResolved()
         {
             this._derivedModule.Resolve();
 
-            Assert.IsNotNull(this._derivedModule.MainComponent1);
-            Assert.IsNotNull(this._derivedModule.MainComponent2);
-            Assert.IsNotNull(this._derivedModule.MainComponent1Private);
-            Assert.IsNotNull(this._derivedModule.MainComponent2Private);
+            Assert.NotNull(this._derivedModule.MainComponent1);
+            Assert.NotNull(this._derivedModule.MainComponent2);
+            Assert.NotNull(this._derivedModule.MainComponent1Private);
+            Assert.NotNull(this._derivedModule.MainComponent2Private);
         }
     }
 }

@@ -1,10 +1,29 @@
 {
   "locked": false,
-  "version": -9996,
+  "version": 1,
   "targets": {
-    ".NETFramework,Version=v4.5": {}
+    ".NETFramework,Version=v4.5": {
+      "ModuleInject.Common/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "ModuleInject.Interfaces": "1.0.0"
+        }
+      },
+      "ModuleInject.Interfaces/1.0.0": {
+        "type": "project"
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "ModuleInject.Common/1.0.0": {
+      "type": "project",
+      "path": "../ModuleInject.Common/project.json"
+    },
+    "ModuleInject.Interfaces/1.0.0": {
+      "type": "project",
+      "path": "../ModuleInject.Interfaces/project.json"
+    }
+  },
   "projectFileDependencyGroups": {
     "": [
       "ModuleInject.Interfaces >= 1.0.0-*",

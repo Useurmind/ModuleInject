@@ -4,10 +4,8 @@ namespace Test.ModuleInject.Common.Linq
 {
     using global::ModuleInject.Common.Exceptions;
     using global::ModuleInject.Common.Linq;
+    using Xunit;
 
-    using NUnit.Framework;
-
-    [TestFixture]
     public class PropertyTest
     {
         private interface ITestClass2
@@ -33,34 +31,34 @@ namespace Test.ModuleInject.Common.Linq
             public int A { get; set; }
         }
 
-        [TestCase]
+        [Fact]
         public void Get_MemberExpressionWithCastOfParameter_ReturnsProperty()
         {
             Property prop = Property.Get((TestClass m) => ((ITestClass)m).StringProperty);
 
-            Assert.IsNotNull(prop);
+            Assert.NotNull(prop);
         }
 
-        [TestCase]
+        [Fact]
         public void Get_MemberExpressionWithInvalidCastOfParameter_ErrorThrown()
         {
             Assert.Throws(typeof(ModuleInjectException), () =>
             {
                 Property prop = Property.Get((TestClass m) => ((ITestClass2)m).StringProperty);
 
-                Assert.IsNotNull(prop);
+                Assert.NotNull(prop);
             });
         }
 
-        [TestCase]
+        [Fact]
         public void Get_ValidMemberExpression_ReturnsProperty()
         {
             Property prop = Property.Get((string s) => s.Length);
 
-            Assert.IsNotNull(prop);
+            Assert.NotNull(prop);
         }
 
-        [TestCase]
+        [Fact]
         public void Get_FunctionExpression_ThrowsException()
         {
             Assert.Throws(typeof(ModuleInjectException), () =>
@@ -69,7 +67,7 @@ namespace Test.ModuleInject.Common.Linq
             });
         }
 
-        [TestCase]
+        [Fact]
         public void Get_FieldExpression_ThrowsException()
         {
             Assert.Throws(typeof(ModuleInjectException), () =>
@@ -78,7 +76,7 @@ namespace Test.ModuleInject.Common.Linq
             });
         }
 
-        [TestCase]
+        [Fact]
         public void Get_SubPropertyExpression_ThrowsException()
         {
             Assert.Throws(typeof(ModuleInjectException), () =>
@@ -87,15 +85,15 @@ namespace Test.ModuleInject.Common.Linq
             });
         }
 
-        [TestCase]
+        [Fact]
         public void OperatorString_ValidMemberExpression_ReturnsCorrectName()
         {
             Property prop = Property.Get((string s) => s.Length);
 
-            Assert.AreEqual("Length", (string)prop);
+            Assert.Equal("Length", (string)prop);
         }
 
-        [TestCase]
+        [Fact]
         public void GetValue_ValidMemberExpression_ReturnsCorrectValue()
         {
             TestClass test = new TestClass()
@@ -106,10 +104,10 @@ namespace Test.ModuleInject.Common.Linq
 
             TestClass2 result = prop.GetValue<TestClass2>(test);
 
-            Assert.AreSame(test.TestClass2, result);
+            Assert.Same(test.TestClass2, result);
         }
 
-        [TestCase]
+        [Fact]
         public void SetValue_ValidMemberExpression_ValueIsSet()
         {
             TestClass2 test2 = new TestClass2();
@@ -119,7 +117,7 @@ namespace Test.ModuleInject.Common.Linq
 
             prop.SetValue(test, test2);
 
-            Assert.AreSame(test2, test.TestClass2);
+            Assert.Same(test2, test.TestClass2);
         }
     }
 }

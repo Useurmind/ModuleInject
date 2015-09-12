@@ -1,30 +1,83 @@
 {
   "locked": false,
-  "version": -9996,
+  "version": 1,
   "targets": {
     ".NETFramework,Version=v4.5": {
       "Castle.Core/3.3.3": {
+        "type": "package",
         "compile": {
           "lib/net45/Castle.Core.dll": {}
         },
         "runtime": {
           "lib/net45/Castle.Core.dll": {}
         }
+      },
+      "ModuleInject/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "ModuleInject.Common": "1.0.0",
+          "ModuleInject.Interfaces": "1.0.0"
+        },
+        "frameworkAssemblies": [
+          "System.ComponentModel.Composition"
+        ]
+      },
+      "ModuleInject.Common/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "ModuleInject.Interfaces": "1.0.0"
+        }
+      },
+      "ModuleInject.Interfaces/1.0.0": {
+        "type": "project"
       }
     },
     "DNX,Version=v4.5.1": {
       "Castle.Core/3.3.3": {
+        "type": "package",
         "compile": {
           "lib/net45/Castle.Core.dll": {}
         },
         "runtime": {
           "lib/net45/Castle.Core.dll": {}
         }
+      },
+      "ModuleInject/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "ModuleInject.Common": "1.0.0",
+          "ModuleInject.Interfaces": "1.0.0"
+        },
+        "frameworkAssemblies": [
+          "System.ComponentModel.Composition"
+        ]
+      },
+      "ModuleInject.Common/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "ModuleInject.Interfaces": "1.0.0"
+        }
+      },
+      "ModuleInject.Interfaces/1.0.0": {
+        "type": "project"
       }
     }
   },
   "libraries": {
+    "ModuleInject/1.0.0": {
+      "type": "project",
+      "path": "../ModuleInject/project.json"
+    },
+    "ModuleInject.Common/1.0.0": {
+      "type": "project",
+      "path": "../ModuleInject.Common/project.json"
+    },
+    "ModuleInject.Interfaces/1.0.0": {
+      "type": "project",
+      "path": "../ModuleInject.Interfaces/project.json"
+    },
     "Castle.Core/3.3.3": {
+      "type": "package",
       "sha512": "tvVrLbHhtAGubUUDbEkH9JlivdlJOTI25u3hlyHpPxuJdTVi/yVQKWCYvGpafGPm7G1ibdWj4brqhtSQkAmN+g==",
       "files": [
         "ASL - Apache Software Foundation License.txt",
@@ -33,8 +86,6 @@
         "Castle.Core.3.3.3.nupkg.sha512",
         "Castle.Core.nuspec",
         "Changes.txt",
-        "License.txt",
-        "readme.txt",
         "lib/net35/Castle.Core.dll",
         "lib/net35/Castle.Core.xml",
         "lib/net40-client/Castle.Core.dll",
@@ -44,7 +95,9 @@
         "lib/sl4/Castle.Core.dll",
         "lib/sl4/Castle.Core.xml",
         "lib/sl5/Castle.Core.dll",
-        "lib/sl5/Castle.Core.xml"
+        "lib/sl5/Castle.Core.xml",
+        "License.txt",
+        "readme.txt"
       ]
     }
   },
